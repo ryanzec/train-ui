@@ -1,0 +1,27 @@
+.icon {
+  font-size: var(--icon-size-base);
+}
+
+.small1 {
+  font-size: var(--icon-size-small1);
+}
+
+.large1 {
+  font-size: var(--icon-size-large1);
+}
+
+.large2 {
+  font-size: var(--icon-size-large2);
+}
+
+.large3 {
+  font-size: var(--icon-size-large3);
+}
+
+.spacing-left {
+  margin-left: var(--icon-margin);
+}
+
+.spacing-right {
+  margin-right: var(--icon-margin);
+}

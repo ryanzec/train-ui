@@ -1,0 +1,268 @@
+.button {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  border: 0;
+  outline: 0;
+  padding: var(--button-padding-vertical) var(--button-padding-horizontal);
+  border-radius: var(--button-border-radius);
+  cursor: pointer;
+  background-color: transparent;
+  min-height: var(--button-min-height);
+
+  /* when there is a pre icon, that change the buttons baseline so using top to make sure buttons always align */
+  vertical-align: top;
+}
+
+.button-content {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+
+  /* this make sure that that underlay button background color does not effect the text of the button */
+  z-index: var(--z-index-button-content);
+}
+
+.button-underlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: transparent;
+  opacity: 0;
+
+  /* need the -2px to avoid issue there is a small transparent part between the underlay and border for outlined */
+  border-radius: calc(var(--button-border-radius) - 2px);
+}
+
+/* give default spacing to grouped buttons */
+.button + .button {
+  margin-left: var(--button-margin-between-self);
+}
+
+.button[disabled] {
+  opacity: var(--button-color-opacity-disabled);
+}
+
+/* underlay shading */
+.filled .button-underlay {
+  background-color: var(--color-misc-button-underlay-background-color);
+}
+
+.weak:not([disabled]) .button-underlay {
+  opacity: var(--button-underlay-opacity-weak);
+}
+
+.filled:hover:not([disabled]) .button-underlay {
+  opacity: var(--button-underlay-opacity-on-filled);
+}
+
+.filled:hover:active:not([disabled]) .button-underlay {
+  opacity: var(--button-underlay-opacity-on-filled-darker);
+}
+
+.outlined:hover:not([disabled]) .button-underlay,
+.ghost:hover:not([disabled]) .button-underlay,
+.weak:hover:not([disabled]) .button-underlay {
+  opacity: var(--button-underlay-opacity);
+}
+
+.outlined:hover:active:not([disabled]) .button-underlay,
+.ghost:hover:active:not([disabled]) .button-underlay,
+.weak:hover:active:not([disabled]) .button-underlay {
+  opacity: var(--button-underlay-opacity-darker);
+}
+
+/* outlined */
+.outlined {
+  border: 1px solid transparent;
+}
+
+
+/* text */
+.text {
+  padding: 0;
+  min-height: initial;
+  vertical-align: initial;
+}
+
+.text .button-underlay {
+  background-color: transparent;
+}
+
+/* neutral */
+.neutral {
+  color: var(--button-neutral-color);
+}
+
+.neutral.weak .button-underlay,
+.neutral.outlined:hover .button-underlay,
+.neutral.ghost:hover .button-underlay {
+  background-color: var(--button-neutral-background-color);
+}
+
+.neutral.filled {
+  background-color: var(--button-neutral-background-color);
+  color: var(--button-neutral-color-filled);
+}
+
+.neutral.outlined {
+  border-color: var(--button-neutral-border-color);
+}
+
+
+/* brand */
+.brand {
+  color: var(--button-brand-color);
+}
+
+.brand.weak .button-underlay,
+.brand.outlined:hover .button-underlay,
+.brand.ghost:hover .button-underlay {
+  background-color: var(--button-brand-background-color);
+}
+
+.brand.filled {
+  background-color: var(--button-brand-background-color-filled);
+  color: var(--button-brand-color-filled);
+}
+
+.brand.outlined {
+  border-color: var(--button-brand-border-color);
+}
+
+/* success */
+.success {
+  color: var(--button-success-color);
+}
+
+.success.weak .button-underlay,
+.success.outlined:hover .button-underlay,
+.success.ghost:hover .button-underlay {
+  background-color: var(--button-success-background-color);
+}
+
+.success.filled {
+  background-color: var(--button-success-background-color-filled);
+  color: var(--button-success-color-filled);
+}
+
+.success.outlined {
+  border-color: var(--button-success-border-color);
+}
+
+/* info */
+.info {
+  color: var(--button-info-color);
+}
+
+.info.weak .button-underlay,
+.info.outlined:hover .button-underlay,
+.info.ghost:hover .button-underlay {
+  background-color: var(--button-info-background-color);
+}
+
+.info.filled {
+  background-color: var(--button-info-background-color-filled);
+  color: var(--button-info-color-filled);
+}
+
+.info.outlined {
+  border-color: var(--button-info-border-color);
+}
+
+/* warning */
+.warning {
+  color: var(--button-warning-color);
+}
+
+.warning.weak .button-underlay,
+.warning.outlined:hover .button-underlay,
+.warning.ghost:hover .button-underlay {
+  background-color: var(--button-warning-background-color);
+}
+
+.warning.filled {
+  background-color: var(--button-warning-background-color-filled);
+  color: var(--button-warning-color-filled);
+}
+
+.warning.outlined {
+  border-color: var(--button-warning-border-color);
+}
+
+/* danger */
+.danger {
+  color: var(--button-danger-color);
+}
+
+.danger.weak .button-underlay,
+.danger.outlined:hover .button-underlay,
+.danger.ghost:hover .button-underlay {
+  background-color: var(--button-danger-background-color);
+}
+
+.danger.filled {
+  background-color: var(--button-danger-background-color-filled);
+  color: var(--button-danger-color-filled);
+}
+
+.danger.outlined {
+  border-color: var(--button-danger-border-color);
+}
+
+/* icon button */
+.icon-button {
+  padding: var(--button-padding-vertical) var(--button-padding-horizontal);
+}
+
+/* icons */
+.icon {
+  display: inline-flex;
+}
+
+.icon.pre-icon {
+  margin-right: var(--button-margin-icon);
+}
+
+.icon.post-icon {
+  margin-left: var(--button-margin-icon);
+}
+
+.is-loading .icon {
+  :global {
+    animation: spin 1s linear;
+    animation-iteration-count: infinite;
+  }
+}
+
+/* group */
+.button-group {
+  display: flex;
+}
+
+/* drop down */
+.drop-down {
+  display: inline-flex;
+}
+
+.drop-down-content {
+  display: none;
+  border: 1px solid var(--button-drop-down-border-color);
+  padding: var(--button-drop-down-padding);
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--button-drop-down-background-color);
+  width: max-content;
+  z-index: var(--z-index-tooltip-content);
+  border-radius: var(--button-drop-down-border-radius);
+  color: var(--button-drop-down-color);
+}
+
+.drop-down-content-is-enabled {
+  display: block;
+}

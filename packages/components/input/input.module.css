@@ -1,0 +1,83 @@
+.container { }
+
+.input-container {
+  width: 100%;
+  color: var(--input-color);
+  background: var(--input-background-color);
+  border-radius: var(--input-border-radius);
+  font-size: var(--typography-body-large-font-size);
+  line-height: var(--typography-body-large-line-height);
+  letter-spacing: var(--typography-body-large-letter-spacing);
+  border: 1px solid var(--input-border-color);
+  padding: var(--input-padding);
+}
+
+.container-focus:not(.container-disabled):not(.container-readonly) .input-container,
+.container:hover:not(.container-disabled):not(.container-readonly) .input-container {
+  border-color: var(--input-border-color-active);
+}
+
+.input {
+  font-size: var(--typography-body-medium-font-size);
+  line-height: var(--typography-body-medium-line-height);
+  letter-spacing: var(--typography-body-medium-letter-spacing);
+  outline: 0;
+  background: 0;
+  border: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.container-disabled {
+  opacity: var(--input-disabled-opacity);
+}
+
+.container-readonly .input-container {
+  background-color: var(--input-background-color-readonly);
+}
+
+.input-container input::placeholder {
+  cursor: var(--input-color-placeholder);
+}
+
+.textarea::placeholder {
+  color: var(--input-color-placeholder);
+}
+
+.input-container {
+  position: relative;
+
+  display: flex;
+  align-items: center;
+}
+
+.input-container input {
+  /*
+   * not sure why the user agent css overrides the inherited color from so need to apply the color for the input
+   * directly on the input element itself
+   */
+  color: var(--input-color);
+}
+
+.pre-item,
+.post-item {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+.pre-item {
+  margin-right: var(--input-margin-pre-post-item);
+}
+
+.post-item {
+  margin-left: var(--input-margin-pre-post-item);
+}
+
+.pre-item.pre-item-inline {
+  display: inline-block;
+}
+
+.post-item-is-clickable {
+  cursor: pointer;
+}

@@ -1,0 +1,7 @@
+.list-container {
+  width: 500px;
+}
+
+.avatar {
+  margin-right: var(--space-small3);
+}

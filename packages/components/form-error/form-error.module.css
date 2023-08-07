@@ -1,0 +1,7 @@
+.form-error {
+	margin-bottom: var(--form-error-margin);
+}
+
+.form-error-hidden {
+	display: none;
+}

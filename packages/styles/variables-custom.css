@@ -1,0 +1,45 @@
+/*
+ * while ideally these would come from figma, the design token exporting does not support variable that are general
+ * values, just spacing values so need to hard code these here
+ */
+:root {
+  --z-index-button-content: 1;
+  --z-index-auto-complete-list: 2;
+  --z-index-auto-complete-opened-list: 3;
+  --z-index-overlay: 1000;
+  --z-index-overlay-content: 1001;
+  --z-index-dialog: 1002;
+  --z-index-global-notifications: 1003;
+  --z-index-tooltip-content: 1004;
+}
+
+[data-theme] {
+  --button-color-opacity-disabled: 0.38;
+  --button-underlay-opacity1: 0.55;
+  --button-underlay-opacity2: 0.75;
+  --button-underlay-opacity3: 1;
+  --button-underlay-opacity-filled1: 0.15;
+  --button-underlay-opacity-filled2: 0.25;
+
+  --button-underlay-opacity-weak: var(--button-underlay-opacity1);
+  --button-underlay-opacity: var(--button-underlay-opacity2);
+  --button-underlay-opacity-darker: var(--button-underlay-opacity3);
+  --button-underlay-opacity-on-filled: var(--button-underlay-opacity-filled1);
+  --button-underlay-opacity-on-filled-darker: var(--button-underlay-opacity-filled2);
+
+  /* input */
+  --input-disabled-opacity: 0.4;
+
+  /* checkbox */
+  --checkbox-toggle-bar-opacity: 0.3;
+  --checkbox-toggle-slide-duration: 0.2s;
+
+  /* overlay */
+  --overlay-opacity-strong: 0.7;
+  --overlay-opacity-weak: 0.4;
+}
+
+[data-theme="dark"] {
+  --button-underlay-opacity-weak: var(--button-underlay-opacity3);
+  --button-underlay-opacity-darker: var(--button-underlay-opacity1);
+}

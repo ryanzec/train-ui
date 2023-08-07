@@ -1,0 +1,12 @@
+<!-- JUST FOR LOCAL DEVELOPMENT -->
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>My app</title>
+  </head>
+  <body>
+    <div id="application-mount"></div>
+  <script type="module" src="./entry.tsx"></script>
+  </body>
+</html>

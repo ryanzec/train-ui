@@ -1,0 +1,40 @@
+.card {
+  padding: var(--card-padding-vertical) var(--card-padding-horizontal);
+  border: 1px solid var(--card-border-color);
+  background-color: var(--card-background-color);
+  border-radius: var(--card-border-radius);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  font-size: var(--typography-headline-medium-font-size);
+  line-height: var(--typography-headline-medium-line-height);
+  letter-spacing: var(--typography-headline-medium-letter-spacing);
+  margin-bottom: var(--card-padding-vertical);
+}
+
+.header-pre-item {
+  margin-right: var(--card-margin-pre-post-item);
+
+  display: inline-flex;
+}
+
+.header-post-item {
+  margin-left: auto;
+
+  display: inline-flex;
+}
+
+.content {
+
+}
+
+.footer {
+  margin-top: var(--card-padding-vertical);
+  display: flex;
+}
+
+.footer-right-aligned {
+  justify-content: flex-end;
+}

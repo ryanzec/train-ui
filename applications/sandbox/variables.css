@@ -1,0 +1,13 @@
+[data-theme] {
+  /* application frame */
+  --application-frame-navigation-padding: 16px;
+  --application-frame-main-contain-padding: 16px;
+
+  --application-frame-navigation-width: 250px;
+  --application-frame-container-backgound-color: var(--color-surface-base);
+  --application-frame-container-color: var(--color-surface-on-base);
+  --application-frame-navigation-border-color: var(--color-outline-base);
+  --application-frame-navigation-item-color: var(--color-surface-on-base);
+  --application-frame-navigation-item-background-color-active: var(--color-surface-tertiary);
+  --application-frame-navigation-item-background-color-hover: var(--color-surface-secondary);
+}
