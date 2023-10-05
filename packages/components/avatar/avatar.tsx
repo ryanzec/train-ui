@@ -4,7 +4,7 @@ import { JSX, Show, splitProps } from 'solid-js';
 import styles from '$/components/avatar/avatar.module.css';
 import { CommonDataAttributes } from '$/types/generic';
 
-export interface AvatarProps extends JSX.LabelHTMLAttributes<HTMLDivElement>, CommonDataAttributes {
+export interface AvatarProps extends JSX.HTMLAttributes<HTMLDivElement>, CommonDataAttributes {
   src?: string;
 }
 

@@ -14,11 +14,11 @@
 
 html {
     -webkit-text-size-adjust: 100%; /* 2 */
-    font-family: var(--typography-body-medium-font-family);
-    font-size: var(--typography-body-medium-font-size);
-    line-height: var(--typography-body-medium-line-height); /* 1 */
-    letter-spacing: var(--typography-body-medium-letter-spacing);
-    color: var(--color-on-surface);
+    font-family: var(--typography-base-font-family);
+    font-size: var(--typography-base-font-size);
+    line-height: var(--typography-base-line-height); /* 1 */
+    letter-spacing: var(--typography-base-letter-spacing);
+    color: var(--text-color);
 }
 
 /* Sections

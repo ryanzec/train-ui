@@ -11,25 +11,29 @@ export interface InputProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
   postItem?: JSX.Element;
   postItemIsClickable?: boolean;
   inputContainerClass?: string;
+  includeReadonlyStyles?: false;
 }
 
 const Input = (passedProps: InputProps) => {
-  const [props, restOfProps] = splitProps(mergeProps({ preItemIsInline: false }, passedProps), [
-    'class',
-    'validationState',
-    'onFocus',
-    'onBlur',
-    'disabled',
-    'readonly',
-    'preItem',
-    'preItemIsInline',
-    'postItem',
-    'postItemIsClickable',
-    'inputContainerClass',
-  ]);
+  const [props, restOfProps] = splitProps(
+    mergeProps({ preItemIsInline: false, includeReadonlyStyles: true }, passedProps),
+    [
+      'class',
+      'validationState',
+      'onFocus',
+      'onBlur',
+      'disabled',
+      'readonly',
+      'preItem',
+      'preItemIsInline',
+      'postItem',
+      'postItemIsClickable',
+      'inputContainerClass',
+      'includeReadonlyStyles',
+    ],
+  );
 
   const [isInputFocused, setIsInputFocused] = createSignal(false);
-  let inputRef: HTMLInputElement | undefined;
 
   const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (event) => {
     setIsInputFocused(true);
@@ -57,7 +61,7 @@ const Input = (passedProps: InputProps) => {
     <div
       class={classnames(styles.container, {
         [styles.containerDisabled]: props.disabled,
-        [styles.containerReadonly]: props.readonly,
+        [styles.containerReadonly]: props.readonly && props.includeReadonlyStyles,
         [styles.containerFocus]: isFocused(),
         [styles.containerInvalid]: props.validationState === FormInputValidationState.INVALID,
         [styles.containerWithPreItem]: !!props.preItem,
@@ -72,7 +76,6 @@ const Input = (passedProps: InputProps) => {
           </div>
         </Show>
         <input
-          ref={inputRef}
           class={classnames(props.class, styles.input, {
             [styles.errorState]: props.validationState === FormInputValidationState.INVALID,
           })}

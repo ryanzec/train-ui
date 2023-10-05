@@ -1,0 +1,116 @@
+.date-picker {
+  width: var(--date-picker-width);
+  position: relative;
+  background-color: var(--date-picker-background-color);
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  border: 1px solid var(--date-picker-border-color);
+  border-radius: var(--date-picker-border-radius);
+}
+
+.header {
+  width: 100%;
+  padding: var(--date-picker-padding);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--date-picker-border-color);
+}
+
+.header-text {
+  cursor: pointer;
+}
+
+.previous-month-trigger,
+.next-month-trigger {
+  cursor: pointer;
+}
+
+.calendar {
+  width: 100%;
+  padding: var(--date-picker-padding);
+  display: flex;
+  flex-direction: column;
+}
+
+.day-of-week-header-item {}
+
+.day {
+  display: inline-flex;
+  width: var(--date-picker-size-day-item);
+  height: var(--date-picker-size-day-item);
+  justify-content: center;
+  align-items: center;
+  border-radius: var(--date-picker-border-radius-day-active-indicator);
+}
+
+.day-current {
+  background-color: var(--date-picker-background-color-day-current);
+}
+
+.day-selected {
+  background-color: var(--date-picker-background-color-day-highlighted);
+}
+
+.day:not(.day-of-week-header-item):not(.day-disabled):hover {
+  cursor: pointer;
+  background-color: var(--date-picker-background-color-day-highlighted);
+}
+
+.day-inactive {
+  color: var(--date-picker-color-day-inactive);
+}
+
+.day-disabled {
+  color: var(--date-picker-color-day-disabled);
+}
+
+.time-container {
+  width: var(--date-picker-width-time-input);
+  padding: 0 var(--date-picker-padding) var(--date-picker-padding) var(--date-picker-padding);
+}
+
+.footer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: var(--input-padding);
+  border-top: 1px solid var(--date-picker-border-color);
+}
+
+/* month year selection */
+.month-year-selection {
+  /* this calculation prevents this element from messing up the border on the main date picker when it is overlapping */
+  width: calc(var(--date-picker-width) - 2);
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  /* this positioning prevents this element from messing up the border on the main date picker when it is overlapping */
+  left: 1px;
+  padding: var(--date-picker-padding);
+  background-color: var(--date-picker-background-color);
+  border-radius: var(--date-picker-border-radius) var(--date-picker-border-radius) 0 0;
+  border-bottom: 1px solid var(--date-picker-border-color);
+}
+
+.month-year-inputs {
+  display: flex;
+  gap: var(--date-picker-padding);
+  padding-bottom: var(--date-picker-padding);
+}
+
+.year-selection {
+  flex: 0 0 var(--date-picker-width-year-selection);
+}
+
+/* date picker input */
+.date-picker-input { }
+
+.date-picker-input-picker-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: var(--z-index-date-picker-input-picker);
+}

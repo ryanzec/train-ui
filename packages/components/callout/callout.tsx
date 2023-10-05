@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { JSX, mergeProps, splitProps } from 'solid-js';
+import { JSX, mergeProps, Show, splitProps } from 'solid-js';
 
 import styles from '$/components/callout/callout.module.css';
 import { CalloutSentiment, CalloutStrength } from '$/components/callout/utils';
@@ -8,12 +8,14 @@ export interface CalloutProps extends JSX.HTMLAttributes<HTMLDivElement> {
   sentiment?: CalloutSentiment;
   strength?: CalloutStrength;
   isCentered?: boolean;
+  preItem?: JSX.Element;
+  postItem?: JSX.Element;
 }
 
 const Callout = (passedProps: CalloutProps) => {
   const [props, restOfProps] = splitProps(
     mergeProps({ sentiment: CalloutSentiment.BRAND, strength: CalloutStrength.WEAK, isCentered: true }, passedProps),
-    ['sentiment', 'strength', 'class', 'children', 'isCentered'],
+    ['sentiment', 'strength', 'class', 'children', 'isCentered', 'preItem', 'postItem'],
   );
   const isStrong = props.strength === CalloutStrength.STRONG;
 
@@ -35,6 +37,9 @@ const Callout = (passedProps: CalloutProps) => {
       })}
       {...restOfProps}
     >
+      <Show when={props.preItem}>
+        <div class={styles.preItem}>{props.preItem}</div>
+      </Show>
       <span
         class={classnames({
           [styles.centered]: props.isCentered,
@@ -42,6 +47,9 @@ const Callout = (passedProps: CalloutProps) => {
       >
         {props.children}
       </span>
+      <Show when={props.postItem}>
+        <div class={styles.postItem}>{props.postItem}</div>
+      </Show>
     </div>
   );
 };

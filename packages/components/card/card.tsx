@@ -22,11 +22,12 @@ const Card = (passedProps: ParentProps<CardProps>) => {
     'footerAlignment',
   ]);
   const hasHeader = () => !!props.headerText || !!props.headerPreItem || !!props.headerPostItem;
+  const hasContent = () => !!props.children;
 
   return (
     <div class={classnames(styles.card, props.class)} {...restOfProps}>
       <Show when={hasHeader()}>
-        <div class={styles.header}>
+        <div class={classnames(styles.header, { [styles.headerWithContent]: hasContent() })}>
           <Show when={props.headerPreItem}>
             <div class={styles.headerPreItem}>{props.headerPreItem}</div>
           </Show>
@@ -38,7 +39,9 @@ const Card = (passedProps: ParentProps<CardProps>) => {
           </Show>
         </div>
       </Show>
-      <div class={styles.content}>{props.children}</div>
+      <Show when={hasContent()}>
+        <div class={styles.content}>{props.children}</div>
+      </Show>
       <Show when={props.footerElement}>
         <div
           class={classnames(styles.footer, {

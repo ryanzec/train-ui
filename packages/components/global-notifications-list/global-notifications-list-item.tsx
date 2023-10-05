@@ -3,9 +3,9 @@ import { JSX, Show, splitProps } from 'solid-js';
 
 import Button, { ButtonVariant } from '$/components/button';
 import Callout, { CalloutSentiment } from '$/components/callout';
-import Emoji, { EmojiSize, EmojiSpacing } from '$/components/emoji';
+import Emoji, { EmojiSpacing } from '$/components/emoji';
 import styles from '$/components/global-notifications-list/global-notifications-list.module.css';
-import Icon from '$/components/icon';
+import Icon, { IconSize } from '$/components/icon';
 import { GlobalNotification, globalNotificationsStore, REMOVE_ANIMATION_DURATION } from '$/stores/global-notifications';
 
 export interface GlobalNotificationsListItemProps extends JSX.HTMLAttributes<HTMLDivElement> {
@@ -25,7 +25,7 @@ const GlobalNotificationsListItem = (passedProps: GlobalNotificationsListItemPro
       style={{ 'animation-duration': `${REMOVE_ANIMATION_DURATION * 1.05}ms` }}
     >
       <Show when={!!props.notification.emoji}>
-        <Emoji emoji={props.notification.emoji ?? ''} spacing={EmojiSpacing.RIGHT} size={EmojiSize.SMALL} />
+        <Emoji emoji={props.notification.emoji ?? ''} spacing={EmojiSpacing.RIGHT} size={IconSize.SMALL1} />
       </Show>
       {props.notification.message()}{' '}
       <Button.IconButton

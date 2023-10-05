@@ -9,6 +9,7 @@ const baseConfiguration = {
     alias: {
       $: path.join(__dirname, 'packages'),
       $sandbox: path.join(__dirname, 'applications', 'sandbox', 'packages'),
+      $web: path.join(__dirname, 'applications', 'web', 'packages'),
     },
   },
   css: {

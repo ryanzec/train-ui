@@ -1,7 +1,7 @@
 import { User } from '$/data-models/user';
-import { applicationUtils, GlobalVariable, QueryKey } from '$/utils/application';
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { CreateTrackedQueryOptions, queryUtils } from '$/utils/query';
+import { applicationUtils, GlobalVariable, QueryKey } from '$web/utils/application';
 
 export interface GetUsersListReturns {
   users: User[];

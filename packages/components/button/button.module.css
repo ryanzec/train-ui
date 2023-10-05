@@ -1,5 +1,4 @@
 .button {
-  position: relative;
   display: inline-flex;
   justify-content: center;
   align-items: center;
@@ -10,70 +9,33 @@
   cursor: pointer;
   background-color: transparent;
   min-height: var(--button-min-height);
+  font: inherit;
 
   /* when there is a pre icon, that change the buttons baseline so using top to make sure buttons always align */
   vertical-align: top;
 }
 
 .button-content {
-  position: relative;
   display: inline-flex;
   justify-content: center;
   align-items: center;
-
-  /* this make sure that that underlay button background color does not effect the text of the button */
-  z-index: var(--z-index-button-content);
-}
-
-.button-underlay {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background-color: transparent;
-  opacity: 0;
-
-  /* need the -2px to avoid issue there is a small transparent part between the underlay and border for outlined */
-  border-radius: calc(var(--button-border-radius) - 2px);
 }
 
 /* give default spacing to grouped buttons */
-.button + .button {
+.button:not(.unstyled) + .button:not(.unstyled) {
   margin-left: var(--button-margin-between-self);
 }
 
-.button[disabled] {
+.button[disabled]:not(.unstyled) {
   opacity: var(--button-color-opacity-disabled);
 }
 
-/* underlay shading */
-.filled .button-underlay {
-  background-color: var(--color-misc-button-underlay-background-color);
-}
-
-.weak:not([disabled]) .button-underlay {
-  opacity: var(--button-underlay-opacity-weak);
-}
-
-.filled:hover:not([disabled]) .button-underlay {
-  opacity: var(--button-underlay-opacity-on-filled);
-}
-
-.filled:hover:active:not([disabled]) .button-underlay {
-  opacity: var(--button-underlay-opacity-on-filled-darker);
-}
-
-.outlined:hover:not([disabled]) .button-underlay,
-.ghost:hover:not([disabled]) .button-underlay,
-.weak:hover:not([disabled]) .button-underlay {
-  opacity: var(--button-underlay-opacity);
-}
-
-.outlined:hover:active:not([disabled]) .button-underlay,
-.ghost:hover:active:not([disabled]) .button-underlay,
-.weak:hover:active:not([disabled]) .button-underlay {
-  opacity: var(--button-underlay-opacity-darker);
+/* unstyled */
+.unstyled {
+  display: inherit;
+  padding: 0;
+  min-height: initial;
+  vertical-align: initial;
 }
 
 /* outlined */
@@ -81,10 +43,8 @@
   border: 1px solid transparent;
 }
 
-
 /* text */
 .text {
-  padding: 0;
   min-height: initial;
   vertical-align: initial;
 }
@@ -98,31 +58,46 @@
   color: var(--button-neutral-color);
 }
 
-.neutral.weak .button-underlay,
-.neutral.outlined:hover .button-underlay,
-.neutral.ghost:hover .button-underlay {
-  background-color: var(--button-neutral-background-color);
-}
-
-.neutral.filled {
-  background-color: var(--button-neutral-background-color);
-  color: var(--button-neutral-color-filled);
-}
-
 .neutral.outlined {
   border-color: var(--button-neutral-border-color);
 }
 
+.neutral.filled {
+  background-color: var(--button-neutral-background-color-filled);
+  color: var(--button-neutral-color-filled);
+}
+
+.neutral.filled:hover {
+  background-color: var(--button-neutral-background-color-filled-hover);
+}
+
+.neutral.filled:active {
+  background-color: var(--button-neutral-background-color-filled-active);
+}
+
+.neutral.weak {
+  background-color: var(--button-neutral-background-color);
+}
+
+.neutral.weak:hover,
+.neutral.outlined:hover,
+.neutral.ghost:hover{
+  background-color: var(--button-neutral-background-color-hover);
+}
+
+.neutral.weak:active,
+.neutral.outlined:active,
+.neutral.ghost:active{
+  background-color: var(--button-neutral-background-color-active);
+}
 
 /* brand */
 .brand {
   color: var(--button-brand-color);
 }
 
-.brand.weak .button-underlay,
-.brand.outlined:hover .button-underlay,
-.brand.ghost:hover .button-underlay {
-  background-color: var(--button-brand-background-color);
+.brand.outlined {
+  border-color: var(--button-brand-border-color);
 }
 
 .brand.filled {
@@ -130,8 +105,28 @@
   color: var(--button-brand-color-filled);
 }
 
-.brand.outlined {
-  border-color: var(--button-brand-border-color);
+.brand.filled:hover {
+  background-color: var(--button-brand-background-color-filled-hover);
+}
+
+.brand.filled:active {
+  background-color: var(--button-brand-background-color-filled-active);
+}
+
+.brand.weak {
+  background-color: var(--button-brand-background-color);
+}
+
+.brand.weak:hover,
+.brand.outlined:hover,
+.brand.ghost:hover{
+  background-color: var(--button-brand-background-color-hover);
+}
+
+.brand.weak:active,
+.brand.outlined:active,
+.brand.ghost:active{
+  background-color: var(--button-brand-background-color-active);
 }
 
 /* success */
@@ -139,10 +134,8 @@
   color: var(--button-success-color);
 }
 
-.success.weak .button-underlay,
-.success.outlined:hover .button-underlay,
-.success.ghost:hover .button-underlay {
-  background-color: var(--button-success-background-color);
+.success.outlined {
+  border-color: var(--button-success-border-color);
 }
 
 .success.filled {
@@ -150,8 +143,28 @@
   color: var(--button-success-color-filled);
 }
 
-.success.outlined {
-  border-color: var(--button-success-border-color);
+.success.filled:hover {
+  background-color: var(--button-success-background-color-filled-hover);
+}
+
+.success.filled:active {
+  background-color: var(--button-success-background-color-filled-active);
+}
+
+.success.weak {
+  background-color: var(--button-success-background-color);
+}
+
+.success.weak:hover,
+.success.outlined:hover,
+.success.ghost:hover{
+  background-color: var(--button-success-background-color-hover);
+}
+
+.success.weak:active,
+.success.outlined:active,
+.success.ghost:active{
+  background-color: var(--button-success-background-color-active);
 }
 
 /* info */
@@ -159,10 +172,8 @@
   color: var(--button-info-color);
 }
 
-.info.weak .button-underlay,
-.info.outlined:hover .button-underlay,
-.info.ghost:hover .button-underlay {
-  background-color: var(--button-info-background-color);
+.info.outlined {
+  border-color: var(--button-info-border-color);
 }
 
 .info.filled {
@@ -170,8 +181,28 @@
   color: var(--button-info-color-filled);
 }
 
-.info.outlined {
-  border-color: var(--button-info-border-color);
+.info.filled:hover {
+  background-color: var(--button-info-background-color-filled-hover);
+}
+
+.info.filled:active {
+  background-color: var(--button-info-background-color-filled-active);
+}
+
+.info.weak {
+  background-color: var(--button-info-background-color);
+}
+
+.info.weak:hover,
+.info.outlined:hover,
+.info.ghost:hover{
+  background-color: var(--button-info-background-color-hover);
+}
+
+.info.weak:active,
+.info.outlined:active,
+.info.ghost:active{
+  background-color: var(--button-info-background-color-active);
 }
 
 /* warning */
@@ -179,10 +210,8 @@
   color: var(--button-warning-color);
 }
 
-.warning.weak .button-underlay,
-.warning.outlined:hover .button-underlay,
-.warning.ghost:hover .button-underlay {
-  background-color: var(--button-warning-background-color);
+.warning.outlined {
+  border-color: var(--button-warning-border-color);
 }
 
 .warning.filled {
@@ -190,8 +219,28 @@
   color: var(--button-warning-color-filled);
 }
 
-.warning.outlined {
-  border-color: var(--button-warning-border-color);
+.warning.filled:hover {
+  background-color: var(--button-warning-background-color-filled-hover);
+}
+
+.warning.filled:active {
+  background-color: var(--button-warning-background-color-filled-active);
+}
+
+.warning.weak {
+  background-color: var(--button-warning-background-color);
+}
+
+.warning.weak:hover,
+.warning.outlined:hover,
+.warning.ghost:hover{
+  background-color: var(--button-warning-background-color-hover);
+}
+
+.warning.weak:active,
+.warning.outlined:active,
+.warning.ghost:active{
+  background-color: var(--button-warning-background-color-active);
 }
 
 /* danger */
@@ -199,10 +248,8 @@
   color: var(--button-danger-color);
 }
 
-.danger.weak .button-underlay,
-.danger.outlined:hover .button-underlay,
-.danger.ghost:hover .button-underlay {
-  background-color: var(--button-danger-background-color);
+.danger.outlined {
+  border-color: var(--button-danger-border-color);
 }
 
 .danger.filled {
@@ -210,8 +257,28 @@
   color: var(--button-danger-color-filled);
 }
 
-.danger.outlined {
-  border-color: var(--button-danger-border-color);
+.danger.filled:hover {
+  background-color: var(--button-danger-background-color-filled-hover);
+}
+
+.danger.filled:active {
+  background-color: var(--button-danger-background-color-filled-active);
+}
+
+.danger.weak {
+  background-color: var(--button-danger-background-color);
+}
+
+.danger.weak:hover,
+.danger.outlined:hover,
+.danger.ghost:hover{
+  background-color: var(--button-danger-background-color-hover);
+}
+
+.danger.weak:active,
+.danger.outlined:active,
+.danger.ghost:active{
+  background-color: var(--button-danger-background-color-active);
 }
 
 /* icon button */
@@ -224,12 +291,12 @@
   display: inline-flex;
 }
 
-.icon.pre-icon {
-  margin-right: var(--button-margin-icon);
+.icon.pre-item {
+  margin-right: var(--button-margin-pre-post-item);
 }
 
-.icon.post-icon {
-  margin-left: var(--button-margin-icon);
+.icon.post-item {
+  margin-left: var(--button-margin-pre-post-item);
 }
 
 .is-loading .icon {

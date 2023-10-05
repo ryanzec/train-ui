@@ -4,16 +4,16 @@ import config from './style-dictionary-config.mjs';
 
 const { fileHeader, formattedVariables } = StyleDictionary.formatHelpers;
 
-StyleDictionary.registerTransform({
-  name: 'size/px',
-  type: 'value',
-  matcher: token => {
-    return (token.unit === 'pixel' || token.type === 'dimension') && token.value !== 0
-  },
-  transformer: token => {
-    return `${token.value}px`
-  }
-})
+// StyleDictionary.registerTransform({
+//   name: 'size/px',
+//   type: 'value',
+//   matcher: token => {
+//     return (token.unit === 'pixel' || token.type === 'dimension') && token.value !== 0
+//   },
+//   transformer: token => {
+//     return `${token.value}px`
+//   }
+// })
 
 StyleDictionary.registerTransform({
   name: 'size/percent',

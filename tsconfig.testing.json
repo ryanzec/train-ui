@@ -21,7 +21,8 @@
     "types": ["vite/client", "node"],
     "paths": {
       "$/*": ["./packages/*"],
-      "$sandbox/*": ["./applications/sandbox/packages/*"]
+      "$sandbox/*": ["./applications/sandbox/packages/*"],
+      "$web/*": ["./applications/web/packages/*"]
     }
   },
   "include": [

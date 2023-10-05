@@ -1,19 +1,13 @@
-// this is just a side effect of lowdb for needing the non null assertion
-/* eslint-disable @typescript-eslint/no-non-null-assertion */
-
 import { faker } from '@faker-js/faker';
 import { FastifyInstance, FastifyRequest } from 'fastify';
-import { Low } from 'lowdb';
 
-import { Database } from '../types';
+import { mockData } from '../../mock-data';
 
 const API_PREFIX = '/api/users';
 
-export const registerUsersApi = (api: FastifyInstance, db: Low<Database>) => {
+export const registerUsersApi = (api: FastifyInstance) => {
   api.get(API_PREFIX, async (request, response) => {
-    const users = db.data!.users;
-
-    return response.code(200).send({ users });
+    return response.code(200).send({ users: mockData.users.defaultList });
   });
 
   type PostUsersRequest = FastifyRequest<{
@@ -32,13 +26,7 @@ export const registerUsersApi = (api: FastifyInstance, db: Low<Database>) => {
       return response.code(400).send();
     }
 
-    const user = { id: faker.datatype.uuid(), ...request.body };
-
-    db.data?.users.push(user);
-
-    await db.write();
-
-    return response.code(200).send({ user });
+    return response.code(200).send({ user: mockData.users.defaultCreate });
   });
 
   type PutUsersRequest = FastifyRequest<{
@@ -47,26 +35,13 @@ export const registerUsersApi = (api: FastifyInstance, db: Low<Database>) => {
   }>;
 
   api.put(`${API_PREFIX}/:userId`, async (request: PutUsersRequest, response) => {
-    const existingRecord = db.data?.users.find((user) => user.id === request.params.userId);
-    const existingIndex = db.data?.users.findIndex((user) => user.id === request.params.userId);
-
-    if (!existingRecord || !existingIndex || existingIndex === -1) {
+    if (!request.params.userId) {
       response.code(404).send();
 
       return;
     }
 
-    const updatedRecord = { ...existingRecord, ...request.body };
-
-    db.data!.users = [
-      ...db.data!.users.slice(0, existingIndex),
-      updatedRecord,
-      ...db.data!.users.slice(existingIndex + 1),
-    ];
-
-    await db.write();
-
-    response.code(200).send({ user: updatedRecord });
+    response.code(200).send({ user: mockData.users.defaultUpdate });
   });
 
   type DeleteUsersRequest = FastifyRequest<{
@@ -74,19 +49,12 @@ export const registerUsersApi = (api: FastifyInstance, db: Low<Database>) => {
   }>;
 
   api.delete(`${API_PREFIX}/:userId`, async (request: DeleteUsersRequest, response) => {
-    const deletingRecord = db.data?.users.find((user) => user.id === request.params.userId);
-    const deletingIndex = db.data?.users.findIndex((user) => user.id === request.params.userId);
-
-    if (!deletingRecord || !deletingIndex || deletingIndex === -1) {
+    if (!request.params.userId) {
       response.code(404).send();
 
       return;
     }
 
-    db.data!.users = [...db.data!.users.slice(0, deletingIndex), ...db.data!.users.slice(deletingIndex + 1)];
-
-    await db.write();
-
-    response.code(200).send({ user: deletingRecord });
+    response.code(200).send({ user: mockData.users.defaultRemove });
   });
 };

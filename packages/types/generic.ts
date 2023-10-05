@@ -10,6 +10,21 @@ export enum Key {
   ARROW_RIGHT = 'ArrowRight',
   TAB = 'Tab',
   ENTER = 'Enter',
+  ALPHA_NUMERIC = 'Alphanumeric',
+  ZERO = '0',
+  ONE = '1',
+  TWO = '2',
+  THREE = '3',
+  FOUR = '4',
+  FIVE = '5',
+  SIX = '6',
+  SEVEN = '7',
+  EIGHT = '8',
+  NINE = '9',
+  LOWER_A = 'a',
+  UPPER_A = 'A',
+  LOWER_P = 'p',
+  UPPER_P = 'P',
 }
 
 export type BaseCommonDataType = boolean | string | number | object;

@@ -1,5 +1,6 @@
 import classnames from 'classnames';
-import { Accessor, For, mergeProps, Show, splitProps } from 'solid-js';
+import getScrollParent from 'scrollparent';
+import { Accessor, createEffect, For, mergeProps, Show, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 
 import {
@@ -27,6 +28,7 @@ const AutoComplete = <TData extends AutoCompleteExtraData>(passedProps: AutoComp
         asyncDelay: 350,
         removeOnDuplicateSingleSelect: false,
         disabled: false,
+        showClearIcon: true,
       },
       passedProps,
     ),
@@ -47,6 +49,7 @@ const AutoComplete = <TData extends AutoCompleteExtraData>(passedProps: AutoComp
       'asyncThreshold',
       'removeOnDuplicateSingleSelect',
       'validationState',
+      'showClearIcon',
 
       // we move out the id in order to assign it to the input so things like label for works
       'id',
@@ -57,11 +60,13 @@ const AutoComplete = <TData extends AutoCompleteExtraData>(passedProps: AutoComp
 
   const autoCompleteStore = autoCompleteUtils.createAutoComplete(props);
 
-  const onClickDropDownIndicator = () => {
+  const onClickClearTrigger = () => {
     if (autoCompleteStore.inputHasClearableValue()) {
-      autoCompleteStore.clearSelection();
+      autoCompleteStore.clearSelection(false);
     }
+  };
 
+  const onClickDropDownIndicator = () => {
     autoCompleteStore.store.inputRef?.focus();
   };
 
@@ -74,10 +79,27 @@ const AutoComplete = <TData extends AutoCompleteExtraData>(passedProps: AutoComp
         data-uncontrolled-value="true"
         disabled={props.disabled}
         validationState={props.validationState}
-        postItem={props.disabled ? null : <Icon icon="arrow_drop_down" onClick={onClickDropDownIndicator} />}
+        postItem={
+          props.disabled ? null : (
+            <>
+              <Show
+                when={
+                  props.showClearIcon && !autoCompleteStore.store.isOpen && autoCompleteStore.inputHasClearableValue()
+                }
+              >
+                <Icon data-id="clear-icon-trigger" icon="close" onClick={onClickClearTrigger} />
+              </Show>
+              <Icon data-id="input-icon-indicator" icon="arrow_drop_down" onClick={onClickDropDownIndicator} />
+            </>
+          )
+        }
         postItemIsClickable
       />
-      <List data-id="options" class={classnames(styles.list, { [styles.openedList]: autoCompleteStore.store.isOpen })}>
+      <List
+        data-id="options"
+        class={classnames(styles.list, { [styles.openedList]: autoCompleteStore.store.isOpen })}
+        {...autoCompleteStore.getOptionsContainerProps()}
+      >
         <Show when={autoCompleteStore.store.isOpen && autoCompleteStore.asyncOptionsAreLoading()}>
           <List.Item data-id="async-options-loading" class={styles.listOption}>
             <Icon class={classnames(styles.loadingIndicator, iconStyles.spacingRight)} icon="refresh" /> Loading...

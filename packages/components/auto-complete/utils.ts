@@ -1,9 +1,11 @@
 import { debounce } from '@solid-primitives/scheduled';
+import getScrollParent from 'scrollparent';
 import { Accessor, createEffect, createSignal, JSX, onCleanup } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
 
 import { FormInputValidationState } from '$/stores/form/utils';
 import { Key } from '$/types/generic';
+import { domUtils } from '$/utils/dom';
 
 export type AutoCompleteOptionValue = string | number;
 
@@ -78,6 +80,7 @@ export interface AutoCompleteProps<TData extends AutoCompleteExtraData> extends 
   removeOnDuplicateSingleSelect?: boolean;
   disabled?: boolean;
   validationState?: FormInputValidationState;
+  showClearIcon?: boolean;
 }
 
 export interface GetSelectableOptionPropsReturns<TData extends AutoCompleteExtraData> {
@@ -105,6 +108,10 @@ export interface GetSelectedOptionPropsReturns {
   removeValue: (optionIndex: number) => void;
 }
 
+export interface GetOptionsContainerPropsReturns {
+  ref: (element: HTMLDivElement) => void;
+}
+
 export interface AutoCompleteStore<TData extends AutoCompleteExtraData> {
   disabled: boolean;
   inputValue: string;
@@ -113,6 +120,7 @@ export interface AutoCompleteStore<TData extends AutoCompleteExtraData> {
   focusedOptionIndex?: number;
   focusedOption?: AutoCompleteOption<TData>;
   inputRef?: HTMLInputElement;
+  optionsContainerRef?: HTMLDivElement;
   keepFocusOnBlur: boolean;
   isLoadingAsyncOptions: boolean;
   asyncOptionsState: AsyncOptionsState;
@@ -333,14 +341,14 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
     }
   };
 
-  const clearSelection = () => {
+  const clearSelection = (optionAfterClear?: boolean) => {
     if (!props.isMulti) {
       props.setSelected([]);
     }
 
     setAutoCompleteStore(
       produce((store) => {
-        store.isOpen = getDefaultIsOpen();
+        store.isOpen = optionAfterClear !== undefined ? optionAfterClear : getDefaultIsOpen();
         store.inputValue = '';
         store.focusedOption = undefined;
         store.focusedOptionIndex = undefined;
@@ -427,17 +435,35 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
         break;
       }
 
-      case Key.ARROW_DOWN:
+      case Key.ARROW_DOWN: {
         // this should make the down arrow start with the first item
         setFocusedOption((autoCompleteStore.focusedOptionIndex ?? -1) + 1);
 
-        break;
+        const elementToScrollTo = autoCompleteStore.optionsContainerRef?.querySelector(
+          `[data-auto-complete-value="${autoCompleteStore.focusedOption?.value}"]`,
+        ) as HTMLElement;
 
-      case Key.ARROW_UP:
+        if (elementToScrollTo) {
+          domUtils.scrollToElement(elementToScrollTo);
+        }
+
+        break;
+      }
+
+      case Key.ARROW_UP: {
         // this should make the up arrow start with the last item
         setFocusedOption((autoCompleteStore.focusedOptionIndex ?? autoCompleteStore.displayOptions.length) - 1);
 
+        const elementToScrollTo = autoCompleteStore.optionsContainerRef?.querySelector(
+          `[data-auto-complete-value="${autoCompleteStore.focusedOption?.value}"]`,
+        ) as HTMLElement;
+
+        if (elementToScrollTo) {
+          domUtils.scrollToElement(elementToScrollTo);
+        }
+
         break;
+      }
 
       case Key.TAB:
       case Key.ENTER: {
@@ -526,6 +552,14 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
     setAutoCompleteStore(
       produce((store) => {
         store.inputRef = element;
+      }),
+    );
+  };
+
+  const optionsContainerRef = (element: HTMLDivElement) => {
+    setAutoCompleteStore(
+      produce((store) => {
+        store.optionsContainerRef = element;
       }),
     );
   };
@@ -630,6 +664,32 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
     };
   };
 
+  const getOptionsContainerProps = (): GetOptionsContainerPropsReturns => {
+    return {
+      ref: optionsContainerRef,
+    };
+  };
+
+  // handle making sure if the selected value is in the options list when opening, we scroll to it
+  createEffect(() => {
+    if (!autoCompleteStore.isOpen || !autoCompleteStore.optionsContainerRef || props.isMulti) {
+      return;
+    }
+
+    const values = getSelectedValues();
+
+    if (values.length === 0) {
+      return;
+    }
+
+    const elementToScrollTo = autoCompleteStore.optionsContainerRef?.querySelector(
+      `[data-auto-complete-value="${values[0]}"]`,
+    ) as HTMLElement;
+
+    domUtils.scrollToElement(elementToScrollTo);
+  });
+
+  // handle the request of async options
   createEffect(() => {
     if (!props.getOptionsAsync) {
       return;
@@ -698,6 +758,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
     getInputProps,
     getSelectionOptionProps,
     getSelectedOptionProps,
+    getOptionsContainerProps,
   };
 };
 

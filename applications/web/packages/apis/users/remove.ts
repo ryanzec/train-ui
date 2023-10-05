@@ -1,10 +1,10 @@
 import _remove from 'lodash/remove';
 
-import { GetUsersListReturns } from '$/apis/users/get-users';
 import { User, UserIdentifier } from '$/data-models/user';
-import { applicationUtils, GlobalVariable, QueryKey } from '$/utils/application';
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { CreateMutationOptions, queryUtils } from '$/utils/query';
+import { GetUsersListReturns } from '$web/apis/users/get-users';
+import { applicationUtils, GlobalVariable, QueryKey } from '$web/utils/application';
 
 export interface RemoveUserReturns {
   user: User;

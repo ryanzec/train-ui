@@ -46,6 +46,7 @@ const locators = {
   asyncDataBeforeThreshold: '[data-id="auto-complete"] [data-id="async-options-before-threshold"]',
   noOptionsFound: '[data-id="auto-complete"] [data-id*="no-options-found"]',
   inputIconIndicator: '[data-id="auto-complete"] [data-id="input-icon-indicator"]',
+  clearIconTrigger: '[data-id="auto-complete"] [data-id="clear-icon-trigger"]',
   manualSelectedOptions: '[data-id="manual-selected-options"]',
 };
 
@@ -179,8 +180,6 @@ test.describe('auto complete', () => {
         await page.locator(locators.autoCompleteInput).type('t');
         await page.locator(locators.autoCompleteInput).press('Escape');
 
-        // @todo(!!!) need to figure this out
-        // cy.get(selectors.autoCompleteInput).should('not.be.focused');
         await expect(page.locator(locators.autoCompleteOptions), loopErrorContext).toBeHidden();
       }
     });
@@ -198,13 +197,13 @@ test.describe('auto complete', () => {
         await page.locator(locators.autoCompleteInput).type('t');
         await page.locator(locators.autoCompleteInput).press('Escape');
 
+        await expect(page.locator(locators.autoCompleteInput), loopErrorContext).toBeFocused();
         expect(await page.locator(locators.autoCompleteInput).inputValue(), loopErrorContext).toBe('');
 
         await expect(page.locator(locators.autoCompleteOptionsContainer), loopErrorContext).toBeVisible();
         await page.locator(locators.autoCompleteInput).press('Escape');
 
-        // @todo(!!!) need to figure this out
-        // cy.get(selectors.autoCompleteInput).should('not.be.focused');
+        await expect(page.locator(locators.autoCompleteInput), loopErrorContext).not.toBeFocused();
         await expect(page.locator(locators.autoCompleteOptions), loopErrorContext).toBeHidden();
       }
     });
@@ -623,10 +622,10 @@ test.describe('auto complete', () => {
         await page.locator(locators.autoCompleteInput).type('t');
         await page.locator(locators.autoCompleteInput).press('ArrowDown');
         await page.locator(locators.autoCompleteInput).blur();
-        await page.locator(locators.inputIconIndicator).click();
+        await page.locator(locators.clearIconTrigger).click();
 
         await testNoSelectedValue(page, isMultiMode, loopErrorContext);
-        await expect(page.locator(locators.autoCompleteInput), loopErrorContext).toBeFocused();
+        await expect(page.locator(locators.autoCompleteInput), loopErrorContext).not.toBeFocused();
       }
     });
   });
@@ -945,5 +944,11 @@ test.describe('auto complete', () => {
         await expect(page.locator(locators.autoCompleteInput), loopErrorContext).toBeFocused();
       }
     });
+  });
+
+  test.describe('native select replacement', () => {
+    test.fixme('TODO: select value still show in list', async ({ page }) => {});
+
+    test.fixme('TODO: scrolls to the selected option', async ({ page }) => {});
   });
 });

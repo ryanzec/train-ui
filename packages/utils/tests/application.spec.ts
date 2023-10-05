@@ -1,6 +1,6 @@
 import { expect, describe, it } from 'vitest';
 
-import { applicationUtils, GlobalVariable } from '$/utils/application';
+import { applicationUtils, GlobalVariable } from '$web/utils/application';
 
 describe('application utils', () => {
   describe('getGlobalVariable', () => {

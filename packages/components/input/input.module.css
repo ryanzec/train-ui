@@ -5,22 +5,19 @@
   color: var(--input-color);
   background: var(--input-background-color);
   border-radius: var(--input-border-radius);
-  font-size: var(--typography-body-large-font-size);
-  line-height: var(--typography-body-large-line-height);
-  letter-spacing: var(--typography-body-large-letter-spacing);
   border: 1px solid var(--input-border-color);
   padding: var(--input-padding);
 }
 
-.container-focus:not(.container-disabled):not(.container-readonly) .input-container,
-.container:hover:not(.container-disabled):not(.container-readonly) .input-container {
+.container-focus:not(.container-disabled):not(.container-readonly):not(.container-invalid) .input-container,
+.container:hover:not(.container-disabled):not(.container-readonly):not(.container-invalid) .input-container {
   border-color: var(--input-border-color-active);
 }
 
 .input {
-  font-size: var(--typography-body-medium-font-size);
-  line-height: var(--typography-body-medium-line-height);
-  letter-spacing: var(--typography-body-medium-letter-spacing);
+  font-size: var(--typography-base-font-size);
+  line-height: var(--typography-base-line-height);
+  letter-spacing: var(--typography-base-letter-spacing);
   outline: 0;
   background: 0;
   border: 0;
@@ -34,6 +31,10 @@
 
 .container-readonly .input-container {
   background-color: var(--input-background-color-readonly);
+}
+
+.container-invalid .input-container {
+  border-color: var(--input-border-color-error);
 }
 
 .input-container input::placeholder {

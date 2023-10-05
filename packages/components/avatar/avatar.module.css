@@ -7,6 +7,9 @@
   border-radius: var(--avatar-border-radius);
   background-color: var(--avatar-background-color);
   color: var(--avatar-color);
+  font-size: var(--typography-base-bold-font-size);
+  line-height: var(--typography-base-bold-line-height);
+  letter-spacing: var(--typography-base-bold-letter-spacing);
 }
 
 .avatar img {

@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
-import { createEffect, createSignal, For, Match, Show, Switch, untrack } from 'solid-js';
+import nested from 'postcss-nested';
+import { createEffect, createSignal, For, Match, Show, Switch, untrack, Index } from 'solid-js';
 import * as zod from 'zod';
 import { ZodType } from 'zod';
 
@@ -10,21 +11,48 @@ import AutoComplete, {
 } from '$/components/auto-complete';
 import Button from '$/components/button';
 import Checkbox from '$/components/checkbox';
+import DatePicker, {
+  DateFormValue,
+  DatePickerInputValueStore,
+  datePickerUtils,
+  WhichDate,
+} from '$/components/date-picker';
 import FormField from '$/components/form-field';
 import Input from '$/components/input';
 import Label from '$/components/label';
 import Radio from '$/components/radio';
 import SupportingText, { SupportingTextSentiment } from '$/components/supporting-text';
 import Textarea from '$/components/textarea';
+import TimeInput, { timeInputUtils } from '$/components/time-input';
 import { formStoreUtils } from '$/stores/form';
 import { FormInputValidationState } from '$/stores/form/utils';
 import { CommonDataType } from '$/types/generic';
+import { dynamicDataId } from '$/utils/component';
 import { zodUtils } from '$/utils/zod';
 import ExpandableCode from '$sandbox/components/expandable-code';
 
 export default {
   title: 'Stores/Form',
 };
+
+interface DeepNestedStructure {
+  partA: string;
+  partB?: string;
+  nested: NestStructure2[];
+}
+
+interface NestStructure2 {
+  partA: string;
+  partB?: string;
+  partC?: string;
+  partD?: string;
+  partE?: string;
+  partF?: string;
+  partG?: string;
+  partH?: string;
+  partI?: string;
+  partJ?: string;
+}
 
 interface NestStructure {
   partA: string;
@@ -44,7 +72,7 @@ const simpleFormDataSchema = zodUtils.schemaForType<SimpleFormData>()(
 );
 
 export const SetValue = () => {
-  const { form, setValue } = formStoreUtils.createForm<SimpleFormData>({
+  const { form, setValue } = formStoreUtils.createForm<SimpleFormData, zod.ZodRawShape>({
     onSubmit: () => {},
   });
 
@@ -69,7 +97,7 @@ export const SetValue = () => {
 };
 
 export const UsingEffects = () => {
-  const formStore = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createForm<SimpleFormData, zod.ZodRawShape>({
     onSubmit: () => {},
   });
   const [randomValue, setRandomValue] = createSignal('starting random value');
@@ -108,7 +136,7 @@ export const UsingEffects = () => {
 };
 
 export const InitializeWithValues = () => {
-  const { form, clear } = formStoreUtils.createForm<SimpleFormData>({
+  const { form, clear } = formStoreUtils.createForm<SimpleFormData, zod.ZodRawShape>({
     onSubmit: () => {},
     initialValues: {
       title: 'test',
@@ -141,7 +169,7 @@ export const InitializeWithValues = () => {
 };
 
 export const Clear = () => {
-  const { form, clear } = formStoreUtils.createForm<SimpleFormData>({
+  const { form, clear } = formStoreUtils.createForm<SimpleFormData, zod.ZodRawShape>({
     onSubmit: () => {},
     initialValues: {
       title: 'test',
@@ -174,7 +202,7 @@ export const Clear = () => {
 };
 
 export const ResetWithoutInitial = () => {
-  const { form, reset } = formStoreUtils.createForm<SimpleFormData>({
+  const { form, reset } = formStoreUtils.createForm<SimpleFormData, zod.ZodRawShape>({
     onSubmit: () => {},
   });
 
@@ -183,15 +211,15 @@ export const ResetWithoutInitial = () => {
       <form use:form>
         <FormField>
           <Label>Title</Label>
-          <Input type="text" name="title" />
+          <Input type="text" name="title" placeholder="placeholder" />
         </FormField>
         <FormField>
           <Label>Title2</Label>
-          <Input type="text" name="title2" />
+          <Input type="text" name="title2" placeholder="placeholder" />
         </FormField>
         <FormField>
           <Label>Textarea</Label>
-          <Textarea name="textarea" />
+          <Textarea name="textarea" placeholder="placeholder" />
         </FormField>
         <div>
           <Button data-id="submit-button" type="submit">
@@ -207,7 +235,7 @@ export const ResetWithoutInitial = () => {
 };
 
 export const ResetWithInitial = () => {
-  const { form, reset, clear } = formStoreUtils.createForm<SimpleFormData>({
+  const { form, reset, clear } = formStoreUtils.createForm<SimpleFormData, zod.ZodRawShape>({
     onSubmit: () => {},
     initialValues: {
       title: 'test',
@@ -221,15 +249,15 @@ export const ResetWithInitial = () => {
       <form use:form>
         <FormField>
           <Label>Title</Label>
-          <Input type="text" name="title" />
+          <Input type="text" name="title" placeholder="placeholder" />
         </FormField>
         <FormField>
           <Label>Title2</Label>
-          <Input type="text" name="title2" />
+          <Input type="text" name="title2" placeholder="placeholder" />
         </FormField>
         <FormField>
           <Label>Textarea</Label>
-          <Textarea name="textarea" />
+          <Textarea name="textarea" placeholder="placeholder" />
         </FormField>
         <div>
           <Button data-id="submit-button" type="submit">
@@ -248,7 +276,7 @@ export const ResetWithInitial = () => {
 };
 
 export const IsTouched = () => {
-  const { form, reset, clear, isTouched } = formStoreUtils.createForm<SimpleFormData>({
+  const { form, reset, clear, isTouched } = formStoreUtils.createForm<SimpleFormData, zod.ZodRawShape>({
     onSubmit: () => {},
     initialValues: {
       title: 'test',
@@ -286,7 +314,7 @@ export const Events = () => {
   const [clearEventTriggered, setClearEventTriggered] = createSignal(false);
   const [resetEventTriggered, setResetEventTriggered] = createSignal(false);
   const [valueChangedEventTriggered, setValueChangedEventTriggered] = createSignal(false);
-  const { form, reset, clear, errors } = formStoreUtils.createForm<SimpleFormData>({
+  const { form, reset, clear, errors } = formStoreUtils.createForm<SimpleFormData, typeof simpleFormDataSchema.shape>({
     schema: simpleFormDataSchema,
     onSubmit: () => {
       setSubmitTriggered(true);
@@ -316,7 +344,11 @@ export const Events = () => {
             validationState={errors().title?.errors ? FormInputValidationState.INVALID : FormInputValidationState.VALID}
           />
           <Show when={!!errors().title?.errors}>
-            <SupportingText supportingText={errors().title?.errors} sentiment={SupportingTextSentiment.DANGER} />
+            <SupportingText
+              data-id={dynamicDataId.VALIDATION_MESSAGE}
+              supportingText={errors().title?.errors}
+              sentiment={SupportingTextSentiment.DANGER}
+            />
           </Show>
         </FormField>
         <div>
@@ -348,7 +380,7 @@ export const Events = () => {
 };
 
 export const ValidateOnChange = () => {
-  const { form, reset, clear, errors } = formStoreUtils.createForm<SimpleFormData>({
+  const { form, reset, clear, errors } = formStoreUtils.createForm<SimpleFormData, typeof simpleFormDataSchema.shape>({
     schema: simpleFormDataSchema,
     onSubmit: () => {},
   });
@@ -368,7 +400,11 @@ export const ValidateOnChange = () => {
             validationState={errors().title?.errors ? FormInputValidationState.INVALID : FormInputValidationState.VALID}
           />
           <Show when={!!errors().title?.errors}>
-            <SupportingText supportingText={errors().title?.errors} sentiment={SupportingTextSentiment.DANGER} />
+            <SupportingText
+              data-id={dynamicDataId.VALIDATION_MESSAGE}
+              supportingText={errors().title?.errors}
+              sentiment={SupportingTextSentiment.DANGER}
+            />
           </Show>
         </FormField>
         <div>
@@ -388,7 +424,7 @@ export const ValidateOnChange = () => {
 };
 
 export const NoValidateOnChange = () => {
-  const { form, reset, clear, errors } = formStoreUtils.createForm<SimpleFormData>({
+  const { form, reset, clear, errors } = formStoreUtils.createForm<SimpleFormData, typeof simpleFormDataSchema.shape>({
     schema: simpleFormDataSchema,
     validateOnChange: false,
     onSubmit: () => {},
@@ -405,7 +441,11 @@ export const NoValidateOnChange = () => {
             validationState={errors().title?.errors ? FormInputValidationState.INVALID : FormInputValidationState.VALID}
           />
           <Show when={!!errors().title?.errors}>
-            <SupportingText supportingText={errors().title?.errors} sentiment={SupportingTextSentiment.DANGER} />
+            <SupportingText
+              data-id={dynamicDataId.VALIDATION_MESSAGE}
+              supportingText={errors().title?.errors}
+              sentiment={SupportingTextSentiment.DANGER}
+            />
           </Show>
         </FormField>
         <div>
@@ -441,14 +481,23 @@ const simpleArrayFormDataSchema = zodUtils.schemaForType<SimpleArrayFormData>()(
 );
 
 export const ArrayFields = () => {
-  const { form, data, errors, addArrayField, removeArrayField, touchedFields } =
-    formStoreUtils.createForm<SimpleArrayFormData>({
-      onSubmit: () => {},
-      schema: simpleArrayFormDataSchema,
-    });
+  const { form, data, errors, addArrayField, removeArrayField, touchedFields } = formStoreUtils.createForm<
+    SimpleArrayFormData,
+    typeof simpleArrayFormDataSchema.shape
+  >({
+    onSubmit: () => {},
+    schema: simpleArrayFormDataSchema,
+  });
+
+  createEffect(() => {
+    console.log(errors());
+  });
 
   return (
     <div data-id="container">
+      <Button data-id="add-array-field-button" type="button" onclick={() => addArrayField('array', {})}>
+        + Add Array Field
+      </Button>
       <form use:form>
         <For each={data().array}>
           {(arrayField, index) => {
@@ -469,6 +518,7 @@ export const ArrayFields = () => {
                   />
                   <Show when={!!getArrayFieldError().partA?.errors}>
                     <SupportingText
+                      data-id={dynamicDataId.VALIDATION_MESSAGE}
                       supportingText={getArrayFieldError().partA?.errors}
                       sentiment={SupportingTextSentiment.DANGER}
                     />
@@ -487,6 +537,7 @@ export const ArrayFields = () => {
                   />
                   <Show when={!!getArrayFieldError().partB?.errors}>
                     <SupportingText
+                      data-id={dynamicDataId.VALIDATION_MESSAGE}
                       supportingText={getArrayFieldError().partB?.errors}
                       sentiment={SupportingTextSentiment.DANGER}
                     />
@@ -504,12 +555,10 @@ export const ArrayFields = () => {
           }}
         </For>
         <SupportingText
+          data-id={dynamicDataId.VALIDATION_MESSAGE}
           supportingText={errors().array?.errors}
           sentiment={errors().array?.errors ? SupportingTextSentiment.DANGER : undefined}
         />
-        <Button data-id="add-array-field-button" type="button" onclick={() => addArrayField('array')}>
-          + Add Array Field
-        </Button>
         <div>
           <Button data-id="submit-button" type="submit">
             Submit
@@ -518,6 +567,348 @@ export const ArrayFields = () => {
       </form>
       <hr />
       <h1>Debug Tools</h1>
+      <ExpandableCode label="Errors">{JSON.stringify(errors(), null, 2)}</ExpandableCode>
+      <ExpandableCode label="Touched Fields">{JSON.stringify(touchedFields(), null, 2)}</ExpandableCode>
+    </div>
+  );
+};
+
+interface NestedArrayFormData {
+  array: DeepNestedStructure[];
+  object: {
+    test: string;
+  };
+}
+
+const nestedArrayFormDataSchema = zodUtils.schemaForType<NestedArrayFormData>()(
+  zod.object({
+    array: zod
+      .object({
+        partA: zod.string().min(1, 'Required'),
+        partB: zod.string().optional(),
+        nested: zod
+          .object({
+            partA: zod.string().min(1, 'Required'),
+            partB: zod.string().optional(),
+          })
+          .array()
+          .min(1, '1 Required'),
+      })
+      .array()
+      .min(2, '2 Required'),
+    object: zod.object({
+      test: zod.string().min(3, '3 Required'),
+    }),
+  }),
+);
+
+export const NestedArrayFields = () => {
+  const { form, data, errors, addArrayField, removeArrayField, touchedFields } = formStoreUtils.createForm<
+    NestedArrayFormData,
+    typeof nestedArrayFormDataSchema.shape
+  >({
+    onSubmit: () => {},
+    initialValues: { array: [{ partA: 'test', nested: [{ partA: 'test2' }] }] },
+    schema: nestedArrayFormDataSchema,
+  });
+
+  return (
+    <div data-id="container">
+      <Button data-id="add-array-field-button" type="button" onclick={() => addArrayField('array', {})}>
+        + Add Array Field
+      </Button>
+      <form use:form>
+        <Index each={data().array}>
+          {(arrayField, index) => {
+            console.log('should only happen once');
+            const getArrayFieldError = () => errors().array?.[index] ?? {};
+
+            return (
+              <div data-id="array-field-element">
+                <FormField>
+                  <Label>Part A</Label>
+                  <Input
+                    type="text"
+                    name={`array.${index}.partA`}
+                    validationState={
+                      getArrayFieldError().partA?.errors
+                        ? FormInputValidationState.INVALID
+                        : FormInputValidationState.VALID
+                    }
+                  />
+                  <Show when={!!getArrayFieldError().partA?.errors}>
+                    <SupportingText
+                      data-id={dynamicDataId.VALIDATION_MESSAGE}
+                      supportingText={getArrayFieldError().partA?.errors}
+                      sentiment={SupportingTextSentiment.DANGER}
+                    />
+                  </Show>
+                </FormField>
+                <FormField>
+                  <Label>Part B</Label>
+                  <Input
+                    type="text"
+                    name={`array.${index}.partB`}
+                    validationState={
+                      getArrayFieldError().partB?.errors
+                        ? FormInputValidationState.INVALID
+                        : FormInputValidationState.VALID
+                    }
+                  />
+                  <Show when={!!getArrayFieldError().partB?.errors}>
+                    <SupportingText
+                      data-id={dynamicDataId.VALIDATION_MESSAGE}
+                      supportingText={getArrayFieldError().partB?.errors}
+                      sentiment={SupportingTextSentiment.DANGER}
+                    />
+                  </Show>
+                </FormField>
+                <FormField>
+                  <Label>Nested</Label>
+                  <Button
+                    data-id="add-array-field-button"
+                    type="button"
+                    onclick={() => {
+                      for (let i = 0; i < 50; i++) {
+                        addArrayField(`array.${index}.nested`, {});
+                      }
+                    }}
+                  >
+                    + Add Array Field
+                  </Button>
+                  <Index each={arrayField().nested}>
+                    {(arrayField2, index2) => {
+                      const getArrayFieldError2 = () => errors().array?.[index]?.nested?.[index2] ?? {};
+
+                      return (
+                        <div data-id="array-field-element">
+                          <FormField>
+                            <Label>Part A</Label>
+                            <Input
+                              type="text"
+                              name={`array.${index}.nested.${index2}.partA`}
+                              validationState={
+                                getArrayFieldError2().partA?.errors
+                                  ? FormInputValidationState.INVALID
+                                  : FormInputValidationState.VALID
+                              }
+                            />
+                            <Show when={!!getArrayFieldError2().partA?.errors}>
+                              <SupportingText
+                                data-id={dynamicDataId.VALIDATION_MESSAGE}
+                                supportingText={getArrayFieldError2().partA?.errors}
+                                sentiment={SupportingTextSentiment.DANGER}
+                              />
+                            </Show>
+                          </FormField>
+                          <FormField>
+                            <Label>Part B</Label>
+                            <Input
+                              type="text"
+                              name={`array.${index}.nested.${index2}.partB`}
+                              validationState={
+                                getArrayFieldError2().partB?.errors
+                                  ? FormInputValidationState.INVALID
+                                  : FormInputValidationState.VALID
+                              }
+                            />
+                            <Show when={!!getArrayFieldError2().partB?.errors}>
+                              <SupportingText
+                                data-id={dynamicDataId.VALIDATION_MESSAGE}
+                                supportingText={getArrayFieldError2().partB?.errors}
+                                sentiment={SupportingTextSentiment.DANGER}
+                              />
+                            </Show>
+                          </FormField>
+                          <FormField>
+                            <Label>Part A</Label>
+                            <Input
+                              type="text"
+                              name={`array.${index}.nested.${index2}.partC`}
+                              validationState={
+                                getArrayFieldError2().partC?.errors
+                                  ? FormInputValidationState.INVALID
+                                  : FormInputValidationState.VALID
+                              }
+                            />
+                            <Show when={!!getArrayFieldError2().partC?.errors}>
+                              <SupportingText
+                                data-id={dynamicDataId.VALIDATION_MESSAGE}
+                                supportingText={getArrayFieldError2().partC?.errors}
+                                sentiment={SupportingTextSentiment.DANGER}
+                              />
+                            </Show>
+                          </FormField>
+                          <FormField>
+                            <Label>Part A</Label>
+                            <Input
+                              type="text"
+                              name={`array.${index}.nested.${index2}.partD`}
+                              validationState={
+                                getArrayFieldError2().partD?.errors
+                                  ? FormInputValidationState.INVALID
+                                  : FormInputValidationState.VALID
+                              }
+                            />
+                            <Show when={!!getArrayFieldError2().partD?.errors}>
+                              <SupportingText
+                                data-id={dynamicDataId.VALIDATION_MESSAGE}
+                                supportingText={getArrayFieldError2().partD?.errors}
+                                sentiment={SupportingTextSentiment.DANGER}
+                              />
+                            </Show>
+                          </FormField>
+                          <FormField>
+                            <Label>Part A</Label>
+                            <Input
+                              type="text"
+                              name={`array.${index}.nested.${index2}.partE`}
+                              validationState={
+                                getArrayFieldError2().partE?.errors
+                                  ? FormInputValidationState.INVALID
+                                  : FormInputValidationState.VALID
+                              }
+                            />
+                            <Show when={!!getArrayFieldError2().partE?.errors}>
+                              <SupportingText
+                                data-id={dynamicDataId.VALIDATION_MESSAGE}
+                                supportingText={getArrayFieldError2().partE?.errors}
+                                sentiment={SupportingTextSentiment.DANGER}
+                              />
+                            </Show>
+                          </FormField>
+                          <FormField>
+                            <Label>Part A</Label>
+                            <Input
+                              type="text"
+                              name={`array.${index}.nested.${index2}.partF`}
+                              validationState={
+                                getArrayFieldError2().partF?.errors
+                                  ? FormInputValidationState.INVALID
+                                  : FormInputValidationState.VALID
+                              }
+                            />
+                            <Show when={!!getArrayFieldError2().partF?.errors}>
+                              <SupportingText
+                                data-id={dynamicDataId.VALIDATION_MESSAGE}
+                                supportingText={getArrayFieldError2().partF?.errors}
+                                sentiment={SupportingTextSentiment.DANGER}
+                              />
+                            </Show>
+                          </FormField>
+                          <FormField>
+                            <Label>Part A</Label>
+                            <Input
+                              type="text"
+                              name={`array.${index}.nested.${index2}.partG`}
+                              validationState={
+                                getArrayFieldError2().partG?.errors
+                                  ? FormInputValidationState.INVALID
+                                  : FormInputValidationState.VALID
+                              }
+                            />
+                            <Show when={!!getArrayFieldError2().partG?.errors}>
+                              <SupportingText
+                                data-id={dynamicDataId.VALIDATION_MESSAGE}
+                                supportingText={getArrayFieldError2().partG?.errors}
+                                sentiment={SupportingTextSentiment.DANGER}
+                              />
+                            </Show>
+                          </FormField>
+                          <FormField>
+                            <Label>Part A</Label>
+                            <Input
+                              type="text"
+                              name={`array.${index}.nested.${index2}.partH`}
+                              validationState={
+                                getArrayFieldError2().partH?.errors
+                                  ? FormInputValidationState.INVALID
+                                  : FormInputValidationState.VALID
+                              }
+                            />
+                            <Show when={!!getArrayFieldError2().partH?.errors}>
+                              <SupportingText
+                                data-id={dynamicDataId.VALIDATION_MESSAGE}
+                                supportingText={getArrayFieldError2().partH?.errors}
+                                sentiment={SupportingTextSentiment.DANGER}
+                              />
+                            </Show>
+                          </FormField>
+                          <FormField>
+                            <Label>Part A</Label>
+                            <Input
+                              type="text"
+                              name={`array.${index}.nested.${index2}.partI`}
+                              validationState={
+                                getArrayFieldError2().partI?.errors
+                                  ? FormInputValidationState.INVALID
+                                  : FormInputValidationState.VALID
+                              }
+                            />
+                            <Show when={!!getArrayFieldError2().partI?.errors}>
+                              <SupportingText
+                                data-id={dynamicDataId.VALIDATION_MESSAGE}
+                                supportingText={getArrayFieldError2().partI?.errors}
+                                sentiment={SupportingTextSentiment.DANGER}
+                              />
+                            </Show>
+                          </FormField>
+                          <FormField>
+                            <Label>Part A</Label>
+                            <Input
+                              type="text"
+                              name={`array.${index}.nested.${index2}.partJ`}
+                              validationState={
+                                getArrayFieldError2().partJ?.errors
+                                  ? FormInputValidationState.INVALID
+                                  : FormInputValidationState.VALID
+                              }
+                            />
+                            <Show when={!!getArrayFieldError2().partJ?.errors}>
+                              <SupportingText
+                                data-id={dynamicDataId.VALIDATION_MESSAGE}
+                                supportingText={getArrayFieldError2().partJ?.errors}
+                                sentiment={SupportingTextSentiment.DANGER}
+                              />
+                            </Show>
+                          </FormField>
+                          <Button
+                            // @todo(!!!) make danger when implemented
+                            data-id="remove-array-field-button"
+                            onclick={() => removeArrayField(`array.${index}.nested`, index2)}
+                          >
+                            REMOVE
+                          </Button>
+                        </div>
+                      );
+                    }}
+                  </Index>
+                </FormField>
+                <Button
+                  // @todo(!!!) make danger when implemented
+                  data-id="remove-array-field-button"
+                  onclick={() => removeArrayField('array', index)}
+                >
+                  REMOVE
+                </Button>
+              </div>
+            );
+          }}
+        </Index>
+        <SupportingText
+          data-id={dynamicDataId.VALIDATION_MESSAGE}
+          supportingText={errors().array?.errors}
+          sentiment={errors().array?.errors ? SupportingTextSentiment.DANGER : undefined}
+        />
+        <div>
+          <Button data-id="submit-button" type="submit">
+            Submit
+          </Button>
+        </div>
+      </form>
+      <hr />
+      <h1>Debug Tools</h1>
+      <ExpandableCode label="Data">{JSON.stringify(data(), null, 2)}</ExpandableCode>
       <ExpandableCode label="Errors">{JSON.stringify(errors(), null, 2)}</ExpandableCode>
       <ExpandableCode label="Touched Fields">{JSON.stringify(touchedFields(), null, 2)}</ExpandableCode>
     </div>
@@ -545,6 +936,9 @@ enum RandomFormFieldType {
   CHECKBOX_TOGGLE = 'checkbox-toggle',
   SINGLE_RADIO = 'single-radio',
   TEXTAREA = 'textarea',
+  DATE = 'date',
+  DATE_RANGE = 'date-range',
+  TIME_INPUT = 'time-input',
   ARRAY = 'array',
 }
 
@@ -601,6 +995,30 @@ const possibleRandomFields: RandomFormField[] = [
     validation: zod.string().min(1, 'Required'),
   },
   {
+    name: 'date',
+    type: RandomFormFieldType.DATE,
+    // @todo(!!!) date specific validation
+    validation: zod.custom((value) => datePickerUtils.isValidDate(value as DateFormValue), {
+      message: 'must select a date',
+    }),
+  },
+  {
+    name: 'date-range',
+    type: RandomFormFieldType.DATE_RANGE,
+    // @todo(!!!) date specific validation
+    validation: zod.custom((value) => datePickerUtils.isValidDateRange(value as DateFormValue), {
+      message: 'must select a date',
+    }),
+  },
+  {
+    name: 'time-input',
+    type: RandomFormFieldType.TIME_INPUT,
+    // @todo(!!!) date specific validation
+    validation: zod.custom((value) => timeInputUtils.isValidTime(value as string), {
+      message: 'must select a time',
+    }),
+  },
+  {
     name: 'array',
     type: RandomFormFieldType.ARRAY,
     validation: zod
@@ -621,7 +1039,7 @@ const radioValueNo = 'no';
 const radioValueMaybe = 'maybe';
 
 export const DynamicFormElements = () => {
-  const formStore = formStoreUtils.createForm<DynamicFormData>({
+  const formStore = formStoreUtils.createForm<DynamicFormData, typeof dynamicFormDataSchema.shape>({
     schema: dynamicFormDataSchema,
     onSubmit: (values) => {
       console.log(values);
@@ -629,6 +1047,7 @@ export const DynamicFormElements = () => {
   });
   const [addDefaultValue, setAddDefaultValue] = createSignal(true);
   const [autoCompleteValues, setAutoCompleteValues] = createSignal<Record<string, AutoCompleteValueStore>>({});
+  const [datePickerValues, setDatePickerValues] = createSignal<Record<string, DatePickerInputValueStore>>();
   const [randomInputs, setRandomInputs] = createSignal<RandomFormField[]>([]);
 
   const addRandomField = (randomField: RandomFormField) => {
@@ -639,6 +1058,13 @@ export const DynamicFormElements = () => {
       setAutoCompleteValues({
         ...autoCompleteValues(),
         [randomFieldName]: autoCompleteUtils.createAutoCompleteValue(),
+      });
+    }
+
+    if (randomField.type === RandomFormFieldType.DATE || randomField.type === RandomFormFieldType.DATE_RANGE) {
+      setDatePickerValues({
+        ...datePickerValues(),
+        [randomFieldName]: datePickerUtils.createDatePickerInputValue(),
       });
     }
 
@@ -682,7 +1108,7 @@ export const DynamicFormElements = () => {
 
   return (
     <div data-id="container">
-      <div>validation state separate from validation messages: {JSON.stringify(formStore.isValid())}</div>
+      {/*<div>validation state separate from validation messages: {JSON.stringify(formStore.isValid())}</div>*/}
       <Checkbox
         labelElement="add default value"
         name="addDefaultValue"
@@ -711,6 +1137,7 @@ export const DynamicFormElements = () => {
           />
           <Show when={!!formStore.errors().title?.errors}>
             <SupportingText
+              data-id={dynamicDataId.VALIDATION_MESSAGE}
               supportingText={formStore.errors().title?.errors}
               sentiment={SupportingTextSentiment.DANGER}
             />
@@ -729,10 +1156,20 @@ export const DynamicFormElements = () => {
                   <Label>{input.name}</Label>
                   <Switch>
                     <Match when={input.type === RandomFormFieldType.STRING}>
-                      <Input type="text" name={input.name} validationState={getValidationState()} />
+                      <Input
+                        type="text"
+                        name={input.name}
+                        validationState={getValidationState()}
+                        placeholder="placeholder"
+                      />
                     </Match>
                     <Match when={input.type === RandomFormFieldType.NUMBER}>
-                      <Input type="number" name={input.name} validationState={getValidationState()} />
+                      <Input
+                        type="number"
+                        name={input.name}
+                        validationState={getValidationState()}
+                        placeholder="placeholder"
+                      />
                     </Match>
                     <Match when={input.type === RandomFormFieldType.CHECKBOX}>
                       <Checkbox.Group validationState={getValidationState()}>
@@ -773,7 +1210,40 @@ export const DynamicFormElements = () => {
                       />
                     </Match>
                     <Match when={input.type === RandomFormFieldType.TEXTAREA}>
-                      <Textarea name={input.name} validationState={getValidationState()} />
+                      <Textarea name={input.name} validationState={getValidationState()} placeholder="placeholder" />
+                    </Match>
+                    <Match when={input.type === RandomFormFieldType.DATE}>
+                      <DatePicker.Input
+                        includeTime
+                        name={input.name}
+                        validationState={getValidationState()}
+                        placeholder="placeholder"
+                        onSelectDate={(date?: Date, which?: WhichDate) => {
+                          datePickerValues()?.[input.name]?.setDate(date, which);
+
+                          formStore.setValue(input.name, datePickerValues()?.[input.name]?.getFormValue());
+                        }}
+                      />
+                    </Match>
+                    <Match when={input.type === RandomFormFieldType.DATE_RANGE}>
+                      <DatePicker.Input
+                        isRange
+                        name={input.name}
+                        validationState={getValidationState()}
+                        placeholder="placeholder"
+                        onSelectDate={(date?: Date, which?: WhichDate) => {
+                          datePickerValues()?.[input.name]?.setDate(date, which);
+
+                          // we don't want to mark as touched in the case and setting 1 date in the range would
+                          // always result in a validation error
+                          formStore.setValue(input.name, datePickerValues()?.[input.name]?.getFormValue(), {
+                            markAsTouched: false,
+                          });
+                        }}
+                      />
+                    </Match>
+                    <Match when={input.type === RandomFormFieldType.TIME_INPUT}>
+                      <TimeInput name={input.name} validationState={getValidationState()} />
                     </Match>
                     <Match when={input.type === RandomFormFieldType.ARRAY}>
                       <For each={formStore.data()[input.name] as NestStructure[]}>
@@ -787,6 +1257,7 @@ export const DynamicFormElements = () => {
                                 <Input
                                   type="text"
                                   name={`${input.name}.${index()}.partA`}
+                                  placeholder="placeholder"
                                   validationState={
                                     getArrayFieldErrors().partA?.errors
                                       ? FormInputValidationState.INVALID
@@ -795,6 +1266,7 @@ export const DynamicFormElements = () => {
                                 />
                                 <Show when={!!getArrayFieldErrors().partA?.errors}>
                                   <SupportingText
+                                    data-id={dynamicDataId.VALIDATION_MESSAGE}
                                     supportingText={getArrayFieldErrors().partA?.errors}
                                     sentiment={SupportingTextSentiment.DANGER}
                                   />
@@ -805,6 +1277,7 @@ export const DynamicFormElements = () => {
                                 <Input
                                   type="text"
                                   name={`${input.name}.${index()}.partB`}
+                                  placeholder="placeholder"
                                   validationState={
                                     getArrayFieldErrors().partB?.errors
                                       ? FormInputValidationState.INVALID
@@ -813,6 +1286,7 @@ export const DynamicFormElements = () => {
                                 />
                                 <Show when={!!getArrayFieldErrors().partB?.errors}>
                                   <SupportingText
+                                    data-id={dynamicDataId.VALIDATION_MESSAGE}
                                     supportingText={getArrayFieldErrors().partB?.errors}
                                     sentiment={SupportingTextSentiment.DANGER}
                                   />
@@ -832,7 +1306,7 @@ export const DynamicFormElements = () => {
                       <Button
                         data-id="add-array-field-button"
                         type="button"
-                        onclick={() => formStore.addArrayField(input.name)}
+                        onclick={() => formStore.addArrayField(input.name, {})}
                       >
                         + Add Array Field
                       </Button>
@@ -859,10 +1333,12 @@ export const DynamicFormElements = () => {
                         selectedComponent={AutoComplete.SelectedOption}
                         selectableComponent={AutoComplete.SelectableOption}
                         validationState={getValidationState()}
+                        placeholder="placeholder"
                       />
                     </Match>
                   </Switch>
                   <SupportingText
+                    data-id={dynamicDataId.VALIDATION_MESSAGE}
                     supportingText={formStore.errors()[input.name]?.errors}
                     sentiment={formStore.errors()[input.name]?.errors ? SupportingTextSentiment.DANGER : undefined}
                   />

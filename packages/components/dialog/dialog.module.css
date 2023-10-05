@@ -5,6 +5,7 @@
 	background-color: var(--dialog-background-color);
 	border-radius: var(--dialog-border-radius);
 	z-index: var(--z-index-dialog);
+	color: var(--dialog-color);
 
 	/* centering */
 	top: 50%;
@@ -15,9 +16,9 @@
 .dialog-header {
 	display: flex;
 	align-items: center;
-	font-size: var(--typography-headline-large-font-size);
-	line-height: var(--typography-headline-large-line-height);
-	letter-spacing: var(--typography-headline-large-letter-spacing);
+	font-size: var(--typography-large1-bold-font-size);
+	line-height: var(--typography-large1-bold-line-height);
+	letter-spacing: var(--typography-large1-bold-letter-spacing);
 	padding: var(--dialog-padding-vertical-header-footer) var(--dialog-padding-horizontal);
 	border-bottom: 1px solid var(--dialog-border-color);
 }

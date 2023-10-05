@@ -1,6 +1,7 @@
 import { createRoot, createSignal, batch } from 'solid-js';
 
-import { applicationUtils, GlobalVariable } from '../../../../packages/utils/application';
+import { applicationUtils, GlobalVariable } from '$web/utils/application';
+
 import { HttpMethod, httpUtils } from '../../../../packages/utils/http';
 import { localStorageCacheUtils } from '../../../../packages/utils/local-storage-cache';
 import { ThemeName } from '../../../../packages/utils/styles';

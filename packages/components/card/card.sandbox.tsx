@@ -79,6 +79,19 @@ export const Default = () => {
       >
         content
       </Card>
+      <Card
+        class={styles.card}
+        headerText="No content"
+        headerPreItem={<Icon icon="home" size={IconSize.LARGE2} />}
+        headerPostItem={
+          <Button.IconButton
+            variant={ButtonVariant.TEXT}
+            class={styles.closeHeaderTrigger}
+            onclick={() => console.log('post item clicked')}
+            icon="close"
+          />
+        }
+      />
     </div>
   );
 };

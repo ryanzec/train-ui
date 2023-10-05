@@ -1,12 +1,12 @@
 import { produce } from 'immer';
 import findIndex from 'lodash/findIndex';
 
-import { GetUsersListReturns } from '$/apis/users/get-users';
-import { RemoveUserReturns } from '$/apis/users/remove';
 import { User, UserIdentifier } from '$/data-models/user';
-import { applicationUtils, GlobalVariable, QueryKey } from '$/utils/application';
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { CreateMutationOptions, queryUtils } from '$/utils/query';
+import { GetUsersListReturns } from '$web/apis/users/get-users';
+import { RemoveUserReturns } from '$web/apis/users/remove';
+import { applicationUtils, GlobalVariable, QueryKey } from '$web/utils/application';
 
 export interface UpdateUserParams {
   identifier: UserIdentifier;

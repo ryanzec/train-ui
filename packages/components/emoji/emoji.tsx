@@ -14,16 +14,17 @@ interface EmojiJsonData {
   unified: string;
 }
 import styles from '$/components/emoji/emoji.module.css';
-import { EmojiSize, EmojiSpacing } from '$/components/emoji/utils';
+import { EmojiSpacing } from '$/components/emoji/utils';
+import { IconSize } from '$/components/icon';
 
 export interface EmojiProps extends JSX.HTMLAttributes<HTMLSpanElement> {
   emoji: string | string[];
   spacing?: EmojiSpacing;
-  size?: EmojiSize;
+  size?: IconSize;
 }
 
 const Emoji = (passedProps: EmojiProps) => {
-  const [props, restOfProps] = splitProps(mergeProps({ size: EmojiSize.MEDIUM }, passedProps), [
+  const [props, restOfProps] = splitProps(mergeProps({ size: IconSize.BASE }, passedProps), [
     'class',
     'emoji',
     'spacing',
@@ -74,9 +75,11 @@ const Emoji = (passedProps: EmojiProps) => {
       role="img"
       aria-label={emojisToRender().join(' ')}
       class={classnames(props.class, {
-        [styles.sizeMedium]: props.size === EmojiSize.SMALL,
-        [styles.sizeMedium]: props.size === EmojiSize.MEDIUM,
-        [styles.sizeLarge]: props.size === EmojiSize.LARGE,
+        [styles.small1]: props.size === IconSize.SMALL1,
+        [styles.base]: props.size === IconSize.BASE,
+        [styles.large1]: props.size === IconSize.LARGE1,
+        [styles.large2]: props.size === IconSize.LARGE2,
+        [styles.large3]: props.size === IconSize.LARGE3,
         [styles.spacingLeft]: props.spacing === EmojiSpacing.LEFT,
         [styles.spacingRight]: props.spacing === EmojiSpacing.RIGHT,
       })}

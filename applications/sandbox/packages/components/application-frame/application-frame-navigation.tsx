@@ -26,8 +26,9 @@ const ApplicationFrameNavigation = (passedProps: ApplicationFrameNavigationProps
   return (
     <>
       <div data-id="navigation" class={classnames(styles.navigation, props.class)} {...restOfProps}>
-        <Button onClick={onToggleTheme}>Toggle Theme</Button>
-        <ApplicationFrameNavigationItem path="/home">Home</ApplicationFrameNavigationItem>
+        <Button onClick={onToggleTheme} class={styles.toggleThemeTrigger}>
+          Toggle Theme
+        </Button>
         <ApplicationFrameSubNavigation routes={props.routes} />
       </div>
     </>

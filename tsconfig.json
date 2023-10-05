@@ -21,12 +21,14 @@
     "types": ["vite/client"],
     "paths": {
       "$/*": ["./packages/*"],
-      "$sandbox/*": ["./applications/sandbox/packages/*"]
+      "$sandbox/*": ["./applications/sandbox/packages/*"],
+      "$web/*": ["./applications/web/packages/*"]
     }
   },
   "include": [
     "src",
-    "./applications/web/src",
+    "./applications/web/packages",
+    "./applications/sandbox/packages",
     "./applications/api/src",
     "./packages",
   ],

@@ -1,21 +1,25 @@
 .icon {
-  font-size: var(--icon-size-base);
+  font-size: var(--sizes-base);
+}
+
+.small2 {
+  font-size: var(--sizes-small2);
 }
 
 .small1 {
-  font-size: var(--icon-size-small1);
+  font-size: var(--sizes-small1);
 }
 
 .large1 {
-  font-size: var(--icon-size-large1);
+  font-size: var(--sizes-large1);
 }
 
 .large2 {
-  font-size: var(--icon-size-large2);
+  font-size: var(--sizes-large2);
 }
 
 .large3 {
-  font-size: var(--icon-size-large3);
+  font-size: var(--sizes-large3);
 }
 
 .spacing-left {
@@ -24,4 +28,28 @@
 
 .spacing-right {
   margin-right: var(--icon-margin);
+}
+
+.neutral {
+  color: var(--icon-neutral-color);
+}
+
+.brand {
+  color: var(--icon-brand-color);
+}
+
+.success {
+  color: var(--icon-success-color);
+}
+
+.info {
+  color: var(--icon-info-color);
+}
+
+.warning {
+  color: var(--icon-warning-color);
+}
+
+.danger {
+  color: var(--icon-danger-color);
 }

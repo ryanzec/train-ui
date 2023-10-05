@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { JSX, mergeProps, ParentProps, splitProps } from 'solid-js';
+import { JSX, mergeProps, ParentProps, Show, splitProps } from 'solid-js';
 
 import ButtonIcon from '$/components/button/button-icon';
 import styles from '$/components/button/button.module.css';
@@ -12,8 +12,8 @@ export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement>
   sentiment?: ButtonSentiment;
   state?: ButtonState;
   isLoading?: boolean;
-  preIcon?: string;
-  postIcon?: string;
+  preItem?: JSX.Element;
+  postItem?: JSX.Element;
   loadingIconPosition?: ButtonIconPosition;
 }
 
@@ -35,8 +35,8 @@ export const Button = (passedProps: ParentProps<ButtonProps>) => {
       'disabled',
       'class',
       'isLoading',
-      'preIcon',
-      'postIcon',
+      'preItem',
+      'postItem',
       'loadingIconPosition',
       'state',
       'sentiment',
@@ -44,7 +44,8 @@ export const Button = (passedProps: ParentProps<ButtonProps>) => {
   );
 
   const isLoading = () => props.state === ButtonState.IS_LOADING;
-  const hasPreIcon = () => props.preIcon || (isLoading() && props.loadingIconPosition === ButtonIconPosition.PRE);
+  const hasPreItem = () => props.preItem || (isLoading() && props.loadingIconPosition === ButtonIconPosition.PRE);
+  const hasPostItem = () => props.postItem || (isLoading() && props.loadingIconPosition === ButtonIconPosition.POST);
 
   return (
     <button
@@ -54,13 +55,13 @@ export const Button = (passedProps: ParentProps<ButtonProps>) => {
         [styles.outlined]: props.variant === ButtonVariant.OUTLINED,
         [styles.text]: props.variant === ButtonVariant.TEXT,
         [styles.ghost]: props.variant === ButtonVariant.GHOST,
+        [styles.unstyled]: props.variant === ButtonVariant.UNSTYLED,
         [styles.neutral]: props.sentiment === ButtonSentiment.NEUTRAL,
         [styles.brand]: props.sentiment === ButtonSentiment.BRAND,
         [styles.success]: props.sentiment === ButtonSentiment.SUCCESS,
         [styles.info]: props.sentiment === ButtonSentiment.INFO,
         [styles.warning]: props.sentiment === ButtonSentiment.WARNING,
         [styles.danger]: props.sentiment === ButtonSentiment.DANGER,
-        [styles.hasPreIcon]: hasPreIcon(),
         [styles.isLoading]: props.isLoading,
       })}
       disabled={props.disabled || props.isLoading}
@@ -69,25 +70,34 @@ export const Button = (passedProps: ParentProps<ButtonProps>) => {
       {...restOfProps}
     >
       <span class={styles.buttonContent}>
-        {hasPreIcon() && (
-          <ButtonIcon
-            class={styles.preIcon}
-            position={ButtonIconPosition.PRE}
-            isLoading={isLoading()}
-            icon={<Icon icon={props.isLoading ? 'refresh' : props.preIcon ?? 'question_mark'} />}
-          />
+        {hasPreItem() && (
+          <>
+            <Show when={props.isLoading}>
+              <ButtonIcon
+                class={styles.preIcon}
+                position={ButtonIconPosition.PRE}
+                isLoading={isLoading()}
+                icon={<Icon icon="refresh" />}
+              />
+            </Show>
+            <Show when={!props.isLoading}>{props.preItem}</Show>
+          </>
         )}
         <span>{props.children}</span>
-        {(props.postIcon || (isLoading() && props.loadingIconPosition === ButtonIconPosition.POST)) && (
-          <ButtonIcon
-            class={styles.postIcon}
-            position={ButtonIconPosition.POST}
-            isLoading={isLoading()}
-            icon={<Icon icon={props.isLoading ? 'refresh' : props.postIcon ?? 'question_mark'} />}
-          />
+        {hasPostItem() && (
+          <>
+            <Show when={props.isLoading}>
+              <ButtonIcon
+                class={styles.postIcon}
+                position={ButtonIconPosition.POST}
+                isLoading={isLoading()}
+                icon={<Icon icon="refresh" />}
+              />
+            </Show>
+            <Show when={!props.isLoading}>{props.postItem}</Show>
+          </>
         )}
       </span>
-      <div class={styles.buttonUnderlay} />
     </button>
   );
 };

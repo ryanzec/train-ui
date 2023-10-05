@@ -4,7 +4,7 @@ import { JSX, splitProps } from 'solid-js';
 import styles from '$/components/list/list.module.css';
 import { CommonDataAttributes } from '$/types/generic';
 
-export interface ListProps extends JSX.LabelHTMLAttributes<HTMLDivElement>, CommonDataAttributes {}
+export interface ListProps extends JSX.HTMLAttributes<HTMLDivElement>, CommonDataAttributes {}
 
 const List = (passedProps: ListProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['class']);

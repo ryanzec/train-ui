@@ -3,25 +3,25 @@ import { test, expect, Page } from '@playwright/test';
 import { playwrightUtils } from '$/utils/playwright';
 
 const urls = {
-  cachingData: '/stores/query/caching-data',
-  dynamicQueryParameters: '/stores/query/dynamic-query-parameters',
-  getDataWithDelay: '/stores/query/get-data-with-delay',
-  mutationManual: '/stores/query/mutation-manual',
-  mutationQuery: '/stores/query/mutation-query',
-  mutationQueryOptimistic: '/stores/query/mutation-query-optimistic',
-  noInitialFetch: '/stores/query/no-initial-fetch',
+  cachingData: '/utils/query/caching-data',
+  dynamicQueryParameters: '/utils/query/dynamic-query-parameters',
+  getDataWithDelay: '/utils/query/get-data-with-delay',
+  mutationManual: '/utils/query/mutation-manual',
+  mutationQuery: '/utils/query/mutation-query',
+  mutationQueryOptimistic: '/utils/query/mutation-query-optimistic',
+  noInitialFetch: '/utils/query/no-initial-fetch',
 };
 
 const locators = {
-  item: '[data-id="sandbox-area"] [data-id="item"]',
-  loadingIndicator: '[data-id="sandbox-area"] [data-id="loading-indicator"]',
-  initiallyFetchedIndicator: '[data-id="sandbox-area"] [data-id="initially-fetched-indicator"]',
-  refetchDataTrigger: '[data-id="sandbox-area"] [data-id="refetch-data-trigger"]',
-  addItemTrigger: '[data-id="sandbox-area"] [data-id="add-item-trigger"]',
-  filterInput: '[data-id="sandbox-area"] [data-id="filter-input"]',
-  createInput: '[data-id="sandbox-area"] [data-id="create-input"]',
-  createFailedIndicator: '[data-id="sandbox-area"] [data-id="create-failed-indicator"]',
-  creatingIndicator: '[data-id="sandbox-area"] [data-id="creating-indicator"]',
+  item: '[data-id="item"]',
+  loadingIndicator: '[data-id="loading-indicator"]',
+  initiallyFetchedIndicator: '[data-id="initially-fetched-indicator"]',
+  refetchDataTrigger: '[data-id="refetch-data-trigger"]',
+  addItemTrigger: '[data-id="add-item-trigger"]',
+  filterInput: '[data-id="filter-input"]',
+  createInput: '[data-id="create-input"]',
+  createFailedIndicator: '[data-id="create-failed-indicator"]',
+  creatingIndicator: '[data-id="creating-indicator"]',
 };
 
 test.describe('query', () => {

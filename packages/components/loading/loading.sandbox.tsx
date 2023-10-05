@@ -1,3 +1,4 @@
+import { IconSize } from '$/components/icon';
 import Loading from '$/components/loading';
 import styles from '$/components/loading/loading.sandbox.module.css';
 
@@ -8,7 +9,11 @@ export default {
 export const General = () => {
   return (
     <div>
-      <Loading />
+      <Loading iconSize={IconSize.SMALL1} />
+      <Loading iconSize={IconSize.BASE} />
+      <Loading iconSize={IconSize.LARGE1} />
+      <Loading iconSize={IconSize.LARGE2} />
+      <Loading iconSize={IconSize.LARGE3} />
     </div>
   );
 };

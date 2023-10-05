@@ -1,3 +1,5 @@
+import getScrollParent from 'scrollparent';
+
 const inputNodeNames = ['INPUT', 'SELECT', 'TEXTAREA'];
 
 export enum InputType {
@@ -74,9 +76,70 @@ const getFormInputElementsRecursive = (element: Element) => {
   return formInputs;
 };
 
+export enum ViewCutoffLocation {
+  NONE = 'none',
+  TOP = 'top',
+  BOTTOM = 'bottom',
+}
+
+const elementInView = (parent: HTMLElement, element: HTMLElement, completelyViewable = true): ViewCutoffLocation => {
+  const scrollAreaTop = parent.scrollTop;
+  const scrollAreaBottom = scrollAreaTop + parent.clientHeight;
+  const elementTop = element.offsetTop;
+  const elementBottom = elementTop + element.clientHeight;
+
+  if (completelyViewable) {
+    if (scrollAreaTop > elementTop) {
+      return ViewCutoffLocation.BOTTOM;
+    }
+
+    if (scrollAreaBottom < elementBottom) {
+      return ViewCutoffLocation.TOP;
+    }
+  } else {
+    if (elementTop >= scrollAreaBottom) {
+      return ViewCutoffLocation.BOTTOM;
+    }
+
+    if (elementBottom <= scrollAreaTop) {
+      return ViewCutoffLocation.TOP;
+    }
+  }
+
+  return ViewCutoffLocation.NONE;
+};
+
+const scrollToElement = (elementToScrollTo: HTMLElement) => {
+  if (!elementToScrollTo) {
+    return;
+  }
+
+  const scrollParentElement = getScrollParent(elementToScrollTo);
+
+  if (!scrollParentElement) {
+    return;
+  }
+
+  const viewCutoffPosition = elementInView(scrollParentElement, elementToScrollTo);
+
+  if (viewCutoffPosition === ViewCutoffLocation.NONE) {
+    return;
+  }
+
+  let top = elementToScrollTo.offsetTop;
+
+  if (viewCutoffPosition === ViewCutoffLocation.TOP) {
+    top -= scrollParentElement.getBoundingClientRect().height - elementToScrollTo.clientHeight;
+  }
+
+  scrollParentElement.scrollTo({ top, behavior: 'auto' });
+};
+
 export const domUtils = {
   isFormInputElement,
   isElement,
   getInputType,
   getFormInputElementsRecursive,
+  elementInView,
+  scrollToElement,
 };

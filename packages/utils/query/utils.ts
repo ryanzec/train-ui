@@ -13,7 +13,7 @@ import {
 import { CommonDataType } from '$/types/generic';
 import { cryptoUtils } from '$/utils/crypto';
 
-type TrackedMutators = Record<string, Setter<CommonDataType>>;
+type TrackedMutators = Record<string, Setter<CommonDataType | undefined>>;
 type TrackedRefetchers = Record<string, ResourceRefetcher<CommonDataType>>;
 type TrackedResources = Record<string, Resource<CommonDataType>>;
 type CachedData = Record<
@@ -131,7 +131,7 @@ export const createMutation = <TMutateInput, TMutateResult>(
   return { mutate, state, result };
 };
 
-export const addTrackedMutator = (queryData: QueryData, key: string, setter: Setter<CommonDataType>) => {
+export const addTrackedMutator = (queryData: QueryData, key: string, setter: Setter<CommonDataType | undefined>) => {
   if (queryData.trackedMutators[key]) {
     return;
   }
@@ -362,7 +362,7 @@ export const createTrackedQuery = <TResource>(
   // we only want the cache data effect to run when the state changes, other changes to the resource are not important
   trackForCachingData(() => resource.state);
 
-  addTrackedMutator(queryData, primaryKey, mutate);
+  addTrackedMutator(queryData, primaryKey, mutate as Setter<CommonDataType | undefined>);
   addTrackedRefetcher(queryData, primaryKey, refetch);
   addTrackedResource(queryData, primaryKey, resource);
 

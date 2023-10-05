@@ -12,6 +12,14 @@
 	align-items: center;
 }
 
+.pre-item {
+	margin-right: var(--callout-margin-pre-post-item);
+}
+
+.post-item {
+	margin-left: auto;
+}
+
 /* neutral */
 .neutral {
 	border-color: var(--callout-neutral-border-color);

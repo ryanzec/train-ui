@@ -11,8 +11,8 @@
 	background-color: var(--input-background-color);
 }
 
-.textarea:focus:not([disabled]),
-.textarea:hover:not([disabled]) {
+.textarea:focus:not([disabled]):not([readonly]),
+.textarea:hover:not([disabled]):not([readonly]) {
 	border-color: var(--input-border-color-active);
 }
 

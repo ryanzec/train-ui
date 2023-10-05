@@ -4,10 +4,10 @@ import { createSignal, For, JSX, onCleanup, onMount, Show } from 'solid-js';
 import Button from '$/components/button/button';
 import Callout, { CalloutSentiment, CalloutStrength } from '$/components/callout';
 import Input from '$/components/input';
-import { applicationUtils, GlobalVariable } from '$/utils/application';
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { CreateMutationOptions, CreateTrackedQueryOptions, MutationState, queryUtils } from '$/utils/query/utils';
 import ExpandableCode from '$sandbox/components/expandable-code';
+import { applicationUtils, GlobalVariable } from '$web/utils/application';
 
 import { apiMocker } from '../../../applications/sandbox/api-mock';
 

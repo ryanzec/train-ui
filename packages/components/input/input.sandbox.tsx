@@ -78,8 +78,19 @@ export const Default = () => {
         <Input id="test13" placeholder="Just a placeholder" preItem="$" preItemIsInline />
       </FormField>
       <FormField>
-        <Label for="test13">Readonly</Label>
-        <Input id="test13" placeholder="Just a placeholder" preItem="$" preItemIsInline readonly />
+        <Label for="test14">Readonly</Label>
+        <Input id="test14" placeholder="Just a placeholder" preItem="$" preItemIsInline readonly />
+      </FormField>
+      <FormField>
+        <Label for="test15">Readonly (with normal display)</Label>
+        <Input
+          id="test15"
+          placeholder="Just a placeholder"
+          preItem="$"
+          preItemIsInline
+          readonly
+          includeReadonlyStyles={false}
+        />
       </FormField>
     </>
   );

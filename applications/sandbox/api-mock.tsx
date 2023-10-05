@@ -1,8 +1,10 @@
-import { setupWorker, rest, RestRequest } from 'msw';
+import { rest, RestRequest, setupWorker } from 'msw';
+
+import { applicationUtils, GlobalVariable } from '$web/utils/application';
 
 import { mockData } from '../api/mock-data';
 
-const BASE_URL = import.meta.env.VITE_ALLMA_BASE_API_URL;
+const BASE_URL = applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL);
 
 const ERROR_REGEX = /mockerror\|(.*)\|/;
 
@@ -44,27 +46,24 @@ const restHandlers = [
 
     const filter = request.url.searchParams.get('filter');
 
-    const data = [
-      {
-        id: '1',
-      },
-      {
-        id: '2',
-      },
-    ];
+    const data = {
+      query: [
+        {
+          id: '1',
+        },
+        {
+          id: '2',
+        },
+      ],
+    };
 
     if (filter) {
-      data.push({
+      data.query.push({
         id: `filter given: ${filter}`,
       });
     }
 
-    return response(
-      context.status(200),
-      context.json({
-        query: data,
-      }),
-    );
+    return response(context.status(200), context.json(data));
   }),
 
   rest.post(`${BASE_URL}/sandbox/query*`, async (request, response, context) => {
@@ -77,14 +76,122 @@ const restHandlers = [
       return response(context.status(500), context.json({}));
     }
 
-    return response(
-      context.status(200),
-      context.json({
-        query: {
-          id: requestPayload.id,
-        },
-      }),
-    );
+    const data = {
+      query: {
+        id: requestPayload.id,
+      },
+    };
+
+    return response(context.status(200), context.json(data));
+  }),
+
+  // application specific request
+  rest.post(`${BASE_URL}/api/authenticate`, async (request, response, context) => {
+    await delayRequest(request);
+
+    const forcedError = getForcedError(request.url.toString());
+
+    if (forcedError) {
+      return response(context.status(500), context.json({}));
+    }
+
+    const data = {
+      authenticationToken: mockData.authenticate.tokens.default,
+    };
+
+    return response(context.status(200), context.json(data));
+  }),
+
+  rest.get(`${BASE_URL}/api/authenticate/*`, async (request, response, context) => {
+    await delayRequest(request);
+
+    const forcedError = getForcedError(request.url.toString());
+
+    if (forcedError) {
+      return response(context.status(500), context.json({}));
+    }
+
+    const data = {};
+
+    return response(context.status(200), context.json(data));
+  }),
+
+  rest.get(`${BASE_URL}/api/health`, async (request, response, context) => {
+    await delayRequest(request);
+
+    const forcedError = getForcedError(request.url.toString());
+
+    if (forcedError) {
+      return response(context.status(500), context.json({}));
+    }
+
+    const data = {};
+
+    return response(context.status(200), context.json(data));
+  }),
+
+  rest.get(`${BASE_URL}/api/users`, async (request, response, context) => {
+    await delayRequest(request);
+
+    const forcedError = getForcedError(request.url.toString());
+
+    if (forcedError) {
+      return response(context.status(500), context.json({}));
+    }
+
+    const data = {
+      users: mockData.users.defaultList,
+    };
+
+    return response(context.status(200), context.json(data));
+  }),
+
+  rest.post(`${BASE_URL}/api/users/*`, async (request, response, context) => {
+    await delayRequest(request);
+
+    const forcedError = getForcedError(request.url.toString());
+
+    if (forcedError) {
+      return response(context.status(500), context.json({}));
+    }
+
+    const data = {
+      user: mockData.users.defaultCreate,
+    };
+
+    return response(context.status(200), context.json(data));
+  }),
+
+  rest.put(`${BASE_URL}/api/users/*`, async (request, response, context) => {
+    await delayRequest(request);
+
+    const forcedError = getForcedError(request.url.toString());
+
+    if (forcedError) {
+      return response(context.status(500), context.json({}));
+    }
+
+    const data = {
+      user: mockData.users.defaultUpdate,
+    };
+
+    return response(context.status(200), context.json(data));
+  }),
+
+  rest.delete(`${BASE_URL}/api/users/*`, async (request, response, context) => {
+    await delayRequest(request);
+
+    const forcedError = getForcedError(request.url.toString());
+
+    if (forcedError) {
+      return response(context.status(500), context.json({}));
+    }
+
+    const data = {
+      user: mockData.users.defaultRemove,
+    };
+
+    return response(context.status(200), context.json(data));
   }),
 ];
 

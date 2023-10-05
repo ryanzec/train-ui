@@ -4,7 +4,7 @@ import { devices } from '@playwright/test';
 
 import { viteUtils } from './vite-utils';
 
-const DEV_SERVER_URL = 'http://localhost:6006/';
+const DEV_SERVER_URL = 'http://localhost:6006';
 
 /**
  * See https://playwright.dev/docs/test-configuration.
@@ -33,16 +33,18 @@ const config: PlaywrightTestConfig = {
     // @ts-expect-error
     ctViteConfig: viteUtils.baseConfiguration,
   },
-  webServer: {
-    // since component testing does not seem to work as it has weird error in the way code is imported, we are
-    // using storybook to be able to do component level like tests
-    command: 'npm run sandbox:dev',
-    timeout: 120 * 1000,
-    reuseExistingServer: !process.env.CI,
+  webServer: [
+    {
+      // since component testing does not seem to work as it has weird error in the way code is imported, we are
+      // using storybook to be able to do component level like tests
+      command: 'npm run sandbox:dev',
+      timeout: 120 * 1000,
+      reuseExistingServer: !process.env.CI,
 
-    // using url instead of port as it seems more reliable to assuring the dev server is running
-    url: DEV_SERVER_URL,
-  },
+      // using url instead of port as it seems more reliable to assuring the dev server is running
+      url: DEV_SERVER_URL,
+    },
+  ],
 
   /* Configure projects for major browsers */
   projects: [

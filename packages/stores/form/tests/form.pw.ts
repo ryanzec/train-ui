@@ -3,17 +3,17 @@ import { test, expect } from '@playwright/test';
 import { playwrightUtils } from '$/utils/playwright';
 
 const urls = {
-  arrayFields: '/components/form/array-fields',
-  clear: '/components/form/clear',
-  dynamicFormElements: '/components/form/dynamic-form-elements',
-  isTouched: '/components/form/is-touched',
-  resetWithoutInitial: '/components/form/reset-without-initial',
-  resetWithInitial: '/components/form/reset-with-initial',
-  setValue: '/components/form/set-value',
-  initializeWithValues: '/components/form/initialize-with-values',
-  events: '/components/form/events',
-  validateOnChange: '/components/form/validate-on-change',
-  noValidateOnChange: '/components/form/no-validate-on-change',
+  arrayFields: '/stores/form/array-fields',
+  clear: '/stores/form/clear',
+  dynamicFormElements: '/stores/form/dynamic-form-elements',
+  isTouched: '/stores/form/is-touched',
+  resetWithoutInitial: '/stores/form/reset-without-initial',
+  resetWithInitial: '/stores/form/reset-with-initial',
+  setValue: '/stores/form/set-value',
+  initializeWithValues: '/stores/form/initialize-with-values',
+  events: '/stores/form/events',
+  validateOnChange: '/stores/form/validate-on-change',
+  noValidateOnChange: '/stores/form/no-validate-on-change',
 };
 
 const locators = {
@@ -270,7 +270,7 @@ test.describe('form store', () => {
       await page.locator(locators.input).nth(0).type('t');
       await page.locator(locators.input).nth(0).press('Backspace');
 
-      await expect(page.locator(locators.validationMessage)).toHaveCount(0);
+      await expect(page.locator(locators.validationMessage)).toHaveCount(1);
     });
   });
 

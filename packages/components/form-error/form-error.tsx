@@ -41,7 +41,7 @@ const FormError = (passedProps: FormErrorProps) => {
 
     setHasShownFormError(true);
 
-    const desiredY = formErrorRef.getBoundingClientRect().top + formErrorRef.offsetTop + props.offset * -1;
+    const desiredY = formErrorRef.offsetTop + props.offset * -1;
 
     scrollParentElement.scrollTo({ top: desiredY, behavior: props.behavior });
   });

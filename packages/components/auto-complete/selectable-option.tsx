@@ -8,10 +8,11 @@ const SelectableOption = <TData extends AutoCompleteExtraData>(props: AutoComple
   return (
     <List.Item
       data-id={`option${props.isFocusedOption(props.optionIndex) ? ' highlighted-option' : ''}`}
+      data-auto-complete-value={props.option.value}
       class={classnames(styles.selectableOption, styles.listOption)}
       isSelected={props.isFocusedOption(props.optionIndex)}
-      onMouseEnter={() => props.onMouseEnterOption(props.optionIndex)}
-      onMouseLeave={() => props.onMouseLeaveOption()}
+      onMouseMove={() => props.onMouseEnterOption(props.optionIndex)}
+      // onMouseLeave={() => props.onMouseLeaveOption()}
       onMouseDown={() => props.onMouseDownOption(props.option)}
       role="button"
       tabIndex={-1}

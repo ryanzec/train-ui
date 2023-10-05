@@ -4,6 +4,10 @@ export enum ButtonVariant {
   OUTLINED = 'outlined',
   TEXT = 'text',
   GHOST = 'ghost',
+
+  // this is unused when you need text clickable as it avoid the whole aria issue when you attempt to make a
+  // div / span with a on click event
+  UNSTYLED = 'unstyled',
 }
 
 export enum ButtonIconPosition {

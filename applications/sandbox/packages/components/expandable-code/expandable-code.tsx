@@ -7,7 +7,7 @@ interface ExpandableCodeProps {
 }
 
 const ExpandableCode = (props: ParentProps<ExpandableCodeProps>) => {
-  const [toggle, setToggle] = createSignal(false);
+  const [toggle, setToggle] = createSignal(true);
 
   return (
     <div>

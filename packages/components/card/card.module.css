@@ -8,9 +8,12 @@
 .header {
   display: flex;
   align-items: center;
-  font-size: var(--typography-headline-medium-font-size);
-  line-height: var(--typography-headline-medium-line-height);
-  letter-spacing: var(--typography-headline-medium-letter-spacing);
+  font-size: var(--typography-large1-bold-font-size);
+  line-height: var(--typography-large1-bold-line-height);
+  letter-spacing: var(--typography-large1-bold-letter-spacing);
+}
+
+.header-with-content {
   margin-bottom: var(--card-padding-vertical);
 }
 

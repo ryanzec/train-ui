@@ -6,14 +6,22 @@
 	margin-right: var(--emoji-margin);
 }
 
-.size-small {
-	font-size: var(--typography-body-small-font-size);
+.small1 {
+	font-size: var(--sizes-small1);
 }
 
-.size-medium {
-	font-size: var(--typography-body-medium-font-size);
+.base {
+	font-size: var(--sizes-base);
 }
 
-.size-large {
-	font-size: var(--typography-body-large-font-size);
+.large1 {
+	font-size: var(--sizes-large1);
+}
+
+.large2 {
+	font-size: var(--sizes-large2);
+}
+
+.large3 {
+	font-size: var(--sizes-large3);
 }

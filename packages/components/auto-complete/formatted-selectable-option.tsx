@@ -13,6 +13,7 @@ const FormattedSelectableOption = <TData extends AutoCompleteExtraData>(
   return (
     <List.Item
       data-id={`option${props.isFocusedOption(props.optionIndex) ? ' highlighted-option' : ''}`}
+      data-auto-complete-value={props.option.value}
       class={classnames(styles.selectableOption, styles.listOption)}
       isSelected={props.isFocusedOption(props.optionIndex)}
       onMouseEnter={() => props.onMouseEnterOption(props.optionIndex)}
@@ -32,7 +33,7 @@ const FormattedSelectableOption = <TData extends AutoCompleteExtraData>(
           <Icon class={classnames(styles.addIcon, iconStyles.spacingRight)} icon="add" />
         </Match>
       </Switch>
-      props.option.display
+      {props.option.display}
     </List.Item>
   );
 };

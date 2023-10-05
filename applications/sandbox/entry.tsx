@@ -1,14 +1,9 @@
 /* @refresh reload */
 import '../../packages/types/solid-js';
 
-import '@fontsource/roboto/300.css';
-import '@fontsource/roboto/300-italic.css';
-import '@fontsource/roboto/400.css';
-import '@fontsource/roboto/400-italic.css';
+import '@fontsource/roboto';
 import '@fontsource/roboto/500.css';
-import '@fontsource/roboto/500-italic.css';
 import '@fontsource/roboto/700.css';
-import '@fontsource/roboto/700-italic.css';
 
 import 'material-icons/iconfont/material-icons.css';
 import '../../packages/styles/variables-base.css';

@@ -79,18 +79,18 @@
 }
 
 .icon > span {
-	font-size: var(--typography-body-medium-font-size);
-	line-height: var(--typography-body-medium-line-height);
-	letter-spacing: var(--typography-body-medium-letter-spacing);
+	font-size: var(--typography-base-font-size);
+	line-height: var(--typography-base-line-height);
+	letter-spacing: var(--typography-base-letter-spacing);
 
 	/* this makes sure the icon is center with the text in the button */
 	display: flex;
 }
 
 .bubble-small {
-	font-size: var(--typography-body-small-font-size);
-	line-height: var(--typography-body-small-line-height);
-	letter-spacing: var(--typography-body-small-letter-spacing);
+	font-size: var(--typography-small1-font-size);
+	line-height: var(--typography-small1-line-height);
+	letter-spacing: var(--typography-small1-letter-spacing);
 }
 
 .icon-small {
