@@ -4,6 +4,7 @@ import fastify from 'fastify';
 
 import { registerAuthenticateApi } from './apis/authenticate';
 import { registerHealthApi } from './apis/health';
+import { registerQueryApi } from './apis/query';
 import { registerUsersApi } from './apis/users';
 import { delayerHook } from './middleware/delayer';
 
@@ -28,6 +29,7 @@ api.addHook('preHandler', delayerHook);
 registerHealthApi(api);
 registerAuthenticateApi(api);
 registerUsersApi(api);
+registerQueryApi(api);
 
 // start the server
 const start = async () => {

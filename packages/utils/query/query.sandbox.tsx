@@ -9,8 +9,6 @@ import { CreateMutationOptions, CreateTrackedQueryOptions, MutationState, queryU
 import ExpandableCode from '$sandbox/components/expandable-code';
 import { applicationUtils, GlobalVariable } from '$web/utils/application';
 
-import { apiMocker } from '../../../applications/sandbox/api-mock';
-
 export default {
   title: 'Utils/Query',
 };
@@ -24,13 +22,21 @@ interface QueryApiData {
 interface GetListReturns {
   query: Array<QueryApiData>;
 }
+
 interface GetListParams {
   filter?: string;
 }
 
 export const getList = (getParams?: () => GetListParams, queryOptions?: Partial<CreateTrackedQueryOptions>) => {
   const [resource, refetch, mutate, dataInitiallyFetched] = queryUtils.createTrackedQuery(
-    () => [SANDBOX_QUERY_GET_LIST],
+    () => [
+      SANDBOX_QUERY_GET_LIST,
+      () => {
+        const params = (getParams?.() ?? { filter: '' }) as GetListParams;
+
+        return Object.values(params);
+      },
+    ],
     async () => {
       let url = `${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/sandbox/query`;
       const params = (getParams?.() ?? { filter: '' }) as GetListParams;
@@ -137,15 +143,16 @@ export const createMutationOptimistic = (options?: CreateMutationOptions<CreateI
   );
 
 export const GetDataWithDelay = () => {
-  onMount(() => {
-    // using a delay as it seems like there are times when playwright never see the loading indicator because it
-    // goes away too quick for it to see it
-    apiMocker.setOverrideDelay(`sandbox/query`, 2500);
-
-    onCleanup(() => {
-      apiMocker.reset();
-    });
-  });
+  // @todo(!) validate works with api mock server
+  // onMount(() => {
+  //   // using a delay as it seems like there are times when playwright never see the loading indicator because it
+  //   // goes away too quick for it to see it
+  //   apiMocker.setOverrideDelay(`sandbox/query`, 2500);
+  //
+  //   onCleanup(() => {
+  //     apiMocker.reset();
+  //   });
+  // });
 
   const { data, resource, dataInitiallyFetched } = getList();
 

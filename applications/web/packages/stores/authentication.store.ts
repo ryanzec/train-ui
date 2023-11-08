@@ -1,7 +1,7 @@
 import type { Navigator } from '@solidjs/router';
 
 import { Auth0Client, createAuth0Client } from '@auth0/auth0-spa-js';
-import jwtDecode, { InvalidTokenError, JwtPayload } from 'jwt-decode';
+import { jwtDecode, InvalidTokenError, JwtPayload } from 'jwt-decode';
 import { createRoot, createSignal } from 'solid-js';
 
 import { applicationUtils, GlobalVariable, POST_INSTALL_REDIRECT_PARAM } from '$web/utils/application';

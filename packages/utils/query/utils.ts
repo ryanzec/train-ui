@@ -8,6 +8,7 @@ import {
   ResourceOptions,
   Setter,
   createResource,
+  onMount,
 } from 'solid-js';
 
 import { CommonDataType } from '$/types/generic';
@@ -208,7 +209,7 @@ export const triggerRefetcher = async (queryData: QueryData, key: string, option
     return;
   }
 
-  const [shouldFetch, setShouldFetch] = getShouldTrackedFetch(queryData, key);
+  const [shouldFetch, setShouldFetch] = getTrackedShouldFetch(queryData, key);
 
   if (!shouldFetch()) {
     // setting this to true will automatically trigger the fetching of data so we don't have to call the refetch
@@ -303,13 +304,29 @@ export type CreateTrackedQueryReturns<TResource> = [
   () => boolean,
 ];
 
+export const addTrackedShouldFetch = (
+  queryData: QueryData,
+  key: string,
+  tracker: [Accessor<boolean>, Setter<boolean>],
+) => {
+  if (queryData.trackedShouldFetch[key]) {
+    return;
+  }
+
+  queryData.trackedShouldFetch[key] = tracker;
+};
+
 export const removeTrackedShouldFetch = (queryData: QueryData, key: string) => {
   delete queryData.trackedShouldFetch[key];
 };
 
-export const getShouldTrackedFetch = (queryData: QueryData, key: string, defaultValue = true) => {
+export const getTrackedShouldFetch = (queryData: QueryData, key: string) => {
   if (!queryData.trackedShouldFetch[key]) {
-    queryData.trackedShouldFetch[key] = createSignal(defaultValue);
+    const shouldFetchSignal = createSignal<boolean>(true);
+
+    addTrackedShouldFetch(queryData, key, shouldFetchSignal);
+
+    return shouldFetchSignal;
   }
 
   return queryData.trackedShouldFetch[key];
@@ -331,12 +348,14 @@ export const createTrackedQuery = <TResource>(
   getResource: (_: boolean, info: unknown) => TResource | Promise<TResource>,
   overrideOptions: Partial<CreateTrackedQueryOptions> = {},
 ): CreateTrackedQueryReturns<TResource | undefined> => {
+  // @todo(feature?) should we error if the passed in primary key is already being used since we really should not
+  // @todo(feature?) have multiple ones active at the same time
   const [primaryKey, secondaryKey] = queryKey();
   const options = Object.assign({}, createTrackedQueryOptionDefaults, overrideOptions);
   const cachedData = getCachedData(queryData, primaryKey);
   // we don't use the setter as if we have cached data, we never need to do the initial request
   // const [shouldFetch, setShouldFetch] = createSignal(!cachedData?.data && options.doInitialFetch);
-  const [shouldFetch] = getShouldTrackedFetch(queryData, primaryKey, !cachedData?.data && !!options.doInitialFetch);
+  const [shouldFetch, setShouldFetch] = createSignal<boolean>(!cachedData?.data && !!options.doInitialFetch);
   const resourceInfo: ResourceOptions<TResource> = {};
 
   if (cachedData?.data) {
@@ -362,15 +381,20 @@ export const createTrackedQuery = <TResource>(
   // we only want the cache data effect to run when the state changes, other changes to the resource are not important
   trackForCachingData(() => resource.state);
 
-  addTrackedMutator(queryData, primaryKey, mutate as Setter<CommonDataType | undefined>);
-  addTrackedRefetcher(queryData, primaryKey, refetch);
-  addTrackedResource(queryData, primaryKey, resource);
+  // we need to set inside an onMount in order to make sure if we move to another router that has the same query
+  // key, the removal of the old items and setting of the new ones are done in the proper order
+  onMount(() => {
+    addTrackedMutator(queryData, primaryKey, mutate as Setter<CommonDataType | undefined>);
+    addTrackedRefetcher(queryData, primaryKey, refetch);
+    addTrackedResource(queryData, primaryKey, resource);
+    addTrackedShouldFetch(queryData, primaryKey, [shouldFetch, setShouldFetch]);
 
-  onCleanup(() => {
-    removeTrackedMutator(queryData, primaryKey);
-    removeTrackedRefetcher(queryData, primaryKey);
-    removeTrackedResource(queryData, primaryKey);
-    removeTrackedShouldFetch(queryData, primaryKey);
+    onCleanup(() => {
+      removeTrackedMutator(queryData, primaryKey);
+      removeTrackedRefetcher(queryData, primaryKey);
+      removeTrackedResource(queryData, primaryKey);
+      removeTrackedShouldFetch(queryData, primaryKey);
+    });
   });
 
   return [
