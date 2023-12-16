@@ -1,4 +1,4 @@
-import * as dateFns from 'date-fns';
+import dayjs from 'dayjs';
 import { Accessor, createSignal } from 'solid-js';
 
 import { WhichDate } from '$/components/date-picker/date-picker-input';
@@ -25,8 +25,7 @@ const createDatePickerInputDate = (options: CreateDatePickerInputDateOptions): D
       return '';
     }
 
-    return dateFns.format(
-      currentDate,
+    return dayjs(currentDate).format(
       options.includeTime ? dateTimeFormat.STANDARD_DATE_TIME : dateTimeFormat.STANDARD_DATE,
     );
   };

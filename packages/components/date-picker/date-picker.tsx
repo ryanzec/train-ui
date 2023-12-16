@@ -1,12 +1,11 @@
 import classnames from 'classnames';
-import * as dateFns from 'date-fns';
+import dayjs, { Dayjs } from 'dayjs';
 import { createMemo, createSignal, Index, JSX, mergeProps, Show, splitProps } from 'solid-js';
 
 import Button, { ButtonSentiment, ButtonVariant } from '$/components/button';
 import DatePickerMonthYearSelection from '$/components/date-picker/date-picker-month-year-selection';
 import styles from '$/components/date-picker/date-picker.module.css';
 import Icon from '$/components/icon';
-import Input from '$/components/input';
 import TimeInput from '$/components/time-input';
 import { FormInputValidationState } from '$/stores/form';
 import { dateTimeFormat } from '$/utils/date';
@@ -15,7 +14,7 @@ import { developmentUtils } from '$/utils/development';
 interface DayData {
   isDisabled: boolean;
   isCurrentMonth: boolean;
-  date: Date;
+  date: Dayjs;
   day: string;
   formatCurrentCheck: string;
 }
@@ -50,7 +49,7 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
     ],
   );
 
-  const currentDayFormatted = dateFns.format(dateFns.startOfDay(new Date()), dateTimeFormat.DATE_COMPARE);
+  const currentDayFormatted = dayjs(new Date()).startOf('day').format(dateTimeFormat.DATE_COMPARE);
 
   const [displayDate, setDisplayDate] = createSignal<Date>(props.defaultDisplayDate);
   const [selectedDate, setSelectedDate] = createSignal<Date | undefined>(props.defaultSelectedDate);
@@ -59,7 +58,7 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
     FormInputValidationState.VALID,
   );
   const [timeInputValue, setTimeInputValue] = createSignal<string>(
-    props.defaultSelectedDate ? dateFns.format(props.defaultSelectedDate, dateTimeFormat.TIME_INPUT_TIME) : '12:00 am',
+    props.defaultSelectedDate ? dayjs(props.defaultSelectedDate).format(dateTimeFormat.TIME_INPUT_TIME) : '12:00 am',
   );
 
   const selectedDateFormatted = createMemo(() => {
@@ -69,36 +68,36 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
       return;
     }
 
-    return dateFns.format(currentSelectedDate, dateTimeFormat.DATE_COMPARE);
+    return dayjs(currentSelectedDate).format(dateTimeFormat.DATE_COMPARE);
   });
   const currentMonth = createMemo(() => {
-    return dateFns.getMonth(displayDate());
+    return dayjs(displayDate()).month();
   });
   const currentYear = createMemo(() => {
-    return dateFns.getYear(displayDate());
+    return dayjs(displayDate()).year();
   });
   const headerText = createMemo(() => {
-    return dateFns.format(displayDate(), 'MMM yyyy');
+    return dayjs(displayDate()).format('MMM YYYY');
   });
   const currentViewDays = createMemo(() => {
-    const currentMonthNumber = dateFns.getMonth(displayDate());
-    let currentProcessingDate = dateFns.startOfWeek(dateFns.startOfMonth(displayDate()));
-    const endDate = dateFns.endOfWeek(dateFns.endOfMonth(displayDate()));
+    const currentMonthNumber = dayjs(displayDate()).month();
+    let currentProcessingDate = dayjs(dayjs(displayDate()).startOf('month')).startOf('week');
+    const endDate = dayjs(dayjs(displayDate()).endOf('month')).endOf('week');
     const newViewDays: Array<DayData[]> = [];
     let currentWeek: DayData[] = [];
 
-    while (!dateFns.isAfter(currentProcessingDate, endDate)) {
-      const currentProcessingMonthNumber = dateFns.getMonth(currentProcessingDate);
-      const day = dateFns.getDay(currentProcessingDate);
+    while (!dayjs(currentProcessingDate).isAfter(endDate)) {
+      const currentProcessingMonthNumber = dayjs(currentProcessingDate).month();
+      const day = dayjs(currentProcessingDate).day();
 
       currentWeek.push({
         isDisabled:
-          (!!props.disableBefore && dateFns.isBefore(currentProcessingDate, props.disableBefore)) ||
-          (!!props.disableAfter && dateFns.isAfter(currentProcessingDate, props.disableAfter)),
+          (!!props.disableBefore && dayjs(currentProcessingDate).isBefore(props.disableBefore)) ||
+          (!!props.disableAfter && dayjs(currentProcessingDate).isAfter(props.disableAfter)),
         isCurrentMonth: currentProcessingMonthNumber === currentMonthNumber,
         date: currentProcessingDate,
-        day: dateFns.format(currentProcessingDate, 'd'),
-        formatCurrentCheck: dateFns.format(currentProcessingDate, dateTimeFormat.DATE_COMPARE),
+        day: dayjs(currentProcessingDate).format('D'),
+        formatCurrentCheck: dayjs(currentProcessingDate).format(dateTimeFormat.DATE_COMPARE),
       });
 
       // zero indexed
@@ -108,26 +107,26 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
         currentWeek = [];
       }
 
-      currentProcessingDate = dateFns.addDays(currentProcessingDate, 1);
+      currentProcessingDate = dayjs(currentProcessingDate).add(1, 'day');
     }
 
     return newViewDays;
   });
 
   const moveToNextMonth = () => {
-    setDisplayDate(dateFns.addMonths(displayDate(), 1));
+    setDisplayDate(dayjs(displayDate()).add(1, 'month').toDate());
   };
 
   const moveToPreviousMonth = () => {
-    setDisplayDate(dateFns.subMonths(displayDate(), 1));
+    setDisplayDate(dayjs(displayDate()).subtract(1, 'month').toDate());
   };
 
   const setMonth = (month: number) => {
-    setDisplayDate(dateFns.setMonth(displayDate(), month));
+    setDisplayDate(dayjs(displayDate()).month(month).toDate());
   };
 
   const setYear = (year: number) => {
-    setDisplayDate(dateFns.setYear(displayDate(), year));
+    setDisplayDate(dayjs(displayDate()).year(year).toDate());
   };
 
   const onToggleMonthYearSelection = () => {
@@ -135,7 +134,6 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
   };
 
   const onTimeChange = (event: Event) => {
-    console.log('test');
     const target = event.target as HTMLInputElement;
 
     setTimeInputValue(target.value);
@@ -146,9 +144,9 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
       return;
     }
 
-    const date = dateFns.parse(target.value, dateTimeFormat.TIME_INPUT_TIME, currentSelectedDate);
+    const date = dayjs(target.value, dateTimeFormat.TIME_INPUT_TIME);
 
-    if (!dateFns.isValid(date)) {
+    if (!dayjs(date).isValid()) {
       setTimeInputValidationState(FormInputValidationState.INVALID);
 
       return;
@@ -156,12 +154,11 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
 
     setTimeInputValidationState(FormInputValidationState.VALID);
 
-    setSelectedDate(date);
-    props.onSelectDate?.(date);
+    setSelectedDate(date.toDate());
+    props.onSelectDate?.(date.toDate());
   };
 
   const selectDate = (day: DayData) => {
-    console.log(day);
     if (day.isDisabled) {
       developmentUtils.logWarn(`can't select a disabled day`);
 
@@ -169,17 +166,22 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
     }
 
     const currentTimeValue = timeInputValue();
-    const date = dateFns.parse(currentTimeValue, dateTimeFormat.TIME_INPUT_TIME, day.date);
+    let date = dayjs(currentTimeValue, dateTimeFormat.TIME_INPUT_TIME);
 
-    if (!dateFns.isValid(date)) {
+    // @todo(investigate) is there an easier way to do this?
+    date = date.date(day.date.date());
+    date = date.month(day.date.month());
+    date = date.year(day.date.year());
+
+    if (!dayjs(date).isValid()) {
       developmentUtils.logWarn(`can't select an invalid date`, date);
       return;
     }
 
-    setSelectedDate(date);
-    setDisplayDate(date);
+    setSelectedDate(date.toDate());
+    setDisplayDate(date.toDate());
 
-    props.onSelectDate?.(date);
+    props.onSelectDate?.(date.toDate());
   };
 
   const clearDate = () => {

@@ -1,4 +1,4 @@
-import { Route, Routes as SolidRoutes, Navigate } from '@solidjs/router';
+import { Route, Navigate } from '@solidjs/router';
 import { lazy } from 'solid-js';
 
 import AuthenticatedRoute from '$web/components/routing/authenticated-route';
@@ -11,41 +11,41 @@ const AuthenticatedDataView = lazy(() => import('$web/views/authenticated-data')
 
 const Routes = () => {
   return (
-    <SolidRoutes>
+    <>
       <Route
         path="/login"
-        element={
+        component={() => (
           <UnauthenticatedRoute>
             <LoginView />
           </UnauthenticatedRoute>
-        }
+        )}
       />
       <Route
         path="/login/redirect"
-        element={
+        component={() => (
           <UnauthenticatedRoute>
             <LoginRedirect />
           </UnauthenticatedRoute>
-        }
+        )}
       />
       <Route
         path="/home"
-        element={
+        component={() => (
           <AuthenticatedRoute>
             <HomeView />
           </AuthenticatedRoute>
-        }
+        )}
       />
       <Route
         path="/authentication-data"
-        element={
+        component={() => (
           <AuthenticatedRoute>
             <AuthenticatedDataView />
           </AuthenticatedRoute>
-        }
+        )}
       />
-      <Route path="*" element={<Navigate href="home" />} />
-    </SolidRoutes>
+      <Route path="*" component={() => <Navigate href="home" />} />
+    </>
   );
 };
 

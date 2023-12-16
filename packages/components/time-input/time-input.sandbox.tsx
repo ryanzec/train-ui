@@ -8,7 +8,6 @@ export default {
 export const Default = () => {
   return (
     <>
-      <Input />
       <TimeInput />
     </>
   );

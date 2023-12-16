@@ -1,4 +1,4 @@
-import * as dateFns from 'date-fns';
+import dayjs from 'dayjs';
 
 import { dateTimeFormat } from '$/utils/date';
 
@@ -99,9 +99,9 @@ const getNewSteppedEditItemValue = (
 export const DEFAULT_VALUE = 'hh:mm aa';
 
 const isValidTime = (value: string) => {
-  const date = dateFns.parse(value, dateTimeFormat.TIME_INPUT_TIME, new Date());
+  const date = dayjs(value, dateTimeFormat.TIME_INPUT_TIME);
 
-  if (dateFns.isValid(date)) {
+  if (dayjs(date).isValid()) {
     return true;
   }
 

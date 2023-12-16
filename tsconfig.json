@@ -2,7 +2,7 @@
   "compilerOptions": {
     "baseUrl": ".",
     "useDefineForClassFields": true,
-    "lib": ["DOM", "DOM.Iterable", "ESNext"],
+    "lib": ["dom", "DOM.Iterable", "ESNext"],
     "allowJs": false,
     "skipLibCheck": true,
     "esModuleInterop": true,

@@ -1,4 +1,3 @@
-import { Link } from '@solidjs/router';
 import { Show, Suspense } from 'solid-js';
 
 import Loading from '$/components/loading';
@@ -14,8 +13,8 @@ const ApplicationWrapper = () => {
     <div data-theme={themeManagerStore.theme()} class={styles.applicationWrapper}>
       <Show when={authenticationStore.isInitializing() === false} fallback={<Loading />}>
         <Show when={authenticationStore.isAuthenticated()}>
-          <Link href="/home">Home</Link>
-          <Link href="/authentication-data">Authentication Data</Link>
+          <a href="/home">Home</a>
+          <a href="/authentication-data">Authentication Data</a>
         </Show>
         <Suspense fallback={<Loading />}>
           <Routes />

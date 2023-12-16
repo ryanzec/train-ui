@@ -12,13 +12,14 @@ import '../../packages/styles/variables-custom.css';
 import './variables.css';
 import '../../packages/styles/keyframes.css';
 import '../../packages/styles/normalize.css';
-import { Route, Routes as SolidRoutes, Navigate, Router } from '@solidjs/router';
+import { Route, Navigate, Router, Routes } from '@solidjs/router';
 import { createEffect, For, Suspense } from 'solid-js';
 import { render } from 'solid-js/web';
 
 import HomeView from '$sandbox/views/home-view';
 
 import GlobalNotificationsList from '../../packages/components/global-notifications-list';
+import Loading from '../../packages/components/loading';
 import { globalNotificationsStore } from '../../packages/stores/global-notifications';
 
 import ApplicationFrame from './packages/components/application-frame/application-frame';
@@ -39,35 +40,29 @@ const ApplicationWrapper = () => {
   });
 
   return (
-    <>
+    <Router>
       <ApplicationFrame isLoading={dynamicRoutes.isLoading()} navigation={dynamicRoutes.navigation()}>
-        <Suspense fallback="Loading...">
-          <SolidRoutes>
+        <Suspense fallback={<Loading />}>
+          <Routes>
             {/* these are the dynamic routes that are based on the files dynamically loaded with sandbox components */}
             <For each={dynamicRoutes.routes()}>
               {(route) => {
                 return <Route path={route.path} component={route.component} />;
               }}
             </For>
-            <Route path="/" element={<HomeView />} />
-            <Route path="*" element={<Navigate href="/" />} />
-          </SolidRoutes>
+            <Route path="/" component={HomeView} />
+            <Route path="*" component={() => <Navigate href="/" />} />
+          </Routes>
         </Suspense>
       </ApplicationFrame>
       <GlobalNotificationsList notifications={globalNotificationsStore.notifications()} />
-    </>
+    </Router>
   );
 };
 
 const start = async () => {
-  render(
-    () => (
-      <Router>
-        <ApplicationWrapper />
-      </Router>
-    ),
-    document.getElementById('application-mount') as HTMLElement,
-  );
+  console.log('start');
+  render(() => <ApplicationWrapper />, document.getElementById('application-mount') as HTMLElement);
 };
 
 start();
