@@ -12,7 +12,7 @@ import '../../packages/styles/variables-custom.css';
 import './variables.css';
 import '../../packages/styles/keyframes.css';
 import '../../packages/styles/normalize.css';
-import { Route, Navigate, Router, Routes } from '@solidjs/router';
+import { Route, Navigate, Router } from '@solidjs/router';
 import { createEffect, For, Suspense } from 'solid-js';
 import { render } from 'solid-js/web';
 
@@ -43,16 +43,14 @@ const ApplicationWrapper = () => {
     <Router>
       <ApplicationFrame isLoading={dynamicRoutes.isLoading()} navigation={dynamicRoutes.navigation()}>
         <Suspense fallback={<Loading />}>
-          <Routes>
-            {/* these are the dynamic routes that are based on the files dynamically loaded with sandbox components */}
-            <For each={dynamicRoutes.routes()}>
-              {(route) => {
-                return <Route path={route.path} component={route.component} />;
-              }}
-            </For>
-            <Route path="/" component={HomeView} />
-            <Route path="*" component={() => <Navigate href="/" />} />
-          </Routes>
+          {/* these are the dynamic routes that are based on the files dynamically loaded with sandbox components */}
+          <For each={dynamicRoutes.routes()}>
+            {(route) => {
+              return <Route path={route.path} component={route.component} />;
+            }}
+          </For>
+          <Route path="/" component={HomeView} />
+          <Route path="*" component={() => <Navigate href="/" />} />
         </Suspense>
       </ApplicationFrame>
       <GlobalNotificationsList notifications={globalNotificationsStore.notifications()} />
