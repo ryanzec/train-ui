@@ -1,10 +1,8 @@
-import classnames from 'classnames';
 import { ParentProps, splitProps } from 'solid-js';
 
-import Callout, { CalloutSentiment, CalloutStrength, CalloutProps } from '$/components/callout';
-import Icon from '$/components/icon';
-import iconStyles from '$/components/icon/icon.module.css';
-import styles from '$/components/loading/loading.module.css';
+import Callout, { CalloutProps, CalloutSentiment, CalloutStrength } from '$/components/callout';
+import { IconSentiment, IconSize } from '$/components/icon';
+import Loading from '$/components/loading/loading';
 import Overlay from '$/components/overlay';
 import { OverlayStrength } from '$/components/overlay/utils';
 
@@ -16,11 +14,7 @@ const LoadingSection = (passedProps: ParentProps<CalloutProps>) => {
       <Overlay.Local strength={OverlayStrength.WEAK} />
       <Overlay.ContentLocal>
         <Callout sentiment={CalloutSentiment.INFO} strength={CalloutStrength.STRONG} {...restOfProps}>
-          <Icon
-            icon="refresh"
-            class={classnames(styles.icon, styles.smallIcon, iconStyles.spinning, iconStyles.positionedLeft)}
-          />{' '}
-          {props.children}
+          <Loading iconSize={IconSize.BASE} iconSentiment={IconSentiment.INHERIT} /> {props.children}
         </Callout>{' '}
       </Overlay.ContentLocal>
     </div>

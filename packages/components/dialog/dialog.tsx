@@ -5,6 +5,7 @@ import { Portal } from 'solid-js/web';
 import Button, { ButtonVariant } from '$/components/button';
 import styles from '$/components/dialog/dialog.module.css';
 import { DialogFooterAlignment } from '$/components/dialog/utils';
+import Icon from '$/components/icon';
 import Overlay from '$/components/overlay';
 import { Key } from '$/types/generic';
 
@@ -46,11 +47,11 @@ const Dialog = (passedProps: ParentProps<DialogProps>) => {
         <div ref={modalRef} class={classnames(styles.dialog, props.class)} {...restOfProps}>
           <div class={styles.dialogHeader}>
             {props.headerElement}
-            <Button.IconButton
+            <Button
               variant={ButtonVariant.TEXT}
               class={styles.closeHeaderTrigger}
               onclick={() => props.closeDialog()}
-              icon="close"
+              preItem={<Icon icon="close" />}
             />
           </div>
           <div class={styles.dialogContent}>{props.children}</div>

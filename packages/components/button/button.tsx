@@ -1,7 +1,7 @@
 import classnames from 'classnames';
-import { JSX, mergeProps, ParentProps, Show, splitProps } from 'solid-js';
+import { JSX, mergeProps, ParentProps, splitProps } from 'solid-js';
 
-import ButtonIcon from '$/components/button/button-icon';
+import ButtonPrePostItem from '$/components/button/button-icon';
 import styles from '$/components/button/button.module.css';
 import { ButtonVariant, ButtonIconPosition, ButtonState, ButtonSentiment } from '$/components/button/utils';
 import Icon from '$/components/icon';
@@ -11,7 +11,6 @@ export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement>
   variant?: ButtonVariant;
   sentiment?: ButtonSentiment;
   state?: ButtonState;
-  isLoading?: boolean;
   preItem?: JSX.Element;
   postItem?: JSX.Element;
   loadingIconPosition?: ButtonIconPosition;
@@ -24,23 +23,11 @@ export const Button = (passedProps: ParentProps<ButtonProps>) => {
         variant: ButtonVariant.FILLED,
         sentiment: ButtonSentiment.NEUTRAL,
         state: ButtonState.DEFAULT,
-        isLoading: false,
         loadingIconPosition: ButtonIconPosition.PRE,
       },
       passedProps,
     ),
-    [
-      'children',
-      'variant',
-      'disabled',
-      'class',
-      'isLoading',
-      'preItem',
-      'postItem',
-      'loadingIconPosition',
-      'state',
-      'sentiment',
-    ],
+    ['children', 'variant', 'disabled', 'class', 'preItem', 'postItem', 'loadingIconPosition', 'state', 'sentiment'],
   );
 
   const isLoading = () => props.state === ButtonState.IS_LOADING;
@@ -62,40 +49,38 @@ export const Button = (passedProps: ParentProps<ButtonProps>) => {
         [styles.info]: props.sentiment === ButtonSentiment.INFO,
         [styles.warning]: props.sentiment === ButtonSentiment.WARNING,
         [styles.danger]: props.sentiment === ButtonSentiment.DANGER,
-        [styles.isLoading]: props.isLoading,
+        [styles.isLoading]: isLoading(),
       })}
-      disabled={props.disabled || props.isLoading}
+      disabled={props.disabled || isLoading()}
       data-id="button"
       type="button"
       {...restOfProps}
     >
       <span class={styles.buttonContent}>
-        {hasPreItem() && (
-          <>
-            <Show when={props.isLoading}>
-              <ButtonIcon
-                class={styles.preIcon}
-                position={ButtonIconPosition.PRE}
-                isLoading={isLoading()}
-                icon={<Icon icon="refresh" />}
-              />
-            </Show>
-            <Show when={!props.isLoading}>{props.preItem}</Show>
-          </>
+        {isLoading() && (
+          <ButtonPrePostItem
+            class={styles.preIcon}
+            position={ButtonIconPosition.PRE}
+            item={<Icon icon="refresh" class={styles.iconIsLoading} />}
+            isIconOnly={!props.children}
+          />
+        )}
+        {!isLoading() && hasPreItem() && (
+          <ButtonPrePostItem
+            class={styles.preIcon}
+            position={ButtonIconPosition.PRE}
+            item={props.preItem}
+            isIconOnly={!props.children}
+          />
         )}
         <span>{props.children}</span>
-        {hasPostItem() && (
-          <>
-            <Show when={props.isLoading}>
-              <ButtonIcon
-                class={styles.postIcon}
-                position={ButtonIconPosition.POST}
-                isLoading={isLoading()}
-                icon={<Icon icon="refresh" />}
-              />
-            </Show>
-            <Show when={!props.isLoading}>{props.postItem}</Show>
-          </>
+        {!isLoading() && hasPostItem() && (
+          <ButtonPrePostItem
+            class={styles.preIcon}
+            position={ButtonIconPosition.POST}
+            item={props.postItem}
+            isIconOnly={!props.children}
+          />
         )}
       </span>
     </button>

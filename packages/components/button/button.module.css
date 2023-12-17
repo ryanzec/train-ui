@@ -21,11 +21,6 @@
   align-items: center;
 }
 
-/* give default spacing to grouped buttons */
-.button:not(.unstyled) + .button:not(.unstyled) {
-  margin-left: var(--button-margin-between-self);
-}
-
 .button[disabled]:not(.unstyled) {
   opacity: var(--button-color-opacity-disabled);
 }
@@ -47,6 +42,7 @@
 .text {
   min-height: initial;
   vertical-align: initial;
+  padding: 0;
 }
 
 .text .button-underlay {
@@ -309,6 +305,29 @@
 /* group */
 .button-group {
   display: flex;
+  gap: var(--button-margin-between-self);
+}
+
+.button-group-attached {
+  gap: 0;
+
+  .button:not(:first-child) {
+    border-left: 0;
+  }
+
+  .button:first-child {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  .button:last-child {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .button:not(:first-child):not(:last-child) {
+    border-radius: 0;
+  }
 }
 
 /* drop down */

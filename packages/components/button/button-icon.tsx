@@ -8,13 +8,14 @@ import Icon from '$/components/icon';
 export interface ButtonIconProps extends JSX.HTMLAttributes<HTMLDivElement> {
   position?: ButtonIconPosition;
   isLoading?: boolean;
-  icon: JSX.Element;
+  item: JSX.Element;
+  isIconOnly?: boolean;
 }
 
 const ButtonIcon = (passedProps: ButtonIconProps) => {
   const [props, restOfProps] = splitProps(
-    mergeProps({ position: ButtonIconPosition.PRE, isLoading: false }, passedProps),
-    ['position', 'isLoading', 'icon', 'class'],
+    mergeProps({ position: ButtonIconPosition.PRE, isLoading: false, isIconOnly: false }, passedProps),
+    ['position', 'isLoading', 'item', 'class', 'isIconOnly'],
   );
   const dataId = () => {
     return `icon${props.isLoading ? ' loading' : ''}${props.position === ButtonIconPosition.PRE ? ' pre' : ' post'}`;
@@ -24,13 +25,13 @@ const ButtonIcon = (passedProps: ButtonIconProps) => {
     <div
       data-id={dataId()}
       class={classnames(styles.icon, props.class, {
-        [styles.iconPre]: props.position === ButtonIconPosition.PRE,
-        [styles.iconPost]: props.position === ButtonIconPosition.POST,
+        [styles.preItem]: !props.isIconOnly && props.position === ButtonIconPosition.PRE,
+        [styles.postItem]: !props.isIconOnly && props.position === ButtonIconPosition.POST,
         [styles.iconIsLoading]: props.isLoading,
       })}
       {...restOfProps}
     >
-      {props.isLoading ? <Icon icon="refresh" /> : props.icon}
+      {props.isLoading ? <Icon icon="refresh" /> : props.item}
     </div>
   );
 };

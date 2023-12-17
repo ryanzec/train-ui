@@ -22,11 +22,11 @@ export const Default = () => {
         headerText="Header"
         headerPreItem={<Icon icon="home" size={IconSize.LARGE2} />}
         headerPostItem={
-          <Button.IconButton
+          <Button
             variant={ButtonVariant.TEXT}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
-            icon="close"
+            preItem={<Icon icon="close" />}
           />
         }
       >
@@ -37,20 +37,20 @@ export const Default = () => {
         headerText="Header"
         headerPreItem={<Icon icon="home" size={IconSize.LARGE2} />}
         headerPostItem={
-          <Button.IconButton
+          <Button
             variant={ButtonVariant.TEXT}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
-            icon="close"
+            preItem={<Icon icon="close" />}
           />
         }
         footerElement={
-          <>
+          <Button.Group>
             <Button sentiment={ButtonSentiment.BRAND}>Action 1</Button>
             <Button sentiment={ButtonSentiment.NEUTRAL} variant={ButtonVariant.WEAK}>
               Action 2
             </Button>
-          </>
+          </Button.Group>
         }
       >
         content
@@ -60,21 +60,21 @@ export const Default = () => {
         headerText="Header"
         headerPreItem={<Icon icon="home" size={IconSize.LARGE2} />}
         headerPostItem={
-          <Button.IconButton
+          <Button
             variant={ButtonVariant.TEXT}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
-            icon="close"
+            preItem={<Icon icon="close" />}
           />
         }
         footerAlignment={CardFooterAlignment.LEFT}
         footerElement={
-          <>
+          <Button.Group>
             <Button sentiment={ButtonSentiment.BRAND}>Action 1</Button>
             <Button sentiment={ButtonSentiment.NEUTRAL} variant={ButtonVariant.WEAK}>
               Action 2
             </Button>
-          </>
+          </Button.Group>
         }
       >
         content
@@ -84,11 +84,11 @@ export const Default = () => {
         headerText="No content"
         headerPreItem={<Icon icon="home" size={IconSize.LARGE2} />}
         headerPostItem={
-          <Button.IconButton
+          <Button
             variant={ButtonVariant.TEXT}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
-            icon="close"
+            preItem={<Icon icon="close" />}
           />
         }
       />

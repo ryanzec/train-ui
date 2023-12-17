@@ -33,6 +33,7 @@ const Icon = (passedProps: IconProps) => {
         [styles.info]: props.sentiment === IconSentiment.INFO,
         [styles.warning]: props.sentiment === IconSentiment.WARNING,
         [styles.danger]: props.sentiment === IconSentiment.DANGER,
+        [styles.inherit]: props.sentiment === IconSentiment.INHERIT,
       })}
       {...restOfProps}
     >

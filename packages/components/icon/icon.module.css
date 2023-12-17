@@ -53,3 +53,7 @@
 .danger {
   color: var(--icon-danger-color);
 }
+
+.inherit {
+  color: inherit;
+}

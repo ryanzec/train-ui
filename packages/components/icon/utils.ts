@@ -23,4 +23,5 @@ export enum IconSentiment {
   INFO = 'info',
   WARNING = 'warning',
   DANGER = 'danger',
+  INHERIT = 'inherit',
 }

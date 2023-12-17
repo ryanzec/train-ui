@@ -28,16 +28,14 @@ const GlobalNotificationsListItem = (passedProps: GlobalNotificationsListItemPro
         <Emoji emoji={props.notification.emoji ?? ''} spacing={EmojiSpacing.RIGHT} size={IconSize.SMALL1} />
       </Show>
       {props.notification.message()}{' '}
-      <Button.IconButton
+      <Button
         variant={ButtonVariant.TEXT}
         class={styles.removeTrigger}
-        icon="close"
+        preItem={<Icon icon="close" />}
         onClick={() => {
           globalNotificationsStore.removeNotification(props.notification.id);
         }}
-      >
-        <Icon icon="close" />
-      </Button.IconButton>
+      />
     </Callout>
   );
 };
