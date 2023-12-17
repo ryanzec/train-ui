@@ -44,6 +44,12 @@ const isValidPath = (path, includeVariableMode = '') => {
     return false;
   }
 
+  // the colors prefix are base color and should never be used in code directly, component variables should always
+  // be used
+  if (path[0] === 'colors') {
+    return false;
+  }
+
   if (includeVariableMode && path[1] && includeVariableMode !== path[1]) {
     return false;
   }
