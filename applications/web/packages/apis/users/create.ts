@@ -1,21 +1,11 @@
-import { User } from '$/data-models/user';
+import { produce } from 'immer';
+
+import { GetUsersResponse, PostUserRequest, PostUserResponse } from '$/data-models/user';
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { CreateMutationOptions, queryUtils } from '$/utils/query';
-import { GetUsersListReturns } from '$web/apis/users/get-users';
 import { applicationUtils, GlobalVariable, QueryKey } from '$web/utils/application';
 
-export interface CreateUserParams {
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
-
-export interface CreateUserReturns {
-  user: User;
-}
-
-export const mutate = async (input: CreateUserParams): Promise<CreateUserReturns> => {
+export const mutate = async (input: PostUserRequest): Promise<PostUserResponse> => {
   return await httpUtils.http(`${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/users`, {
     method: HttpMethod.POST,
     payload: {
@@ -27,21 +17,22 @@ export const mutate = async (input: CreateUserParams): Promise<CreateUserReturns
   });
 };
 
-export const onSuccess = (mutationResponse: CreateUserReturns) => {
-  // @todo(!!!) convert to use immer
-  queryUtils.triggerMutator<GetUsersListReturns>(
+export const onSuccess = (mutationResponse: PostUserResponse) => {
+  queryUtils.triggerMutator<GetUsersResponse>(
     () => [QueryKey.GET_USERS_LIST],
     (oldValue) => {
-      const newValue = { users: [...oldValue.users] };
+      return produce<typeof oldValue>(oldValue, (draft) => {
+        if (!mutationResponse.data) {
+          return draft;
+        }
 
-      newValue.users.push(mutationResponse.user);
-
-      return newValue;
+        draft.data?.push(mutationResponse.data);
+      });
     },
   );
 };
 
-export const create = (mutationOptions: CreateMutationOptions<CreateUserParams, CreateUserReturns>) =>
+export const create = (mutationOptions: CreateMutationOptions<PostUserRequest, PostUserResponse>) =>
   queryUtils.createMutation(mutate, {
     ...mutationOptions,
     onSuccess: (mutationResponse) => {

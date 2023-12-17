@@ -1,36 +1,38 @@
-import _remove from 'lodash/remove';
+import { produce } from 'immer';
 
-import { User, UserIdentifier } from '$/data-models/user';
+import { DeleteUserRequest, DeleteUserResponse, GetUsersResponse } from '$/data-models/user';
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { CreateMutationOptions, queryUtils } from '$/utils/query';
-import { GetUsersListReturns } from '$web/apis/users/get-users';
 import { applicationUtils, GlobalVariable, QueryKey } from '$web/utils/application';
 
-export interface RemoveUserReturns {
-  user: User;
-}
-
-export const mutate = async (input: UserIdentifier): Promise<RemoveUserReturns> => {
+export const mutate = async (input: DeleteUserRequest): Promise<DeleteUserResponse> => {
   return await httpUtils.http(`${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/users/${input.id}`, {
     method: HttpMethod.DELETE,
   });
 };
 
-export const onSuccess = (mutationResponse: RemoveUserReturns) => {
-  // @todo(!!!) convert to use immer
-  queryUtils.triggerMutator<GetUsersListReturns>(
+export const onSuccess = (mutationResponse: DeleteUserResponse) => {
+  queryUtils.triggerMutator<GetUsersResponse>(
     () => [QueryKey.GET_USERS_LIST],
     (oldValue) => {
-      const newData = { users: [...oldValue.users] };
+      return produce<typeof oldValue>(oldValue, (draft) => {
+        if (!draft.data) {
+          return draft;
+        }
 
-      _remove(newData.users, { id: mutationResponse.user.id });
+        const existingIndex = draft.data.findIndex((user) => user.id === mutationResponse.data?.id);
 
-      return newData;
+        if (!existingIndex || existingIndex === -1) {
+          return draft;
+        }
+
+        draft.data.splice(existingIndex, 1);
+      });
     },
   );
 };
 
-export const remove = (mutationOptions: CreateMutationOptions<UserIdentifier, RemoveUserReturns>) =>
+export const remove = (mutationOptions: CreateMutationOptions<DeleteUserRequest, DeleteUserResponse>) =>
   queryUtils.createMutation(mutate, {
     ...mutationOptions,
     onSuccess: (mutationResponse) => {

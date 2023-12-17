@@ -82,6 +82,7 @@
     "ignore-styles": "5.0.1",
     "jsdom": "23.0.1",
     "lint-staged": "15.2.0",
+    "lowdb": "^6.1.1",
     "nodemon": "3.0.2",
     "npm-check": "6.0.1",
     "playwright": "1.40.1",

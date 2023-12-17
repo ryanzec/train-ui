@@ -1,14 +1,11 @@
 import { createRoot, createSignal, batch } from 'solid-js';
 
+import { GetAuthenticateResponse } from '$/data-models/authentication-token';
 import { applicationUtils, GlobalVariable } from '$web/utils/application';
 
 import { HttpMethod, httpUtils } from '../../../../packages/utils/http';
 import { localStorageCacheUtils } from '../../../../packages/utils/local-storage-cache';
 import { ThemeName } from '../../../../packages/utils/styles';
-
-export interface AuthenticateResponseData {
-  authenticationToken: string;
-}
 
 export const LOCAL_STORAGE_AUTHENTICATION_TOKEN_KEY = 'authentication-token';
 
@@ -26,12 +23,12 @@ const createApplicationStore = () => {
 
   const login = async () => {
     try {
-      const response = await httpUtils.http<AuthenticateResponseData>(
+      const response = await httpUtils.http<GetAuthenticateResponse>(
         `${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/authenticate`,
         { method: HttpMethod.POST, payload: {} },
       );
 
-      localStorageCacheUtils.set(LOCAL_STORAGE_AUTHENTICATION_TOKEN_KEY, response.authenticationToken);
+      localStorageCacheUtils.set(LOCAL_STORAGE_AUTHENTICATION_TOKEN_KEY, response.data?.token);
 
       batch(() => {
         setIsAuthenticated(true);

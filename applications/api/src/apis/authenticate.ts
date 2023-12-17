@@ -1,24 +1,22 @@
+import { GetAuthenticateResponse } from '$/data-models/authentication-token';
 import { FastifyInstance } from 'fastify';
 
-import { mockData } from '../../mock-data';
+import { db } from '../db';
+import { mockServerUtils } from '../utils';
 
 export const registerAuthenticateApi = (api: FastifyInstance) => {
-  type GetAuthenticate = Record<string, never>;
+  type GetAuthenticate = { Reply: GetAuthenticateResponse };
 
   api.post<GetAuthenticate>('/api/authenticate', async (_request_, response) => {
-    response.code(200).send({
-      authenticationToken: mockData.authenticate.tokens.default,
-    });
+    response.code(200).send(mockServerUtils.withResponseWrapper(db.data.authenticationTokens[0]));
   });
 
   type GetAuthenticateCheckToken = {
-    Params: { checkToken: string };
+    Params: { token: string };
   };
 
-  api.get<GetAuthenticateCheckToken>('/api/authenticate/:checkToken', async (request, response) => {
-    const checkToken = request.params.checkToken;
-
-    if (checkToken === mockData.authenticate.tokens.bad) {
+  api.get<GetAuthenticateCheckToken>('/api/authenticate/:token', async (request, response) => {
+    if ('bad' === request.params.token) {
       return response.code(401).send();
     }
 

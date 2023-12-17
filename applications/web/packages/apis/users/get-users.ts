@@ -1,13 +1,9 @@
-import { User } from '$/data-models/user';
+import { GetUsersResponse } from '$/data-models/user';
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { CreateTrackedQueryOptions, queryUtils } from '$/utils/query';
 import { applicationUtils, GlobalVariable, QueryKey } from '$web/utils/application';
 
-export interface GetUsersListReturns {
-  users: User[];
-}
-
-export const getUsersRaw = async (): Promise<GetUsersListReturns> => {
+export const getUsersRaw = async (): Promise<GetUsersResponse> => {
   return await httpUtils.http(`${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/users`, {
     method: HttpMethod.GET,
   });
@@ -19,7 +15,7 @@ export const getUsers = (queryOptions: Partial<CreateTrackedQueryOptions>) => {
     getUsersRaw,
     queryOptions,
   );
-  const users = () => usersResource.latest?.users ?? [];
+  const users = () => usersResource.latest?.data || [];
 
   return {
     users,

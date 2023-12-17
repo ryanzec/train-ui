@@ -1,60 +1,44 @@
 import { produce } from 'immer';
-import findIndex from 'lodash/findIndex';
 
-import { User, UserIdentifier } from '$/data-models/user';
+import { GetUsersResponse, PatchUserRequest, PatchUserResponse } from '$/data-models/user';
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { CreateMutationOptions, queryUtils } from '$/utils/query';
-import { GetUsersListReturns } from '$web/apis/users/get-users';
-import { RemoveUserReturns } from '$web/apis/users/remove';
 import { applicationUtils, GlobalVariable, QueryKey } from '$web/utils/application';
 
-export interface UpdateUserParams {
-  identifier: UserIdentifier;
-  firstName: string;
-  lastName: string;
-  email: string;
-  password: string;
-}
+export const mutate = async ({ id, ...payload }: PatchUserRequest): Promise<PatchUserResponse> => {
+  if (!id) {
+    throw new Error('id is required for updating a user');
+  }
 
-export interface UpdateUserReturns {
-  user: User;
-}
-
-export const mutate = async (input: UpdateUserParams): Promise<UpdateUserReturns> => {
-  return await httpUtils.http(
-    `${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/users/${input.identifier.id}`,
-    {
-      method: HttpMethod.PUT,
-      payload: {
-        firstName: input.firstName,
-        lastName: input.lastName,
-        email: input.email,
-        password: input.password,
-      },
-    },
-  );
+  return await httpUtils.http(`${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/users/${id}`, {
+    method: HttpMethod.PUT,
+    payload,
+  });
 };
 
-export const onSuccess = (mutationResponse: RemoveUserReturns) => {
-  // @todo(!!!) convert to use immer
-  queryUtils.triggerMutator<GetUsersListReturns>(
+export const onSuccess = (mutationResponse: PatchUserResponse) => {
+  queryUtils.triggerMutator<GetUsersResponse>(
     () => [QueryKey.GET_USERS_LIST],
     (oldValue) => {
-      const newValue = { users: [...oldValue.users] };
-      const matchingIndex = findIndex(newValue.users, { id: mutationResponse.user.id });
+      return produce<typeof oldValue>(oldValue, (draft) => {
+        if (!mutationResponse.data) {
+          // @todo(logging) should never happen but should log just in case
+          return draft;
+        }
 
-      if (matchingIndex === -1) {
-        return newValue;
-      }
+        const existingIndex = draft.data?.findIndex((user) => user.id === mutationResponse.data?.id);
 
-      return produce(newValue, (draft) => {
-        Object.assign(draft.users[matchingIndex], mutationResponse.user);
+        if (!existingIndex || existingIndex === -1) {
+          return draft;
+        }
+
+        draft.data?.splice(existingIndex, 1, mutationResponse.data);
       });
     },
   );
 };
 
-export const update = (mutationOptions: CreateMutationOptions<UpdateUserParams, UpdateUserReturns>) =>
+export const update = (mutationOptions: CreateMutationOptions<PatchUserRequest, PatchUserResponse>) =>
   queryUtils.createMutation(mutate, {
     ...mutationOptions,
     onSuccess: (mutationResponse) => {
