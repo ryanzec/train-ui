@@ -13,10 +13,10 @@ dotenv.config();
 const PORT = process.env.SERVER_PORT ?? 3000;
 
 // set up the api
-const api = fastify({ logger: true });
+const api = fastify();
 
 await api.register(cors, {
-  origin: 'http://localhost:6006',
+  origin: true,
   methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
   allowedHeaders: ['Origin', 'X-Requested-With', 'Content-Type', 'Accept', 'Authorization'],
   optionsSuccessStatus: 200,

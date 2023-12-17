@@ -21,10 +21,8 @@ const ApplicationFrameExpandableItem = (passedProps: ApplicationFrameExpandableI
 
   const hasSubNavigation = () => typeof Object.values(props.routes)[0] !== 'string';
 
-  console.log(props.routeKey, hasSubNavigation());
-
   return (
-    <>
+    <div {...restOfProps}>
       <Show when={hasSubNavigation()}>
         <div class={styles.navigationGroupHeader}>
           <Button variant={ButtonVariant.UNSTYLED} onClick={() => setIsExpanded(!isExpanded())}>
@@ -45,24 +43,7 @@ const ApplicationFrameExpandableItem = (passedProps: ApplicationFrameExpandableI
           <ApplicationFrameSubNavigation routes={props.routes} />
         </SideNavigation>
       </Show>
-    </>
-    // <div>
-    //   <div
-    //     role="button"
-    //     class={classnames(styles.navigationItem, props.class)}
-    //     tabIndex={0}
-    //     data-id="expandable-item"
-    //     onClick={() => setIsExpanded(!isExpanded())}
-    //     // this is needed for a11y though not sure what this event should do
-    //     onKeyPress={() => {}}
-    //     {...restOfProps}
-    //   >
-    //     {props.routeKey}
-    //   </div>
-    //   <Show when={isExpanded()}>
-    //
-    //   </Show>
-    // </div>
+    </div>
   );
 };
 

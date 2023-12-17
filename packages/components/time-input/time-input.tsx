@@ -55,7 +55,7 @@ const TimeInput = (passedProps: TimeInputProps) => {
     );
   };
 
-  const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (event) => {
+  const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = () => {
     if (!inputRef) {
       return;
     }
@@ -72,7 +72,7 @@ const TimeInput = (passedProps: TimeInputProps) => {
     }
   };
 
-  const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (event) => {
+  const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = () => {
     if (!inputRef) {
       return;
     }
@@ -84,7 +84,7 @@ const TimeInput = (passedProps: TimeInputProps) => {
     }
   };
 
-  const onMouseUp: JSX.EventHandlerUnion<HTMLInputElement, MouseEvent> = (event) => {
+  const onMouseUp: JSX.EventHandlerUnion<HTMLInputElement, MouseEvent> = () => {
     if (!inputRef) {
       return;
     }

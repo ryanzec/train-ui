@@ -1,6 +1,5 @@
 import classnames from 'classnames';
-import getScrollParent from 'scrollparent';
-import { Accessor, createEffect, For, mergeProps, Show, splitProps } from 'solid-js';
+import { Accessor, For, mergeProps, Show, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 
 import {

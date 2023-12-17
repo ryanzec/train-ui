@@ -166,13 +166,7 @@ const createApplicationStore = () => {
       return;
     }
 
-    const user = await currentAuth0Client.getUser();
     const newTokenExpiresIn = (decodedToken.exp * 1000 - Date.now()) / 1000;
-
-    // console.log('redirect');
-    // console.log(`new token expires in ${newTokenExpiresIn} seconds`);
-    // console.log('token', decodedToken);
-    // console.log('user', user);
 
     startCheckRefreshToken(newTokenExpiresIn - REFRESH_TOKEN_OFFSET);
 
@@ -194,13 +188,7 @@ const createApplicationStore = () => {
       return;
     }
 
-    const user = await currentAuth0Client.getUser();
     const newTokenExpiresIn = (decodedToken.exp * 1000 - Date.now()) / 1000;
-
-    // console.log('getAccessToken');
-    // console.log(`new token expires in ${newTokenExpiresIn} seconds`);
-    // console.log('token', decodedToken);
-    // console.log('user', user);
 
     startCheckRefreshToken(newTokenExpiresIn - REFRESH_TOKEN_OFFSET);
 

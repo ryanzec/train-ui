@@ -9,7 +9,6 @@ import Button from '../../../../../packages/components/button';
 import { ThemeName } from '../../../../../packages/utils/styles';
 import { applicationStore } from '../../stores/application-store';
 
-import ApplicationFrameNavigationItem from './application-frame-navigation-item';
 import ApplicationFrameSubNavigation from './application-frame-sub-navigation';
 
 interface ApplicationFrameNavigationProps extends JSX.HTMLAttributes<HTMLDivElement>, CommonDataAttributes {

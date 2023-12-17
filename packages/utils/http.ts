@@ -35,14 +35,26 @@ export enum HttpMethod {
   TRACE = 'TRACE',
 }
 
+// this handles generic requests so it needs to allow for any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const httpRequestInterceptors: Array<(requestOptions: HttpRequest<any>) => HttpRequest<any>> = [];
+// this handles generic requests so it needs to allow for any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const httpResponseInterceptors: Array<(requestOptions: HttpRequest<any>, response: any) => any> = [];
 
-const addHttpRequestInterceptor = <TResponse>(interceptor: () => HttpRequest<TResponse>) => {
+const addHttpRequestInterceptor = <TResponse>(
+  // this handles generic requests so it needs to allow for any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  interceptor: (requestOptions: HttpRequest<any>) => HttpRequest<TResponse>,
+) => {
   httpRequestInterceptors.push(interceptor);
 };
 
-const removeHttpRequestInterceptor = <TResponse>(interceptor: () => HttpRequest<TResponse>) => {
+const removeHttpRequestInterceptor = <TResponse>(
+  // this handles generic requests so it needs to allow for any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  interceptor: (requestOptions: HttpRequest<any>) => HttpRequest<TResponse>,
+) => {
   httpRequestInterceptors.push(interceptor);
 };
 
@@ -60,11 +72,19 @@ const processRequestInterceptors = <TResponse>(requestOptions: HttpRequest<TResp
   return modifiedRequestOptions;
 };
 
-const addHttpResponseInterceptor = <TResponse>(interceptor: () => TResponse) => {
+const addHttpResponseInterceptor = <TResponse>(
+  // this handles generic requests so it needs to allow for any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  interceptor: (requestOptions: HttpRequest<any>, response: any) => TResponse,
+) => {
   httpResponseInterceptors.push(interceptor);
 };
 
-const removeHttpResponseInterceptor = <TResponse>(interceptor: () => TResponse) => {
+const removeHttpResponseInterceptor = <TResponse>(
+  // this handles generic requests so it needs to allow for any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  interceptor: (requestOptions: HttpRequest<any>, response: any) => TResponse,
+) => {
   httpResponseInterceptors.push(interceptor);
 };
 
@@ -83,28 +103,6 @@ const processResponseInterceptors = <TResponse>(
   }
 
   return modifiedResponse;
-};
-
-// since this is a response from an api request, any is valid in this case
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const graphqlRequestWasAuthorized = (responseBody: any) => {
-  let isAuthorized = true;
-
-  if (!responseBody.errors || !Array.isArray(responseBody.errors) || responseBody.errors.length === 0) {
-    return isAuthorized;
-  }
-
-  for (let i = 0; i < responseBody.errors.length; i++) {
-    if (responseBody.errors[i].extensions?.code !== GraphqlErrorCode.AUTH_NOT_AUTHORIZED) {
-      continue;
-    }
-
-    isAuthorized = false;
-
-    break;
-  }
-
-  return isAuthorized;
 };
 
 const http = async <TResponse>(url: string, requestOptions: HttpRequest<TResponse> = {}): Promise<TResponse> => {
@@ -152,28 +150,10 @@ const http = async <TResponse>(url: string, requestOptions: HttpRequest<TRespons
   return finalJsonResponse;
 };
 
-const graphql = async <T, K = undefined>(url: string, graphqlOptions: GraphqlRequest<T, K>): Promise<T> => {
-  const { query, variables, method, ...defaultOptions } = graphqlOptions;
-  const requestOptions: HttpRequest<T> = {
-    ...defaultOptions,
-    // we want to default graphql methods to POST since that is what they generally are
-    method: method ?? HttpMethod.POST,
-    payload: {
-      query,
-      variables: variables ?? {},
-    },
-  };
-
-  const response = await http<T>(url, requestOptions);
-
-  if (!graphqlRequestWasAuthorized(response)) {
-    throw new HttpError(401, { message: `http request failed with: 401 Unauthorized` });
-  }
-
-  return response;
-};
-
 export const httpUtils = {
   http,
-  graphql,
+  addHttpRequestInterceptor,
+  addHttpResponseInterceptor,
+  removeHttpRequestInterceptor,
+  removeHttpResponseInterceptor,
 };

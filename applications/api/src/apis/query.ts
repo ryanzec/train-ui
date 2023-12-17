@@ -1,8 +1,11 @@
-import { FastifyInstance, FastifyRequest } from 'fastify';
+import { FastifyInstance } from 'fastify';
 
 export const registerQueryApi = (api: FastifyInstance) => {
-  api.get('/sandbox/query', async (request, response) => {
-    // @ts-expect-error
+  type GetQuery = {
+    Querystring: { filter?: string };
+  };
+
+  api.get<GetQuery>('/sandbox/query', async (request, response) => {
     const filter = request.query.filter;
 
     const data = {
@@ -25,11 +28,11 @@ export const registerQueryApi = (api: FastifyInstance) => {
     return response.status(200).send(data);
   });
 
-  type PostRequest = FastifyRequest<{
+  type PostQuery = {
     Body: { id: string };
-  }>;
+  };
 
-  api.post('/sandbox/query', async (request: PostRequest, response) => {
+  api.post<PostQuery>('/sandbox/query', async (request, response) => {
     const keys = Object.keys(request.body);
 
     if (!keys.includes('id') || request.id === 'error') {

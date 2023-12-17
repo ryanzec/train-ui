@@ -1,4 +1,4 @@
-import { Accessor, createSignal, JSX } from 'solid-js';
+import { Accessor, createRoot, createSignal, JSX } from 'solid-js';
 
 import { stringUtils } from '../../../../packages/utils/string';
 
@@ -43,14 +43,14 @@ const setNestedObjectValue = (
   return nestedObject;
 };
 
-interface DynamicRouteStore {
+export interface DynamicRouteStore {
   routes: Accessor<DynamicRoute[]>;
   navigation: Accessor<DynamicRouteNavigation>;
   isLoading: Accessor<boolean>;
   load: () => void;
 }
 
-const create = (): DynamicRouteStore => {
+const createDynamicRoutesStore = (): DynamicRouteStore => {
   const [isLoading, setIsLoading] = createSignal(true);
   const [routes, setRoutes] = createSignal<DynamicRoute[]>([]);
   const [navigation, setNavigation] = createSignal<DynamicRouteNavigation>({});
@@ -101,6 +101,4 @@ const create = (): DynamicRouteStore => {
   };
 };
 
-export const dynamicRoutesStore = {
-  create,
-};
+export const dynamicRoutesStore = createRoot(createDynamicRoutesStore);

@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { createSignal, JSX, ParentProps, splitProps } from 'solid-js';
+import { createSignal, JSX, splitProps } from 'solid-js';
 
 import Icon from '$/components/icon';
 import styles from '$/components/radio/radio.module.css';

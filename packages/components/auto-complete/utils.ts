@@ -1,5 +1,4 @@
 import { debounce } from '@solid-primitives/scheduled';
-import getScrollParent from 'scrollparent';
 import { Accessor, createEffect, createSignal, JSX, onCleanup } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
 

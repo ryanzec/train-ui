@@ -1,20 +1,21 @@
-import { faker } from '@faker-js/faker';
-import { FastifyInstance, FastifyRequest } from 'fastify';
+import { FastifyInstance } from 'fastify';
 
 import { mockData } from '../../mock-data';
 
 const API_PREFIX = '/api/users';
 
 export const registerUsersApi = (api: FastifyInstance) => {
-  api.get(API_PREFIX, async (request, response) => {
+  type GetUsers = Record<string, never>;
+
+  api.get<GetUsers>(API_PREFIX, async (_request_, response) => {
     return response.code(200).send({ users: mockData.users.defaultList });
   });
 
-  type PostUsersRequest = FastifyRequest<{
+  type PostUser = {
     Body: { email: string; firstName: string; lastName: string; password: string };
-  }>;
+  };
 
-  api.post(API_PREFIX, async (request: PostUsersRequest, response) => {
+  api.post<PostUser>(API_PREFIX, async (request, response) => {
     const keys = Object.keys(request.body);
 
     if (
@@ -29,12 +30,12 @@ export const registerUsersApi = (api: FastifyInstance) => {
     return response.code(200).send({ user: mockData.users.defaultCreate });
   });
 
-  type PutUsersRequest = FastifyRequest<{
+  type PatchUser = {
     Body: { email?: string; firstName?: string; lastName?: string; password?: string };
     Params: { userId: string };
-  }>;
+  };
 
-  api.put(`${API_PREFIX}/:userId`, async (request: PutUsersRequest, response) => {
+  api.patch<PatchUser>(`${API_PREFIX}/:userId`, async (request, response) => {
     if (!request.params.userId) {
       response.code(404).send();
 
@@ -44,11 +45,11 @@ export const registerUsersApi = (api: FastifyInstance) => {
     response.code(200).send({ user: mockData.users.defaultUpdate });
   });
 
-  type DeleteUsersRequest = FastifyRequest<{
+  type DeleteUser = {
     Params: { userId: string };
-  }>;
+  };
 
-  api.delete(`${API_PREFIX}/:userId`, async (request: DeleteUsersRequest, response) => {
+  api.delete<DeleteUser>(`${API_PREFIX}/:userId`, async (request, response) => {
     if (!request.params.userId) {
       response.code(404).send();
 

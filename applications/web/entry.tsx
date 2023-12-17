@@ -12,20 +12,12 @@ import '../../packages/styles/variables-custom.css';
 import './variables.css';
 import '../../packages/styles/keyframes.css';
 import '../../packages/styles/normalize.css';
-import { Router } from '@solidjs/router';
 import { render } from 'solid-js/web';
 
-import ApplicationWrapper from './packages/components/application-wrapper';
+import Application from './packages/components/application';
 
 const start = async () => {
-  render(
-    () => (
-      <Router>
-        <ApplicationWrapper />
-      </Router>
-    ),
-    document.getElementById('application-mount') as HTMLElement,
-  );
+  render(() => <Application.Router />, document.getElementById('application-mount') as HTMLElement);
 };
 
 start();

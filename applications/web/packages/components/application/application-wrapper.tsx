@@ -1,24 +1,22 @@
-import { Show, Suspense } from 'solid-js';
+import { A } from '@solidjs/router';
+import { ParentProps, Show, Suspense } from 'solid-js';
 
 import Loading from '$/components/loading';
-import styles from '$web/components/application-wrapper/application-wrapper.module.css';
-import Routes from '$web/components/routing';
+import styles from '$web/components/application/application.module.css';
 import { authenticationStore } from '$web/stores/authentication.store';
 import { themeManagerStore } from '$web/stores/theme-manager.store';
 
-const ApplicationWrapper = () => {
+const ApplicationWrapper = (props: ParentProps) => {
   authenticationStore.initialize();
 
   return (
     <div data-theme={themeManagerStore.theme()} class={styles.applicationWrapper}>
       <Show when={authenticationStore.isInitializing() === false} fallback={<Loading />}>
         <Show when={authenticationStore.isAuthenticated()}>
-          <a href="/home">Home</a>
-          <a href="/authentication-data">Authentication Data</a>
+          <A href="/home">Home</A>
+          <A href="/authentication-data">Authentication Data</A>
         </Show>
-        <Suspense fallback={<Loading />}>
-          <Routes />
-        </Suspense>
+        <Suspense fallback={<Loading />}>{props.children}</Suspense>
       </Show>
     </div>
   );
