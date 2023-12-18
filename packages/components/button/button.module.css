@@ -83,6 +83,7 @@
 
 .neutral.weak:active,
 .neutral.outlined:active,
+.neutral.outlined.is-selected,
 .neutral.ghost:active{
   background-color: var(--button-neutral-background-color-active);
 }
@@ -304,15 +305,34 @@
 
 /* group */
 .button-group {
-  display: flex;
+  display: inline-flex;
   gap: var(--button-margin-between-self);
 }
 
+/* this basically is a toggle button */
 .button-group-attached {
   gap: 0;
+  border: 1px solid var(--button-neutral-border-color);
+  border-radius: var(--button-border-radius);
+
+  .button {
+    border: 0;
+  }
+
+  /*
+   * with attached buttons, is stylistically looks weird to have the border of the button have the opacity tied to
+   * it so in that case, we only set the opacity of the content
+   */
+  .button[disabled] {
+    opacity: 1;
+
+    .button-content {
+      opacity: var(--button-color-opacity-disabled);
+    }
+  }
 
   .button:not(:first-child) {
-    border-left: 0;
+    border-left: 1px solid var(--button-neutral-border-color);
   }
 
   .button:first-child {

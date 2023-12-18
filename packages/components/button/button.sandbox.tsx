@@ -619,11 +619,12 @@ export const Icons = () => {
 export const ToggleButton = () => {
   return (
     <>
-      Neutral
       <Button.Group isAttached>
         <Button.ToggleButton postItem={<Icon icon="home" />}></Button.ToggleButton>
         <Button.ToggleButton>Weak</Button.ToggleButton>
-        <Button.ToggleButton preItem={<Icon icon="add" />}>Outlined</Button.ToggleButton>
+        <Button.ToggleButton isSelected preItem={<Icon icon="add" />}>
+          Outlined
+        </Button.ToggleButton>
         <Button.ToggleButton postItem={<Icon icon="add" />} />
         <Button.ToggleButton preItem={<Icon icon="add" />} postItem={<Icon icon="add" />}>
           Text
