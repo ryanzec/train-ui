@@ -55,3 +55,18 @@
   color: var(--side-navigation-color-item-active);
   border-color: var(--side-navigation-border-color-item-active);
 }
+
+/* collapsed */
+.side-navigation.is-collapsed {
+  .header::before {
+    background: 0;
+  }
+
+  .header-indicator {
+    background-color: var(--side-navigation-border-color-header-indicator);
+  }
+
+  .items {
+    display: none;
+  }
+}
