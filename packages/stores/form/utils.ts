@@ -50,8 +50,6 @@ export type FormData<TFormData> = Accessor<Partial<TFormData>>;
 
 interface CreateFormOptions<TFormData extends object, TSchemaObject extends zod.ZodRawShape> {
   onSubmit: (data: Partial<TFormData>) => void;
-  // since this is a generic system, not sure what else can be done besides using any
-  onValueChanged?: (name: keyof TFormData, value: any) => void;
   onClear?: () => void;
   onReset?: () => void;
   initialValues?: Partial<TFormData>;
@@ -68,7 +66,7 @@ interface SetValueOption {
   markAsTouched?: boolean;
 }
 
-export interface CreateFormReturn<TFormData, TSchemaObject extends zod.ZodRawShape> {
+export interface CreateFormReturn<TFormData extends object, TSchemaObject extends zod.ZodRawShape> {
   form: FormDirective;
   data: Accessor<Partial<TFormData>>;
   // @todo(refactor) would prefer a type that matched the string to what is can be based on the TFormData but not
@@ -85,10 +83,17 @@ export interface CreateFormReturn<TFormData, TSchemaObject extends zod.ZodRawSha
   touchedFields: Accessor<Array<keyof TFormData>>;
   updateValidationErrors: (fieldName?: string) => boolean;
   isValid: () => boolean;
+  watch: (watcher: FormWatcher<TFormData>) => WatchReturns;
 
   // since this is a generic system, we need to allow any
   setSchema: Setter<zod.ZodObject<TSchemaObject> | undefined>;
 }
+
+export type FormWatcher<TFormData extends object> = (name: keyof TFormData, data: Partial<TFormData>) => void;
+
+export type WatchReturns = {
+  unsubscribe: () => void;
+};
 
 const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawShape>(
   passedOptions: CreateFormOptions<TFormData, TSchemaObject>,
@@ -98,6 +103,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
   const [data, setData] = createSignal<Partial<TFormData>>(options.initialValues ?? {});
   const [touchedFields, setTouchedFields] = createSignal<Array<keyof TFormData>>([]);
   const [formElement, setFormElement] = createSignal<HTMLFormElement>();
+  const [formWatchers, setFormWatchers] = createSignal<FormWatcher<TFormData>[]>([]);
 
   // seems like any is needed to support the zod schema type
   const [schema, setSchema] = createSignal<zod.ZodObject<TSchemaObject> | undefined>(options.schema);
@@ -125,8 +131,8 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     previousValue: any,
     selfOptions: TriggerValueChangeOptions = {},
   ) => {
-    if (value !== previousValue && options.onValueChanged) {
-      options.onValueChanged(name as keyof TFormData, value);
+    if (formWatchers().length > 0) {
+      formWatchers().forEach((watcher) => watcher(name as keyof TFormData, data()));
     }
 
     if (selfOptions.isTouched !== undefined) {
@@ -646,6 +652,18 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     resetHtmlElements();
   };
 
+  const watch = (formWatcher: FormWatcher<TFormData>): WatchReturns => {
+    // @note(performance) using ... can cause performance / memory issues
+    setFormWatchers((oldFormWatchers) => [...oldFormWatchers, formWatcher]);
+
+    // used to allow the subscriber to unsubscribe
+    return {
+      unsubscribe: () => {
+        setFormWatchers((oldFormWatchers) => oldFormWatchers.filter((formWatcher) => formWatcher !== formWatcher));
+      },
+    };
+  };
+
   return {
     form,
     data,
@@ -660,6 +678,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     touchedFields,
     updateValidationErrors,
     isValid,
+    watch,
   };
 };
 

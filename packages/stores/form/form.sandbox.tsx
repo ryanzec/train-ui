@@ -314,7 +314,10 @@ export const Events = () => {
   const [clearEventTriggered, setClearEventTriggered] = createSignal(false);
   const [resetEventTriggered, setResetEventTriggered] = createSignal(false);
   const [valueChangedEventTriggered, setValueChangedEventTriggered] = createSignal(false);
-  const { form, reset, clear, errors } = formStoreUtils.createForm<SimpleFormData, typeof simpleFormDataSchema.shape>({
+  const { form, reset, clear, errors, watch } = formStoreUtils.createForm<
+    SimpleFormData,
+    typeof simpleFormDataSchema.shape
+  >({
     schema: simpleFormDataSchema,
     onSubmit: () => {
       setSubmitTriggered(true);
@@ -328,9 +331,20 @@ export const Events = () => {
     onClear: () => {
       setClearEventTriggered(true);
     },
-    onValueChanged: () => {
+  });
+
+  createEffect(() => {
+    const watcher = watch((name, data) => {
+      if (name !== 'title') {
+        return;
+      }
+
       setValueChangedEventTriggered(true);
-    },
+    });
+
+    return () => {
+      watcher.unsubscribe();
+    };
   });
 
   return (

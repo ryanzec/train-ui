@@ -6,6 +6,8 @@ export interface HttpRequest<TResponse> extends Omit<RequestInit, 'credentials'>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   payload?: Record<string, any>;
 
+  urlSearchParams?: URLSearchParams;
+
   // should return false to prevent further processing of the error
   onError?: (response: Response, responseJson: TResponse) => Promise<boolean>;
 }
@@ -124,7 +126,8 @@ const http = async <TResponse>(url: string, requestOptions: HttpRequest<TRespons
     fetchOptions.body = JSON.stringify(payload);
   }
 
-  const response = await fetch(url, fetchOptions);
+  const finalUrl = requestOptions.urlSearchParams ? `${url}?${requestOptions.urlSearchParams.toString()}` : url;
+  const response = await fetch(finalUrl, fetchOptions);
   const jsonResponse = await response.json();
   const finalJsonResponse = processResponseInterceptors(finalRequestOptions, jsonResponse);
 
