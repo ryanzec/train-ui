@@ -14,6 +14,7 @@
   text-transform: var(--typography-base-upper-text-case);
   font-weight: var(--typography-base-upper-font-weight);
   color: var(--side-navigation-color-header);
+  cursor: pointer;
 }
 
 /* a number of values are not variables given the uniqueness of this content */

@@ -1,6 +1,7 @@
 import classnames from 'classnames';
-import { JSX, mergeProps, splitProps } from 'solid-js';
+import { createSignal, JSX, mergeProps, splitProps } from 'solid-js';
 
+import Box from '$/components/box';
 import styles from '$/components/side-navgiation/side-navigation.module.css';
 
 export enum SideNavigationState {
@@ -10,28 +11,35 @@ export enum SideNavigationState {
 
 export interface SideNavigationProps extends JSX.HTMLAttributes<HTMLDivElement> {
   headerItem: JSX.Element;
-  state?: SideNavigationState;
+  defaultState?: SideNavigationState;
 }
 
 const SideNavigation = (passedProps: SideNavigationProps) => {
-  const [props, restOfProps] = splitProps(mergeProps({ state: SideNavigationState.EXPANDED }, passedProps), [
+  const [props, restOfProps] = splitProps(mergeProps({ defaultState: SideNavigationState.COLLAPSED }, passedProps), [
     'children',
     'class',
     'headerItem',
-    'state',
+    'defaultState',
   ]);
+
+  const [isExpanded, setIsExpanded] = createSignal(props.defaultState === SideNavigationState.EXPANDED);
+
+  const toggleIsExpanded = () => {
+    console.log('test');
+    setIsExpanded(!isExpanded());
+  };
 
   return (
     <div
       class={classnames(styles.sideNavigation, props.class, {
-        [styles.isCollapsed]: props.state === SideNavigationState.COLLAPSED,
+        [styles.isCollapsed]: !isExpanded(),
       })}
       {...restOfProps}
     >
-      <div class={styles.header}>
+      <Box class={styles.header} onClick={toggleIsExpanded}>
         <div class={styles.headerIndicator} />
         {props.headerItem}
-      </div>
+      </Box>
       <div class={styles.items}>{props.children}</div>
     </div>
   );

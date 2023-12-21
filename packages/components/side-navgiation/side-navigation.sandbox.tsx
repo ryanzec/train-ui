@@ -7,7 +7,7 @@ export default {
 export const Expanded = () => {
   return (
     <div>
-      <SideNavigation headerItem="Button">
+      <SideNavigation defaultState={SideNavigationState.EXPANDED} headerItem="Button">
         <SideNavigation.Item>DropDown</SideNavigation.Item>
         <SideNavigation.Item isActive>IconButton</SideNavigation.Item>
         <SideNavigation.Item>Loading</SideNavigation.Item>
@@ -21,7 +21,7 @@ export const Expanded = () => {
 export const Collapsed = () => {
   return (
     <div>
-      <SideNavigation state={SideNavigationState.COLLAPSED} headerItem="Button">
+      <SideNavigation defaultState={SideNavigationState.COLLAPSED} headerItem="Button">
         <SideNavigation.Item>DropDown</SideNavigation.Item>
         <SideNavigation.Item isActive>IconButton</SideNavigation.Item>
         <SideNavigation.Item>Loading</SideNavigation.Item>
@@ -35,7 +35,7 @@ export const Collapsed = () => {
 export const Interactive = () => {
   return (
     <div>
-      <SideNavigation state={SideNavigationState.COLLAPSED} headerItem="Button">
+      <SideNavigation defaultState={SideNavigationState.COLLAPSED} headerItem="Button">
         <SideNavigation.Item>DropDown</SideNavigation.Item>
         <SideNavigation.Item isActive>IconButton</SideNavigation.Item>
         <SideNavigation.Item>Loading</SideNavigation.Item>
