@@ -27,11 +27,12 @@ export const Default = () => {
   const tranformed = Babel.transform(code, {
     presets: [
       [babelPresetSolid, { generate: 'dom', hydratable: false }],
-      ['typescript', { onlyRemoveTypeImports: true }],
+      ['typescript', { onlyRemoveTypeImports: true, module: 'esnext' }],
     ],
     filename: 'index.tsx',
   });
 
+  console.log(tranformed.code);
   eval(tranformed.code);
 
   return (
