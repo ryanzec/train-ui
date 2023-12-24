@@ -10,8 +10,6 @@ mocha-coverage
 # development specific data
 .env
 .env.local
-applications/web/src/index.html
-index.html
 applications/api/lowdb/*
 
 # artifacts
