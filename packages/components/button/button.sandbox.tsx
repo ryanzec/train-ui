@@ -99,7 +99,6 @@ export const Variants = () => {
 export const Sentiments = () => {
   return (
     <>
-      Neutral
       <Button.Group>
         <Button variant={ButtonVariant.FILLED}>Filled</Button>
         <Button variant={ButtonVariant.WEAK}>Weak</Button>
@@ -140,7 +139,6 @@ export const Sentiments = () => {
         <Button postItem={<Icon icon="home" />} variant={ButtonVariant.GHOST} disabled />
         <Button postItem={<Icon icon="home" />} variant={ButtonVariant.TEXT} disabled />
       </Button.Group>
-      Brand
       <Button.Group>
         <Button sentiment={ButtonSentiment.BRAND} variant={ButtonVariant.FILLED}>
           Filled
@@ -226,7 +224,6 @@ export const Sentiments = () => {
           disabled
         />
       </Button.Group>
-      Success
       <Button.Group>
         <Button sentiment={ButtonSentiment.SUCCESS} variant={ButtonVariant.FILLED}>
           Filled
@@ -317,7 +314,6 @@ export const Sentiments = () => {
           disabled
         />
       </Button.Group>
-      Info
       <Button.Group>
         <Button sentiment={ButtonSentiment.INFO} variant={ButtonVariant.FILLED}>
           Filled
@@ -403,7 +399,6 @@ export const Sentiments = () => {
           disabled
         />
       </Button.Group>
-      Warning
       <Button.Group>
         <Button sentiment={ButtonSentiment.WARNING} variant={ButtonVariant.FILLED}>
           Filled
@@ -494,7 +489,6 @@ export const Sentiments = () => {
           disabled
         />
       </Button.Group>
-      Danger
       <Button.Group>
         <Button sentiment={ButtonSentiment.DANGER} variant={ButtonVariant.FILLED}>
           Filled
