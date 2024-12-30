@@ -29,7 +29,7 @@ const GlobalNotificationsListItem = (passedProps: GlobalNotificationsListItemPro
       style={{ 'animation-duration': `${REMOVE_ANIMATION_DURATION * 1.05}ms` }}
     >
       <Show when={!!props.notification.emoji}>
-        <Emoji emoji={props.notification.emoji ?? ''} spacing={EmojiSpacing.RIGHT} size={IconSize.SMALL1} />
+        <Emoji emoji={props.notification.emoji ?? ''} spacing={EmojiSpacing.RIGHT} size={IconSize.SMALL} />
       </Show>
       {props.notification.message()}{' '}
       <Button

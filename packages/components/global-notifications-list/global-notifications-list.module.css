@@ -9,23 +9,23 @@
 }
 
 .top-left {
-  top: var(--global-notification-margin-list);
-  left: var(--global-notification-margin-list);
+  top: var(--space-xs);
+  left: var(--space-xs);
 }
 
 .top-right {
-  top: var(--global-notification-margin-list);
-  right: var(--global-notification-margin-list);
+  top: var(--space-xs);
+  right: var(--space-xs);
 }
 
 .bottom-left {
-  bottom: var(--global-notification-margin-list);
-  left: var(--global-notification-margin-list);
+  bottom: var(--space-xs);
+  left: var(--space-xs);
 }
 
 .bottom-right {
-  bottom: var(--global-notification-margin-list);
-  right: var(--global-notification-margin-list);
+  bottom: var(--space-xs);
+  right: var(--space-xs);
 }
 
 .notification {
@@ -34,7 +34,7 @@
 	 * (which is displayed last)
 	 */
   &:not(:first-child) {
-    margin-bottom: var(--global-notification-margin-between-self);
+    margin-bottom: var(--space-xs);
   }
 
   &.is-removing {
@@ -55,6 +55,6 @@
 }
 
 .remove-trigger {
-  margin-left: var(--icon-margin);
+  margin-left: var(--space-2xs);
   padding: 0;
 }

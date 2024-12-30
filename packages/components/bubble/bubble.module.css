@@ -1,106 +1,108 @@
 .bubble {
   display: inline-flex;
   align-items: center;
-  border-radius: var(--bubble-border-radius);
-  padding: var(--bubble-padding-vertical) var(--bubble-padding-horizontal);
+  border-radius: var(--border-radius-sm);
+  padding: var(--space-2xs) var(--space-xs);
   border: 1px solid transparent;
 }
 
 /* neutral */
 .neutral {
-  border-color: var(--bubble-neutral-border-color);
-  background-color: var(--bubble-neutral-background-color-weak);
-  color: var(--bubble-neutral-color-weak);
+  border-color: var(--color-neutral-bold);
+  background-color: var(--color-neutral-subtle);
+  color: var(--color-neutral-bold);
 }
 
 .neutral-strong {
-  background-color: var(--bubble-neutral-background-color);
-  color: var(--bubble-neutral-color);
+  background-color: var(--color-neutral);
+  color: var(--color-neutral-subtle);
 }
 
 /* brand */
 .brand {
-  border-color: var(--bubble-brand-border-color);
-  background-color: var(--bubble-brand-background-color-weak);
-  color: var(--bubble-brand-color-weak);
+  border-color: var(--color-brand-bold);
+  background-color: var(--color-brand-subtle);
+  color: var(--color-brand-bold);
 }
 
 .brand-strong {
-  background-color: var(--bubble-brand-background-color);
-  color: var(--bubble-brand-color);
+  background-color: var(--color-brand);
+  color: var(--color-brand-subtle);
 }
 
 /* success */
 .success {
-  border-color: var(--bubble-success-border-color);
-  background-color: var(--bubble-success-background-color-weak);
-  color: var(--bubble-success-color-weak);
+  border-color: var(--color-success-bold);
+  background-color: var(--color-success-subtle);
+  color: var(--color-success-bold);
 }
 
 .success-strong {
-  background-color: var(--bubble-success-background-color);
-  color: var(--bubble-success-color);
+  background-color: var(--color-success);
+  color: var(--color-success-subtle);
 }
 
 /* info */
 .info {
-  border-color: var(--bubble-info-border-color);
-  background-color: var(--bubble-info-background-color-weak);
-  color: var(--bubble-info-color-weak);
+  border-color: var(--color-info-bold);
+  background-color: var(--color-info-subtle);
+  color: var(--color-info-bold);
 }
 
 .info-strong {
-  background-color: var(--bubble-info-background-color);
-  color: var(--bubble-info-color);
+  background-color: var(--color-info);
+  color: var(--color-info-subtle);
 }
 
 /* warning */
 .warning {
-  border-color: var(--bubble-warning-border-color);
-  background-color: var(--bubble-warning-background-color-weak);
-  color: var(--bubble-warning-color-weak);
+  border-color: var(--color-warning-bold);
+  background-color: var(--color-warning-subtle);
+  color: var(--color-warning-bold);
 }
 
 .warning-strong {
-  background-color: var(--bubble-warning-background-color);
-  color: var(--bubble-warning-color);
+  background-color: var(--color-warning);
+  color: var(--color-warning-subtle);
 }
 
 /* danger */
 .danger {
-  border-color: var(--bubble-danger-border-color);
-  background-color: var(--bubble-danger-background-color-weak);
-  color: var(--bubble-danger-color-weak);
+  border-color: var(--color-danger-bold);
+  background-color: var(--color-danger-subtle);
+  color: var(--color-danger-bold);
 }
 
 .danger-strong {
-  background-color: var(--bubble-danger-background-color);
-  color: var(--bubble-danger-color);
+  background-color: var(--color-danger);
+  color: var(--color-danger-subtle);
 }
 
 .icon > span {
-  font-size: var(--typography-base-font-size);
-  line-height: var(--typography-base-line-height);
-  letter-spacing: var(--typography-base-letter-spacing);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  letter-spacing: var(--letter-height-base);
 
   /* this makes sure the icon is center with the text in the button */
   display: flex;
 }
 
 .bubble-small {
-  font-size: var(--typography-small1-font-size);
-  line-height: var(--typography-small1-line-height);
-  letter-spacing: var(--typography-small1-letter-spacing);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-sma);
+  letter-spacing: var(--letter-height-sm);
 }
 
 .icon-small {
-  font-size: var(--bubble-size-icon-small);
+  font-size: var(--font-size-lg);
 }
 
 .pre-icon {
-  padding-right: var(--bubble-padding-icon);
+  display: inline-flex;
+  padding-right: var(--space-2xs);
 }
 
 .post-icon {
-  padding-left: var(--bubble-padding-icon);
+  display: inline-flex;
+  padding-left: var(--space-2xs);
 }

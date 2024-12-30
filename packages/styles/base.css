@@ -1,0 +1,8 @@
+body {
+  font-size: var(--font-size-base);
+  font-family: Roboto, sans-serif;
+  color: var(--color-on-surface);
+  background-color: var(--color-surface);
+}
+
+

@@ -3,7 +3,6 @@ import { type JSX, Show, createSignal, splitProps } from 'solid-js';
 
 import styles from '$sandbox/components/application-frame/application-frame.module.css';
 
-import Button, { ButtonVariant } from '../../../../../packages/components/button';
 import SideNavigation from '../../../../../packages/components/side-navgiation';
 import type { CommonDataAttributes } from '../../../../../packages/types/generic';
 import type { DynamicRouteNavigation } from '../../stores/dynamic-routes';
@@ -25,9 +24,9 @@ const ApplicationFrameExpandableItem = (passedProps: ApplicationFrameExpandableI
     <div {...restOfProps}>
       <Show when={hasSubNavigation()}>
         <div class={styles.navigationGroupHeader}>
-          <Button variant={ButtonVariant.UNSTYLED} onClick={() => setIsExpanded(!isExpanded())}>
+          <button type="button" onClick={() => setIsExpanded(!isExpanded())}>
             {props.routeKey}
-          </Button>
+          </button>
         </div>
         <Show when={isExpanded()}>
           <ApplicationFrameSubNavigation routes={props.routes} />

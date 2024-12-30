@@ -1,29 +1,24 @@
 .application-frame {
-  color: var(--application-frame-container-color);
-  background-color: var(--application-frame-container-backgound-color);
+
   height: 100vh;
   width: 100vw;
   display: flex;
 }
 
 .toggle-theme-trigger {
-  margin-bottom: var(--application-frame-navigation-padding);
+  margin-bottom: var(--space-base);
 }
 
 .navigation {
-  padding: var(--application-frame-navigation-padding);
+  padding: var(--space-base);
   overflow-y: auto;
-  border-right: 1px solid var(--application-frame-navigation-border-color);
+  border-right: 1px solid var(--color-outline);
   flex: 0 0 350px;
 }
 
 .navigation-group-header {
-  font-weight: var(--typography-base-upper-font-weight);
-  margin-bottom: var(--spacing-small2);
-}
-
-.navigation-sub-section {
-  padding: var(--spacing-small3) 0;
+  margin-top: var(--space-sm);
+  margin-bottom: var(--space-sm);
 }
 
 .sub-container {
@@ -36,5 +31,5 @@
 }
 
 .main-content {
-  padding: var(--application-frame-main-contain-padding);
+  padding: var(--space-base);
 }

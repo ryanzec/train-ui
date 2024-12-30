@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.1",
   "scripts": {
+    "css:build": "tsx scripts/process-design-variables.ts",
     "api:mock": "nodemon --watch application/api --ignore applications/api/lowdb/* --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' applications/api/src/server.ts",
     "build:check": "tsc",
     "lint": "biome check applications packages",
@@ -21,7 +22,8 @@
     "sandbox:build": "vite --config ./applications/sandbox/vite.config.ts build",
     "sandbox:preview": "vite --config ./applications/sandbox/vite.config.ts preview",
     "prepare": "husky",
-    "upgrade-interactive": "npm-check -u -E"
+    "upgrade-interactive": "npm-check -u -E",
+    "svg:clean": "tsx scripts/clean-svgs.ts"
   },
   "dependencies": {
     "@auth0/auth0-spa-js": "2.1.3",
@@ -76,8 +78,10 @@
     "playwright": "1.49.1",
     "postcss": "8.4.49",
     "postcss-nested": "7.0.2",
+    "svgo": "3.3.2",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
+    "tsx": "4.19.2",
     "typescript": "5.7.2",
     "vite": "6.0.6",
     "vite-plugin-solid": "2.11.0",

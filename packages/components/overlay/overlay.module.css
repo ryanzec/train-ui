@@ -2,7 +2,7 @@
   z-index: var(--z-index-overlay);
   position: fixed;
   inset: 0;
-  background-color: var(--overlay-background-color);
+  background-color: var(--color-overlay-background);
 }
 
 .overlay-local {
@@ -10,16 +10,16 @@
 }
 
 .strong {
-  opacity: var(--overlay-opacity-strong);
+  opacity: var(--opacity-overlay-strong);
 }
 
 .weak {
-  opacity: var(--overlay-opacity-weak);
+  opacity: var(--opacity-overlay-weak);
 }
 
 .content {
   position: fixed;
-  z-index: var(--z-index-overlay-content);
+  z-index: var(--z-index-over-overlay);
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

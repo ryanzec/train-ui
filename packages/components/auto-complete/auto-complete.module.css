@@ -13,10 +13,10 @@
 
 .list {
   display: none;
-  z-index: var(--z-index-auto-complete-list);
-  border: 1px solid var(--input-border-color-active);
-  border-bottom-left-radius: var(--input-border-radius);
-  border-bottom-right-radius: var(--input-border-radius);
+  z-index: var(--z-index-combobox-options);
+  border: 1px solid var(--color-outline-active);
+  border-bottom-left-radius: var(--border-radius-sm);
+  border-bottom-right-radius: var(--border-radius-sm);
 
   /* avoid a double border between the input and the auto complete list */
   border-top: 0;
@@ -28,7 +28,7 @@
   width: 100%;
   overflow-y: scroll;
   max-height: 150px;
-  z-index: var(--z-index-auto-complete-opened-list);
+  z-index: var(--z-index-combobox-options-opened);
 }
 
 .loading-indicator-list-item {
@@ -68,11 +68,11 @@
 }
 
 .add-icon {
-  color: var(--auto-complete-color-add);
+  color: var(--color-success);
 }
 
 .remove-icon {
-  color: var(--auto-complete-color-remove);
+  color: var(--color-remove);
 }
 
 .invisible {

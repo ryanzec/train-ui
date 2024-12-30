@@ -1,27 +1,31 @@
 .spacing-left {
-  margin-left: var(--emoji-margin);
+  margin-left: var(--space-2xs);
 }
 
 .spacing-right {
-  margin-right: var(--emoji-margin);
+  margin-right: var(--space-2xs);
 }
 
-.small1 {
-  font-size: var(--sizes-small1);
+.extra_small {
+  font-size: var(--font-size-xs);
+}
+
+.small {
+  font-size: var(--font-size-sm);
 }
 
 .base {
-  font-size: var(--sizes-base);
+  font-size: var(--font-size-base);
 }
 
-.large1 {
-  font-size: var(--sizes-large1);
+.large {
+  font-size: var(--font-size-lg);
 }
 
-.large2 {
-  font-size: var(--sizes-large2);
+.extra_large {
+  font-size: var(--font-size-xl);
 }
 
-.large3 {
-  font-size: var(--sizes-large3);
+.extra_large2 {
+  font-size: var(--font-size-2xl);
 }

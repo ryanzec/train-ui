@@ -4,22 +4,22 @@
 
 .input-container {
   width: 100%;
-  color: var(--input-color);
-  background: var(--input-background-color);
-  border-radius: var(--input-border-radius);
-  border: 1px solid var(--input-border-color);
-  padding: var(--input-padding);
+  color: var(--color-on-surface);
+  background: var(--color-surface-pure);
+  border-radius: var(--border-radius-sm);
+  border: 1px solid var(--color-outline);
+  padding: var(--space-xs);
 }
 
 .container-focus:not(.container-disabled):not(.container-readonly):not(.container-invalid) .input-container,
 .container:hover:not(.container-disabled):not(.container-readonly):not(.container-invalid) .input-container {
-  border-color: var(--input-border-color-active);
+  border-color: var(--color-outline-active);
 }
 
 .input {
-  font-size: var(--typography-base-font-size);
-  line-height: var(--typography-base-line-height);
-  letter-spacing: var(--typography-base-letter-spacing);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  letter-spacing: var(--letter-height-base);
   outline: 0;
   background: 0;
   border: 0;
@@ -28,23 +28,23 @@
 }
 
 .container-disabled {
-  opacity: var(--input-disabled-opacity);
+  opacity: var(--opacitiy-disabled);
 }
 
 .container-readonly .input-container {
-  background-color: var(--input-background-color-readonly);
+  background-color: var(--color-surface-secondary);
 }
 
 .container-invalid .input-container {
-  border-color: var(--input-border-color-error);
+  border-color: var(--color-danger);
 }
 
 .input-container input::placeholder {
-  cursor: var(--input-color-placeholder);
+  cursor: var(--color-input-placeholder);
 }
 
 .textarea::placeholder {
-  color: var(--input-color-placeholder);
+  color: var(--color-input-placeholder);
 }
 
 .input-container {
@@ -59,7 +59,7 @@
    * not sure why the user agent css overrides the inherited color from so need to apply the color for the input
    * directly on the input element itself
    */
-  color: var(--input-color);
+  color: var(--color-on-surface);
 }
 
 .pre-item,
@@ -70,11 +70,11 @@
 }
 
 .pre-item {
-  margin-right: var(--input-margin-pre-post-item);
+  margin-right: var(--space-2xs);
 }
 
 .post-item {
-  margin-left: var(--input-margin-pre-post-item);
+  margin-left: var(--space-2xs);
 }
 
 .pre-item.pre-item-inline {

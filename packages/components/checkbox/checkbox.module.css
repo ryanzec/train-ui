@@ -10,13 +10,13 @@
 }
 
 .checkbox .icon {
-  margin-right: var(--checkbox-margin);
-  font-size: var(--checkbox-size);
+  margin-right: var(--space-2xs);
+  font-size: var(--font-size-xl);
 }
 
 .checkbox input:checked + .icon,
 .checkbox input:indeterminate + .icon {
-  color: var(--checkbox-color-icon-active);
+  color: var(--color-brand);
 }
 
 .align-end {
@@ -39,37 +39,39 @@
 .checkbox-toggle-slider {
   position: relative;
   display: inline-flex;
-  height: var(--checkbox-size-knob);
-  width: var(--checkbox-width-toggle-bar);
-  margin-right: var(--checkbox-margin);
+  height: var(--size-lg);
+  width: var(--size-2xl);
+  margin-right: var(--space-2xs);
+
+  --checkbox-toggle-knob-inner-spacing: 2px;
+  --checkbox-toggle-know-size: calc(var(--size-lg) - calc(var(--checkbox-toggle-knob-inner-spacing) * 2));
 }
 
 .checkbox-toggle-bar {
-  background-color: var(--checkbox-color-icon);
+  background-color: var(--color-neutral);
   width: 100%;
-  height: var(--checkbox-height-toggle-bar);
-  border-radius: var(--border-radius-round);
-  opacity: var(--checkbox-toggle-bar-opacity);
+  height: var(--size-lg);
+  border-radius: var(--border-radius-full);
   align-self: center;
 }
 
 .checkbox-toggle-knob {
   position: absolute;
-  background-color: var(--checkbox-color-icon);
-  width: var(--checkbox-size-knob);
-  height: var(--checkbox-size-knob);
-  border-radius: var(--border-radius-round);
-  flex: 0 0 var(--checkbox-size-knob);
-  left: 0;
+  background-color: var(--color-surface-pure);
+  height: var(--checkbox-toggle-know-size);
+  width: var(--checkbox-toggle-know-size);
+  border-radius: var(--border-radius-full);
+  flex: 0 0 var(--size-xl);
+  top: var(--checkbox-toggle-knob-inner-spacing);
+  left: var(--checkbox-toggle-knob-inner-spacing);
 
-  transition: left var(--checkbox-toggle-slide-duration);
+  transition: left 0.2s;
 }
 
 .checkbox-toggle-on .checkbox-toggle-bar {
-  background-color: var(--checkbox-color-icon-active);
+  background-color: var(--color-brand);
 }
 
 .checkbox-toggle-on .checkbox-toggle-knob {
-  background-color: var(--checkbox-color-icon-active);
-  left: calc(var(--checkbox-width-toggle-bar) - var(--checkbox-size-knob));
+  left: calc(var(--size-2xl) - var(--checkbox-toggle-know-size) - var(--checkbox-toggle-knob-inner-spacing));
 }

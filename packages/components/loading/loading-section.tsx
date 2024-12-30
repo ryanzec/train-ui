@@ -13,8 +13,13 @@ const LoadingSection = (passedProps: ParentProps<CalloutProps>) => {
     <div>
       <Overlay.Local strength={OverlayStrength.WEAK} />
       <Overlay.ContentLocal>
-        <Callout sentiment={CalloutSentiment.INFO} strength={CalloutStrength.STRONG} {...restOfProps}>
-          <Loading iconSize={IconSize.BASE} iconSentiment={IconSentiment.INHERIT} /> {props.children}
+        <Callout
+          sentiment={CalloutSentiment.INFO}
+          strength={CalloutStrength.STRONG}
+          preItem={<Loading iconSize={IconSize.BASE} iconSentiment={IconSentiment.INHERIT} />}
+          {...restOfProps}
+        >
+          {props.children}
         </Callout>{' '}
       </Overlay.ContentLocal>
     </div>

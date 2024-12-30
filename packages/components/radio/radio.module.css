@@ -9,13 +9,13 @@
 }
 
 .radio .icon {
-  margin-right: var(--radio-margin);
-  font-size: var(--radio-size);
-  color: var(--radio-color-icon);
+  margin-right: var(--space-2xs);
+  font-size: var(--font-size-xl);
+  color: var(--color-neutral);
 }
 
 .radio .icon-is-checked {
-  color: var(--radio-color-icon-active);
+  color: var(--color-brand);
 }
 
 .align-end {

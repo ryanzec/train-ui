@@ -198,9 +198,9 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
     <div data-id="date-picker" class={classnames(styles.datePicker, props.class)} {...restOfProps}>
       <div class={styles.header}>
         <Icon class={styles.previousMonthTrigger} icon="chevron_left" onClick={moveToPreviousMonth} />
-        <Button variant={ButtonVariant.UNSTYLED} class={styles.headerText} onClick={onToggleMonthYearSelection}>
+        <button type="button" class={styles.headerText} onClick={onToggleMonthYearSelection}>
           {headerText()}
-        </Button>
+        </button>
         <Icon class={styles.nextMonthTrigger} icon="chevron_right" onClick={moveToNextMonth} />
       </div>
       <div class={styles.calendar}>
@@ -220,7 +220,7 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
                 <Index each={days()}>
                   {(day) => {
                     return (
-                      <Button
+                      <button
                         class={classnames(styles.day, {
                           [styles.dayInactive]: !day().isCurrentMonth,
                           [styles.dayDisabled]: day().isDisabled,
@@ -228,11 +228,11 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
                           [styles.daySelected]: day().formatCurrentCheck === selectedDateFormatted(),
                         })}
                         disabled={day().isDisabled}
-                        variant={ButtonVariant.UNSTYLED}
+                        type="button"
                         onClick={() => selectDate(day())}
                       >
                         {day().day}
-                      </Button>
+                      </button>
                     );
                   }}
                 </Index>

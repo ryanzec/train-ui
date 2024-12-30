@@ -6,20 +6,21 @@
   display: flex;
   align-items: center;
   flex-shrink: 0;
-  background-color: var(--list-background-color-item);
-  padding: var(--list-padding-vertical) var(--list-padding-horizontal);
-  border: 1px solid var(--list-border-color-item);
+  background-color: var(--color-surface-pure);
+  padding: var(--space-2xs) var(--space-xs);
+  border: 1px solid var(--color-outline);
   border-bottom: 0;
 }
 
 .list-item:last-child {
-  border-bottom: 1px solid var(--list-border-color-item);
+  border-bottom: 1px solid var(--color-outline);
 }
 
 .selected-item {
-  background-color: var(--list-background-color-item-selected);
+  background-color: var(--color-surface-secondary);
 }
 
 .pre-item {
-  margin-right: var(--list-margin-pre-item);
+  display: inline-flex;
+  margin-right: var(--space-2xs);
 }

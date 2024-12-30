@@ -33,22 +33,22 @@ export const Sizes = () => {
   return (
     <>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.NEUTRAL} size={IconSize.SMALL2} />
+        <Icon icon="refresh" sentiment={IconSentiment.NEUTRAL} size={IconSize.EXTRA_SMALL} />
       </div>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.BRAND} size={IconSize.SMALL1} />
+        <Icon icon="refresh" sentiment={IconSentiment.BRAND} size={IconSize.SMALL} />
       </div>
       <div>
         <Icon icon="refresh" sentiment={IconSentiment.SUCCESS} size={IconSize.BASE} />
       </div>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.INFO} size={IconSize.LARGE1} />
+        <Icon icon="refresh" sentiment={IconSentiment.INFO} size={IconSize.LARGE} />
       </div>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.WARNING} size={IconSize.LARGE2} />
+        <Icon icon="refresh" sentiment={IconSentiment.WARNING} size={IconSize.EXTRA_LARGE} />
       </div>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.DANGER} size={IconSize.LARGE3} />
+        <Icon icon="refresh" sentiment={IconSentiment.DANGER} size={IconSize.EXTRA_LARGE2} />
       </div>
     </>
   );

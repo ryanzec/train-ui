@@ -1,7 +1,7 @@
 .container {
   display: inline-flex;
   align-items: center;
-  margin-bottom: var(--label-margin);
+  margin-bottom: var(--space-2xs);
   width: 100%;
 }
 

@@ -2,10 +2,10 @@
   position: fixed;
   min-width: 400px;
   min-height: 100px;
-  background-color: var(--dialog-background-color);
-  border-radius: var(--dialog-border-radius);
+  background-color: var(--color-surface-pure);
+  border-radius: var(--border-radius-sm);
   z-index: var(--z-index-dialog);
-  color: var(--dialog-color);
+  color: var(--color-on-surface);
 
   /* centering */
   top: 50%;
@@ -16,11 +16,12 @@
 .dialog-header {
   display: flex;
   align-items: center;
-  font-size: var(--typography-large1-bold-font-size);
-  line-height: var(--typography-large1-bold-line-height);
-  letter-spacing: var(--typography-large1-bold-letter-spacing);
-  padding: var(--dialog-padding-vertical-header-footer) var(--dialog-padding-horizontal);
-  border-bottom: 1px solid var(--dialog-border-color);
+  font-weight: bold;
+  font-size: var(--font-size-lg);
+  line-height: var(--line-height-lg);
+  letter-spacing: var(--letter-height-lg);
+  padding: var(--space-xs) var(--space-sm);
+  border-bottom: 1px solid var(--color-outline);
 }
 
 .close-header-trigger {
@@ -28,14 +29,14 @@
 }
 
 .dialog-content {
-  padding: var(--dialog-padding-vertical-content) var(--dialog-padding-horizontal);
+  padding: var(--space-sm) var(--space-sm);
 }
 
 .dialog-footer {
   display: flex;
   align-items: center;
-  padding: var(--dialog-padding-vertical-header-footer) var(--dialog-padding-horizontal);
-  border-top: 1px solid var(--dialog-border-color);
+  padding: var(--space-xs) var(--space-sm);
+  border-top: 1px solid var(--color-outline);
 }
 
 .dialog-footer-right-aligned {

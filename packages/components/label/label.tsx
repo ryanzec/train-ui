@@ -26,7 +26,7 @@ const Label = (passedProps: LabelProps) => {
       <label class={styles.label} {...restOfProps}>
         {props.children}
         <Show when={props.isLoading}>
-          <Loading class={iconStyles.spacingLeft} iconSize={IconSize.SMALL2} />
+          <Loading class={iconStyles.spacingLeft} iconSize={IconSize.EXTRA_SMALL} />
         </Show>
       </label>
       <Show when={props.postItem}>

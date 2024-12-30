@@ -8,11 +8,11 @@ export enum IconVariant {
 
 export enum IconSize {
   BASE = 'base',
-  SMALL2 = 'small2',
-  SMALL1 = 'small1',
-  LARGE1 = 'large1',
-  LARGE2 = 'large2',
-  LARGE3 = 'large3',
+  EXTRA_SMALL = 'extra-small',
+  SMALL = 'small',
+  LARGE = 'large',
+  EXTRA_LARGE = 'extra-large',
+  EXTRA_LARGE2 = 'extra-large2',
 }
 
 export enum IconSentiment {

@@ -1,5 +1,5 @@
 .form-error {
-  margin-bottom: var(--form-error-margin);
+  margin-bottom: var(--space-sm);
 }
 
 .form-error-hidden {

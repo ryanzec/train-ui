@@ -1,14 +1,14 @@
 .supporting-text {
-  font-size: var(--typography-small1-font-size);
-  line-height: var(--typography-small1-line-height);
-  letter-spacing: var(--typography-small1-letter-spacing);
-  margin-top: var(--supporting-text-margin);
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-sm);
+  letter-spacing: var(--letter-height-sm);
+  margin-top: var(--space-2xs);
 }
 
 .neutral {
-  color: var(--supporting-text-color-neutral);
+  color: var(--color-neutral);
 }
 
 .danger {
-  color: var(--supporting-text-color-danger);
+  color: var(--color-danger);
 }

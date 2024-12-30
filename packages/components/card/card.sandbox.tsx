@@ -14,13 +14,13 @@ export const Default = () => {
       <Card class={styles.card} headerText="Header">
         content
       </Card>
-      <Card class={styles.card} headerText="Header" headerPreItem={<Icon icon="home" size={IconSize.LARGE2} />}>
+      <Card class={styles.card} headerText="Header" headerPreItem={<Icon icon="home" size={IconSize.EXTRA_LARGE} />}>
         content
       </Card>
       <Card
         class={styles.card}
         headerText="Header"
-        headerPreItem={<Icon icon="home" size={IconSize.LARGE2} />}
+        headerPreItem={<Icon icon="home" size={IconSize.EXTRA_LARGE} />}
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}
@@ -35,7 +35,7 @@ export const Default = () => {
       <Card
         class={styles.card}
         headerText="Header"
-        headerPreItem={<Icon icon="home" size={IconSize.LARGE2} />}
+        headerPreItem={<Icon icon="home" size={IconSize.EXTRA_LARGE} />}
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}
@@ -58,7 +58,7 @@ export const Default = () => {
       <Card
         class={styles.card}
         headerText="Header"
-        headerPreItem={<Icon icon="home" size={IconSize.LARGE2} />}
+        headerPreItem={<Icon icon="home" size={IconSize.EXTRA_LARGE} />}
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}
@@ -82,7 +82,7 @@ export const Default = () => {
       <Card
         class={styles.card}
         headerText="No content"
-        headerPreItem={<Icon icon="home" size={IconSize.LARGE2} />}
+        headerPreItem={<Icon icon="home" size={IconSize.EXTRA_LARGE} />}
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}

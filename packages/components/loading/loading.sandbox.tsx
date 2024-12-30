@@ -9,11 +9,11 @@ export default {
 export const General = () => {
   return (
     <div>
-      <Loading iconSize={IconSize.SMALL1} />
+      <Loading iconSize={IconSize.SMALL} />
       <Loading iconSize={IconSize.BASE} />
-      <Loading iconSize={IconSize.LARGE1} />
-      <Loading iconSize={IconSize.LARGE2} />
-      <Loading iconSize={IconSize.LARGE3} />
+      <Loading iconSize={IconSize.LARGE} />
+      <Loading iconSize={IconSize.EXTRA_LARGE} />
+      <Loading iconSize={IconSize.EXTRA_LARGE2} />
     </div>
   );
 };

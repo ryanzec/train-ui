@@ -4,11 +4,10 @@
   align-items: center;
   border: 0;
   outline: 0;
-  padding: var(--button-padding-vertical) var(--button-padding-horizontal);
-  border-radius: var(--button-border-radius);
+  padding: var(--space-xs) var(--space-base);
+  border-radius: var(--border-radius-lg);
   cursor: pointer;
   background-color: transparent;
-  min-height: var(--button-min-height);
   font: inherit;
 
   /* when there is a pre icon, that change the buttons baseline so using top to make sure buttons always align */
@@ -22,27 +21,12 @@
 }
 
 .button[disabled]:not(.unstyled) {
-  opacity: var(--button-color-opacity-disabled);
-}
-
-/* unstyled */
-.unstyled {
-  display: inherit;
-  padding: 0;
-  min-height: initial;
-  vertical-align: initial;
+  opacity: var(--opacity-disabled);
 }
 
 /* outlined */
 .outlined {
   border: 1px solid transparent;
-}
-
-/* text */
-.text {
-  min-height: initial;
-  vertical-align: initial;
-  padding: 0;
 }
 
 .text .button-underlay {
@@ -51,236 +35,241 @@
 
 /* neutral */
 .neutral {
-  color: var(--button-neutral-color);
+  color: var(--color-neutral-bold);
 }
 
 .neutral.outlined {
-  border-color: var(--button-neutral-border-color);
+  border-color: var(--color-neutral-bold);
 }
 
 .neutral.filled {
-  background-color: var(--button-neutral-background-color-filled);
-  color: var(--button-neutral-color-filled);
+  background-color: var(--color-neutral);
+  color: var(--color-neutral-subtle);
 }
 
 .neutral.filled:hover {
-  background-color: var(--button-neutral-background-color-filled-hover);
+  background-color: var(--color-neutral2);
 }
 
 .neutral.filled:active {
-  background-color: var(--button-neutral-background-color-filled-active);
+  background-color: var(--color-neutral3);
 }
 
 .neutral.weak {
-  background-color: var(--button-neutral-background-color);
+  background-color: var(--color-neutral-subtle);
 }
 
 .neutral.weak:hover,
 .neutral.outlined:hover,
 .neutral.ghost:hover {
-  background-color: var(--button-neutral-background-color-hover);
+  background-color: var(--color-neutral-subtle2);
 }
 
 .neutral.weak:active,
 .neutral.outlined:active,
 .neutral.outlined.is-selected,
 .neutral.ghost:active {
-  background-color: var(--button-neutral-background-color-active);
+  background-color: var(--color-neutral-subtle3);
 }
 
 /* brand */
 .brand {
-  color: var(--button-brand-color);
+  color: var(--color-brand-bold);
 }
 
 .brand.outlined {
-  border-color: var(--button-brand-border-color);
+  border-color: var(--color-brand-bold);
 }
 
 .brand.filled {
-  background-color: var(--button-brand-background-color-filled);
-  color: var(--button-brand-color-filled);
+  background-color: var(--color-brand);
+  color: var(--color-brand-subtle);
 }
 
 .brand.filled:hover {
-  background-color: var(--button-brand-background-color-filled-hover);
+  background-color: var(--color-brand2);
 }
 
 .brand.filled:active {
-  background-color: var(--button-brand-background-color-filled-active);
+  background-color: var(--color-brand3);
 }
 
 .brand.weak {
-  background-color: var(--button-brand-background-color);
+  background-color: var(--color-brand-subtle);
 }
 
 .brand.weak:hover,
 .brand.outlined:hover,
 .brand.ghost:hover {
-  background-color: var(--button-brand-background-color-hover);
+  background-color: var(--color-brand-subtle2);
 }
 
 .brand.weak:active,
 .brand.outlined:active,
+.brand.outlined.is-selected,
 .brand.ghost:active {
-  background-color: var(--button-brand-background-color-active);
+  background-color: var(--color-brand-subtle3);
 }
 
 /* success */
 .success {
-  color: var(--button-success-color);
+  color: var(--color-success-bold);
 }
 
 .success.outlined {
-  border-color: var(--button-success-border-color);
+  border-color: var(--color-success-bold);
 }
 
 .success.filled {
-  background-color: var(--button-success-background-color-filled);
-  color: var(--button-success-color-filled);
+  background-color: var(--color-success);
+  color: var(--color-success-subtle);
 }
 
 .success.filled:hover {
-  background-color: var(--button-success-background-color-filled-hover);
+  background-color: var(--color-success2);
 }
 
 .success.filled:active {
-  background-color: var(--button-success-background-color-filled-active);
+  background-color: var(--color-success3);
 }
 
 .success.weak {
-  background-color: var(--button-success-background-color);
+  background-color: var(--color-success-subtle);
 }
 
 .success.weak:hover,
 .success.outlined:hover,
 .success.ghost:hover {
-  background-color: var(--button-success-background-color-hover);
+  background-color: var(--color-success-subtle2);
 }
 
 .success.weak:active,
 .success.outlined:active,
+.success.outlined.is-selected,
 .success.ghost:active {
-  background-color: var(--button-success-background-color-active);
+  background-color: var(--color-success-subtle3);
 }
 
 /* info */
 .info {
-  color: var(--button-info-color);
+  color: var(--color-info-bold);
 }
 
 .info.outlined {
-  border-color: var(--button-info-border-color);
+  border-color: var(--color-info-bold);
 }
 
 .info.filled {
-  background-color: var(--button-info-background-color-filled);
-  color: var(--button-info-color-filled);
+  background-color: var(--color-info);
+  color: var(--color-info-subtle);
 }
 
 .info.filled:hover {
-  background-color: var(--button-info-background-color-filled-hover);
+  background-color: var(--color-info2);
 }
 
 .info.filled:active {
-  background-color: var(--button-info-background-color-filled-active);
+  background-color: var(--color-info3);
 }
 
 .info.weak {
-  background-color: var(--button-info-background-color);
+  background-color: var(--color-info-subtle);
 }
 
 .info.weak:hover,
 .info.outlined:hover,
 .info.ghost:hover {
-  background-color: var(--button-info-background-color-hover);
+  background-color: var(--color-info-subtle2);
 }
 
 .info.weak:active,
 .info.outlined:active,
+.info.outlined.is-selected,
 .info.ghost:active {
-  background-color: var(--button-info-background-color-active);
+  background-color: var(--color-info-subtle3);
 }
 
 /* warning */
 .warning {
-  color: var(--button-warning-color);
+  color: var(--color-warning-bold);
 }
 
 .warning.outlined {
-  border-color: var(--button-warning-border-color);
+  border-color: var(--color-warning-bold);
 }
 
 .warning.filled {
-  background-color: var(--button-warning-background-color-filled);
-  color: var(--button-warning-color-filled);
+  background-color: var(--color-warning);
+  color: var(--color-warning-subtle);
 }
 
 .warning.filled:hover {
-  background-color: var(--button-warning-background-color-filled-hover);
+  background-color: var(--color-warning2);
 }
 
 .warning.filled:active {
-  background-color: var(--button-warning-background-color-filled-active);
+  background-color: var(--color-warning3);
 }
 
 .warning.weak {
-  background-color: var(--button-warning-background-color);
+  background-color: var(--color-warning-subtle);
 }
 
 .warning.weak:hover,
 .warning.outlined:hover,
 .warning.ghost:hover {
-  background-color: var(--button-warning-background-color-hover);
+  background-color: var(--color-warning-subtle2);
 }
 
 .warning.weak:active,
 .warning.outlined:active,
+.warning.outlined.is-selected,
 .warning.ghost:active {
-  background-color: var(--button-warning-background-color-active);
+  background-color: var(--color-warning-subtle3);
 }
 
 /* danger */
 .danger {
-  color: var(--button-danger-color);
+  color: var(--color-danger-bold);
 }
 
 .danger.outlined {
-  border-color: var(--button-danger-border-color);
+  border-color: var(--color-danger-bold);
 }
 
 .danger.filled {
-  background-color: var(--button-danger-background-color-filled);
-  color: var(--button-danger-color-filled);
+  background-color: var(--color-danger);
+  color: var(--color-danger-subtle);
 }
 
 .danger.filled:hover {
-  background-color: var(--button-danger-background-color-filled-hover);
+  background-color: var(--color-danger2);
 }
 
 .danger.filled:active {
-  background-color: var(--button-danger-background-color-filled-active);
+  background-color: var(--color-danger3);
 }
 
 .danger.weak {
-  background-color: var(--button-danger-background-color);
+  background-color: var(--color-danger-subtle);
 }
 
 .danger.weak:hover,
 .danger.outlined:hover,
 .danger.ghost:hover {
-  background-color: var(--button-danger-background-color-hover);
+  background-color: var(--color-danger-subtle2);
 }
 
 .danger.weak:active,
 .danger.outlined:active,
+.danger.outlined.is-selected,
 .danger.ghost:active {
-  background-color: var(--button-danger-background-color-active);
+  background-color: var(--color-danger-subtle3);
 }
 
 /* icon button */
 .icon-button {
-  padding: var(--button-padding-vertical) var(--button-padding-horizontal);
+  padding: var(--space-xs) var(--space-base);
 }
 
 /* icons */
@@ -289,11 +278,11 @@
 }
 
 .icon.pre-item {
-  margin-right: var(--button-margin-pre-post-item);
+  margin-right: var(--space-2xs);
 }
 
 .icon.post-item {
-  margin-left: var(--button-margin-pre-post-item);
+  margin-left: var(--space-2xs);
 }
 
 .is-loading .icon {
@@ -306,14 +295,14 @@
 /* group */
 .button-group {
   display: inline-flex;
-  gap: var(--button-margin-between-self);
+  gap: var(--space-xs);
 }
 
 /* this basically is a toggle button */
 .button-group-attached {
   gap: 0;
-  border: 1px solid var(--button-neutral-border-color);
-  border-radius: var(--button-border-radius);
+  border: 1px solid var(--color-neutral-bold);
+  border-radius: var(--border-radius-lg);
 
   .button {
     border: 0;
@@ -327,12 +316,12 @@
     opacity: 1;
 
     .button-content {
-      opacity: var(--button-color-opacity-disabled);
+      opacity: var(--opacity-disabled);
     }
   }
 
   .button:not(:first-child) {
-    border-left: 1px solid var(--button-neutral-border-color);
+    border-left: 1px solid var(--color-neutral-bold);
   }
 
   .button:first-child {
@@ -357,16 +346,16 @@
 
 .drop-down-content {
   display: none;
-  border: 1px solid var(--button-drop-down-border-color);
-  padding: var(--button-drop-down-padding);
+  border: 1px solid var(--color-outline-active);
+  padding: var(--space-xs);
   position: absolute;
   top: 0;
   left: 0;
-  background-color: var(--button-drop-down-background-color);
+  background-color: var(--color-surface);
   width: max-content;
-  z-index: var(--z-index-tooltip-content);
-  border-radius: var(--button-drop-down-border-radius);
-  color: var(--button-drop-down-color);
+  z-index: var(--z-index-tooltip);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-on-surface);
 }
 
 .drop-down-content-is-enabled {

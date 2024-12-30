@@ -202,7 +202,7 @@ export const Clear = () => {
 };
 
 export const ResetWithoutInitial = () => {
-  const { form, reset } = formStoreUtils.createForm<SimpleFormData, zod.ZodRawShape>({
+  const { form, reset, touchedFields, dirtyFields } = formStoreUtils.createForm<SimpleFormData, zod.ZodRawShape>({
     onSubmit: () => {},
   });
 
@@ -230,19 +230,23 @@ export const ResetWithoutInitial = () => {
           </Button>
         </div>
       </form>
+      <ExpandableCode label="Touched Fields">{JSON.stringify(touchedFields(), null, 2)}</ExpandableCode>
+      <ExpandableCode label="Dirty Fields">{JSON.stringify(dirtyFields(), null, 2)}</ExpandableCode>
     </div>
   );
 };
 
 export const ResetWithInitial = () => {
-  const { form, reset, clear } = formStoreUtils.createForm<SimpleFormData, zod.ZodRawShape>({
-    onSubmit: () => {},
-    initialValues: {
-      title: 'test',
-      title2: 'test2',
-      textarea: 'test3',
+  const { form, reset, clear, touchedFields, dirtyFields } = formStoreUtils.createForm<SimpleFormData, zod.ZodRawShape>(
+    {
+      onSubmit: () => {},
+      initialValues: {
+        title: 'test',
+        title2: 'test2',
+        textarea: 'test3',
+      },
     },
-  });
+  );
 
   return (
     <div data-id="container">
@@ -271,6 +275,8 @@ export const ResetWithInitial = () => {
           </Button>
         </div>
       </form>
+      <ExpandableCode label="Touched Fields">{JSON.stringify(touchedFields(), null, 2)}</ExpandableCode>
+      <ExpandableCode label="Dirty Fields">{JSON.stringify(dirtyFields(), null, 2)}</ExpandableCode>
     </div>
   );
 };
@@ -933,12 +939,14 @@ export const NestedArrayFields = () => {
 
 interface DynamicFormData {
   title: string;
+  addDefaultValue: string[];
   [key: string]: CommonDataType;
 }
 
 const dynamicFormDataSchema = zodUtils.schemaForType<DynamicFormData>()(
   zod.object({
     title: zod.string().min(1, 'Required'),
+    addDefaultValue: zod.string().array().min(0),
   }),
 );
 
@@ -1057,6 +1065,9 @@ const radioValueMaybe = 'maybe';
 export const DynamicFormElements = () => {
   const formStore = formStoreUtils.createForm<DynamicFormData, typeof dynamicFormDataSchema.shape>({
     schema: dynamicFormDataSchema,
+    initialValues: {
+      addDefaultValue: ['yes'],
+    },
     onSubmit: (values) => {
       console.log(values);
     },
@@ -1084,6 +1095,15 @@ export const DynamicFormElements = () => {
       });
     }
 
+    setRandomInputs([
+      ...randomInputs(),
+      {
+        ...randomField,
+        name: randomFieldName,
+      },
+    ]);
+
+    // need to make sure this runs after the input are set otherwise this will error out
     if (currentAddDefaultValue) {
       if (randomField.type === RandomFormFieldType.CHECKBOX_TOGGLE) {
         formStore.setValue(randomFieldName, [checkedValue1]);
@@ -1093,14 +1113,6 @@ export const DynamicFormElements = () => {
         formStore.setValue(randomFieldName, radioValueMaybe);
       }
     }
-
-    setRandomInputs([
-      ...randomInputs(),
-      {
-        ...randomField,
-        name: randomFieldName,
-      },
-    ]);
   };
 
   createEffect(() => {
@@ -1113,7 +1125,7 @@ export const DynamicFormElements = () => {
     formStore.setSchema(
       zodUtils.schemaForType<DynamicFormData>()(
         zod.object({
-          title: zod.string().min(1, 'Required'),
+          ...dynamicFormDataSchema.shape,
           ...customZodElements,
         }),
       ),
@@ -1124,14 +1136,6 @@ export const DynamicFormElements = () => {
 
   return (
     <div data-id="container">
-      {/*<div>validation state separate from validation messages: {JSON.stringify(formStore.isValid())}</div>*/}
-      <Checkbox
-        labelElement="add default value"
-        name="addDefaultValue"
-        value="yes"
-        checked={addDefaultValue()}
-        onClick={(event) => setAddDefaultValue((event.target as HTMLInputElement).checked)}
-      />{' '}
       <For each={possibleRandomFields}>
         {(randomField) => {
           return (
@@ -1142,6 +1146,7 @@ export const DynamicFormElements = () => {
         }}
       </For>
       <form use:form>
+        <Checkbox labelElement="add default value" name="addDefaultValue" value="yes" />
         <FormField>
           <Label>Title</Label>
           <Input
@@ -1371,6 +1376,7 @@ export const DynamicFormElements = () => {
       <h1>Debug Tools</h1>
       <ExpandableCode label="Errors">{JSON.stringify(formStore.errors(), null, 2)}</ExpandableCode>
       <ExpandableCode label="Touched Fields">{JSON.stringify(formStore.touchedFields(), null, 2)}</ExpandableCode>
+      <ExpandableCode label="Dirty Fields">{JSON.stringify(formStore.dirtyFields(), null, 2)}</ExpandableCode>
     </div>
   );
 };

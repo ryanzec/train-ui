@@ -79,7 +79,9 @@ export interface CreateFormReturn<TFormData extends object, TSchemaObject extend
   clear: () => void;
   reset: () => void;
   isTouched: (name: keyof TFormData) => boolean;
+  isDirty: (name: keyof TFormData) => boolean;
   touchedFields: Accessor<Array<keyof TFormData>>;
+  dirtyFields: Accessor<Array<keyof TFormData>>;
   updateValidationErrors: (fieldName?: string) => boolean;
   isValid: () => boolean;
   watch: (watcher: FormWatcher<TFormData>) => WatchReturns;
@@ -98,9 +100,11 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
   passedOptions: CreateFormOptions<TFormData, TSchemaObject>,
 ): CreateFormReturn<TFormData, TSchemaObject> => {
   const options = Object.assign({}, defaultCreateFormOptions, passedOptions);
+  const [formInitialized, setFormInitialized] = createSignal(false);
   const [errors, setErrors] = createSignal<FormErrorsData<TFormData>>({});
   const [data, setData] = createSignal<Partial<TFormData>>(options.initialValues ?? {});
   const [touchedFields, setTouchedFields] = createSignal<Array<keyof TFormData>>([]);
+  const [dirtyFields, setDirtyFields] = createSignal<Array<keyof TFormData>>([]);
   const [formElement, setFormElement] = createSignal<HTMLFormElement>();
   const [formWatchers, setFormWatchers] = createSignal<FormWatcher<TFormData>[]>([]);
 
@@ -117,6 +121,18 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
 
   const removeAsTouched = (name: keyof TFormData) => {
     setTouchedFields((previousTouchedFields) => previousTouchedFields.filter((fieldName) => fieldName !== name));
+  };
+
+  const isDirty = (name: keyof TFormData) => {
+    return dirtyFields().includes(name);
+  };
+
+  const setAsDirty = (name: keyof TFormData) => {
+    setDirtyFields((previousTouchedFields) => [...new Set([...previousTouchedFields, name])]);
+  };
+
+  const removeAsDirty = (name: keyof TFormData) => {
+    setDirtyFields((previousTouchedFields) => previousTouchedFields.filter((fieldName) => fieldName !== name));
   };
 
   interface TriggerValueChangeOptions {
@@ -137,15 +153,28 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
       }
     }
 
+    // these values eqaute to undefined as it related to checking for dirty state (so that is some types something
+    // and then clear it, it is not longer dirty since it is not)
+    const dirtyValueCheck = value === '' || value === null || value === undefined ? undefined : value;
+    const isDirty = lodash.isEqual(dirtyValueCheck, options.initialValues?.[name as keyof TFormData]) === false;
+    let currentValueIsTouched = touchedFields().includes(name as keyof TFormData);
+
     if (selfOptions.isTouched !== undefined) {
-      if (selfOptions.isTouched) {
+      // once touched only resetting the form component can undo that
+      if (currentValueIsTouched || selfOptions.isTouched) {
         setAsTouched(name as keyof TFormData);
+        currentValueIsTouched = true;
       } else {
         removeAsTouched(name as keyof TFormData);
+        currentValueIsTouched = false;
       }
     }
 
-    const currentValueIsTouched = touchedFields().includes(name as keyof TFormData);
+    if (isDirty) {
+      setAsDirty(name as keyof TFormData);
+    } else {
+      removeAsDirty(name as keyof TFormData);
+    }
 
     if (schema() && options.validateOnChange && currentValueIsTouched) {
       updateValidationErrors(name);
@@ -345,7 +374,9 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
       }
 
       if (checked) {
-        checkboxValue.push(value);
+        // since checkboxValue is from a store and that is not directly mutable, we need to create a new array
+        // insteead of using push
+        checkboxValue = [...new Set([...checkboxValue, value])];
       } else {
         checkboxValue = checkboxValue.filter((currentValue: unknown) => currentValue !== value);
       }
@@ -356,6 +387,8 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
         lodash.set(draft, name, checkboxValue);
       }),
     );
+
+    console.log(`form is initialized ${formInitialized()}`);
 
     triggerValueChanged(name, lodash.get(data(), name), previousValue, {
       isTouched: true,
@@ -543,6 +576,8 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     const domObserver = new MutationObserver(domMutationHandler);
 
     domObserver.observe(element, { childList: true, subtree: true });
+
+    setFormInitialized(true);
   };
 
   const addArrayField = (name: string, value: unknown) => {
@@ -696,7 +731,9 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     reset,
     setSchema,
     isTouched,
+    isDirty,
     touchedFields,
+    dirtyFields,
     updateValidationErrors,
     isValid,
     watch,
@@ -705,4 +742,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
 
 export const formStoreUtils = {
   createForm,
+  getValidationState: (errors?: string[]) => {
+    return errors ? FormInputValidationState.INVALID : FormInputValidationState.VALID;
+  },
 };

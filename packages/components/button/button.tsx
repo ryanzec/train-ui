@@ -42,7 +42,6 @@ export const Button = (passedProps: ParentProps<ButtonProps>) => {
         [styles.outlined]: props.variant === ButtonVariant.OUTLINED,
         [styles.text]: props.variant === ButtonVariant.TEXT,
         [styles.ghost]: props.variant === ButtonVariant.GHOST,
-        [styles.unstyled]: props.variant === ButtonVariant.UNSTYLED,
         [styles.neutral]: props.sentiment === ButtonSentiment.NEUTRAL,
         [styles.brand]: props.sentiment === ButtonSentiment.BRAND,
         [styles.success]: props.sentiment === ButtonSentiment.SUCCESS,

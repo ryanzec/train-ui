@@ -74,11 +74,12 @@ const Emoji = (passedProps: EmojiProps) => {
       role="img"
       aria-label={emojisToRender().join(' ')}
       class={classnames(props.class, {
-        [styles.small1]: props.size === IconSize.SMALL1,
+        [styles.extra_small]: props.size === IconSize.EXTRA_SMALL,
+        [styles.small]: props.size === IconSize.SMALL,
         [styles.base]: props.size === IconSize.BASE,
-        [styles.large1]: props.size === IconSize.LARGE1,
-        [styles.large2]: props.size === IconSize.LARGE2,
-        [styles.large3]: props.size === IconSize.LARGE3,
+        [styles.large]: props.size === IconSize.LARGE,
+        [styles.extra_large]: props.size === IconSize.EXTRA_LARGE,
+        [styles.extra_large2]: props.size === IconSize.EXTRA_LARGE2,
         [styles.spacingLeft]: props.spacing === EmojiSpacing.LEFT,
         [styles.spacingRight]: props.spacing === EmojiSpacing.RIGHT,
       })}
