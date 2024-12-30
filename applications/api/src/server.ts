@@ -7,6 +7,7 @@ import { registerHealthApi } from './apis/health';
 import { registerQueryApi } from './apis/query';
 import { registerUsersApi } from './apis/users';
 import { delayerHook } from './middleware/delayer';
+import { mockerrorHook } from './middleware/mockerror';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ await api.register(cors, {
 });
 
 api.addHook('preHandler', delayerHook);
+api.addHook('preHandler', mockerrorHook);
 
 // register routes
 registerHealthApi(api);

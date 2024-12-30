@@ -39,6 +39,6 @@ export const registerQueryApi = (api: FastifyInstance) => {
       return response.code(400).send();
     }
 
-    return response.code(200).send({ query: { id: request.id } });
+    return response.code(200).send({ query: { id: request.body.id } });
   });
 };

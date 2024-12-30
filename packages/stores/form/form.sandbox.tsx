@@ -513,9 +513,9 @@ export const ArrayFields = () => {
         + Add Array Field
       </Button>
       <form use:form>
-        <For each={data().array}>
+        <Index each={data().array}>
           {(arrayField, index) => {
-            const getArrayFieldError = () => errors().array?.[index()] ?? {};
+            const getArrayFieldError = () => errors().array?.[index] ?? {};
 
             return (
               <div data-id="array-field-element">
@@ -523,7 +523,7 @@ export const ArrayFields = () => {
                   <Label>Part A</Label>
                   <Input
                     type="text"
-                    name={`array.${index()}.partA`}
+                    name={`array.${index}.partA`}
                     validationState={
                       getArrayFieldError().partA?.errors
                         ? FormInputValidationState.INVALID
@@ -542,7 +542,7 @@ export const ArrayFields = () => {
                   <Label>Part B</Label>
                   <Input
                     type="text"
-                    name={`array.${index()}.partB`}
+                    name={`array.${index}.partB`}
                     validationState={
                       getArrayFieldError().partB?.errors
                         ? FormInputValidationState.INVALID
@@ -560,14 +560,14 @@ export const ArrayFields = () => {
                 <Button
                   // @todo(!!!) make danger when implemented
                   data-id="remove-array-field-button"
-                  onclick={() => removeArrayField('array', index())}
+                  onclick={() => removeArrayField('array', index)}
                 >
                   REMOVE
                 </Button>
               </div>
             );
           }}
-        </For>
+        </Index>
         <SupportingText
           data-id={dynamicDataId.VALIDATION_MESSAGE}
           supportingText={errors().array?.errors}

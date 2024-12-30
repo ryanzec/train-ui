@@ -143,7 +143,9 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
       }
     }
 
-    if (schema() && options.validateOnChange) {
+    const currentValueIsTouched = touchedFields().includes(name as keyof TFormData);
+
+    if (schema() && options.validateOnChange && currentValueIsTouched) {
       updateValidationErrors(name);
     }
   };
@@ -565,7 +567,6 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
 
     const currentValue = lodash.get(data(), name) as any[];
 
-    const t = performance.now();
     let touchedAsString = JSON.stringify(touchedFields());
 
     for (let i = removeIndex + 1; i <= currentValue.length; i++) {
@@ -573,7 +574,6 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     }
 
     setTouchedFields(JSON.parse(touchedAsString));
-    console.log(`touched fields updates took ${performance.now() - t}ms`);
 
     updateElementsFromStore(`[name^="${name}"]`);
     triggerValueChanged(name, currentValue, previousValue, { isTouched: true });

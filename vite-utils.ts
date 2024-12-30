@@ -1,7 +1,7 @@
+import type { CSSModulesOptions } from 'vite';
+
 import path from 'path';
 
-import { CSSModulesOptions } from 'vite';
-import EnvironmentPlugin from 'vite-plugin-environment';
 import solidPlugin from 'vite-plugin-solid';
 
 const baseConfiguration = {
@@ -17,22 +17,22 @@ const baseConfiguration = {
       localsConvention: 'camelCase' as CSSModulesOptions['localsConvention'],
     },
   },
-  plugins: [solidPlugin(), EnvironmentPlugin('all')],
-  server: {
-    watch: {
-      ignored: ['**/coverage/**'],
-    },
-  },
+  plugins: [solidPlugin() /*, EnvironmentPlugin('all')*/],
+  // server: {
+  //   watch: {
+  //     ignored: ['**/coverage/**'],
+  //   },
+  // },
 
   // not sure why but this is required for the solid-dnd package to work
   // reference: https://github.com/thisbeyond/solid-dnd/issues/53#issuecomment-1272076800
-  optimizeDeps: {
-    extensions: ['jsx'],
+  // optimizeDeps: {
+  // extensions: ['jsx'],
 
-    // prevents React related error with this library
-    // reference: https://github.com/solidjs/vite-plugin-solid/issues/41
-    // exclude: ['@tanstack/solid-query'],
-  },
+  // prevents React related error with this library
+  // reference: https://github.com/solidjs/vite-plugin-solid/issues/41
+  // exclude: ['@tanstack/solid-query'],
+  // },
 };
 
 export const viteUtils = {

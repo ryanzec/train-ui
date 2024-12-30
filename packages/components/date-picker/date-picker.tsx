@@ -9,7 +9,7 @@ import Icon from '$/components/icon';
 import TimeInput from '$/components/time-input';
 import { FormInputValidationState } from '$/stores/form';
 import { dateTimeFormat } from '$/utils/date';
-import { developmentUtils } from '$/utils/development';
+import { loggerUtils } from '$/utils/logger';
 
 interface DayData {
   isDisabled: boolean;
@@ -160,7 +160,7 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
 
   const selectDate = (day: DayData) => {
     if (day.isDisabled) {
-      developmentUtils.logWarn(`can't select a disabled day`);
+      loggerUtils.warn(`can't select a disabled day`);
 
       return;
     }
@@ -174,7 +174,8 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
     date = date.year(day.date.year());
 
     if (!dayjs(date).isValid()) {
-      developmentUtils.logWarn(`can't select an invalid date`, date);
+      loggerUtils.warn(`can't select an invalid date`, date);
+
       return;
     }
 

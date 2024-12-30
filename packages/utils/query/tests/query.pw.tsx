@@ -121,7 +121,7 @@ test.describe('query', () => {
     }) => {
       await page.goto(playwrightUtils.buildUrl(urls.mutationQueryOptimistic, { includeApiMocks: true }));
 
-      await page.locator(locators.createInput).type('create');
+      await page.locator(locators.createInput).fill('create');
       await page.locator(locators.addItemTrigger).click();
 
       await expect(page.locator(locators.item)).toHaveCount(3);

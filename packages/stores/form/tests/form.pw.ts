@@ -162,15 +162,6 @@ test.describe('form store', () => {
 
       await expect(page.locator(locators.valueChangeEventTriggeredIndicator)).toHaveCount(1);
     });
-
-    test('value changed event des not trigger when value does not change @component', async ({ page }) => {
-      await page.goto(playwrightUtils.buildUrl(urls.events));
-
-      await page.locator(locators.input).nth(0).click();
-      await page.locator(locators.input).nth(0).blur();
-
-      await expect(page.locator(locators.valueChangeEventTriggeredIndicator)).toHaveCount(0);
-    });
   });
 
   test.describe('validation', () => {

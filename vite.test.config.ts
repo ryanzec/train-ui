@@ -8,18 +8,5 @@ export default defineConfig({
   root: __dirname,
 
   // @ts-expect-error not sure why this causes a typescript error
-  test: {
-    coverage: {
-      all: true,
-      exclude: [
-        '**/*.spec.ts',
-        '**/*.spec.tsx',
-        'packages/components/**/*',
-        'packages/views/**/*',
-        '*.*',
-        'applications/web/**/*',
-        'packages/types/**/*',
-      ],
-    },
-  },
+  test: { include: ['packages/**/*.spec.{js,ts}', 'applications/**/*.spec.{js,ts}'] },
 });

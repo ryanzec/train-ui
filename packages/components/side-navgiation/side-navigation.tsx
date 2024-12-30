@@ -25,7 +25,6 @@ const SideNavigation = (passedProps: SideNavigationProps) => {
   const [isExpanded, setIsExpanded] = createSignal(props.defaultState === SideNavigationState.EXPANDED);
 
   const toggleIsExpanded = () => {
-    console.log('test');
     setIsExpanded(!isExpanded());
   };
 
