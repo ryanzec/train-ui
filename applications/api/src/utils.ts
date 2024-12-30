@@ -1,4 +1,4 @@
-import { ResponseWrapper } from '$/data-models/utils';
+import type { ResponseWrapper } from '$/data-models/utils';
 
 export const FAKER_STANDARD_SEED = 1;
 

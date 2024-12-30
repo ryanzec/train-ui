@@ -1,8 +1,8 @@
 import classnames from 'classnames';
-import { JSX, ParentProps, splitProps } from 'solid-js';
+import { type JSX, type ParentProps, splitProps } from 'solid-js';
 
 import styles from '$/components/radio/radio.module.css';
-import { FormInputValidationState } from '$/stores/form/utils';
+import type { FormInputValidationState } from '$/stores/form/utils';
 
 export interface RadioGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
   validationState?: FormInputValidationState;

@@ -2,8 +2,7 @@ import { HttpError } from '$/utils/error';
 
 export interface HttpRequest<TResponse> extends Omit<RequestInit, 'credentials'> {
   withCredentials?: boolean;
-  // since this for an api request which can basically have any data, any is valid in this case
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: since this for an api request which can basically have any data, any is valid in this case
   payload?: Record<string, any>;
 
   urlSearchParams?: URLSearchParams;
@@ -37,24 +36,20 @@ export enum HttpMethod {
   TRACE = 'TRACE',
 }
 
-// this handles generic requests so it needs to allow for any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: this handles generic requests so it needs to allow for any
 const httpRequestInterceptors: Array<(requestOptions: HttpRequest<any>) => HttpRequest<any>> = [];
-// this handles generic requests so it needs to allow for any
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: this handles generic requests so it needs to allow for any
 const httpResponseInterceptors: Array<(requestOptions: HttpRequest<any>, response: any) => any> = [];
 
 const addHttpRequestInterceptor = <TResponse>(
-  // this handles generic requests so it needs to allow for any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: this handles generic requests so it needs to allow for any
   interceptor: (requestOptions: HttpRequest<any>) => HttpRequest<TResponse>,
 ) => {
   httpRequestInterceptors.push(interceptor);
 };
 
 const removeHttpRequestInterceptor = <TResponse>(
-  // this handles generic requests so it needs to allow for any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: this handles generic requests so it needs to allow for any
   interceptor: (requestOptions: HttpRequest<any>) => HttpRequest<TResponse>,
 ) => {
   httpRequestInterceptors.push(interceptor);
@@ -75,16 +70,14 @@ const processRequestInterceptors = <TResponse>(requestOptions: HttpRequest<TResp
 };
 
 const addHttpResponseInterceptor = <TResponse>(
-  // this handles generic requests so it needs to allow for any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: his handles generic requests so it needs to allow for any
   interceptor: (requestOptions: HttpRequest<any>, response: any) => TResponse,
 ) => {
   httpResponseInterceptors.push(interceptor);
 };
 
 const removeHttpResponseInterceptor = <TResponse>(
-  // this handles generic requests so it needs to allow for any
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: this handles generic requests so it needs to allow for any
   interceptor: (requestOptions: HttpRequest<any>, response: any) => TResponse,
 ) => {
   httpResponseInterceptors.push(interceptor);

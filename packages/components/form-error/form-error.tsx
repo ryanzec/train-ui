@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import getScrollParent from 'scrollparent';
-import { createEffect, createSignal, JSX, mergeProps, splitProps } from 'solid-js';
+import { type JSX, createEffect, createSignal, mergeProps, splitProps } from 'solid-js';
 
 import Callout, { CalloutSentiment } from '$/components/callout';
 import styles from '$/components/form-error/form-error.module.css';
@@ -51,7 +51,9 @@ const FormError = (passedProps: FormErrorProps) => {
       ref={formErrorRef}
       // we use css to hide the element instead of <Show /> because we need the element to be present in the dom
       // for the ref to work properly
-      class={classnames(styles.formError, props.class, { [styles.formErrorHidden]: !props.errorMessage })}
+      class={classnames(styles.formError, props.class, {
+        [styles.formErrorHidden]: !props.errorMessage,
+      })}
       sentiment={CalloutSentiment.DANGER}
       {...restOfProps}
     >

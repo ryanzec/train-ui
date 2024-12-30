@@ -1,4 +1,4 @@
-import FormField, { FormFieldProps } from '$/components/form-field/form-field';
+import FormField, { type FormFieldProps } from '$/components/form-field/form-field';
 
 export type { FormFieldProps };
 

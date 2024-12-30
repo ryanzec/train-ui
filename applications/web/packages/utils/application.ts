@@ -5,7 +5,7 @@ export enum QueryKey {
 
 export const POST_INSTALL_REDIRECT_PARAM = 'redirectUrl';
 
-export const enum GlobalVariable {
+export enum GlobalVariable {
   BASE_API_URL = 'VITE_BASE_API_URL',
   AUTH0_DOMAIN = 'VITE_AUTH0_DOMAIN',
   AUTH0_CLIENT_ID = 'VITE_AUTH0_CLIENT_ID',

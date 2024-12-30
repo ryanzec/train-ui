@@ -18,8 +18,16 @@ export type {
   GetSelectedOptionPropsReturns,
 } from '$/components/auto-complete/utils';
 
-export { autoCompleteUtils, AsyncOptionsState } from '$/components/auto-complete/utils';
+export {
+  autoCompleteUtils,
+  AsyncOptionsState,
+} from '$/components/auto-complete/utils';
 
 export type { FormAutoCompleteAutoCompleteItem } from '$/components/auto-complete/form-auto-complete';
 
-export default Object.assign(AutoComplete, { SelectableOption, FormattedSelectableOption, SelectedOption, Form });
+export default Object.assign(AutoComplete, {
+  SelectableOption,
+  FormattedSelectableOption,
+  SelectedOption,
+  Form,
+});

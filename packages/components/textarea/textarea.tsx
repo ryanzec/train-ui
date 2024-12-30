@@ -1,8 +1,8 @@
 import classnames from 'classnames';
-import { JSX, splitProps } from 'solid-js';
+import { type JSX, splitProps } from 'solid-js';
 
 import styles from '$/components/textarea/textarea.module.css';
-import { FormInputValidationState } from '$/stores/form/utils';
+import type { FormInputValidationState } from '$/stores/form/utils';
 
 export interface TextareaProps extends JSX.TextareaHTMLAttributes<HTMLTextAreaElement> {
   validationState?: FormInputValidationState;

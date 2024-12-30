@@ -1,6 +1,6 @@
 import md5 from 'spark-md5';
 
-import { CommonDataType } from '$/types/generic';
+import type { CommonDataType } from '$/types/generic';
 
 const hashData = (data: CommonDataType) => {
   return md5.hash(JSON.stringify(data));

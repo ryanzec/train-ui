@@ -1,12 +1,12 @@
 import classnames from 'classnames';
-import { createSignal, For, Show } from 'solid-js';
+import { For, Show, createSignal } from 'solid-js';
 import * as zod from 'zod';
 
 import AutoComplete, {
-  AutoCompleteOption,
-  AutoCompleteProps,
-  AutoCompleteSelectableOptionProps,
-  AutoCompleteSelectedOptionProps,
+  type AutoCompleteOption,
+  type AutoCompleteProps,
+  type AutoCompleteSelectableOptionProps,
+  type AutoCompleteSelectedOptionProps,
   autoCompleteUtils,
 } from '$/components/auto-complete';
 import styles from '$/components/auto-complete/auto-complete.module.css';
@@ -244,7 +244,6 @@ const CustomSelectableOption = (props: AutoCompleteSelectableOptionProps<CustomE
       onMouseEnter={() => props.onMouseEnterOption(props.optionIndex)}
       onMouseLeave={() => props.onMouseLeaveOption()}
       onMouseDown={() => props.onMouseDownOption(props.option)}
-      role="button"
       tabIndex={-1}
     >
       --{props.option.display}({props.option.meta?.extra})--

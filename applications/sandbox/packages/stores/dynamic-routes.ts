@@ -1,4 +1,4 @@
-import { Accessor, createRoot, createSignal, JSX } from 'solid-js';
+import { type Accessor, type JSX, createRoot, createSignal } from 'solid-js';
 
 import { stringUtils } from '../../../../packages/utils/string';
 
@@ -62,13 +62,12 @@ const createDynamicRoutesStore = (): DynamicRouteStore => {
 
     for (const path in modules) {
       // @todo(refactor?) not really sure how to type an dynamic import without knowing what the import is so using
-      // @todo(refactor?) any to avoid typescript errors
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // biome-ignore lint/suspicious/noExplicitAny: to avoid typescript errors
       const module = (await modules[path]()) as any;
       const moduleExports = Object.keys(module);
       const defaultExport = module.default ?? { title: 'Unknown' };
 
-      moduleExports.forEach((moduleExport) => {
+      for (const moduleExport of moduleExports) {
         // @todo(refactor) this does not guarantee that the named export is a component but we are just going to
         // @todo(refactor) assume for now until a better solution is found
         if (stringUtils.isPascalCase(moduleExport)) {
@@ -85,7 +84,7 @@ const createDynamicRoutesStore = (): DynamicRouteStore => {
 
           navigation = setNestedObjectValue(titleParts, navigation, path);
         }
-      });
+      }
     }
 
     setNavigation(navigation);

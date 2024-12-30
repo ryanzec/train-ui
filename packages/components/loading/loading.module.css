@@ -1,15 +1,15 @@
 .loading {
-	display: flex;
-	justify-content: center;
-	min-height: 100px;
-	align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: 100px;
+  align-items: center;
 }
 
 .icon {
-	margin-right: var(--icon-margin);
+  margin-right: var(--icon-margin);
 
-	:global {
-		animation: spin 1s linear;
-		animation-iteration-count: infinite;
-	}
+  :global {
+    animation: spin 1s linear;
+    animation-iteration-count: infinite;
+  }
 }

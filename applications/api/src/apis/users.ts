@@ -1,4 +1,4 @@
-import {
+import type {
   DeleteUserResponse,
   GetUsersResponse,
   PatchUserRequest,
@@ -8,7 +8,7 @@ import {
   User,
 } from '$/data-models/user';
 import { faker } from '@faker-js/faker';
-import { FastifyInstance } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 
 import { db } from '../db';
 import { mockServerUtils } from '../utils';

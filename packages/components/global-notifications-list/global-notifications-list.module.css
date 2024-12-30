@@ -1,60 +1,60 @@
 .notifications {
-	position: fixed;
-	display: flex;
-	align-items: flex-end;
+  position: fixed;
+  display: flex;
+  align-items: flex-end;
 
-	/* this makes sure the newest one show at the top (simpler to do it is css vs javascript) */
-	flex-direction: column-reverse;
-	z-index: var(--z-index-global-notifications);
+  /* this makes sure the newest one show at the top (simpler to do it is css vs javascript) */
+  flex-direction: column-reverse;
+  z-index: var(--z-index-global-notifications);
 }
 
 .top-left {
-	top: var(--global-notification-margin-list);
-	left: var(--global-notification-margin-list);
+  top: var(--global-notification-margin-list);
+  left: var(--global-notification-margin-list);
 }
 
 .top-right {
-	top: var(--global-notification-margin-list);
-	right: var(--global-notification-margin-list);
+  top: var(--global-notification-margin-list);
+  right: var(--global-notification-margin-list);
 }
 
 .bottom-left {
-	bottom: var(--global-notification-margin-list);
-	left: var(--global-notification-margin-list);
+  bottom: var(--global-notification-margin-list);
+  left: var(--global-notification-margin-list);
 }
 
 .bottom-right {
-	bottom: var(--global-notification-margin-list);
-	right: var(--global-notification-margin-list);
+  bottom: var(--global-notification-margin-list);
+  right: var(--global-notification-margin-list);
 }
 
 .notification {
-	/*
+  /*
 	 * since we are reversing the order in css on how they are displayed, we don't put the margin first element
 	 * (which is displayed last)
 	 */
-	&:not(:first-child) {
-		margin-bottom: var(--global-notification-margin-between-self);
-	}
+  &:not(:first-child) {
+    margin-bottom: var(--global-notification-margin-between-self);
+  }
 
-	&.is-removing {
-		:global {
-			/* since this animation is depending on javascript variables, we set the animation duration in the javascript */
-			animation-name: fade-out;
-			animation-timing-function: ease;
-		}
-	}
+  &.is-removing {
+    :global {
+      /* since this animation is depending on javascript variables, we set the animation duration in the javascript */
+      animation-name: fade-out;
+      animation-timing-function: ease;
+    }
+  }
 
-	&:not(.is-removing) {
-		:global {
-			/* since this animation is depending on javascript variables, we set the animation duration in the javascript */
-			animation-name: fade-in;
-			animation-timing-function: ease;
-		}
-	}
+  &:not(.is-removing) {
+    :global {
+      /* since this animation is depending on javascript variables, we set the animation duration in the javascript */
+      animation-name: fade-in;
+      animation-timing-function: ease;
+    }
+  }
 }
 
 .remove-trigger {
-	margin-left: var(--icon-margin);
-	padding: 0;
+  margin-left: var(--icon-margin);
+  padding: 0;
 }

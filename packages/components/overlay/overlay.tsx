@@ -3,7 +3,7 @@ import { mergeProps } from 'solid-js';
 import { Portal } from 'solid-js/web';
 
 import styles from '$/components/overlay/overlay.module.css';
-import { defaultOverlayProps, OverlayProps, OverlayStrength } from '$/components/overlay/utils';
+import { type OverlayProps, OverlayStrength, defaultOverlayProps } from '$/components/overlay/utils';
 
 const Overlay = (passedProps: OverlayProps) => {
   const props = mergeProps(defaultOverlayProps, passedProps);

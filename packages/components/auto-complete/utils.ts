@@ -1,8 +1,8 @@
 import { debounce } from '@solid-primitives/scheduled';
-import { Accessor, createEffect, createSignal, JSX, onCleanup } from 'solid-js';
+import { type Accessor, type JSX, createEffect, createSignal, onCleanup } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
 
-import { FormInputValidationState } from '$/stores/form/utils';
+import type { FormInputValidationState } from '$/stores/form/utils';
 import { Key } from '$/types/generic';
 import { domUtils } from '$/utils/dom';
 
@@ -10,8 +10,8 @@ export type AutoCompleteOptionValue = string | number;
 
 // we use the as the default for extending the auto complete option to allow any data
 export interface AutoCompleteExtraData {
-  // to make this be easier to be used as a generic type, we need to allow any extra data for auto complete options
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: to make this be easier to be used as a generic type, we need to
+  // biome-ignore lint/suspicious/noExplicitAny: allow any extra data for auto complete options
   [key: string]: any;
 }
 
@@ -364,10 +364,12 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
   };
 
   const setFocusedOption = (optionIndex: number) => {
+    let newOptionIndex = optionIndex;
+
     if (optionIndex < 0) {
-      optionIndex = autoCompleteStore.displayOptions.length - 1;
+      newOptionIndex = autoCompleteStore.displayOptions.length - 1;
     } else if (optionIndex >= autoCompleteStore.displayOptions.length) {
-      optionIndex = 0;
+      newOptionIndex = 0;
     }
 
     setAutoCompleteStore(
@@ -375,8 +377,8 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
         // we need to make sure to show the option when we are selecting an index as if we don't, a selection could
         // be made without the user knowing
         store.isOpen = true;
-        store.focusedOptionIndex = optionIndex;
-        store.focusedOption = store.displayOptions[optionIndex];
+        store.focusedOptionIndex = newOptionIndex;
+        store.focusedOption = store.displayOptions[newOptionIndex];
       }),
     );
   };
@@ -473,7 +475,9 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
           // the value instead
           event.preventDefault();
 
-          selectValue(selectedValue, { removeDuplicateSingle: props.removeOnDuplicateSingleSelect });
+          selectValue(selectedValue, {
+            removeDuplicateSingle: props.removeOnDuplicateSingleSelect,
+          });
         }
 
         if (props.isMulti) {
@@ -524,7 +528,9 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
   };
 
   const onMouseDownSelectableOption = (option: AutoCompleteOption<TData>) => {
-    selectValue(option, { removeDuplicateSingle: props.removeOnDuplicateSingleSelect });
+    selectValue(option, {
+      removeDuplicateSingle: props.removeOnDuplicateSingleSelect,
+    });
 
     // when in multi select mode we want to make sure we keep the focus on the input after they select since
     // multiple selection can be able and having a UX where the user needs to refocus the input after each select

@@ -1,4 +1,4 @@
-import { createSignal, JSX } from 'solid-js';
+import { type JSX, createSignal } from 'solid-js';
 
 import Button from '$/components/button';
 import Input from '$/components/input';
@@ -32,7 +32,10 @@ export const Default = () => {
       </Button>
       <Button
         onClick={() => {
-          globalNotificationsStore.addNotification({ message: () => 'This is a test message', autoClose: 0 });
+          globalNotificationsStore.addNotification({
+            message: () => 'This is a test message',
+            autoClose: 0,
+          });
         }}
       >
         Add Perm Notification

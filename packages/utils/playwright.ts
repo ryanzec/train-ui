@@ -1,7 +1,7 @@
-import { test, Page, Locator } from '@playwright/test';
+import { type Locator, type Page, test } from '@playwright/test';
 
 // @todo generic
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: response can be anything
 const mockApi = async (page: Page, url: string, responseData: Record<string, any>) => {
   await page.route(url, async (route) => {
     await route.fulfill({ json: responseData });

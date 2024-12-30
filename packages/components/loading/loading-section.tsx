@@ -1,6 +1,6 @@
-import { ParentProps, splitProps } from 'solid-js';
+import { type ParentProps, splitProps } from 'solid-js';
 
-import Callout, { CalloutProps, CalloutSentiment, CalloutStrength } from '$/components/callout';
+import Callout, { type CalloutProps, CalloutSentiment, CalloutStrength } from '$/components/callout';
 import { IconSentiment, IconSize } from '$/components/icon';
 import Loading from '$/components/loading/loading';
 import Overlay from '$/components/overlay';

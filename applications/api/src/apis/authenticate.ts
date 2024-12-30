@@ -1,5 +1,5 @@
-import { GetAuthenticateResponse } from '$/data-models/authentication-token';
-import { FastifyInstance } from 'fastify';
+import type { GetAuthenticateResponse } from '$/data-models/authentication-token';
+import type { FastifyInstance } from 'fastify';
 
 import { db } from '../db';
 import { mockServerUtils } from '../utils';

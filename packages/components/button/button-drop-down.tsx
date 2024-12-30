@@ -1,11 +1,11 @@
-import { Placement } from '@floating-ui/dom';
+import type { Placement } from '@floating-ui/dom';
 import classnames from 'classnames';
-import { JSX, mergeProps, ParentProps, Show, splitProps } from 'solid-js';
+import { type JSX, type ParentProps, Show, mergeProps, splitProps } from 'solid-js';
 
-import Button, { ButtonProps } from '$/components/button/button';
+import Button, { type ButtonProps } from '$/components/button/button';
 import ButtonDropDownContent from '$/components/button/button-drop-down-content';
 import styles from '$/components/button/button.module.css';
-import Tooltip, { TooltipTriggerEvent, TooltipStore } from '$/components/tooltip';
+import Tooltip, { TooltipTriggerEvent, type TooltipStore } from '$/components/tooltip';
 
 export interface ButtonDropDownProps extends ButtonProps, JSX.HTMLAttributes<HTMLButtonElement> {
   label: string | JSX.Element;

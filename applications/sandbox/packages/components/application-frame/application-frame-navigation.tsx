@@ -1,9 +1,9 @@
 import classnames from 'classnames';
-import { JSX, splitProps } from 'solid-js';
+import { type JSX, splitProps } from 'solid-js';
 
-import { CommonDataAttributes } from '$/types/generic';
+import type { CommonDataAttributes } from '$/types/generic';
 import styles from '$sandbox/components/application-frame/application-frame.module.css';
-import { DynamicRouteNavigation } from '$sandbox/stores/dynamic-routes';
+import type { DynamicRouteNavigation } from '$sandbox/stores/dynamic-routes';
 
 import Button from '../../../../../packages/components/button';
 import { ThemeName } from '../../../../../packages/utils/styles';

@@ -29,8 +29,8 @@
   display: inline-flex;
 }
 
+/* biome-ignore lint/suspicious/noEmptyBlock: just a placeholder */
 .content {
-
 }
 
 .footer {

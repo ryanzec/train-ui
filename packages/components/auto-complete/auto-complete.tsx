@@ -1,13 +1,13 @@
 import classnames from 'classnames';
-import { Accessor, For, mergeProps, Show, splitProps } from 'solid-js';
+import { type Accessor, For, Show, mergeProps, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 
 import {
-  AutoCompleteExtraData,
-  AutoCompleteOption,
-  AutoCompleteProps,
-  autoCompleteUtils,
   AsyncOptionsState,
+  type AutoCompleteExtraData,
+  type AutoCompleteOption,
+  type AutoCompleteProps,
+  autoCompleteUtils,
 } from '$/components/auto-complete/utils';
 import Icon from '$/components/icon';
 import iconStyles from '$/components/icon/icon.module.css';
@@ -96,7 +96,9 @@ const AutoComplete = <TData extends AutoCompleteExtraData>(passedProps: AutoComp
       />
       <List
         data-id="options"
-        class={classnames(styles.list, { [styles.openedList]: autoCompleteStore.store.isOpen })}
+        class={classnames(styles.list, {
+          [styles.openedList]: autoCompleteStore.store.isOpen,
+        })}
         {...autoCompleteStore.getOptionsContainerProps()}
       >
         <Show when={autoCompleteStore.store.isOpen && autoCompleteStore.asyncOptionsAreLoading()}>

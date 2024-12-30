@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 import { splitProps } from 'solid-js';
 
-import { Button, ButtonProps } from '$/components/button/button';
+import { Button, type ButtonProps } from '$/components/button/button';
 import styles from '$/components/button/button.module.css';
 import { ButtonSentiment, ButtonVariant } from '$/components/button/utils';
 

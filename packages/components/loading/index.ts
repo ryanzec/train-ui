@@ -1,4 +1,4 @@
-import Loading, { LoadingProps } from '$/components/loading/loading';
+import Loading, { type LoadingProps } from '$/components/loading/loading';
 import Section from '$/components/loading/loading-section';
 
 export type { LoadingProps };

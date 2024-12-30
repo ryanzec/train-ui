@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { createSignal, JSX, mergeProps, splitProps } from 'solid-js';
+import { type JSX, createSignal, mergeProps, splitProps } from 'solid-js';
 
 import Box from '$/components/box';
 import styles from '$/components/side-navgiation/side-navigation.module.css';

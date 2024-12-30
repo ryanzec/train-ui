@@ -1,7 +1,11 @@
 import { merge } from 'lodash';
 import { createMemo } from 'solid-js';
 
-import AutoComplete, { AutoCompleteExtraData, AutoCompleteOption, autoCompleteUtils } from '$/components/auto-complete';
+import AutoComplete, {
+  type AutoCompleteExtraData,
+  type AutoCompleteOption,
+  autoCompleteUtils,
+} from '$/components/auto-complete';
 import Button, { ButtonSentiment } from '$/components/button';
 import styles from '$/components/date-picker/date-picker.module.css';
 import { clickOutside } from '$/stores/click-outside';

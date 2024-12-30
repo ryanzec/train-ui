@@ -1,8 +1,8 @@
 import classnames from 'classnames';
-import { JSX, mergeProps, Show, splitProps } from 'solid-js';
+import { type JSX, Show, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/list/list.module.css';
-import { CommonDataAttributes } from '$/types/generic';
+import type { CommonDataAttributes } from '$/types/generic';
 
 export interface ListItemProps extends JSX.HTMLAttributes<HTMLDivElement>, CommonDataAttributes {
   isSelected?: boolean;
@@ -20,7 +20,9 @@ const ListItem = (passedProps: ListItemProps) => {
   return (
     <div
       data-id="list-item"
-      class={classnames(styles.listItem, props.class, { [styles.selectedItem]: props.isSelected })}
+      class={classnames(styles.listItem, props.class, {
+        [styles.selectedItem]: props.isSelected,
+      })}
       {...restOfProps}
     >
       <Show when={props.preItem}>

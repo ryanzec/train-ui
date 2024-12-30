@@ -1,93 +1,93 @@
 .callout {
-	display: flex;
-	align-items: center;
-	padding: var(--callout-padding-vertical) var(--callout-padding-horizontal);
-	border: 1px solid transparent;
-	border-left: var(--callout-border-width) solid transparent;
-	border-radius: var(--callout-border-radius);
+  display: flex;
+  align-items: center;
+  padding: var(--callout-padding-vertical) var(--callout-padding-horizontal);
+  border: 1px solid transparent;
+  border-left: var(--callout-border-width) solid transparent;
+  border-radius: var(--callout-border-radius);
 }
 
 .centered {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .pre-item {
-	margin-right: var(--callout-margin-pre-post-item);
+  margin-right: var(--callout-margin-pre-post-item);
 }
 
 .post-item {
-	margin-left: auto;
+  margin-left: auto;
 }
 
 /* neutral */
 .neutral {
-	border-color: var(--callout-neutral-border-color);
-	background-color: var(--callout-neutral-background-color-weak);
-	color: var(--callout-neutral-color-weak);
+  border-color: var(--callout-neutral-border-color);
+  background-color: var(--callout-neutral-background-color-weak);
+  color: var(--callout-neutral-color-weak);
 }
 
 .neutral-strong {
-	background-color: var(--callout-neutral-background-color);
-	color: var(--callout-neutral-color);
+  background-color: var(--callout-neutral-background-color);
+  color: var(--callout-neutral-color);
 }
 
 /* brand */
 .brand {
-	border-color: var(--callout-brand-border-color);
-	background-color: var(--callout-brand-background-color-weak);
-	color: var(--callout-brand-color-weak);
+  border-color: var(--callout-brand-border-color);
+  background-color: var(--callout-brand-background-color-weak);
+  color: var(--callout-brand-color-weak);
 }
 
 .brand-strong {
-	background-color: var(--callout-brand-background-color);
-	color: var(--callout-brand-color);
+  background-color: var(--callout-brand-background-color);
+  color: var(--callout-brand-color);
 }
 
 /* success */
 .success {
-	border-color: var(--callout-success-border-color);
-	background-color: var(--callout-success-background-color-weak);
-	color: var(--callout-success-color-weak);
+  border-color: var(--callout-success-border-color);
+  background-color: var(--callout-success-background-color-weak);
+  color: var(--callout-success-color-weak);
 }
 
 .success-strong {
-	background-color: var(--callout-success-background-color);
-	color: var(--callout-success-color);
+  background-color: var(--callout-success-background-color);
+  color: var(--callout-success-color);
 }
 
 /* info */
 .info {
-	border-color: var(--callout-info-border-color);
-	background-color: var(--callout-info-background-color-weak);
-	color: var(--callout-info-color-weak);
+  border-color: var(--callout-info-border-color);
+  background-color: var(--callout-info-background-color-weak);
+  color: var(--callout-info-color-weak);
 }
 
 .info-strong {
-	background-color: var(--callout-info-background-color);
-	color: var(--callout-info-color);
+  background-color: var(--callout-info-background-color);
+  color: var(--callout-info-color);
 }
 
 /* warning */
 .warning {
-	border-color: var(--callout-warning-border-color);
-	background-color: var(--callout-warning-background-color-weak);
-	color: var(--callout-warning-color-weak);
+  border-color: var(--callout-warning-border-color);
+  background-color: var(--callout-warning-background-color-weak);
+  color: var(--callout-warning-color-weak);
 }
 
 .warning-strong {
-	background-color: var(--callout-warning-background-color);
-	color: var(--callout-warning-color);
+  background-color: var(--callout-warning-background-color);
+  color: var(--callout-warning-color);
 }
 
 /* danger */
 .danger {
-	border-color: var(--callout-danger-border-color);
-	background-color: var(--callout-danger-background-color-weak);
-	color: var(--callout-danger-color-weak);
+  border-color: var(--callout-danger-border-color);
+  background-color: var(--callout-danger-background-color-weak);
+  color: var(--callout-danger-color-weak);
 }
 
 .danger-strong {
-	background-color: var(--callout-danger-background-color);
-	color: var(--callout-danger-color);
+  background-color: var(--callout-danger-background-color);
+  color: var(--callout-danger-color);
 }

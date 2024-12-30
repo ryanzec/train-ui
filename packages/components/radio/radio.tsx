@@ -1,9 +1,9 @@
 import classnames from 'classnames';
-import { createSignal, JSX, splitProps } from 'solid-js';
+import { type JSX, createSignal, splitProps } from 'solid-js';
 
 import Icon from '$/components/icon';
 import styles from '$/components/radio/radio.module.css';
-import { FormInputValidationState } from '$/stores/form/utils';
+import type { FormInputValidationState } from '$/stores/form/utils';
 
 export interface RadioProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
   labelElement: JSX.Element;
@@ -48,7 +48,9 @@ const Radio = (passedProps: RadioProps) => {
       <label>
         <input data-id="radio" {...restOfProps} type="radio" onChange={onSelect} />
         <Icon
-          class={classnames(styles.icon, { [styles.iconIsChecked]: isChecked() })}
+          class={classnames(styles.icon, {
+            [styles.iconIsChecked]: isChecked(),
+          })}
           icon={isChecked() ? 'radio_button_checked' : 'radio_button_unchecked'}
         />
         <span class={styles.label}>{props.labelElement}</span>

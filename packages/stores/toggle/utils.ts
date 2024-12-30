@@ -1,23 +1,23 @@
 import { createSignal } from 'solid-js';
 
 interface CreateToggleProps {
-	isToggled?: boolean;
+  isToggled?: boolean;
 }
 
 const createToggle = (options: CreateToggleProps = {}) => {
-	const [isToggled, setIsToggled] = createSignal<boolean>(options.isToggled ?? false);
+  const [isToggled, setIsToggled] = createSignal<boolean>(options.isToggled ?? false);
 
-	const toggle = () => {
-		setIsToggled(!isToggled());
-	};
+  const toggle = () => {
+    setIsToggled(!isToggled());
+  };
 
-	return {
-		isToggled,
-		setIsToggled,
-		toggle,
-	};
+  return {
+    isToggled,
+    setIsToggled,
+    toggle,
+  };
 };
 
 export const toggleStoreUtils = {
-	createToggle,
+  createToggle,
 };

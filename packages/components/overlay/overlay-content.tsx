@@ -1,4 +1,4 @@
-import { ParentProps } from 'solid-js';
+import type { ParentProps } from 'solid-js';
 import { Portal } from 'solid-js/web';
 
 import styles from '$/components/overlay/overlay.module.css';

@@ -1,10 +1,10 @@
 import classnames from 'classnames';
-import { JSX, mergeProps, splitProps } from 'solid-js';
+import { type JSX, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/button/button.module.css';
 import { ButtonSentiment, ButtonVariant } from '$/components/button/utils';
 import Icon from '$/components/icon';
-import { CommonDataAttributes } from '$/types/generic';
+import type { CommonDataAttributes } from '$/types/generic';
 
 export interface IconButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement>, CommonDataAttributes {
   variant?: ButtonVariant;
@@ -15,7 +15,14 @@ export interface IconButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElem
 
 const IconButton = (passedProps: IconButtonProps) => {
   const [props, restOfProps] = splitProps(
-    mergeProps({ variant: ButtonVariant.TEXT, isLoading: false, sentiment: ButtonSentiment.NEUTRAL }, passedProps),
+    mergeProps(
+      {
+        variant: ButtonVariant.TEXT,
+        isLoading: false,
+        sentiment: ButtonSentiment.NEUTRAL,
+      },
+      passedProps,
+    ),
     ['variant', 'sentiment', 'isLoading', 'icon', 'class', 'disabled'],
   );
   const dataId = () => {

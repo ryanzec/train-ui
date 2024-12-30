@@ -1,4 +1,4 @@
-import { FastifyInstance } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 
 export const registerHealthApi = (api: FastifyInstance) => {
   api.get('/api/health', async (_request_, response) => {

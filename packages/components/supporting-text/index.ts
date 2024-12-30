@@ -1,4 +1,4 @@
-import SupportingText, { SupportingTextProps } from '$/components/supporting-text/supporting-text';
+import SupportingText, { type SupportingTextProps } from '$/components/supporting-text/supporting-text';
 
 export { SupportingTextSentiment } from '$/components/supporting-text/utils';
 

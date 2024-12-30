@@ -1,7 +1,7 @@
 import dayjs from 'dayjs';
-import { createSignal, Show } from 'solid-js';
+import { Show, createSignal } from 'solid-js';
 
-import DatePicker, { WhichDate } from '$/components/date-picker';
+import DatePicker, { type WhichDate } from '$/components/date-picker';
 import { dateTimeFormat } from '$/utils/date';
 
 export default {

@@ -1,8 +1,8 @@
 import classnames from 'classnames';
-import { JSX, splitProps } from 'solid-js';
+import { type JSX, splitProps } from 'solid-js';
 
 import styles from '$/components/list/list.module.css';
-import { CommonDataAttributes } from '$/types/generic';
+import type { CommonDataAttributes } from '$/types/generic';
 
 export interface ListProps extends JSX.HTMLAttributes<HTMLDivElement>, CommonDataAttributes {}
 

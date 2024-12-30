@@ -1,4 +1,4 @@
-import Label, { LabelProps } from '$/components/label/label';
+import Label, { type LabelProps } from '$/components/label/label';
 
 export type { LabelProps };
 

@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { ParentProps } from 'solid-js';
+import type { ParentProps } from 'solid-js';
 
 import styles from '$/components/overlay/overlay.module.css';
 

@@ -1,80 +1,80 @@
 .auto-complete {
-	/* this make the items element width to be constrained by the main auto complete element */
-	position: relative;
+  /* this make the items element width to be constrained by the main auto complete element */
+  position: relative;
 
-	/*
+  /*
 	 * these nested styles are nested in order to make sure these style override other ones properly
 	 */
-	.input-container {
-		border-bottom-left-radius: 0;
-		border-bottom-right-radius: 0;
-	}
+  .input-container {
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
 }
 
 .list {
-	display: none;
-	z-index: var(--z-index-auto-complete-list);
-	border: 1px solid var(--input-border-color-active);
-	border-bottom-left-radius: var(--input-border-radius);
-	border-bottom-right-radius: var(--input-border-radius);
+  display: none;
+  z-index: var(--z-index-auto-complete-list);
+  border: 1px solid var(--input-border-color-active);
+  border-bottom-left-radius: var(--input-border-radius);
+  border-bottom-right-radius: var(--input-border-radius);
 
-	/* avoid a double border between the input and the auto complete list */
-	border-top: 0;
+  /* avoid a double border between the input and the auto complete list */
+  border-top: 0;
 }
 
 .opened-list {
-	display: block;
-	position: absolute;
-	width: 100%;
-	overflow-y: scroll;
-	max-height: 150px;
-	z-index: var(--z-index-auto-complete-opened-list);
+  display: block;
+  position: absolute;
+  width: 100%;
+  overflow-y: scroll;
+  max-height: 150px;
+  z-index: var(--z-index-auto-complete-opened-list);
 }
 
 .loading-indicator-list-item {
-	display: inline-flex;
-	align-self: center;
+  display: inline-flex;
+  align-self: center;
 }
 
 .loading-indicator {
-	:global {
-		animation: spin 1s linear;
-		animation-iteration-count: infinite;
-	}
+  :global {
+    animation: spin 1s linear;
+    animation-iteration-count: infinite;
+  }
 }
 
 .list-option {
-	border-left: 0;
-	border-right: 0;
-	border-bottom: 0;
+  border-left: 0;
+  border-right: 0;
+  border-bottom: 0;
 }
 
 .list-option:first-child {
-	border-top: 0;
+  border-top: 0;
 }
 
 .list-option:last-child {
-	border-bottom: 0;
+  border-bottom: 0;
 }
 
 .selectable-option,
-.remove-selected-option{
-	cursor: pointer;
+.remove-selected-option {
+  cursor: pointer;
 }
 
 .selected-option {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .add-icon {
-	color: var(--auto-complete-color-add);
+  color: var(--auto-complete-color-add);
 }
 
 .remove-icon {
-	color: var(--auto-complete-color-remove);
+  color: var(--auto-complete-color-remove);
 }
 
 .invisible {
-	visibility: hidden;
+  visibility: hidden;
 }

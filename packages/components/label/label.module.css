@@ -1,16 +1,16 @@
 .container {
-	display: inline-flex;
-	align-items: center;
-	margin-bottom: var(--label-margin);
-	width: 100%;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: var(--label-margin);
+  width: 100%;
 }
 
 .label {
-	display: inline-flex;
-	align-items: center;
-	width: 100%;
+  display: inline-flex;
+  align-items: center;
+  width: 100%;
 }
 
 .post-item {
-	margin-left: auto;
+  margin-left: auto;
 }

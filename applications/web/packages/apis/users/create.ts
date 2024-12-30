@@ -1,9 +1,9 @@
 import { produce } from 'immer';
 
-import { GetUsersResponse, PostUserRequest, PostUserResponse } from '$/data-models/user';
+import type { GetUsersResponse, PostUserRequest, PostUserResponse } from '$/data-models/user';
 import { HttpMethod, httpUtils } from '$/utils/http';
-import { CreateMutationOptions, queryUtils } from '$/utils/query';
-import { applicationUtils, GlobalVariable, QueryKey } from '$web/utils/application';
+import { type CreateMutationOptions, queryUtils } from '$/utils/query';
+import { GlobalVariable, QueryKey, applicationUtils } from '$web/utils/application';
 
 export const mutate = async (input: PostUserRequest): Promise<PostUserResponse> => {
   return await httpUtils.http(`${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/users`, {

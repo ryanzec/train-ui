@@ -1,4 +1,4 @@
-import { FastifyInstance } from 'fastify';
+import type { FastifyInstance } from 'fastify';
 
 export const registerQueryApi = (api: FastifyInstance) => {
   type GetQuery = {

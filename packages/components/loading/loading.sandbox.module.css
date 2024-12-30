@@ -1,6 +1,6 @@
 .section {
-	position: relative;
-	width: 500px;
-	height: 300px;
-	background-color: var(--colors-surface-secondary);
+  position: relative;
+  width: 500px;
+  height: 300px;
+  background-color: var(--colors-surface-secondary);
 }

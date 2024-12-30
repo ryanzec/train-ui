@@ -1,4 +1,4 @@
-import { ParentProps, Suspense } from 'solid-js';
+import { type ParentProps, Suspense } from 'solid-js';
 
 import GlobalNotificationsList from '$/components/global-notifications-list';
 import Loading from '$/components/loading';

@@ -1,9 +1,9 @@
 import { produce } from 'immer';
 
-import { DeleteUserRequest, DeleteUserResponse, GetUsersResponse } from '$/data-models/user';
+import type { DeleteUserRequest, DeleteUserResponse, GetUsersResponse } from '$/data-models/user';
 import { HttpMethod, httpUtils } from '$/utils/http';
-import { CreateMutationOptions, queryUtils } from '$/utils/query';
-import { applicationUtils, GlobalVariable, QueryKey } from '$web/utils/application';
+import { type CreateMutationOptions, queryUtils } from '$/utils/query';
+import { GlobalVariable, QueryKey, applicationUtils } from '$web/utils/application';
 
 export const mutate = async (input: DeleteUserRequest): Promise<DeleteUserResponse> => {
   return await httpUtils.http(`${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/users/${input.id}`, {

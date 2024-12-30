@@ -614,7 +614,7 @@ export const ToggleButton = () => {
   return (
     <>
       <Button.Group isAttached>
-        <Button.ToggleButton postItem={<Icon icon="home" />}></Button.ToggleButton>
+        <Button.ToggleButton postItem={<Icon icon="home" />} />
         <Button.ToggleButton>Weak</Button.ToggleButton>
         <Button.ToggleButton isSelected preItem={<Icon icon="add" />}>
           Outlined

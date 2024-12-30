@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { JSX, mergeProps, splitProps } from 'solid-js';
+import { type JSX, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/button/button.module.css';
 import { ButtonIconPosition } from '$/components/button/utils';

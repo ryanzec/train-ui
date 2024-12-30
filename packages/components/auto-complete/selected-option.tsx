@@ -1,5 +1,5 @@
 import styles from '$/components/auto-complete/auto-complete.module.css';
-import { AutoCompleteExtraData, AutoCompleteSelectedOptionProps } from '$/components/auto-complete/utils';
+import type { AutoCompleteExtraData, AutoCompleteSelectedOptionProps } from '$/components/auto-complete/utils';
 import Button from '$/components/button';
 import Icon from '$/components/icon';
 

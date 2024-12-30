@@ -1,4 +1,4 @@
-import { test, expect, Page } from '@playwright/test';
+import { type Page, expect, test } from '@playwright/test';
 
 import { playwrightUtils } from '$/utils/playwright';
 
@@ -453,7 +453,7 @@ test.describe('auto complete', () => {
       }
     });
 
-    test(`setting the selected value form outside the component is reflected in the component @component`, async ({
+    test('setting the selected value form outside the component is reflected in the component @component', async ({
       page,
     }) => {
       // multi select does not display anything in the input when something is selected
@@ -472,7 +472,7 @@ test.describe('auto complete', () => {
       }
     });
 
-    test(`clearing the selected value form outside the component is reflected in the component @component`, async ({
+    test('clearing the selected value form outside the component is reflected in the component @component', async ({
       page,
     }) => {
       // multi select does not display anything in the input when something is selected
@@ -492,7 +492,7 @@ test.describe('auto complete', () => {
       }
     });
 
-    test(`highlight option and then clearing the input and blur should not select that last highlighted option @component @flaky`, async ({
+    test('highlight option and then clearing the input and blur should not select that last highlighted option @component @flaky', async ({
       page,
     }) => {
       // multi select does not display anything in the input when something is selected
@@ -517,7 +517,7 @@ test.describe('auto complete', () => {
       }
     });
 
-    test(`input icon indicator work when there is no value @component`, async ({ page }) => {
+    test('input icon indicator work when there is no value @component', async ({ page }) => {
       // multi select does not display anything in the input when something is selected
       const testUrls = [urls.singleNoForceSelection, urls.multiNoForceSelection];
 
@@ -533,7 +533,7 @@ test.describe('auto complete', () => {
       }
     });
 
-    test(`using the keyboard to select when list is not visible should make list visible @component`, async ({
+    test('using the keyboard to select when list is not visible should make list visible @component', async ({
       page,
     }) => {
       // multi select does not display anything in the input when something is selected
@@ -589,7 +589,7 @@ test.describe('auto complete', () => {
   });
 
   test.describe('single-select mode', () => {
-    test(`selecting a value should not filter that value out @component`, async ({ page }) => {
+    test('selecting a value should not filter that value out @component', async ({ page }) => {
       // multi select does not display anything in the input when something is selected
       const testUrls = [urls.singleAutoShowOptions];
 
@@ -609,7 +609,7 @@ test.describe('auto complete', () => {
       }
     });
 
-    test(`input icon indicator should work when there is a selected value @component`, async ({ page }) => {
+    test('input icon indicator should work when there is a selected value @component', async ({ page }) => {
       // multi select does not display anything in the input when something is selected
       const testUrls = [urls.singleNoForceSelection];
 
@@ -764,7 +764,7 @@ test.describe('auto complete', () => {
       }
     });
 
-    test(`input icon indicator should work when there is a selected value @component`, async ({ page }) => {
+    test('input icon indicator should work when there is a selected value @component', async ({ page }) => {
       // multi select does not display anything in the input when something is selected
       const testUrls = [urls.multiNoForceSelection];
 

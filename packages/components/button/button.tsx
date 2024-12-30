@@ -1,11 +1,11 @@
 import classnames from 'classnames';
-import { JSX, mergeProps, ParentProps, splitProps } from 'solid-js';
+import { type JSX, type ParentProps, mergeProps, splitProps } from 'solid-js';
 
 import ButtonPrePostItem from '$/components/button/button-icon';
 import styles from '$/components/button/button.module.css';
-import { ButtonVariant, ButtonIconPosition, ButtonState, ButtonSentiment } from '$/components/button/utils';
+import { ButtonIconPosition, ButtonSentiment, ButtonState, ButtonVariant } from '$/components/button/utils';
 import Icon from '$/components/icon';
-import { CommonDataAttributes } from '$/types/generic';
+import type { CommonDataAttributes } from '$/types/generic';
 
 export interface ButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement>, CommonDataAttributes {
   variant?: ButtonVariant;

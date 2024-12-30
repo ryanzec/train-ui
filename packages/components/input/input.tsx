@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { createSignal, JSX, mergeProps, Show, splitProps } from 'solid-js';
+import { type JSX, Show, createSignal, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/input/input.module.css';
 import { FormInputValidationState } from '$/stores/form/utils';
@@ -71,7 +71,11 @@ const Input = (passedProps: InputProps) => {
     >
       <div class={classnames(styles.inputContainer, props.inputContainerClass)}>
         <Show when={props.preItem}>
-          <div class={classnames(styles.preItem, { [styles.preItemInline]: props.preItemIsInline })}>
+          <div
+            class={classnames(styles.preItem, {
+              [styles.preItemInline]: props.preItemIsInline,
+            })}
+          >
             {props.preItem}
           </div>
         </Show>

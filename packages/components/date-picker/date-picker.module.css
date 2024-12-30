@@ -34,7 +34,9 @@
   flex-direction: column;
 }
 
-.day-of-week-header-item {}
+/* biome-ignore lint/suspicious/noEmptyBlock: just a placeholder */
+.day-of-week-header-item {
+}
 
 .day {
   display: inline-flex;
@@ -105,8 +107,9 @@
   flex: 0 0 var(--date-picker-width-year-selection);
 }
 
-/* date picker input */
-.date-picker-input { }
+/* biome-ignore lint/suspicious/noEmptyBlock: just a placeholder */
+.date-picker-input {
+}
 
 .date-picker-input-picker-container {
   position: absolute;

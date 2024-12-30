@@ -1,43 +1,43 @@
 .dialog {
-	position: fixed;
-	min-width: 400px;
-	min-height: 100px;
-	background-color: var(--dialog-background-color);
-	border-radius: var(--dialog-border-radius);
-	z-index: var(--z-index-dialog);
-	color: var(--dialog-color);
+  position: fixed;
+  min-width: 400px;
+  min-height: 100px;
+  background-color: var(--dialog-background-color);
+  border-radius: var(--dialog-border-radius);
+  z-index: var(--z-index-dialog);
+  color: var(--dialog-color);
 
-	/* centering */
-	top: 50%;
-	left: 50%;
-	transform: translate(-50%, -50%);
+  /* centering */
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .dialog-header {
-	display: flex;
-	align-items: center;
-	font-size: var(--typography-large1-bold-font-size);
-	line-height: var(--typography-large1-bold-line-height);
-	letter-spacing: var(--typography-large1-bold-letter-spacing);
-	padding: var(--dialog-padding-vertical-header-footer) var(--dialog-padding-horizontal);
-	border-bottom: 1px solid var(--dialog-border-color);
+  display: flex;
+  align-items: center;
+  font-size: var(--typography-large1-bold-font-size);
+  line-height: var(--typography-large1-bold-line-height);
+  letter-spacing: var(--typography-large1-bold-letter-spacing);
+  padding: var(--dialog-padding-vertical-header-footer) var(--dialog-padding-horizontal);
+  border-bottom: 1px solid var(--dialog-border-color);
 }
 
 .close-header-trigger {
-	margin-left: auto;
+  margin-left: auto;
 }
 
 .dialog-content {
-	padding: var(--dialog-padding-vertical-content) var(--dialog-padding-horizontal);
+  padding: var(--dialog-padding-vertical-content) var(--dialog-padding-horizontal);
 }
 
 .dialog-footer {
-	display: flex;
-	align-items: center;
-	padding: var(--dialog-padding-vertical-header-footer) var(--dialog-padding-horizontal);
-	border-top: 1px solid var(--dialog-border-color);
+  display: flex;
+  align-items: center;
+  padding: var(--dialog-padding-vertical-header-footer) var(--dialog-padding-horizontal);
+  border-top: 1px solid var(--dialog-border-color);
 }
 
 .dialog-footer-right-aligned {
-	justify-content: flex-end;
+  justify-content: flex-end;
 }

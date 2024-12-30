@@ -1,5 +1,5 @@
-import DatePicker, { DatePickerProps } from '$/components/date-picker/date-picker';
-import Input, { DatePickerInputProps, WhichDate } from '$/components/date-picker/date-picker-input';
+import DatePicker, { type DatePickerProps } from '$/components/date-picker/date-picker';
+import Input, { type DatePickerInputProps, type WhichDate } from '$/components/date-picker/date-picker-input';
 
 export type { DatePickerProps, DatePickerInputProps, WhichDate };
 

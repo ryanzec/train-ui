@@ -1,7 +1,7 @@
-import { GetUsersResponse } from '$/data-models/user';
+import type { GetUsersResponse } from '$/data-models/user';
 import { HttpMethod, httpUtils } from '$/utils/http';
-import { CreateTrackedQueryOptions, queryUtils } from '$/utils/query';
-import { applicationUtils, GlobalVariable, QueryKey } from '$web/utils/application';
+import { type CreateTrackedQueryOptions, queryUtils } from '$/utils/query';
+import { GlobalVariable, QueryKey, applicationUtils } from '$web/utils/application';
 
 export const getUsersRaw = async (): Promise<GetUsersResponse> => {
   return await httpUtils.http(`${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/users`, {

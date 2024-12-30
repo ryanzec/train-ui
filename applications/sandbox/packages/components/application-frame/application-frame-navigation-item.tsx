@@ -1,9 +1,9 @@
 import { useLocation, useNavigate } from '@solidjs/router';
-import { JSX, ParentProps, splitProps } from 'solid-js';
+import { type JSX, type ParentProps, splitProps } from 'solid-js';
 
 import SideNavigation from '$/components/side-navgiation';
 
-import { CommonDataAttributes } from '../../../../../packages/types/generic';
+import type { CommonDataAttributes } from '../../../../../packages/types/generic';
 
 interface ApplicationFrameNavigationItemProps extends JSX.HTMLAttributes<HTMLDivElement>, CommonDataAttributes {
   path: string;

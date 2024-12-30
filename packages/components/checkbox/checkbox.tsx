@@ -1,9 +1,9 @@
 import classnames from 'classnames';
-import { createSignal, JSX, splitProps } from 'solid-js';
+import { type JSX, createSignal, splitProps } from 'solid-js';
 
 import styles from '$/components/checkbox/checkbox.module.css';
 import Icon from '$/components/icon';
-import { FormInputValidationState } from '$/stores/form/utils';
+import type { FormInputValidationState } from '$/stores/form/utils';
 
 export interface CheckboxProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
   labelElement: JSX.Element;

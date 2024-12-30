@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { JSX, mergeProps, splitProps } from 'solid-js';
+import { type JSX, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/icon/icon.module.css';
 import { IconSentiment, IconSize, IconVariant } from '$/components/icon/utils';
@@ -13,14 +13,21 @@ export interface IconProps extends JSX.HTMLAttributes<HTMLSpanElement> {
 
 const Icon = (passedProps: IconProps) => {
   const [props, restOfProps] = splitProps(
-    mergeProps({ variant: IconVariant.OUTLINED, size: IconSize, sentiment: IconSentiment.NONE }, passedProps),
+    mergeProps(
+      {
+        variant: IconVariant.OUTLINED,
+        size: IconSize,
+        sentiment: IconSentiment.NONE,
+      },
+      passedProps,
+    ),
     ['class', 'icon', 'variant', 'size', 'sentiment'],
   );
 
   return (
     <span
       class={classnames(styles.icon, props.class, {
-        ['material-icons']: props.variant === IconVariant.FILLED,
+        'material-icons': props.variant === IconVariant.FILLED,
         [`material-icons-${props.variant}`]: props.variant !== IconVariant.FILLED,
         [styles.small2]: props.size === IconSize.SMALL2,
         [styles.small1]: props.size === IconSize.SMALL1,

@@ -1,5 +1,5 @@
 import GlobalNotificationsList, {
-  GlobalNotificationsListProps,
+  type GlobalNotificationsListProps,
 } from '$/components/global-notifications-list/global-notifications-list';
 
 // auto formatting makes this one line so need to ignore this linting issue

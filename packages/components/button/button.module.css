@@ -77,14 +77,14 @@
 
 .neutral.weak:hover,
 .neutral.outlined:hover,
-.neutral.ghost:hover{
+.neutral.ghost:hover {
   background-color: var(--button-neutral-background-color-hover);
 }
 
 .neutral.weak:active,
 .neutral.outlined:active,
 .neutral.outlined.is-selected,
-.neutral.ghost:active{
+.neutral.ghost:active {
   background-color: var(--button-neutral-background-color-active);
 }
 
@@ -116,13 +116,13 @@
 
 .brand.weak:hover,
 .brand.outlined:hover,
-.brand.ghost:hover{
+.brand.ghost:hover {
   background-color: var(--button-brand-background-color-hover);
 }
 
 .brand.weak:active,
 .brand.outlined:active,
-.brand.ghost:active{
+.brand.ghost:active {
   background-color: var(--button-brand-background-color-active);
 }
 
@@ -154,13 +154,13 @@
 
 .success.weak:hover,
 .success.outlined:hover,
-.success.ghost:hover{
+.success.ghost:hover {
   background-color: var(--button-success-background-color-hover);
 }
 
 .success.weak:active,
 .success.outlined:active,
-.success.ghost:active{
+.success.ghost:active {
   background-color: var(--button-success-background-color-active);
 }
 
@@ -192,13 +192,13 @@
 
 .info.weak:hover,
 .info.outlined:hover,
-.info.ghost:hover{
+.info.ghost:hover {
   background-color: var(--button-info-background-color-hover);
 }
 
 .info.weak:active,
 .info.outlined:active,
-.info.ghost:active{
+.info.ghost:active {
   background-color: var(--button-info-background-color-active);
 }
 
@@ -230,13 +230,13 @@
 
 .warning.weak:hover,
 .warning.outlined:hover,
-.warning.ghost:hover{
+.warning.ghost:hover {
   background-color: var(--button-warning-background-color-hover);
 }
 
 .warning.weak:active,
 .warning.outlined:active,
-.warning.ghost:active{
+.warning.ghost:active {
   background-color: var(--button-warning-background-color-active);
 }
 
@@ -268,13 +268,13 @@
 
 .danger.weak:hover,
 .danger.outlined:hover,
-.danger.ghost:hover{
+.danger.ghost:hover {
   background-color: var(--button-danger-background-color-hover);
 }
 
 .danger.weak:active,
 .danger.outlined:active,
-.danger.ghost:active{
+.danger.ghost:active {
   background-color: var(--button-danger-background-color-active);
 }
 

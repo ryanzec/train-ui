@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { JSX, mergeProps, splitProps } from 'solid-js';
+import { type JSX, mergeProps, splitProps } from 'solid-js';
 
 // this json files was generated using this file as a base:
 // https://raw.githubusercontent.com/iamcal/emoji-data/master/emoji.json
@@ -57,15 +57,14 @@ const Emoji = (passedProps: EmojiProps) => {
           // for whatever reason it seem like the skin tone need to be above the main emoji unicode but before other
           // modifiers so this ensures that
           return `&#x${t[0].replace('-', t[1] ? `-${t[1]}-` : '-').replaceAll('-', '&#x')}`;
-        } else {
-          const unicode = emojis.find((emoji) => emoji.short_name === emojiToRender) as EmojiJsonData;
-
-          if (!unicode) {
-            return emojiToRender;
-          }
-
-          return `&#x${unicode.unified.replaceAll('-', '&#x')}`;
         }
+        const unicode = emojis.find((emoji) => emoji.short_name === emojiToRender) as EmojiJsonData;
+
+        if (!unicode) {
+          return emojiToRender;
+        }
+
+        return `&#x${unicode.unified.replaceAll('-', '&#x')}`;
       })
       .join('');
   };

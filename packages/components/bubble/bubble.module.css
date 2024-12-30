@@ -1,106 +1,106 @@
 .bubble {
-	display: inline-flex;
-	align-items: center;
-	border-radius: var(--bubble-border-radius);
-	padding: var(--bubble-padding-vertical) var(--bubble-padding-horizontal);
-	border: 1px solid transparent;
+  display: inline-flex;
+  align-items: center;
+  border-radius: var(--bubble-border-radius);
+  padding: var(--bubble-padding-vertical) var(--bubble-padding-horizontal);
+  border: 1px solid transparent;
 }
 
 /* neutral */
 .neutral {
-	border-color: var(--bubble-neutral-border-color);
-	background-color: var(--bubble-neutral-background-color-weak);
-	color: var(--bubble-neutral-color-weak);
+  border-color: var(--bubble-neutral-border-color);
+  background-color: var(--bubble-neutral-background-color-weak);
+  color: var(--bubble-neutral-color-weak);
 }
 
 .neutral-strong {
-	background-color: var(--bubble-neutral-background-color);
-	color: var(--bubble-neutral-color);
+  background-color: var(--bubble-neutral-background-color);
+  color: var(--bubble-neutral-color);
 }
 
 /* brand */
 .brand {
-	border-color: var(--bubble-brand-border-color);
-	background-color: var(--bubble-brand-background-color-weak);
-	color: var(--bubble-brand-color-weak);
+  border-color: var(--bubble-brand-border-color);
+  background-color: var(--bubble-brand-background-color-weak);
+  color: var(--bubble-brand-color-weak);
 }
 
 .brand-strong {
-	background-color: var(--bubble-brand-background-color);
-	color: var(--bubble-brand-color);
+  background-color: var(--bubble-brand-background-color);
+  color: var(--bubble-brand-color);
 }
 
 /* success */
 .success {
-	border-color: var(--bubble-success-border-color);
-	background-color: var(--bubble-success-background-color-weak);
-	color: var(--bubble-success-color-weak);
+  border-color: var(--bubble-success-border-color);
+  background-color: var(--bubble-success-background-color-weak);
+  color: var(--bubble-success-color-weak);
 }
 
 .success-strong {
-	background-color: var(--bubble-success-background-color);
-	color: var(--bubble-success-color);
+  background-color: var(--bubble-success-background-color);
+  color: var(--bubble-success-color);
 }
 
 /* info */
 .info {
-	border-color: var(--bubble-info-border-color);
-	background-color: var(--bubble-info-background-color-weak);
-	color: var(--bubble-info-color-weak);
+  border-color: var(--bubble-info-border-color);
+  background-color: var(--bubble-info-background-color-weak);
+  color: var(--bubble-info-color-weak);
 }
 
 .info-strong {
-	background-color: var(--bubble-info-background-color);
-	color: var(--bubble-info-color);
+  background-color: var(--bubble-info-background-color);
+  color: var(--bubble-info-color);
 }
 
 /* warning */
 .warning {
-	border-color: var(--bubble-warning-border-color);
-	background-color: var(--bubble-warning-background-color-weak);
-	color: var(--bubble-warning-color-weak);
+  border-color: var(--bubble-warning-border-color);
+  background-color: var(--bubble-warning-background-color-weak);
+  color: var(--bubble-warning-color-weak);
 }
 
 .warning-strong {
-	background-color: var(--bubble-warning-background-color);
-	color: var(--bubble-warning-color);
+  background-color: var(--bubble-warning-background-color);
+  color: var(--bubble-warning-color);
 }
 
 /* danger */
 .danger {
-	border-color: var(--bubble-danger-border-color);
-	background-color: var(--bubble-danger-background-color-weak);
-	color: var(--bubble-danger-color-weak);
+  border-color: var(--bubble-danger-border-color);
+  background-color: var(--bubble-danger-background-color-weak);
+  color: var(--bubble-danger-color-weak);
 }
 
 .danger-strong {
-	background-color: var(--bubble-danger-background-color);
-	color: var(--bubble-danger-color);
+  background-color: var(--bubble-danger-background-color);
+  color: var(--bubble-danger-color);
 }
 
 .icon > span {
-	font-size: var(--typography-base-font-size);
-	line-height: var(--typography-base-line-height);
-	letter-spacing: var(--typography-base-letter-spacing);
+  font-size: var(--typography-base-font-size);
+  line-height: var(--typography-base-line-height);
+  letter-spacing: var(--typography-base-letter-spacing);
 
-	/* this makes sure the icon is center with the text in the button */
-	display: flex;
+  /* this makes sure the icon is center with the text in the button */
+  display: flex;
 }
 
 .bubble-small {
-	font-size: var(--typography-small1-font-size);
-	line-height: var(--typography-small1-line-height);
-	letter-spacing: var(--typography-small1-letter-spacing);
+  font-size: var(--typography-small1-font-size);
+  line-height: var(--typography-small1-line-height);
+  letter-spacing: var(--typography-small1-letter-spacing);
 }
 
 .icon-small {
-	font-size: var(--bubble-size-icon-small);
+  font-size: var(--bubble-size-icon-small);
 }
 
 .pre-icon {
-	padding-right: var(--bubble-padding-icon);
+  padding-right: var(--bubble-padding-icon);
 }
 
 .post-icon {
-	padding-left: var(--bubble-padding-icon);
+  padding-left: var(--bubble-padding-icon);
 }

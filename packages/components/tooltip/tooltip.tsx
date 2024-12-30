@@ -1,7 +1,7 @@
-import { autoUpdate, computePosition, flip, offset, Placement, shift } from '@floating-ui/dom';
-import { createEffect, createSignal, JSX, mergeProps, onCleanup, ParentProps, splitProps } from 'solid-js';
+import { type Placement, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
+import { type JSX, type ParentProps, createEffect, createSignal, mergeProps, onCleanup, splitProps } from 'solid-js';
 
-import { TooltipStore, TooltipTriggerEvent } from '$/components/tooltip/utils';
+import { type TooltipStore, TooltipTriggerEvent } from '$/components/tooltip/utils';
 import { clickOutside } from '$/stores/click-outside';
 
 // this is needed to avoid this code being stripped in compilation because of the way directive work in SolidJS
@@ -16,7 +16,10 @@ export interface TooltipProps extends JSX.HTMLAttributes<HTMLDivElement> {
 const Tooltip = (passedProps: ParentProps<TooltipProps>) => {
   const [props, restOfProps] = splitProps(
     mergeProps(
-      { placement: 'bottom-end', triggerEvent: TooltipTriggerEvent.HOVER } as Required<TooltipProps>,
+      {
+        placement: 'bottom-end',
+        triggerEvent: TooltipTriggerEvent.HOVER,
+      } as Required<TooltipProps>,
       passedProps,
     ),
     ['placement', 'triggerEvent', 'store', 'children'],

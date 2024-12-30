@@ -1,4 +1,4 @@
-import Textarea, { TextareaProps } from '$/components/textarea/textarea';
+import Textarea, { type TextareaProps } from '$/components/textarea/textarea';
 
 export type { TextareaProps };
 

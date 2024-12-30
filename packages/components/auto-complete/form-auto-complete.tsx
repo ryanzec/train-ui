@@ -1,10 +1,10 @@
-import { Accessor, mergeProps } from 'solid-js';
+import { type Accessor, mergeProps } from 'solid-js';
 
 import AutoComplete from '$/components/auto-complete/auto-complete';
 import FormattedSelectableOption from '$/components/auto-complete/formatted-selectable-option';
 import SelectableOption from '$/components/auto-complete/selectable-option';
-import { AutoCompleteOption, autoCompleteUtils } from '$/components/auto-complete/utils';
-import { FormErrorsData } from '$/stores/form';
+import { type AutoCompleteOption, autoCompleteUtils } from '$/components/auto-complete/utils';
+import type { FormErrorsData } from '$/stores/form';
 import { FormInputValidationState } from '$/stores/form/utils';
 
 export interface FormAutoCompleteAutoCompleteItem {
@@ -27,7 +27,15 @@ interface FormAutoCompleteProps<TFormData> {
 }
 
 const FormAutoComplete = <TFormData,>(passedProps: FormAutoCompleteProps<TFormData>) => {
-  const props = mergeProps({ placeholder: '', disabledPlaceholder: '', isLoading: false, isMulti: false }, passedProps);
+  const props = mergeProps(
+    {
+      placeholder: '',
+      disabledPlaceholder: '',
+      isLoading: false,
+      isMulti: false,
+    },
+    passedProps,
+  );
 
   const isDisabled = () => props.options.length === 0;
 

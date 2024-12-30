@@ -1,7 +1,7 @@
 import classnames from 'classnames';
 
 import styles from '$/components/auto-complete/auto-complete.module.css';
-import { AutoCompleteExtraData, AutoCompleteSelectableOptionProps } from '$/components/auto-complete/utils';
+import type { AutoCompleteExtraData, AutoCompleteSelectableOptionProps } from '$/components/auto-complete/utils';
 import List from '$/components/list';
 
 const SelectableOption = <TData extends AutoCompleteExtraData>(props: AutoCompleteSelectableOptionProps<TData>) => {
@@ -14,7 +14,6 @@ const SelectableOption = <TData extends AutoCompleteExtraData>(props: AutoComple
       onMouseMove={() => props.onMouseEnterOption(props.optionIndex)}
       // onMouseLeave={() => props.onMouseLeaveOption()}
       onMouseDown={() => props.onMouseDownOption(props.option)}
-      role="button"
       tabIndex={-1}
     >
       {props.option.display}

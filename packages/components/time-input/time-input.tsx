@@ -1,6 +1,6 @@
-import { createReaction, createSignal, JSX, mergeProps, splitProps } from 'solid-js';
+import { type JSX, createReaction, createSignal, mergeProps, splitProps } from 'solid-js';
 
-import Input, { InputProps } from '$/components/input';
+import Input, { type InputProps } from '$/components/input';
 import { DEFAULT_VALUE, EditItem, editItemsOrder, timeInputUtils } from '$/components/time-input/utils';
 import { Key } from '$/types/generic';
 
@@ -185,7 +185,7 @@ const TimeInput = (passedProps: TimeInputProps) => {
         const isFirstCharacter = activeEditCharacter() === 0;
         const currentEditItemValue = inputRef.value.substring(selectionRange[0], selectionRange[1]);
         const newItemValue = isFirstCharacter ? `0${event.key}` : `${currentEditItemValue.substring(1, 2)}${event.key}`;
-        const numericValue = parseInt(event.key);
+        const numericValue = Number.parseInt(event.key);
 
         inlineUpdateInputValue(inputRef.value, newItemValue, selectionRange);
 

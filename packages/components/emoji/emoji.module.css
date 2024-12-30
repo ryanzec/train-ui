@@ -1,27 +1,27 @@
 .spacing-left {
-	margin-left: var(--emoji-margin);
+  margin-left: var(--emoji-margin);
 }
 
 .spacing-right {
-	margin-right: var(--emoji-margin);
+  margin-right: var(--emoji-margin);
 }
 
 .small1 {
-	font-size: var(--sizes-small1);
+  font-size: var(--sizes-small1);
 }
 
 .base {
-	font-size: var(--sizes-base);
+  font-size: var(--sizes-base);
 }
 
 .large1 {
-	font-size: var(--sizes-large1);
+  font-size: var(--sizes-large1);
 }
 
 .large2 {
-	font-size: var(--sizes-large2);
+  font-size: var(--sizes-large2);
 }
 
 .large3 {
-	font-size: var(--sizes-large3);
+  font-size: var(--sizes-large3);
 }

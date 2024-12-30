@@ -1,4 +1,4 @@
-import { JSX, splitProps } from 'solid-js';
+import { type JSX, splitProps } from 'solid-js';
 
 export type BoxProps = JSX.HTMLAttributes<HTMLDivElement> & {
   onClick?: JSX.EventHandlerUnion<HTMLDivElement, MouseEvent>;

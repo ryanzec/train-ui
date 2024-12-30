@@ -1,32 +1,32 @@
 .radio label {
-	width: 100%;
-	display: flex;
-	cursor: pointer;
+  width: 100%;
+  display: flex;
+  cursor: pointer;
 }
 
 .radio input {
-	display: none;
+  display: none;
 }
 
 .radio .icon {
-	margin-right: var(--radio-margin);
-	font-size: var(--radio-size);
-	color: var(--radio-color-icon);
+  margin-right: var(--radio-margin);
+  font-size: var(--radio-size);
+  color: var(--radio-color-icon);
 }
 
 .radio .icon-is-checked {
-	color: var(--radio-color-icon-active);
+  color: var(--radio-color-icon-active);
 }
 
 .align-end {
-	input {
-		order: 1;
-		margin-left: auto;
-	}
+  input {
+    order: 1;
+    margin-left: auto;
+  }
 }
 
 .group {
-	.radio {
-		display: flex;
-	}
+  .radio {
+    display: flex;
+  }
 }

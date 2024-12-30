@@ -1,4 +1,4 @@
-import Emoji, { EmojiProps } from '$/components/emoji/emoji';
+import Emoji, { type EmojiProps } from '$/components/emoji/emoji';
 
 export { EmojiSpacing } from '$/components/emoji/utils';
 

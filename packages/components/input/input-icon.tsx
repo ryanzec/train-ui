@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { JSX, splitProps } from 'solid-js';
+import { type JSX, splitProps } from 'solid-js';
 
 import styles from '$/components/input/input.module.css';
 

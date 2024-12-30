@@ -1,6 +1,6 @@
 import classnames from 'classnames';
-import dayjs, { Dayjs } from 'dayjs';
-import { createMemo, createSignal, Index, JSX, mergeProps, Show, splitProps } from 'solid-js';
+import dayjs, { type Dayjs } from 'dayjs';
+import { Index, type JSX, Show, createMemo, createSignal, mergeProps, splitProps } from 'solid-js';
 
 import Button, { ButtonSentiment, ButtonVariant } from '$/components/button';
 import DatePickerMonthYearSelection from '$/components/date-picker/date-picker-month-year-selection';
@@ -33,7 +33,11 @@ export interface DatePickerProps {
 const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivElement>) => {
   const [props, restOfProps] = splitProps(
     mergeProps(
-      { defaultDisplayDate: passedProps.defaultSelectedDate ?? new Date(), includeTime: false, includeFooter: false },
+      {
+        defaultDisplayDate: passedProps.defaultSelectedDate ?? new Date(),
+        includeTime: false,
+        includeFooter: false,
+      },
       passedProps,
     ),
     [

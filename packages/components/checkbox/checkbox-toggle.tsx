@@ -1,8 +1,8 @@
 import classnames from 'classnames';
-import { createSignal, JSX, splitProps } from 'solid-js';
+import { type JSX, createSignal, splitProps } from 'solid-js';
 
 import styles from '$/components/checkbox/checkbox.module.css';
-import { FormInputValidationState } from '$/stores/form/utils';
+import type { FormInputValidationState } from '$/stores/form/utils';
 
 export interface CheckboxToggleProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
   labelElement: JSX.Element;
@@ -43,7 +43,11 @@ const CheckboxToggle = (passedProps: CheckboxToggleProps) => {
     <span class={classnames(styles.checkbox, styles.checkboxToggle, props.class)}>
       <label>
         <input ref={inputRef} data-id="checkbox-toggle" {...restOfProps} type="checkbox" onChange={onChange} />
-        <div class={classnames(styles.checkboxToggleSlider, { [styles.checkboxToggleOn]: isChecked() })}>
+        <div
+          class={classnames(styles.checkboxToggleSlider, {
+            [styles.checkboxToggleOn]: isChecked(),
+          })}
+        >
           <div class={styles.checkboxToggleBar} />
           <div class={styles.checkboxToggleKnob} />
         </div>

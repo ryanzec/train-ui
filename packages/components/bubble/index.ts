@@ -1,6 +1,10 @@
-import Bubble, { BubbleProps } from '$/components/bubble/bubble';
+import Bubble, { type BubbleProps } from '$/components/bubble/bubble';
 
-export { BubbleSentiment, BubbleSize, BubbleStrength } from '$/components/bubble/utils';
+export {
+  BubbleSentiment,
+  BubbleSize,
+  BubbleStrength,
+} from '$/components/bubble/utils';
 
 export type { BubbleProps };
 

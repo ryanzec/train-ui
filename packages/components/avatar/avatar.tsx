@@ -1,8 +1,8 @@
 import classnames from 'classnames';
-import { JSX, Show, splitProps } from 'solid-js';
+import { type JSX, Show, splitProps } from 'solid-js';
 
 import styles from '$/components/avatar/avatar.module.css';
-import { CommonDataAttributes } from '$/types/generic';
+import type { CommonDataAttributes } from '$/types/generic';
 
 export interface AvatarProps extends JSX.HTMLAttributes<HTMLDivElement>, CommonDataAttributes {
   src?: string;

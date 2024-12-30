@@ -1,5 +1,5 @@
 import dayjs from 'dayjs';
-import { Accessor, createSignal } from 'solid-js';
+import { type Accessor, createSignal } from 'solid-js';
 
 import { WhichDate } from '$/components/date-picker/date-picker-input';
 import { dateTimeFormat } from '$/utils/date';

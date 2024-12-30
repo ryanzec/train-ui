@@ -1,6 +1,5 @@
 export interface LocalStorageCacheData {
-  // any is being used as we do want to be able to store any kind of data here
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: any is being used as we do want to be able to store any kind of data here
   value: any;
   expires: number | boolean;
 }
@@ -15,9 +14,11 @@ const get = (key: string) => {
 
   // @todo(feature) handle when data is not valid json
   const storedData = JSON.parse(rawData);
-  let returnData;
 
-  if (storedData && storedData.expires && storedData.expires <= now) {
+  // biome-ignore lint/suspicious/noExplicitAny: any is being used as we do want to be able to store any kind of data here
+  let returnData: any;
+
+  if (storedData?.expires && storedData.expires <= now) {
     //clean up expired data
     localStorage.removeItem(key);
   } else if (storedData) {
@@ -27,8 +28,7 @@ const get = (key: string) => {
   return returnData;
 };
 
-// any is being used as we do want to be able to store any kind of data here
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: any is being used as we do want to be able to store any kind of data here
 const set = (key: string, value: any, expireIn = 0) => {
   const expires = new Date().getTime();
 

@@ -1,10 +1,10 @@
 import classnames from 'classnames';
-import { For, JSX, mergeProps, Show, splitProps } from 'solid-js';
+import { For, type JSX, Show, mergeProps, splitProps } from 'solid-js';
 
 import GlobalNotificationsListItem from '$/components/global-notifications-list/global-notifications-list-item';
 import styles from '$/components/global-notifications-list/global-notifications-list.module.css';
 import { GlobalNotificationPosition } from '$/components/global-notifications-list/utils';
-import { GlobalNotification } from '$/stores/global-notifications';
+import type { GlobalNotification } from '$/stores/global-notifications';
 
 export interface GlobalNotificationsListProps extends JSX.HTMLAttributes<HTMLDivElement> {
   notifications?: GlobalNotification[];

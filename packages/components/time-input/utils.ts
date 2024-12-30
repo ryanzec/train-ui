@@ -3,10 +3,10 @@ import dayjs from 'dayjs';
 import { dateTimeFormat } from '$/utils/date';
 
 export enum EditItem {
-  NONE,
-  HOURS,
-  MINUTES,
-  MERIDIEM,
+  NONE = 0,
+  HOURS = 1,
+  MINUTES = 2,
+  MERIDIEM = 3,
 }
 
 export const editItemsOrder = [EditItem.HOURS, EditItem.MINUTES, EditItem.MERIDIEM];
@@ -39,11 +39,11 @@ const getNewEditItemIndex = (currentIndex: number, move: number, optionOverrides
 const getEditItemStringLocations = (editItem: EditItem): number[] | undefined => {
   if (editItem === EditItem.HOURS) {
     return [0, 2];
-  } else if (editItem === EditItem.MINUTES) {
-    return [3, 5];
-  } else {
-    return [6, 8];
   }
+  if (editItem === EditItem.MINUTES) {
+    return [3, 5];
+  }
+  return [6, 8];
 };
 
 const getNewSteppedEditItemValue = (
@@ -52,9 +52,9 @@ const getNewSteppedEditItemValue = (
   increaseStep: boolean,
 ): string | undefined => {
   if (editItem === EditItem.HOURS) {
-    let newValue = parseInt(currentValue);
+    let newValue = Number.parseInt(currentValue);
 
-    if (isNaN(newValue)) {
+    if (Number.isNaN(newValue)) {
       return '01';
     }
 
@@ -72,9 +72,9 @@ const getNewSteppedEditItemValue = (
   }
 
   if (editItem === EditItem.MINUTES) {
-    let newValue = parseInt(currentValue);
+    let newValue = Number.parseInt(currentValue);
 
-    if (isNaN(newValue)) {
+    if (Number.isNaN(newValue)) {
       return '00';
     }
 

@@ -7,13 +7,12 @@
 // while there might be a better way to handle these things that I am aware of with typescript, the casting seems
 // like the sanest solution for the time being and this can be refactored later if other pattern are learned
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { produce } from 'immer';
 import * as lodash from 'lodash';
-import { Accessor, createSignal, Setter } from 'solid-js';
-import * as zod from 'zod';
+import { type Accessor, type Setter, createSignal } from 'solid-js';
+import type * as zod from 'zod';
 
-import { domUtils, InputType } from '$/utils/dom';
+import { InputType, domUtils } from '$/utils/dom';
 import { zodUtils } from '$/utils/zod';
 
 export enum FormInputValidationState {
@@ -126,13 +125,16 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
 
   const triggerValueChanged = (
     name: string,
-    // since this is a generic system, we need to allow any
+    // biome-ignore lint/suspicious/noExplicitAny: since this is a generic system, we need to allow any
     value: any,
+    // biome-ignore lint/suspicious/noExplicitAny: since this is a generic system, we need to allow any
     previousValue: any,
     selfOptions: TriggerValueChangeOptions = {},
   ) => {
     if (formWatchers().length > 0) {
-      formWatchers().forEach((watcher) => watcher(name as keyof TFormData, data()));
+      for (const watcher of formWatchers()) {
+        watcher(name as keyof TFormData, data());
+      }
     }
 
     if (selfOptions.isTouched !== undefined) {
@@ -166,7 +168,9 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
 
       if (fieldValidationResults.success === false) {
         currentErrors = produce(currentErrors, (draft) => {
-          lodash.set(draft, fieldName, { errors: fieldValidationResults.error.format()._errors });
+          lodash.set(draft, fieldName, {
+            errors: fieldValidationResults.error.format()._errors,
+          });
         });
       } else {
         currentErrors = produce(currentErrors, (draft) => {
@@ -186,15 +190,16 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
 
     const formattedErrors = validationResults.error.format();
 
-    // the [key: string]: any is to prevent a number of typescript typing errors
+    // biome-ignore lint/suspicious/noExplicitAny: avoid weird typescript error
     const getErrors = (formattedErrors: { _errors: string[]; [key: string]: any }, parentPath = '') => {
+      // biome-ignore lint/suspicious/noExplicitAny: avoid weird typescript error
       const newFormat: { [key: string]: any } = {};
 
       const keys = Object.keys(formattedErrors);
 
-      keys.forEach((key) => {
+      for (const key of keys) {
         if (key === '_errors') {
-          return;
+          continue;
         }
 
         const touchedCheckFailed = checkIsTouched && !isTouched(`${parentPath}${key}` as keyof TFormData);
@@ -209,19 +214,22 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
         }
 
         if (touchedCheckFailed) {
-          return;
+          continue;
         }
 
         if (touchedCheckFailed || formattedErrors[key]._errors.length === 0) {
-          return;
+          continue;
         }
 
         if (formattedErrors[key]._errors.length > 0) {
-          newFormat[key] = { ...(newFormat[key] || {}), errors: formattedErrors[key]._errors };
+          newFormat[key] = {
+            ...(newFormat[key] || {}),
+            errors: formattedErrors[key]._errors,
+          };
         }
-      });
+      }
 
-      // avoid weird typescript error
+      // biome-ignore lint/suspicious/noExplicitAny: avoid weird typescript error
       return newFormat as any;
     };
 
@@ -287,7 +295,9 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
 
     // @todo(performance) might want to make this configurable if doing this on every change becomes a problem in
     // @todo(performance) certain cases
-    triggerValueChanged(name, lodash.get(data(), name), previousValue, { isTouched: true });
+    triggerValueChanged(name, lodash.get(data(), name), previousValue, {
+      isTouched: true,
+    });
   };
 
   const onBlur = (event: Event) => {
@@ -347,7 +357,9 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
       }),
     );
 
-    triggerValueChanged(name, lodash.get(data(), name), previousValue, { isTouched: true });
+    triggerValueChanged(name, lodash.get(data(), name), previousValue, {
+      isTouched: true,
+    });
   };
 
   const onRadioChange = (event: Event) => {
@@ -382,7 +394,9 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
       }
     }
 
-    triggerValueChanged(name, lodash.get(data(), name), previousValue, { isTouched: true });
+    triggerValueChanged(name, lodash.get(data(), name), previousValue, {
+      isTouched: true,
+    });
   };
 
   const onSelectChange = (event: Event) => {
@@ -398,7 +412,9 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
       }),
     );
 
-    triggerValueChanged(name, lodash.get(data(), name), previousValue, { isTouched: true });
+    triggerValueChanged(name, lodash.get(data(), name), previousValue, {
+      isTouched: true,
+    });
   };
 
   const onSubmitForm = (event: Event) => {
@@ -534,6 +550,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
 
     setData((oldValue) =>
       produce(oldValue, (draft) => {
+        // biome-ignore lint/suspicious/noExplicitAny: to avoid typescript issues
         const currentValue = (lodash.get(draft, name) || []) as Array<any>;
 
         currentValue.push(value);
@@ -553,6 +570,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
         // have to go this round about way to remove an item from an array with a path string as lodash.unset does
         // not properly work ith arrays
         // reference: https://github.com/lodash/lodash/issues/5630
+        // biome-ignore lint/suspicious/noExplicitAny: to avoid typescript issues
         const arrayValue = lodash.get(draft, `${name}`) as any[];
 
         arrayValue.splice(removeIndex, 1);
@@ -565,6 +583,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
       return touchedValues.filter((touchedValue) => (touchedValue as string).indexOf(`${name}.${removeIndex}`) !== 0);
     });
 
+    // biome-ignore lint/suspicious/noExplicitAny: to avoid typescript issues
     const currentValue = lodash.get(data(), name) as any[];
 
     let touchedAsString = JSON.stringify(touchedFields());
@@ -588,7 +607,9 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
       }),
     );
 
-    triggerValueChanged(name as string, value, previousValue, { isTouched: options.markAsTouched ?? true });
+    triggerValueChanged(name as string, value, previousValue, {
+      isTouched: options.markAsTouched ?? true,
+    });
 
     // see comment at top of file as to why explicit casting is happening
     // we do all version to properly support checkboxes and radios that can have the same name
@@ -652,14 +673,14 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     resetHtmlElements();
   };
 
-  const watch = (formWatcher: FormWatcher<TFormData>): WatchReturns => {
+  const watch = (newFormWatcher: FormWatcher<TFormData>): WatchReturns => {
     // @note(performance) using ... can cause performance / memory issues
-    setFormWatchers((oldFormWatchers) => [...oldFormWatchers, formWatcher]);
+    setFormWatchers((oldFormWatchers) => [...oldFormWatchers, newFormWatcher]);
 
     // used to allow the subscriber to unsubscribe
     return {
       unsubscribe: () => {
-        setFormWatchers((oldFormWatchers) => oldFormWatchers.filter((formWatcher) => formWatcher !== formWatcher));
+        setFormWatchers((oldFormWatchers) => oldFormWatchers.filter((formWatcher) => newFormWatcher !== formWatcher));
       },
     };
   };

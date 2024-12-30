@@ -1,7 +1,7 @@
-import * as url from 'url';
+import * as url from 'node:url';
 
-import { AuthenticationToken } from '$/data-models/authentication-token';
-import { GetUsersResponse } from '$/data-models/user';
+import type { AuthenticationToken } from '$/data-models/authentication-token';
+import type { GetUsersResponse } from '$/data-models/user';
 import { faker } from '@faker-js/faker';
 import { LowSync } from 'lowdb';
 import { JSONFileSync } from 'lowdb/node';

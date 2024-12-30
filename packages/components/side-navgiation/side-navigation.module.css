@@ -48,7 +48,11 @@
   color: var(--side-navigation-color-item);
   border-left: 1px solid var(--side-navigation-border-color-item);
   padding: var(--side-navigation-padding-item) 0;
-  padding-left: calc(var(--side-navigation-margin-header-indicator) + var(--side-navigation-size-header-indicator) - var(--side-navigation-border-offset));
+  padding-left: calc(
+    var(--side-navigation-margin-header-indicator) +
+    var(--side-navigation-size-header-indicator) -
+    var(--side-navigation-border-offset)
+  );
   margin-left: var(--side-navigation-border-offset);
 }
 

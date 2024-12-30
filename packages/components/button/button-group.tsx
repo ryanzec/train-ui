@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { JSX, splitProps } from 'solid-js';
+import { type JSX, splitProps } from 'solid-js';
 
 import styles from '$/components/button/button.module.css';
 
@@ -13,7 +13,9 @@ const ButtonGroup = (passedProps: ButtonGroupProps) => {
   return (
     <div
       data-id="button-group"
-      class={classnames(styles.buttonGroup, props.class, { [styles.buttonGroupAttached]: props.isAttached })}
+      class={classnames(styles.buttonGroup, props.class, {
+        [styles.buttonGroupAttached]: props.isAttached,
+      })}
       {...restOfProps}
     />
   );

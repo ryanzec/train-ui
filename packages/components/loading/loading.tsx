@@ -1,7 +1,7 @@
 import classnames from 'classnames';
-import { JSX, mergeProps, splitProps } from 'solid-js';
+import { type JSX, mergeProps, splitProps } from 'solid-js';
 
-import Icon, { IconProps, IconSentiment, IconSize } from '$/components/icon';
+import Icon, { type IconProps, IconSentiment, IconSize } from '$/components/icon';
 import styles from '$/components/loading/loading.module.css';
 
 export interface LoadingProps extends JSX.HTMLAttributes<HTMLDivElement> {

@@ -1,7 +1,7 @@
-import { createRoot, createSignal, batch } from 'solid-js';
+import { batch, createRoot, createSignal } from 'solid-js';
 
-import { GetAuthenticateResponse } from '$/data-models/authentication-token';
-import { applicationUtils, GlobalVariable } from '$web/utils/application';
+import type { GetAuthenticateResponse } from '$/data-models/authentication-token';
+import { GlobalVariable, applicationUtils } from '$web/utils/application';
 
 import { HttpMethod, httpUtils } from '../../../../packages/utils/http';
 import { localStorageCacheUtils } from '../../../../packages/utils/local-storage-cache';

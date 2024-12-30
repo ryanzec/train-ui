@@ -1,5 +1,5 @@
 import { Navigate } from '@solidjs/router';
-import { ParentProps } from 'solid-js';
+import type { ParentProps } from 'solid-js';
 
 import { authenticationStore } from '$web/stores/authentication.store';
 

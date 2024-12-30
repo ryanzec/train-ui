@@ -1,13 +1,18 @@
 import { produce } from 'immer';
-import { createSignal, For, JSX, onCleanup, onMount, Show } from 'solid-js';
+import { For, type JSX, Show, createSignal, onCleanup, onMount } from 'solid-js';
 
 import Button from '$/components/button/button';
 import Callout, { CalloutSentiment, CalloutStrength } from '$/components/callout';
 import Input from '$/components/input';
 import { HttpMethod, httpUtils } from '$/utils/http';
-import { CreateMutationOptions, CreateTrackedQueryOptions, MutationState, queryUtils } from '$/utils/query/utils';
+import {
+  type CreateMutationOptions,
+  type CreateTrackedQueryOptions,
+  MutationState,
+  queryUtils,
+} from '$/utils/query/utils';
 import ExpandableCode from '$sandbox/components/expandable-code';
-import { applicationUtils, GlobalVariable } from '$web/utils/application';
+import { GlobalVariable, applicationUtils } from '$web/utils/application';
 
 export default {
   title: 'Utils/Query',
@@ -93,7 +98,10 @@ export const createMutation = (options?: CreateMutationOptions<CreateInput, Crea
         queryUtils.triggerMutator<GetListReturns>(
           () => [SANDBOX_QUERY_GET_LIST],
           (oldValue) => {
-            return { ...oldValue, query: [...oldValue.query, mutateResponse.query] };
+            return {
+              ...oldValue,
+              query: [...oldValue.query, mutateResponse.query],
+            };
           },
         );
       },
@@ -121,7 +129,10 @@ export const createMutationOptimistic = (options?: CreateMutationOptions<CreateI
         queryUtils.triggerMutator<GetListReturns>(
           () => [SANDBOX_QUERY_GET_LIST],
           (oldValue) => {
-            return { ...oldValue, query: [...oldValue.query, { id: mutateInput.id }] };
+            return {
+              ...oldValue,
+              query: [...oldValue.query, { id: mutateInput.id }],
+            };
           },
         );
       },
@@ -235,7 +246,10 @@ export const MutationManual = () => {
         return oldValue;
       }
 
-      return { ...oldValue, query: [...oldValue.query, { id: `${oldValue.query.length + 1}` }] };
+      return {
+        ...oldValue,
+        query: [...oldValue.query, { id: `${oldValue.query.length + 1}` }],
+      };
     });
   };
 
@@ -262,7 +276,9 @@ export const MutationManual = () => {
 };
 
 export const DynamicQueryParameters = () => {
-  const [queryParams, setQueryParams] = createSignal<GetListParams>({ filter: '' });
+  const [queryParams, setQueryParams] = createSignal<GetListParams>({
+    filter: '',
+  });
   const { data, resource, refetch } = getList(queryParams);
 
   const onInput: JSX.EventHandlerUnion<HTMLInputElement, Event> = (event) => {

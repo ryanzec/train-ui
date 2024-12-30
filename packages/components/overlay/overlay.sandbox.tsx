@@ -1,4 +1,4 @@
-import { createSignal, Show } from 'solid-js';
+import { Show, createSignal } from 'solid-js';
 
 import Button, { ButtonSentiment } from '$/components/button';
 import Overlay, { OverlayStrength } from '$/components/overlay';

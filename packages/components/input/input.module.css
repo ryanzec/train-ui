@@ -1,4 +1,6 @@
-.container { }
+/* biome-ignore lint/suspicious/noEmptyBlock: just a placeholder */
+.container {
+}
 
 .input-container {
   width: 100%;

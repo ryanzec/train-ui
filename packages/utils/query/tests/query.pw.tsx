@@ -1,4 +1,4 @@
-import { test, expect, Page } from '@playwright/test';
+import { Page, expect, test } from '@playwright/test';
 
 import { playwrightUtils } from '$/utils/playwright';
 
@@ -27,7 +27,11 @@ const locators = {
 test.describe('query', () => {
   test.describe('core', () => {
     test('getting data @component', async ({ page }) => {
-      await page.goto(playwrightUtils.buildUrl(urls.getDataWithDelay, { includeApiMocks: true }));
+      await page.goto(
+        playwrightUtils.buildUrl(urls.getDataWithDelay, {
+          includeApiMocks: true,
+        }),
+      );
 
       await expect(page.locator(locators.loadingIndicator)).toHaveCount(1);
       await expect(page.locator(locators.initiallyFetchedIndicator)).toContainText('true');
@@ -37,7 +41,11 @@ test.describe('query', () => {
     });
 
     test('dynamic query parameters does not cause extra data fetching @component', async ({ page }) => {
-      await page.goto(playwrightUtils.buildUrl(urls.dynamicQueryParameters, { includeApiMocks: true }));
+      await page.goto(
+        playwrightUtils.buildUrl(urls.dynamicQueryParameters, {
+          includeApiMocks: true,
+        }),
+      );
 
       await expect(page.locator(locators.item)).toHaveCount(2);
 
@@ -53,7 +61,11 @@ test.describe('query', () => {
     });
 
     test('deferred initial fetch for data @component', async ({ page }) => {
-      await page.goto(playwrightUtils.buildUrl(urls.noInitialFetch, { includeApiMocks: true }));
+      await page.goto(
+        playwrightUtils.buildUrl(urls.noInitialFetch, {
+          includeApiMocks: true,
+        }),
+      );
 
       await expect(page.locator(locators.item)).toHaveCount(0);
       await expect(page.locator(locators.loadingIndicator)).toHaveCount(0);
@@ -96,12 +108,18 @@ test.describe('query', () => {
 
   test.describe('mutation', () => {
     test('can mutate the cached data directly @component', async ({ page }) => {
-      await page.goto(playwrightUtils.buildUrl(urls.mutationManual, { includeApiMocks: true }));
+      await page.goto(
+        playwrightUtils.buildUrl(urls.mutationManual, {
+          includeApiMocks: true,
+        }),
+      );
 
       await page.locator(locators.addItemTrigger).click();
 
       await expect(page.locator(locators.item)).toHaveCount(3);
-      await expect(page.locator(locators.item).nth(2)).toHaveText('ID: 3', { timeout: 10 });
+      await expect(page.locator(locators.item).nth(2)).toHaveText('ID: 3', {
+        timeout: 10,
+      });
     });
 
     test('can mutate the cached data as part of a mutation query @component', async ({ page }) => {
@@ -119,7 +137,11 @@ test.describe('query', () => {
     test('can mutate the cached data as part of a mutation query optimistically when it succeeds @component', async ({
       page,
     }) => {
-      await page.goto(playwrightUtils.buildUrl(urls.mutationQueryOptimistic, { includeApiMocks: true }));
+      await page.goto(
+        playwrightUtils.buildUrl(urls.mutationQueryOptimistic, {
+          includeApiMocks: true,
+        }),
+      );
 
       await page.locator(locators.createInput).fill('create');
       await page.locator(locators.addItemTrigger).click();
@@ -136,7 +158,11 @@ test.describe('query', () => {
     test('can mutate the cached data as part of a mutation query optimistically and vert when it fails @component', async ({
       page,
     }) => {
-      await page.goto(playwrightUtils.buildUrl(urls.mutationQueryOptimistic, { includeApiMocks: true }));
+      await page.goto(
+        playwrightUtils.buildUrl(urls.mutationQueryOptimistic, {
+          includeApiMocks: true,
+        }),
+      );
 
       await page.locator(locators.createInput).type('mockerror|test|');
       await page.locator(locators.addItemTrigger).click();

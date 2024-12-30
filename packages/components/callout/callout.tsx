@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { JSX, mergeProps, Show, splitProps } from 'solid-js';
+import { type JSX, Show, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/callout/callout.module.css';
 import { CalloutSentiment, CalloutStrength } from '$/components/callout/utils';
@@ -14,7 +14,14 @@ export interface CalloutProps extends JSX.HTMLAttributes<HTMLDivElement> {
 
 const Callout = (passedProps: CalloutProps) => {
   const [props, restOfProps] = splitProps(
-    mergeProps({ sentiment: CalloutSentiment.BRAND, strength: CalloutStrength.WEAK, isCentered: true }, passedProps),
+    mergeProps(
+      {
+        sentiment: CalloutSentiment.BRAND,
+        strength: CalloutStrength.WEAK,
+        isCentered: true,
+      },
+      passedProps,
+    ),
     ['sentiment', 'strength', 'class', 'children', 'isCentered', 'preItem', 'postItem'],
   );
   const isStrong = props.strength === CalloutStrength.STRONG;

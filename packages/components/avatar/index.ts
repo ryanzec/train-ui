@@ -1,4 +1,4 @@
-import Avatar, { AvatarProps } from '$/components/avatar/avatar';
+import Avatar, { type AvatarProps } from '$/components/avatar/avatar';
 
 export type { AvatarProps };
 

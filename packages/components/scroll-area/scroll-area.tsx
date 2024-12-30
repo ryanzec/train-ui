@@ -2,7 +2,7 @@ import 'overlayscrollbars/overlayscrollbars.css';
 
 import type { PartialOptions } from 'overlayscrollbars';
 
-import { OverlayScrollbarsComponent, OverlayScrollbarsComponentProps } from 'overlayscrollbars-solid';
+import { OverlayScrollbarsComponent, type OverlayScrollbarsComponentProps } from 'overlayscrollbars-solid';
 import { splitProps } from 'solid-js';
 
 import styles from '$/components/scroll-area/scroll-area.module.css';

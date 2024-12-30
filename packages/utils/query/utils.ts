@@ -1,17 +1,17 @@
 import {
-  Accessor,
+  type Accessor,
+  type Resource,
+  type ResourceOptions,
+  type Setter,
   batch,
   createReaction,
+  createResource,
   createSignal,
   onCleanup,
-  Resource,
-  ResourceOptions,
-  Setter,
-  createResource,
   onMount,
 } from 'solid-js';
 
-import { CommonDataType } from '$/types/generic';
+import type { CommonDataType } from '$/types/generic';
 import { cryptoUtils } from '$/utils/crypto';
 
 type TrackedMutators = Record<string, Setter<CommonDataType | undefined>>;
@@ -102,7 +102,7 @@ export const createMutation = <TMutateInput, TMutateResult>(
       const response = await mutator(input);
 
       batch(() => {
-        // not sure why but need this case to make sure typescript does not complain
+        // biome-ignore lint/complexity/noBannedTypes: not sure why but need this case to make sure typescript does not complain
         setResult(response as Exclude<TMutateResult, Function>);
         setState(MutationState.SUCCESS);
       });
@@ -256,10 +256,7 @@ export const getCachedData = (queryData: QueryData, key: string) => {
   if (
     !queryData.cachedData[key] ||
     !queryData.cachedData[key].expires ||
-    // for some reason even with the cachedData[key].expires check, TypeScript still complains about
-    // cachedData[key].expires might being undefined so using the ! since the code does work
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    queryData.cachedData[key].expires! < currentTime
+    queryData.cachedData[key].expires < currentTime
   ) {
     removeCachedData(queryData, key);
 
@@ -293,13 +290,10 @@ export const getTrackedResource = (queryData: QueryData, key: string) => {
 
 export type CreateTrackedQueryReturns<TResource> = [
   Resource<TResource>,
-
   // refetch data method
   ResourceRefetcher<TResource>,
-
   // mutator method
   (callback: TriggerMutateMutator<TResource>) => void,
-
   // returns whether the data has been initially fetched
   () => boolean,
 ];
@@ -402,7 +396,10 @@ export const createTrackedQuery = <TResource>(
     async (info?: unknown) => {
       // not sure how to better handle this without the cast as the refetcher data is a common pool and can't be typed
       // to a specific resource data type
-      return (await triggerRefetcher(queryData, primaryKey, { info, secondaryKey })) as Promise<TResource | undefined>;
+      return (await triggerRefetcher(queryData, primaryKey, {
+        info,
+        secondaryKey,
+      })) as Promise<TResource | undefined>;
     },
     (callback: TriggerMutateMutator<TResource | undefined>) => {
       triggerMutator(queryData, queryKey, callback);

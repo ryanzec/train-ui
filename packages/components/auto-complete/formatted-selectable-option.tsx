@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import { Match, Switch } from 'solid-js';
 
 import styles from '$/components/auto-complete/auto-complete.module.css';
-import { AutoCompleteExtraData, AutoCompleteSelectableOptionProps } from '$/components/auto-complete/utils';
+import type { AutoCompleteExtraData, AutoCompleteSelectableOptionProps } from '$/components/auto-complete/utils';
 import Icon from '$/components/icon';
 import iconStyles from '$/components/icon/icon.module.css';
 import List from '$/components/list';
@@ -19,7 +19,6 @@ const FormattedSelectableOption = <TData extends AutoCompleteExtraData>(
       onMouseEnter={() => props.onMouseEnterOption(props.optionIndex)}
       onMouseLeave={() => props.onMouseLeaveOption()}
       onMouseDown={() => props.onMouseDownOption(props.option)}
-      role="button"
       tabIndex={-1}
     >
       <Switch fallback={<Icon class={classnames(styles.invisible, iconStyles.spacingRight)} icon="question_mark" />}>

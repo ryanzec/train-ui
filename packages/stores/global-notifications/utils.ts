@@ -1,7 +1,7 @@
 import { produce } from 'immer';
 import pullAt from 'lodash/pullAt';
 import { nanoid } from 'nanoid';
-import { createRoot, createSignal, JSX } from 'solid-js';
+import { type JSX, createRoot, createSignal } from 'solid-js';
 
 export interface GlobalNotification {
   id: string;

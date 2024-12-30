@@ -1,4 +1,4 @@
-import { Route, Navigate } from '@solidjs/router';
+import { Navigate, Route } from '@solidjs/router';
 import { lazy } from 'solid-js';
 
 import AuthenticatedRoute from '$web/components/routing/authenticated-route';

@@ -1,4 +1,4 @@
-import Callout, { CalloutProps } from '$/components/callout/callout';
+import Callout, { type CalloutProps } from '$/components/callout/callout';
 
 export { CalloutSentiment, CalloutStrength } from '$/components/callout/utils';
 

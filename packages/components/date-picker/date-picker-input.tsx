@@ -1,13 +1,13 @@
 import { autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
 import classnames from 'classnames';
-import { createEffect, createSignal, mergeProps, onCleanup, Show, splitProps } from 'solid-js';
+import { Show, createEffect, createSignal, mergeProps, onCleanup, splitProps } from 'solid-js';
 
-import DatePicker, { DatePickerProps } from '$/components/date-picker/date-picker';
+import DatePicker, { type DatePickerProps } from '$/components/date-picker/date-picker';
 import styles from '$/components/date-picker/date-picker.module.css';
 import { datePickerUtils } from '$/components/date-picker/utils';
-import Input, { InputProps } from '$/components/input';
+import Input, { type InputProps } from '$/components/input';
 import { clickOutside } from '$/stores/click-outside';
-import { CommonDataAttributes } from '$/types/generic';
+import type { CommonDataAttributes } from '$/types/generic';
 
 // this is needed to avoid this code being stripped in compilation because of the way directive work in SolidJS
 clickOutside;

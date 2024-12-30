@@ -1,10 +1,10 @@
 import type { Navigator } from '@solidjs/router';
 
-import { Auth0Client, createAuth0Client } from '@auth0/auth0-spa-js';
-import { jwtDecode, InvalidTokenError, JwtPayload } from 'jwt-decode';
+import { type Auth0Client, createAuth0Client } from '@auth0/auth0-spa-js';
+import { InvalidTokenError, type JwtPayload, jwtDecode } from 'jwt-decode';
 import { createRoot, createSignal } from 'solid-js';
 
-import { applicationUtils, GlobalVariable, POST_INSTALL_REDIRECT_PARAM } from '$web/utils/application';
+import { GlobalVariable, POST_INSTALL_REDIRECT_PARAM, applicationUtils } from '$web/utils/application';
 
 const domain = applicationUtils.getGlobalVariable(GlobalVariable.AUTH0_DOMAIN);
 const clientId = applicationUtils.getGlobalVariable(GlobalVariable.AUTH0_CLIENT_ID);
@@ -32,8 +32,7 @@ const getTokenSilently = async (auth0Client: Auth0Client): Promise<[string | und
 
     return [token, decodedToken];
 
-    // using any seems to be the only way to deal with auth0 errors
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // biome-ignore lint/suspicious/noExplicitAny: using any seems to be the only way to deal with auth0 errors
   } catch (error: any) {
     if ((error.error && notAuthenticatedErrors.includes(error.error)) || error instanceof InvalidTokenError) {
       return [undefined, undefined];
@@ -135,8 +134,7 @@ const createApplicationStore = () => {
     if (hasState && hasCodeOrError) {
       try {
         await currentAuth0Client.handleRedirectCallback();
-        // using any seems to be the only way to deal with auth0 errors
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        // biome-ignore lint/suspicious/noExplicitAny: using any seems to be the only way to deal with auth0 errors
       } catch (error: any) {
         if (error.error_description === 'Invalid state') {
           await logout();

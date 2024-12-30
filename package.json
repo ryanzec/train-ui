@@ -1,14 +1,13 @@
 {
   "name": "monorepo-template",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "scripts": {
     "api:mock": "nodemon --watch application/api --ignore applications/api/lowdb/* --exec 'node --experimental-specifier-resolution=node --loader ts-node/esm' applications/api/src/server.ts",
     "build:check": "tsc",
-    "design-tokens:transform": "node ./scripts/transform-design-token.mjs",
-    "lint": "eslint --cache --ext .jsx --ext .js --ext ts --ext tsx ./",
-    "lint:no-cache": "eslint --ext .jsx --ext .js --ext ts --ext tsx ./",
-    "lint:fix": "eslint --cache --fix --ext .jsx --ext .js --ext ts --ext tsx ./ && prettier --write \"./packages/**/*.{ts,tsx,js,jsx,json,md}\"",
+    "lint": "biome check applications packages",
+    "lint:fix": "biome check --fix applications packages",
+    "format": "biome format --write applications packages",
     "web:build": "tsc && vite --config ./applications/web/vite.config.ts build",
     "web:dev": "vite --config ./applications/web/vite.config.ts --port 4000",
     "web:preview": "vite --config ./applications/web/vite.config.ts preview",
@@ -21,9 +20,7 @@
     "sandbox:dev": "vite --config ./applications/sandbox/vite.config.ts --port 6006",
     "sandbox:build": "vite --config ./applications/sandbox/vite.config.ts build",
     "sandbox:preview": "vite --config ./applications/sandbox/vite.config.ts preview",
-    "storybook": "STORYBOOK_THEME=red start-storybook -p 6006",
-    "storybook:build": "build-storybook",
-    "prepare": "husky install",
+    "prepare": "husky",
     "upgrade-interactive": "npm-check -u -E"
   },
   "dependencies": {
@@ -52,7 +49,7 @@
     "zod": "3.24.1"
   },
   "devDependencies": {
-    "@ctrl/tinycolor": "4.1.0",
+    "@biomejs/biome": "1.9.4",
     "@faker-js/faker": "9.3.0",
     "@fastify/cors": "8.4.2",
     "@playwright/test": "1.49.1",
@@ -63,19 +60,11 @@
     "@types/scrollparent": "2.0.3",
     "@types/set-value": "4.0.3",
     "@types/spark-md5": "3.0.5",
-    "@typescript-eslint/eslint-plugin": "6.14.0",
-    "@typescript-eslint/parser": "6.14.0",
     "assert": "2.1.0",
     "autoprefixer": "10.4.20",
     "body-parser": "1.20.3",
     "deepmerge": "4.3.1",
     "dotenv": "16.4.7",
-    "eslint": "8.56.0",
-    "eslint-config-prettier": "9.1.0",
-    "eslint-import-resolver-typescript": "3.6.1",
-    "eslint-plugin-import": "2.29.1",
-    "eslint-plugin-jsx-a11y": "6.8.0",
-    "eslint-plugin-prettier": "5.0.1",
     "fastify": "4.25.1",
     "husky": "9.1.7",
     "ignore-styles": "5.0.1",
@@ -87,9 +76,6 @@
     "playwright": "1.49.1",
     "postcss": "8.4.49",
     "postcss-nested": "7.0.2",
-    "prettier": "3.1.1",
-    "style-dictionary": "4.3.0",
-    "sucrase": "3.35.0",
     "ts-node": "10.9.2",
     "tsconfig-paths": "4.2.0",
     "typescript": "5.7.2",
@@ -97,5 +83,6 @@
     "vite-plugin-solid": "2.11.0",
     "vite-svg-loader": "5.1.0",
     "vitest": "3.0.0-beta.1"
-  }
+  },
+  "type": "module"
 }

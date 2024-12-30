@@ -1,5 +1,5 @@
-import Input, { InputProps } from '$/components/input/input';
-import Icon, { InputIconProps } from '$/components/input/input-icon';
+import Input, { type InputProps } from '$/components/input/input';
+import Icon, { type InputIconProps } from '$/components/input/input-icon';
 
 export type { InputProps, InputIconProps };
 

@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { For, JSX, ParentProps, Show, splitProps } from 'solid-js';
+import { For, type JSX, type ParentProps, Show, splitProps } from 'solid-js';
 
 import styles from '$/components/supporting-text/supporting-text.module.css';
 import { SupportingTextSentiment } from '$/components/supporting-text/utils';

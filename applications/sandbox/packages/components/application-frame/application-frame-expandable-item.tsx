@@ -1,12 +1,12 @@
 import classnames from 'classnames';
-import { createSignal, JSX, Show, splitProps } from 'solid-js';
+import { type JSX, Show, createSignal, splitProps } from 'solid-js';
 
 import styles from '$sandbox/components/application-frame/application-frame.module.css';
 
 import Button, { ButtonVariant } from '../../../../../packages/components/button';
 import SideNavigation from '../../../../../packages/components/side-navgiation';
-import { CommonDataAttributes } from '../../../../../packages/types/generic';
-import { DynamicRouteNavigation } from '../../stores/dynamic-routes';
+import type { CommonDataAttributes } from '../../../../../packages/types/generic';
+import type { DynamicRouteNavigation } from '../../stores/dynamic-routes';
 
 import ApplicationFrameSubNavigation from './application-frame-sub-navigation';
 

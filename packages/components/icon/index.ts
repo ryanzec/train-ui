@@ -1,4 +1,4 @@
-import Icon, { IconProps } from '$/components/icon/icon';
+import Icon, { type IconProps } from '$/components/icon/icon';
 
 export type { IconProps };
 

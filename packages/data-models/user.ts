@@ -1,4 +1,4 @@
-import { ResponseWrapper } from '$/data-models/utils';
+import type { ResponseWrapper } from '$/data-models/utils';
 
 export type User = {
   id: string;

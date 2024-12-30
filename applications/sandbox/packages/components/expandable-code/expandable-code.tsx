@@ -1,4 +1,4 @@
-import { createSignal, ParentProps, Show } from 'solid-js';
+import { type ParentProps, Show, createSignal } from 'solid-js';
 
 import Button from '../../../../../packages/components/button/button';
 

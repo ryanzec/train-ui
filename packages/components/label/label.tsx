@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { JSX, mergeProps, Show, splitProps } from 'solid-js';
+import { type JSX, Show, mergeProps, splitProps } from 'solid-js';
 
 import { IconSize } from '$/components/icon';
 import iconStyles from '$/components/icon/icon.module.css';
@@ -22,6 +22,7 @@ const Label = (passedProps: LabelProps) => {
 
   return (
     <div data-id="label" class={classnames(styles.container, props.class)}>
+      {/* biome-ignore lint/a11y/noLabelWithoutControl: provided by ...restOfProps */}
       <label class={styles.label} {...restOfProps}>
         {props.children}
         <Show when={props.isLoading}>

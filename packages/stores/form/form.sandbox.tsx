@@ -1,21 +1,21 @@
 import { nanoid } from 'nanoid';
 import nested from 'postcss-nested';
-import { createEffect, createSignal, For, Match, Show, Switch, untrack, Index } from 'solid-js';
+import { For, Index, Match, Show, Switch, createEffect, createSignal, untrack } from 'solid-js';
 import * as zod from 'zod';
-import { ZodType } from 'zod';
+import type { ZodType } from 'zod';
 
 import AutoComplete, {
-  AutoCompleteOption,
+  type AutoCompleteOption,
   autoCompleteUtils,
-  AutoCompleteValueStore,
+  type AutoCompleteValueStore,
 } from '$/components/auto-complete';
 import Button from '$/components/button';
 import Checkbox from '$/components/checkbox';
 import DatePicker, {
-  DateFormValue,
-  DatePickerInputValueStore,
+  type DateFormValue,
+  type DatePickerInputValueStore,
   datePickerUtils,
-  WhichDate,
+  type WhichDate,
 } from '$/components/date-picker';
 import FormField from '$/components/form-field';
 import Input from '$/components/input';
@@ -26,7 +26,7 @@ import Textarea from '$/components/textarea';
 import TimeInput, { timeInputUtils } from '$/components/time-input';
 import { formStoreUtils } from '$/stores/form';
 import { FormInputValidationState } from '$/stores/form/utils';
-import { CommonDataType } from '$/types/generic';
+import type { CommonDataType } from '$/types/generic';
 import { dynamicDataId } from '$/utils/component';
 import { zodUtils } from '$/utils/zod';
 import ExpandableCode from '$sandbox/components/expandable-code';
@@ -622,7 +622,9 @@ export const NestedArrayFields = () => {
     typeof nestedArrayFormDataSchema.shape
   >({
     onSubmit: () => {},
-    initialValues: { array: [{ partA: 'test', nested: [{ partA: 'test2' }] }] },
+    initialValues: {
+      array: [{ partA: 'test', nested: [{ partA: 'test2' }] }],
+    },
     schema: nestedArrayFormDataSchema,
   });
 
@@ -1104,9 +1106,9 @@ export const DynamicFormElements = () => {
   createEffect(() => {
     const customZodElements: Record<string, ZodType> = {};
 
-    randomInputs().forEach((input) => {
+    for (const input of randomInputs()) {
       customZodElements[input.name] = input.validation;
-    });
+    }
 
     formStore.setSchema(
       zodUtils.schemaForType<DynamicFormData>()(

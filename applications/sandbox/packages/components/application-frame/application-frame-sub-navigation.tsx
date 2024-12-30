@@ -2,7 +2,7 @@ import { For, Match, Switch } from 'solid-js';
 
 import styles from '$sandbox/components/application-frame/application-frame.module.css';
 
-import { DynamicRouteNavigation } from '../../stores/dynamic-routes';
+import type { DynamicRouteNavigation } from '../../stores/dynamic-routes';
 
 import ApplicationFrameExpandableItem from './application-frame-expandable-item';
 import ApplicationFrameNavigationItem from './application-frame-navigation-item';

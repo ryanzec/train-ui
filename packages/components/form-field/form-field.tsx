@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { JSX, ParentProps, splitProps } from 'solid-js';
+import { type JSX, type ParentProps, splitProps } from 'solid-js';
 
 import styles from '$/components/form-field/form-field.module.css';
 

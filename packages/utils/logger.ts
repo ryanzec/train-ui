@@ -1,6 +1,6 @@
 // proxy methods for some console.* so need to allow any here
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: match native api
 const log = (...args: any) => {
   if (import.meta.env.MODE !== 'development') {
     return;
@@ -9,7 +9,7 @@ const log = (...args: any) => {
   console.log(...args);
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: match native api
 const warn = (...args: any) => {
   if (import.meta.env.MODE !== 'development') {
     return;
@@ -18,7 +18,7 @@ const warn = (...args: any) => {
   console.warn(...args);
 };
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: match native api
 const error = (...args: any) => {
   if (import.meta.env.MODE !== 'development') {
     return;

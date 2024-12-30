@@ -1,4 +1,4 @@
-import { CommonDataType } from '$/types/generic';
+import type { CommonDataType } from '$/types/generic';
 
 export interface ResponseError {
   message: string;

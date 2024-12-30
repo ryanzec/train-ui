@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { JSX, mergeProps, onCleanup, ParentProps, Show, splitProps } from 'solid-js';
+import { type JSX, type ParentProps, Show, mergeProps, onCleanup, splitProps } from 'solid-js';
 import { Portal } from 'solid-js/web';
 
 import Button, { ButtonVariant } from '$/components/button';
@@ -56,7 +56,11 @@ const Dialog = (passedProps: ParentProps<DialogProps>) => {
           </div>
           <div class={styles.dialogContent}>{props.children}</div>
           <Show when={props.footerElement}>
-            <div class={classnames(styles.dialogFooter, { [styles.dialogFooterRightAligned]: props.footerAlignment })}>
+            <div
+              class={classnames(styles.dialogFooter, {
+                [styles.dialogFooterRightAligned]: props.footerAlignment,
+              })}
+            >
               {props.footerElement}
             </div>
           </Show>

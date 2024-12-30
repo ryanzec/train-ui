@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { JSX, mergeProps, ParentProps, splitProps } from 'solid-js';
+import { type JSX, type ParentProps, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/bubble/bubble.module.css';
 import { BubbleSentiment, BubbleSize, BubbleStrength } from '$/components/bubble/utils';
@@ -16,7 +16,11 @@ export interface BubbleProps extends JSX.HTMLAttributes<HTMLDivElement> {
 const Bubble = (passedProps: ParentProps<BubbleProps>) => {
   const [props, restOfProps] = splitProps(
     mergeProps(
-      { sentiment: BubbleSentiment.BRAND, strength: BubbleStrength.WEAK, size: BubbleSize.SMALL },
+      {
+        sentiment: BubbleSentiment.BRAND,
+        strength: BubbleStrength.WEAK,
+        size: BubbleSize.SMALL,
+      },
       passedProps,
     ),
     ['sentiment', 'strength', 'size', 'class', 'children', 'preIcon', 'postIcon'],
@@ -45,7 +49,9 @@ const Bubble = (passedProps: ParentProps<BubbleProps>) => {
       {props.preIcon && (
         <Icon
           icon={props.preIcon}
-          class={classnames(styles.icon, styles.preIcon, { [styles.iconSmall]: props.size === BubbleSize.SMALL })}
+          class={classnames(styles.icon, styles.preIcon, {
+            [styles.iconSmall]: props.size === BubbleSize.SMALL,
+          })}
         >
           {props.preIcon}
         </Icon>
@@ -54,7 +60,9 @@ const Bubble = (passedProps: ParentProps<BubbleProps>) => {
       {props.postIcon && (
         <Icon
           icon={props.postIcon}
-          class={classnames(styles.icon, styles.postIcon, { [styles.iconSmall]: props.size === BubbleSize.SMALL })}
+          class={classnames(styles.icon, styles.postIcon, {
+            [styles.iconSmall]: props.size === BubbleSize.SMALL,
+          })}
         >
           {props.postIcon}
         </Icon>

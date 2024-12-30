@@ -1,5 +1,5 @@
 import { A } from '@solidjs/router';
-import { ParentProps, Show, Suspense } from 'solid-js';
+import { type ParentProps, Show, Suspense } from 'solid-js';
 
 import Loading from '$/components/loading';
 import styles from '$web/components/application/application.module.css';

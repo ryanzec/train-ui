@@ -1,4 +1,4 @@
-import { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from 'fastify';
+import type { FastifyReply, FastifyRequest, HookHandlerDoneFunction } from 'fastify';
 
 export const mockerrorHook = (request: FastifyRequest, response: FastifyReply, done: HookHandlerDoneFunction) => {
   const bodyString = JSON.stringify(request.body ?? {});
