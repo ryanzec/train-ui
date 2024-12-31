@@ -1,16 +1,11 @@
 import { nanoid } from 'nanoid';
-import nested from 'postcss-nested';
 import { For, Index, Match, Show, Switch, createEffect, createSignal, untrack } from 'solid-js';
 import * as zod from 'zod';
 import type { ZodType } from 'zod';
 
-import AutoComplete, {
-  type AutoCompleteOption,
-  autoCompleteUtils,
-  type AutoCompleteValueStore,
-} from '$/components/auto-complete';
 import Button from '$/components/button';
 import Checkbox from '$/components/checkbox';
+import Combobox, { type ComboboxOption, comboboxUtils, type ComboboxValueStore } from '$/components/combobox';
 import DatePicker, {
   type DateFormValue,
   type DatePickerInputValueStore,
@@ -955,7 +950,7 @@ enum RandomFormFieldType {
   NUMBER = 'number',
   CHECKBOX = 'checkbox',
   SINGLE_CHECKBOX = 'single-checkbox',
-  AUTO_COMPLETE = 'auto-complete',
+  COMBOBOX = 'comboxbox',
   RADIO = 'radio',
   CHECKBOX_TOGGLE = 'checkbox-toggle',
   SINGLE_RADIO = 'single-radio',
@@ -999,8 +994,8 @@ const possibleRandomFields: RandomFormField[] = [
     validation: zod.string().array().min(1, 'Required'),
   },
   {
-    name: 'autocomplete',
-    type: RandomFormFieldType.AUTO_COMPLETE,
+    name: 'combobox',
+    type: RandomFormFieldType.COMBOBOX,
     validation: zod.number().array().min(1, 'must select at least 1 value'),
   },
   {
@@ -1073,7 +1068,7 @@ export const DynamicFormElements = () => {
     },
   });
   const [addDefaultValue, setAddDefaultValue] = createSignal(true);
-  const [autoCompleteValues, setAutoCompleteValues] = createSignal<Record<string, AutoCompleteValueStore>>({});
+  const [comboboxValues, setComboboxValues] = createSignal<Record<string, ComboboxValueStore>>({});
   const [datePickerValues, setDatePickerValues] = createSignal<Record<string, DatePickerInputValueStore>>();
   const [randomInputs, setRandomInputs] = createSignal<RandomFormField[]>([]);
 
@@ -1081,10 +1076,10 @@ export const DynamicFormElements = () => {
     const randomFieldName = `${randomField.name}${randomInputs().length + 1}`;
     const currentAddDefaultValue = addDefaultValue();
 
-    if (randomField.type === RandomFormFieldType.AUTO_COMPLETE) {
-      setAutoCompleteValues({
-        ...autoCompleteValues(),
-        [randomFieldName]: autoCompleteUtils.createAutoCompleteValue(),
+    if (randomField.type === RandomFormFieldType.COMBOBOX) {
+      setComboboxValues({
+        ...comboboxValues(),
+        [randomFieldName]: comboboxUtils.createComboboxValue(),
       });
     }
 
@@ -1332,8 +1327,8 @@ export const DynamicFormElements = () => {
                         + Add Array Field
                       </Button>
                     </Match>
-                    <Match when={input.type === RandomFormFieldType.AUTO_COMPLETE}>
-                      <AutoComplete
+                    <Match when={input.type === RandomFormFieldType.COMBOBOX}>
+                      <Combobox
                         autoShowOptions
                         options={[
                           { display: 'option 1', value: 11 },
@@ -1341,18 +1336,18 @@ export const DynamicFormElements = () => {
                           { display: 'option 3', value: 33 },
                           { display: 'option 4', value: 44 },
                         ]}
-                        filterOptions={autoCompleteUtils.excludeSelectedFilter}
-                        setSelected={(options: AutoCompleteOption[]) => {
+                        filterOptions={comboboxUtils.excludeSelectedFilter}
+                        setSelected={(options: ComboboxOption[]) => {
                           // cast needed since auto complete values can be a number of types
                           const value = options.map((option) => option.value) as number[];
 
                           formStore.setValue(input.name, value);
-                          autoCompleteValues()[input.name].setSelected(options);
+                          comboboxValues()[input.name].setSelected(options);
                         }}
-                        selected={autoCompleteValues()[input.name].selected()}
+                        selected={comboboxValues()[input.name].selected()}
                         name={input.name}
-                        selectedComponent={AutoComplete.SelectedOption}
-                        selectableComponent={AutoComplete.SelectableOption}
+                        selectedComponent={Combobox.SelectedOption}
+                        selectableComponent={Combobox.SelectableOption}
                         validationState={getValidationState()}
                         placeholder="placeholder"
                       />

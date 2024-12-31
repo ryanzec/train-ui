@@ -256,7 +256,7 @@ interface ButtonProps
 ```tsx
 interface EditIncidentFormData {
   firstName: string;
-  autoComplete: number;
+  combobox: number;
   email: string;
   mobileNumber: string;
   title: string;
@@ -503,10 +503,10 @@ Naming variables in the positive helps avoid double negative references in code 
 
 ```tsx
 // bad
-const diableAutoComplete = false;
+const diableCombobox = false;
 
 // good
-const enableAutoComplete = true;
+const enableCombobox = true;
 ```
 
 ## Only reference other types when they are tightly coupled

@@ -1,4 +1,4 @@
-.auto-complete {
+.combobox {
   /* this make the items element width to be constrained by the main auto complete element */
   position: relative;
 
@@ -72,7 +72,7 @@
 }
 
 .remove-icon {
-  color: var(--color-remove);
+  color: var(danger);
 }
 
 .invisible {

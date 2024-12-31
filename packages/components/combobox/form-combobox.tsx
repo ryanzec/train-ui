@@ -1,24 +1,24 @@
 import { type Accessor, mergeProps } from 'solid-js';
 
-import AutoComplete from '$/components/auto-complete/auto-complete';
-import FormattedSelectableOption from '$/components/auto-complete/formatted-selectable-option';
-import SelectableOption from '$/components/auto-complete/selectable-option';
-import { type AutoCompleteOption, autoCompleteUtils } from '$/components/auto-complete/utils';
+import Combobox from '$/components/combobox/combobox';
+import FormattedSelectableOption from '$/components/combobox/formatted-selectable-option';
+import SelectableOption from '$/components/combobox/selectable-option';
+import { type ComboboxOption, comboboxUtils } from '$/components/combobox/utils';
 import type { FormErrorsData } from '$/stores/form';
 import { FormInputValidationState } from '$/stores/form/utils';
 
-export interface FormAutoCompleteAutoCompleteItem {
+export interface FormComboboxComboboxItem {
   display: string;
   value: string;
 }
 
-interface FormAutoCompleteProps<TFormData> {
+interface FormComboboxProps<TFormData> {
   errors?: Accessor<FormErrorsData<TFormData>>;
   label?: string;
   class?: string;
-  setSelected: (autoCompleteOptions: AutoCompleteOption[]) => void;
-  selected: AutoCompleteOption[];
-  options: FormAutoCompleteAutoCompleteItem[];
+  setSelected: (comboboxOptions: ComboboxOption[]) => void;
+  selected: ComboboxOption[];
+  options: FormComboboxComboboxItem[];
   name: keyof TFormData;
   placeholder?: string;
   disabledPlaceholder?: string;
@@ -26,7 +26,7 @@ interface FormAutoCompleteProps<TFormData> {
   isMulti?: boolean;
 }
 
-const FormAutoComplete = <TFormData,>(passedProps: FormAutoCompleteProps<TFormData>) => {
+const FormCombobox = <TFormData,>(passedProps: FormComboboxProps<TFormData>) => {
   const props = mergeProps(
     {
       placeholder: '',
@@ -44,14 +44,14 @@ const FormAutoComplete = <TFormData,>(passedProps: FormAutoCompleteProps<TFormDa
   const errors = () => props.errors?.()[name() as keyof TFormData]?.errors;
 
   return (
-    <AutoComplete
+    <Combobox
       id={name()}
       name={name()}
       isMulti={props.isMulti}
       autoShowOptions
       forceSelection
       options={props.options}
-      filterOptions={autoCompleteUtils.simpleFilter}
+      filterOptions={comboboxUtils.simpleFilter}
       setSelected={(selectedItems) => {
         props.setSelected(selectedItems);
       }}
@@ -64,4 +64,4 @@ const FormAutoComplete = <TFormData,>(passedProps: FormAutoCompleteProps<TFormDa
   );
 };
 
-export default FormAutoComplete;
+export default FormCombobox;

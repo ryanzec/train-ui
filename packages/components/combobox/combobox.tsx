@@ -4,19 +4,19 @@ import { Dynamic } from 'solid-js/web';
 
 import {
   AsyncOptionsState,
-  type AutoCompleteExtraData,
-  type AutoCompleteOption,
-  type AutoCompleteProps,
-  autoCompleteUtils,
-} from '$/components/auto-complete/utils';
+  type ComboboxExtraData,
+  type ComboboxOption,
+  type ComboboxProps,
+  comboboxUtils,
+} from '$/components/combobox/utils';
 import Icon from '$/components/icon';
 import iconStyles from '$/components/icon/icon.module.css';
 import Input from '$/components/input';
 import List from '$/components/list';
 
-import styles from './auto-complete.module.css';
+import styles from './combobox.module.css';
 
-const AutoComplete = <TData extends AutoCompleteExtraData>(passedProps: AutoCompleteProps<TData>) => {
+const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TData>) => {
   const [props, restOfProps] = splitProps(
     mergeProps(
       {
@@ -57,23 +57,23 @@ const AutoComplete = <TData extends AutoCompleteExtraData>(passedProps: AutoComp
     ],
   );
 
-  const autoCompleteStore = autoCompleteUtils.createAutoComplete(props);
+  const comboboxStore = comboboxUtils.createCombobox(props);
 
   const onClickClearTrigger = () => {
-    if (autoCompleteStore.inputHasClearableValue()) {
-      autoCompleteStore.clearSelection(false);
+    if (comboboxStore.inputHasClearableValue()) {
+      comboboxStore.clearSelection(false);
     }
   };
 
   const onClickDropDownIndicator = () => {
-    autoCompleteStore.store.inputRef?.focus();
+    comboboxStore.store.inputRef?.focus();
   };
 
   return (
-    <div data-id="auto-complete" class={styles.autoComplete} {...restOfProps}>
+    <div data-id="combobox" class={styles.combobox} {...restOfProps}>
       <Input
-        {...autoCompleteStore.getInputProps()}
-        inputContainerClass={autoCompleteStore.store.isOpen ? styles.inputContainer : undefined}
+        {...comboboxStore.getInputProps()}
+        inputContainerClass={comboboxStore.store.isOpen ? styles.inputContainer : undefined}
         type="text"
         data-uncontrolled-value="true"
         disabled={props.disabled}
@@ -81,11 +81,7 @@ const AutoComplete = <TData extends AutoCompleteExtraData>(passedProps: AutoComp
         postItem={
           props.disabled ? null : (
             <>
-              <Show
-                when={
-                  props.showClearIcon && !autoCompleteStore.store.isOpen && autoCompleteStore.inputHasClearableValue()
-                }
-              >
+              <Show when={props.showClearIcon && !comboboxStore.store.isOpen && comboboxStore.inputHasClearableValue()}>
                 <Icon data-id="clear-icon-trigger" icon="close" onClick={onClickClearTrigger} />
               </Show>
               <Icon data-id="input-icon-indicator" icon="arrow_drop_down" onClick={onClickDropDownIndicator} />
@@ -97,30 +93,29 @@ const AutoComplete = <TData extends AutoCompleteExtraData>(passedProps: AutoComp
       <List
         data-id="options"
         class={classnames(styles.list, {
-          [styles.openedList]: autoCompleteStore.store.isOpen,
+          [styles.openedList]: comboboxStore.store.isOpen,
         })}
-        {...autoCompleteStore.getOptionsContainerProps()}
+        {...comboboxStore.getOptionsContainerProps()}
       >
-        <Show when={autoCompleteStore.store.isOpen && autoCompleteStore.asyncOptionsAreLoading()}>
+        <Show when={comboboxStore.store.isOpen && comboboxStore.asyncOptionsAreLoading()}>
           <List.Item data-id="async-options-loading" class={styles.listOption}>
             <Icon class={classnames(styles.loadingIndicator, iconStyles.spacingRight)} icon="refresh" /> Loading...
           </List.Item>
         </Show>
         <Show
           when={
-            autoCompleteStore.store.isOpen &&
-            autoCompleteStore.store.asyncOptionsState === AsyncOptionsState.BEFORE_THRESHOLD
+            comboboxStore.store.isOpen && comboboxStore.store.asyncOptionsState === AsyncOptionsState.BEFORE_THRESHOLD
           }
         >
           <List.Item data-id="async-options-before-threshold" class={styles.listOption}>
-            Type {autoCompleteStore.store.asyncThreshold} characters for options...
+            Type {comboboxStore.store.asyncThreshold} characters for options...
           </List.Item>
         </Show>
-        <Show when={autoCompleteStore.store.isOpen && autoCompleteStore.showOptions()}>
+        <Show when={comboboxStore.store.isOpen && comboboxStore.showOptions()}>
           <For
-            each={autoCompleteStore.store.displayOptions}
+            each={comboboxStore.store.displayOptions}
             fallback={
-              <Show when={!autoCompleteStore.asyncOptionsAreLoading()}>
+              <Show when={!comboboxStore.asyncOptionsAreLoading()}>
                 <List.Item data-id="option no-options-found" class={styles.listOption}>
                   No Options Found"
                 </List.Item>
@@ -131,7 +126,7 @@ const AutoComplete = <TData extends AutoCompleteExtraData>(passedProps: AutoComp
               return (
                 <Dynamic
                   component={props.selectableComponent}
-                  {...autoCompleteStore.getSelectionOptionProps()}
+                  {...comboboxStore.getSelectionOptionProps()}
                   option={option}
                   optionIndex={optionIndex()}
                 />
@@ -143,11 +138,11 @@ const AutoComplete = <TData extends AutoCompleteExtraData>(passedProps: AutoComp
       <Show when={props.isMulti && props.selected.length > 0 && !!props.selectedComponent}>
         <div data-id="selected-options">
           <For each={props.selected}>
-            {(option: AutoCompleteOption<TData>, optionIndex: Accessor<number>) => {
+            {(option: ComboboxOption<TData>, optionIndex: Accessor<number>) => {
               return (
                 <Dynamic
                   component={passedProps.selectedComponent}
-                  {...autoCompleteStore.getSelectedOptionProps()}
+                  {...comboboxStore.getSelectedOptionProps()}
                   option={option}
                   optionIndex={optionIndex()}
                 />
@@ -160,4 +155,4 @@ const AutoComplete = <TData extends AutoCompleteExtraData>(passedProps: AutoComp
   );
 };
 
-export default AutoComplete;
+export default Combobox;

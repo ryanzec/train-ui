@@ -6,18 +6,18 @@ import type { FormInputValidationState } from '$/stores/form/utils';
 import { Key } from '$/types/generic';
 import { domUtils } from '$/utils/dom';
 
-export type AutoCompleteOptionValue = string | number;
+export type ComboboxOptionValue = string | number;
 
 // we use the as the default for extending the auto complete option to allow any data
-export interface AutoCompleteExtraData {
+export interface ComboboxExtraData {
   // biome-ignore lint/suspicious/noExplicitAny: to make this be easier to be used as a generic type, we need to
   // biome-ignore lint/suspicious/noExplicitAny: allow any extra data for auto complete options
   [key: string]: any;
 }
 
-export type AutoCompleteOption<TData = AutoCompleteExtraData> = {
+export type ComboboxOption<TData = ComboboxExtraData> = {
   display: string;
-  value: AutoCompleteOptionValue;
+  value: ComboboxOptionValue;
 } & TData;
 
 export enum AsyncOptionsState {
@@ -40,40 +40,40 @@ export enum AsyncOptionsState {
   BEFORE_THRESHOLD = 'before-threshold',
 }
 
-export interface AutoCompleteSelectableOptionProps<TData extends AutoCompleteExtraData> {
-  option: AutoCompleteOption<TData>;
+export interface ComboboxSelectableOptionProps<TData extends ComboboxExtraData> {
+  option: ComboboxOption<TData>;
   optionIndex: number;
   isFocusedOption: (optionIndex: number) => boolean;
-  isSelectedOption: (value: AutoCompleteOptionValue) => boolean;
+  isSelectedOption: (value: ComboboxOptionValue) => boolean;
   onMouseEnterOption: (optionIndex: number) => void;
   onMouseLeaveOption: () => void;
-  onMouseDownOption: (option: AutoCompleteOption<TData>) => void;
+  onMouseDownOption: (option: ComboboxOption<TData>) => void;
 }
 
-export interface AutoCompleteSelectedOptionProps<TData extends AutoCompleteExtraData> {
-  option: AutoCompleteOption<TData>;
+export interface ComboboxSelectedOptionProps<TData extends ComboboxExtraData> {
+  option: ComboboxOption<TData>;
   optionIndex: number;
   removeValue: (optionIndex: number) => void;
 }
 
-export interface AutoCompleteProps<TData extends AutoCompleteExtraData> extends JSX.HTMLAttributes<HTMLDivElement> {
-  selected: AutoCompleteOption<TData>[];
-  setSelected: (option: AutoCompleteOption<TData>[]) => void;
+export interface ComboboxProps<TData extends ComboboxExtraData> extends JSX.HTMLAttributes<HTMLDivElement> {
+  selected: ComboboxOption<TData>[];
+  setSelected: (option: ComboboxOption<TData>[]) => void;
   placeholder?: string;
-  options: AutoCompleteOption<TData>[];
+  options: ComboboxOption<TData>[];
   autoShowOptions?: boolean;
   forceSelection?: boolean;
   filterOptions?: (
-    options: AutoCompleteOption<TData>[],
+    options: ComboboxOption<TData>[],
     inputValue?: string,
-    excludeValues?: AutoCompleteOptionValue[],
-  ) => AutoCompleteOption<TData>[];
+    excludeValues?: ComboboxOptionValue[],
+  ) => ComboboxOption<TData>[];
   isMulti?: boolean;
-  getOptionsAsync?: (inputValue?: string) => Promise<AutoCompleteOption<TData>[]>;
+  getOptionsAsync?: (inputValue?: string) => Promise<ComboboxOption<TData>[]>;
   asyncDelay?: number;
-  selectedComponent?: (props: AutoCompleteSelectedOptionProps<TData>) => JSX.Element;
-  selectableComponent: (props: AutoCompleteSelectableOptionProps<TData>) => JSX.Element;
-  onDeleteOption?: (deletedOption: AutoCompleteOption<TData>) => void;
+  selectedComponent?: (props: ComboboxSelectedOptionProps<TData>) => JSX.Element;
+  selectableComponent: (props: ComboboxSelectableOptionProps<TData>) => JSX.Element;
+  onDeleteOption?: (deletedOption: ComboboxOption<TData>) => void;
   asyncThreshold?: number;
   name: string;
   removeOnDuplicateSingleSelect?: boolean;
@@ -82,12 +82,12 @@ export interface AutoCompleteProps<TData extends AutoCompleteExtraData> extends 
   showClearIcon?: boolean;
 }
 
-export interface GetSelectableOptionPropsReturns<TData extends AutoCompleteExtraData> {
+export interface GetSelectableOptionPropsReturns<TData extends ComboboxExtraData> {
   isFocusedOption: (optionIndex: number) => boolean;
-  isSelectedOption: (value: AutoCompleteOptionValue) => boolean;
+  isSelectedOption: (value: ComboboxOptionValue) => boolean;
   onMouseEnterOption: (optionIndex: number) => void;
   onMouseLeaveOption: () => void;
-  onMouseDownOption: (option: AutoCompleteOption<TData>) => void;
+  onMouseDownOption: (option: ComboboxOption<TData>) => void;
 }
 
 export interface GetInputPropsReturns {
@@ -111,13 +111,13 @@ export interface GetOptionsContainerPropsReturns {
   ref: (element: HTMLDivElement) => void;
 }
 
-export interface AutoCompleteStore<TData extends AutoCompleteExtraData> {
+export interface ComboboxStore<TData extends ComboboxExtraData> {
   disabled: boolean;
   inputValue: string;
   isOpen: boolean;
-  displayOptions: AutoCompleteOption<TData>[];
+  displayOptions: ComboboxOption<TData>[];
   focusedOptionIndex?: number;
-  focusedOption?: AutoCompleteOption<TData>;
+  focusedOption?: ComboboxOption<TData>;
   inputRef?: HTMLInputElement;
   optionsContainerRef?: HTMLDivElement;
   keepFocusOnBlur: boolean;
@@ -126,14 +126,14 @@ export interface AutoCompleteStore<TData extends AutoCompleteExtraData> {
   asyncThreshold: number;
 }
 
-const removeInvalidOptions = <TData>(options: AutoCompleteOption<TData>[]) => {
+const removeInvalidOptions = <TData>(options: ComboboxOption<TData>[]) => {
   return options.filter((option) => {
     // since value can be anything, 0 should be a valid value
     return (option.value || option.value === 0) && option.display;
   });
 };
 
-const getAutoCompleteStoreDefaults = <TData extends AutoCompleteExtraData>() => {
+const getComboboxStoreDefaults = <TData extends ComboboxExtraData>() => {
   return {
     disabled: false,
     inputValue: '',
@@ -143,11 +143,11 @@ const getAutoCompleteStoreDefaults = <TData extends AutoCompleteExtraData>() => 
     isLoadingAsyncOptions: false,
     asyncOptionsState: AsyncOptionsState.NOT_APPLICABLE,
     asyncThreshold: 3,
-  } as AutoCompleteStore<TData>;
+  } as ComboboxStore<TData>;
 };
 
-const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoCompleteProps<TData>) => {
-  const orderDisplayOptions = (options: AutoCompleteOption<TData>[]) => {
+const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TData>) => {
+  const orderDisplayOptions = (options: ComboboxOption<TData>[]) => {
     if (!props.isMulti) {
       return options;
     }
@@ -156,7 +156,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
     // go back to there normal order instead of remaining in the position based on when they were selected.
     const orderOptions = [...options];
 
-    orderOptions.sort((a: AutoCompleteOption<TData>, b: AutoCompleteOption<TData>) => {
+    orderOptions.sort((a: ComboboxOption<TData>, b: ComboboxOption<TData>) => {
       if (isSelectedOption(a.value) && !isSelectedOption(b.value)) {
         return -1;
       }
@@ -179,19 +179,19 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
   const focusedOption = foundOptionIndex !== -1 ? validOptions[foundOptionIndex] : undefined;
   const focusedOptionIndex = foundOptionIndex !== -1 ? foundOptionIndex : undefined;
 
-  const [autoCompleteStore, setAutoCompleteStore] = createStore<AutoCompleteStore<TData>>({
-    ...getAutoCompleteStoreDefaults<TData>(),
+  const [comboboxStore, setComboboxStore] = createStore<ComboboxStore<TData>>({
+    ...getComboboxStoreDefaults<TData>(),
     displayOptions: props.getOptionsAsync ? [] : validOptions,
     focusedOption,
     focusedOptionIndex,
     inputValue: focusedOption?.display ?? '',
   });
 
-  const getDisplayOptionIndex = (option?: AutoCompleteOption<TData>) => {
-    return autoCompleteStore.displayOptions.findIndex((value) => value.value === option?.value);
+  const getDisplayOptionIndex = (option?: ComboboxOption<TData>) => {
+    return comboboxStore.displayOptions.findIndex((value) => value.value === option?.value);
   };
 
-  const getSelectedOptionIndex = (option?: AutoCompleteOption<TData>) => {
+  const getSelectedOptionIndex = (option?: ComboboxOption<TData>) => {
     return props.selected.findIndex((value) => value.value === option?.value);
   };
 
@@ -208,7 +208,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
     return !!props.autoShowOptions || !!props.getOptionsAsync;
   };
 
-  const openAutoComplete = () => {
+  const openCombobox = () => {
     if (!props.isMulti) {
       const foundOptionIndex = getDisplayOptionIndex(props.selected[0]);
 
@@ -217,7 +217,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
       }
     }
 
-    setAutoCompleteStore(
+    setComboboxStore(
       produce((store) => {
         store.isOpen = getDefaultIsOpen();
 
@@ -226,7 +226,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
         if ((props.isMulti || foundOptionIndex !== -1) && !props.getOptionsAsync && props.filterOptions) {
           store.displayOptions = props.filterOptions(
             removeInvalidOptions(props.options),
-            props.isMulti ? '' : autoCompleteStore.displayOptions[foundOptionIndex].display,
+            props.isMulti ? '' : comboboxStore.displayOptions[foundOptionIndex].display,
             getSelectedValues(true),
           );
         } else {
@@ -240,8 +240,8 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
     );
   };
 
-  const closeAutoComplete = () => {
-    setAutoCompleteStore(
+  const closeCombobox = () => {
+    setComboboxStore(
       produce((store) => {
         // we check this at the top as the selectValue() calls below if need will properly set the input value is
         // there is a selected
@@ -255,23 +255,20 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
       }),
     );
 
-    autoCompleteStore.inputRef?.blur();
+    comboboxStore.inputRef?.blur();
   };
 
-  const getSelectValue = (): AutoCompleteOption<TData> | undefined => {
-    if (autoCompleteStore.focusedOption) {
-      return autoCompleteStore.focusedOption;
+  const getSelectValue = (): ComboboxOption<TData> | undefined => {
+    if (comboboxStore.focusedOption) {
+      return comboboxStore.focusedOption;
     }
 
-    if (
-      (props.selected.length === 0 && !props.forceSelection) ||
-      (!props.forceSelection && autoCompleteStore.inputValue)
-    ) {
+    if ((props.selected.length === 0 && !props.forceSelection) || (!props.forceSelection && comboboxStore.inputValue)) {
       // @todo(refactor) not sure if there is a way to avoid the explicit cast here
       return {
-        display: autoCompleteStore.inputValue,
-        value: autoCompleteStore.inputValue,
-      } as AutoCompleteOption<TData>;
+        display: comboboxStore.inputValue,
+        value: comboboxStore.inputValue,
+      } as ComboboxOption<TData>;
     }
 
     return;
@@ -281,7 +278,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
     removeDuplicateSingle?: boolean;
   }
 
-  const selectValue = (option: AutoCompleteOption<TData>, options: SelectValueOptions = {}) => {
+  const selectValue = (option: ComboboxOption<TData>, options: SelectValueOptions = {}) => {
     // if the user is able to click on a selectable option that is already selected, we assume this value should
     // be unselected regardless if in multi mode since this library is opinionated in that you should not be able
     // to select the same thing multiple times
@@ -297,7 +294,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
       }
     }
 
-    setAutoCompleteStore(
+    setComboboxStore(
       produce((store) => {
         store.inputValue = props.isMulti ? '' : option.display;
         store.focusedOption = undefined;
@@ -345,7 +342,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
       props.setSelected([]);
     }
 
-    setAutoCompleteStore(
+    setComboboxStore(
       produce((store) => {
         store.isOpen = optionAfterClear !== undefined ? optionAfterClear : getDefaultIsOpen();
         store.inputValue = '';
@@ -356,10 +353,10 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
   };
 
   const isFocusedOption = (optionIndex: number) => {
-    return autoCompleteStore.focusedOptionIndex === optionIndex;
+    return comboboxStore.focusedOptionIndex === optionIndex;
   };
 
-  const isSelectedOption = (value: AutoCompleteOptionValue) => {
+  const isSelectedOption = (value: ComboboxOptionValue) => {
     return !!props.selected.find((selectedItem) => selectedItem.value === value);
   };
 
@@ -367,12 +364,12 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
     let newOptionIndex = optionIndex;
 
     if (optionIndex < 0) {
-      newOptionIndex = autoCompleteStore.displayOptions.length - 1;
-    } else if (optionIndex >= autoCompleteStore.displayOptions.length) {
+      newOptionIndex = comboboxStore.displayOptions.length - 1;
+    } else if (optionIndex >= comboboxStore.displayOptions.length) {
       newOptionIndex = 0;
     }
 
-    setAutoCompleteStore(
+    setComboboxStore(
       produce((store) => {
         // we need to make sure to show the option when we are selecting an index as if we don't, a selection could
         // be made without the user knowing
@@ -384,7 +381,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
   };
 
   const clearFocusedOption = () => {
-    setAutoCompleteStore(
+    setComboboxStore(
       produce((store) => {
         store.focusedOptionIndex = undefined;
         store.focusedOption = undefined;
@@ -393,14 +390,14 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
   };
 
   const onFocusInput = () => {
-    openAutoComplete();
+    openCombobox();
   };
 
   const onBlurInput = () => {
-    if (autoCompleteStore.keepFocusOnBlur) {
-      autoCompleteStore.inputRef?.focus();
+    if (comboboxStore.keepFocusOnBlur) {
+      comboboxStore.inputRef?.focus();
 
-      setAutoCompleteStore(
+      setComboboxStore(
         produce((store) => {
           store.keepFocusOnBlur = false;
         }),
@@ -417,7 +414,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
       selectValue(selectedValue, { removeDuplicateSingle: false });
     }
 
-    closeAutoComplete();
+    closeCombobox();
   };
 
   const onKeyDownInput: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent> = (event) => {
@@ -430,7 +427,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
         // we want to use escape as a way to clear any previous value so if there was one, we don't want to blur
         // to make it easier to clear the current value and start typing for a new one
         if (!hasValue) {
-          autoCompleteStore.inputRef?.blur();
+          comboboxStore.inputRef?.blur();
         }
 
         break;
@@ -438,10 +435,10 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
 
       case Key.ARROW_DOWN: {
         // this should make the down arrow start with the first item
-        setFocusedOption((autoCompleteStore.focusedOptionIndex ?? -1) + 1);
+        setFocusedOption((comboboxStore.focusedOptionIndex ?? -1) + 1);
 
-        const elementToScrollTo = autoCompleteStore.optionsContainerRef?.querySelector(
-          `[data-auto-complete-value="${autoCompleteStore.focusedOption?.value}"]`,
+        const elementToScrollTo = comboboxStore.optionsContainerRef?.querySelector(
+          `[data-combobox-value="${comboboxStore.focusedOption?.value}"]`,
         ) as HTMLElement;
 
         if (elementToScrollTo) {
@@ -453,10 +450,10 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
 
       case Key.ARROW_UP: {
         // this should make the up arrow start with the last item
-        setFocusedOption((autoCompleteStore.focusedOptionIndex ?? autoCompleteStore.displayOptions.length) - 1);
+        setFocusedOption((comboboxStore.focusedOptionIndex ?? comboboxStore.displayOptions.length) - 1);
 
-        const elementToScrollTo = autoCompleteStore.optionsContainerRef?.querySelector(
-          `[data-auto-complete-value="${autoCompleteStore.focusedOption?.value}"]`,
+        const elementToScrollTo = comboboxStore.optionsContainerRef?.querySelector(
+          `[data-combobox-value="${comboboxStore.focusedOption?.value}"]`,
         ) as HTMLElement;
 
         if (elementToScrollTo) {
@@ -481,7 +478,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
         }
 
         if (props.isMulti) {
-          setAutoCompleteStore(
+          setComboboxStore(
             produce((store) => {
               store.isOpen = getDefaultIsOpen();
             }),
@@ -490,7 +487,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
           return;
         }
 
-        autoCompleteStore.inputRef?.blur();
+        comboboxStore.inputRef?.blur();
 
         break;
       }
@@ -498,11 +495,11 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
   };
 
   const onKeyUpInput: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent> = (event) => {
-    if (event.currentTarget.value === autoCompleteStore.inputValue) {
+    if (event.currentTarget.value === comboboxStore.inputValue) {
       return;
     }
 
-    setAutoCompleteStore(
+    setComboboxStore(
       produce((store) => {
         const shouldBeOpened = event.currentTarget.value !== '' || getDefaultIsOpen();
         store.isOpen = shouldBeOpened;
@@ -527,7 +524,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
     );
   };
 
-  const onMouseDownSelectableOption = (option: AutoCompleteOption<TData>) => {
+  const onMouseDownSelectableOption = (option: ComboboxOption<TData>) => {
     selectValue(option, {
       removeDuplicateSingle: props.removeOnDuplicateSingleSelect,
     });
@@ -536,7 +533,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
     // multiple selection can be able and having a UX where the user needs to refocus the input after each select
     // is not great
     if (props.isMulti) {
-      setAutoCompleteStore(
+      setComboboxStore(
         produce((store) => {
           store.keepFocusOnBlur = true;
           store.inputValue = '';
@@ -554,7 +551,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
   };
 
   const inputRef = (element: HTMLInputElement) => {
-    setAutoCompleteStore(
+    setComboboxStore(
       produce((store) => {
         store.inputRef = element;
       }),
@@ -562,7 +559,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
   };
 
   const optionsContainerRef = (element: HTMLDivElement) => {
-    setAutoCompleteStore(
+    setComboboxStore(
       produce((store) => {
         store.optionsContainerRef = element;
       }),
@@ -574,8 +571,8 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
       return;
     }
 
-    if (inputValue.length < autoCompleteStore.asyncThreshold) {
-      setAutoCompleteStore(
+    if (inputValue.length < comboboxStore.asyncThreshold) {
+      setComboboxStore(
         produce((store) => {
           store.asyncOptionsState = AsyncOptionsState.BEFORE_THRESHOLD;
         }),
@@ -584,7 +581,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
       return;
     }
 
-    setAutoCompleteStore(
+    setComboboxStore(
       produce((store) => {
         store.isLoadingAsyncOptions = true;
         store.asyncOptionsState = AsyncOptionsState.FETCHING;
@@ -598,11 +595,11 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
       // input before that request returned results, we check to see if the input value that was used for the
       // request for options matches the current one and if it does not, we ignore these results since they are
       // no longer valid
-      if (inputValue !== autoCompleteStore.inputValue) {
+      if (inputValue !== comboboxStore.inputValue) {
         return;
       }
 
-      setAutoCompleteStore(
+      setComboboxStore(
         produce((store) => {
           store.displayOptions = orderDisplayOptions(removeInvalidOptions(asyncOptions));
           store.isLoadingAsyncOptions = false;
@@ -610,7 +607,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
         }),
       );
     } catch (error) {
-      setAutoCompleteStore(
+      setComboboxStore(
         produce((store) => {
           store.displayOptions = [];
           store.isLoadingAsyncOptions = false;
@@ -622,27 +619,27 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
 
   const asyncOptionsAreLoading = () => {
     return (
-      autoCompleteStore.asyncOptionsState === AsyncOptionsState.DEBOUNCED ||
-      autoCompleteStore.asyncOptionsState === AsyncOptionsState.FETCHING
+      comboboxStore.asyncOptionsState === AsyncOptionsState.DEBOUNCED ||
+      comboboxStore.asyncOptionsState === AsyncOptionsState.FETCHING
     );
   };
 
   const showOptions = () => {
     return (
       !asyncOptionsAreLoading() &&
-      (autoCompleteStore.asyncOptionsState === AsyncOptionsState.NOT_APPLICABLE ||
-        autoCompleteStore.asyncOptionsState === AsyncOptionsState.SUCCESSFUL ||
-        autoCompleteStore.asyncOptionsState === AsyncOptionsState.DEBOUNCED)
+      (comboboxStore.asyncOptionsState === AsyncOptionsState.NOT_APPLICABLE ||
+        comboboxStore.asyncOptionsState === AsyncOptionsState.SUCCESSFUL ||
+        comboboxStore.asyncOptionsState === AsyncOptionsState.DEBOUNCED)
     );
   };
 
-  const inputHasClearableValue = () => !props.isMulti && autoCompleteStore.inputValue;
+  const inputHasClearableValue = () => !props.isMulti && comboboxStore.inputValue;
 
   const getInputProps = (): GetInputPropsReturns => {
     return {
       ref: inputRef,
-      disabled: autoCompleteStore.disabled,
-      value: autoCompleteStore.inputValue,
+      disabled: comboboxStore.disabled,
+      value: comboboxStore.inputValue,
       onFocus: onFocusInput,
       onBlur: onBlurInput,
       onKeyDown: onKeyDownInput,
@@ -677,7 +674,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
 
   // handle making sure if the selected value is in the options list when opening, we scroll to it
   createEffect(() => {
-    if (!autoCompleteStore.isOpen || !autoCompleteStore.optionsContainerRef || props.isMulti) {
+    if (!comboboxStore.isOpen || !comboboxStore.optionsContainerRef || props.isMulti) {
       return;
     }
 
@@ -687,8 +684,8 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
       return;
     }
 
-    const elementToScrollTo = autoCompleteStore.optionsContainerRef?.querySelector(
-      `[data-auto-complete-value="${values[0]}"]`,
+    const elementToScrollTo = comboboxStore.optionsContainerRef?.querySelector(
+      `[data-combobox-value="${values[0]}"]`,
     ) as HTMLElement;
 
     domUtils.scrollToElement(elementToScrollTo);
@@ -701,21 +698,21 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
     }
 
     // there is no reason to request data if the input value is already the selected value
-    if (autoCompleteStore.inputValue === props.selected?.[0]?.display) {
+    if (comboboxStore.inputValue === props.selected?.[0]?.display) {
       return;
     }
 
-    setAutoCompleteStore(
+    setComboboxStore(
       produce((store) => {
         store.asyncOptionsState =
-          autoCompleteStore.inputValue.length >= autoCompleteStore.asyncThreshold
+          comboboxStore.inputValue.length >= comboboxStore.asyncThreshold
             ? AsyncOptionsState.DEBOUNCED
             : AsyncOptionsState.BEFORE_THRESHOLD;
       }),
     );
 
     getOptionsAsync.clear();
-    getOptionsAsync(autoCompleteStore.inputValue);
+    getOptionsAsync(comboboxStore.inputValue);
 
     onCleanup(() => {
       getOptionsAsync.clear();
@@ -726,7 +723,7 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
   // those changes
   // @todo(refactor) is it possible to refactor so all management of the input value is just handled here?
   createEffect(() => {
-    setAutoCompleteStore(
+    setComboboxStore(
       produce((store) => {
         store.inputValue = !props.isMulti && props.selected.length > 0 ? props.selected[0].display : '';
       }),
@@ -734,13 +731,13 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
   });
 
   return {
-    store: autoCompleteStore,
+    store: comboboxStore,
     getDisplayOptionIndex,
     getSelectedOptionIndex,
     getSelectedValues,
     getDefaultIsOpen,
-    openAutoComplete,
-    closeAutoComplete,
+    openCombobox,
+    closeCombobox,
     getSelectValue,
     selectValue,
     removeValue,
@@ -767,22 +764,20 @@ const createAutoComplete = <TData extends AutoCompleteExtraData>(props: AutoComp
   };
 };
 
-interface CreateProps<TData = AutoCompleteExtraData> {
-  defaultValue?: AutoCompleteOption<TData>[];
-  onSetSelected?: (selected: AutoCompleteOption<TData>[]) => void;
+interface CreateProps<TData = ComboboxExtraData> {
+  defaultValue?: ComboboxOption<TData>[];
+  onSetSelected?: (selected: ComboboxOption<TData>[]) => void;
 }
 
-export interface AutoCompleteValueStore<TData = AutoCompleteExtraData> {
-  selected: Accessor<AutoCompleteOption<TData>[]>;
-  setSelected: (selected: AutoCompleteOption<TData>[]) => void;
+export interface ComboboxValueStore<TData = ComboboxExtraData> {
+  selected: Accessor<ComboboxOption<TData>[]>;
+  setSelected: (selected: ComboboxOption<TData>[]) => void;
 }
 
-const createAutoCompleteValue = <TData = AutoCompleteExtraData>(
-  options?: CreateProps<TData>,
-): AutoCompleteValueStore<TData> => {
-  const [selected, internalSetSelected] = createSignal<AutoCompleteOption<TData>[]>(options?.defaultValue ?? []);
+const createComboboxValue = <TData = ComboboxExtraData>(options?: CreateProps<TData>): ComboboxValueStore<TData> => {
+  const [selected, internalSetSelected] = createSignal<ComboboxOption<TData>[]>(options?.defaultValue ?? []);
 
-  const setSelected = (selected: AutoCompleteOption<TData>[]) => {
+  const setSelected = (selected: ComboboxOption<TData>[]) => {
     internalSetSelected(selected);
 
     if (options?.onSetSelected) {
@@ -796,7 +791,7 @@ const createAutoCompleteValue = <TData = AutoCompleteExtraData>(
   };
 };
 
-const simpleFilter = <TData>(options: AutoCompleteOption<TData>[], inputValue = '') => {
+const simpleFilter = <TData>(options: ComboboxOption<TData>[], inputValue = '') => {
   if (!inputValue) {
     return options;
   }
@@ -807,9 +802,9 @@ const simpleFilter = <TData>(options: AutoCompleteOption<TData>[], inputValue = 
 };
 
 const excludeSelectedFilter = <TData>(
-  options: AutoCompleteOption<TData>[],
+  options: ComboboxOption<TData>[],
   inputValue = '',
-  excludeValues: AutoCompleteOptionValue[] = [],
+  excludeValues: ComboboxOptionValue[] = [],
 ) => {
   if (!inputValue && excludeValues.length === 0) {
     return options;
@@ -820,9 +815,9 @@ const excludeSelectedFilter = <TData>(
   });
 };
 
-export const autoCompleteUtils = {
-  createAutoCompleteValue,
-  createAutoComplete,
+export const comboboxUtils = {
+  createComboboxValue,
+  createCombobox,
   simpleFilter,
   excludeSelectedFilter,
 };

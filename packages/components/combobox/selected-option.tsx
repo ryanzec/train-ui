@@ -1,9 +1,9 @@
-import styles from '$/components/auto-complete/auto-complete.module.css';
-import type { AutoCompleteExtraData, AutoCompleteSelectedOptionProps } from '$/components/auto-complete/utils';
 import Button from '$/components/button';
+import styles from '$/components/combobox/combobox.module.css';
+import type { ComboboxExtraData, ComboboxSelectedOptionProps } from '$/components/combobox/utils';
 import Icon from '$/components/icon';
 
-const SelectedOption = <TData extends AutoCompleteExtraData>(props: AutoCompleteSelectedOptionProps<TData>) => {
+const SelectedOption = <TData extends ComboboxExtraData>(props: ComboboxSelectedOptionProps<TData>) => {
   return (
     <div data-id="selected-option" class={styles.selectedOption}>
       {props.option.display}

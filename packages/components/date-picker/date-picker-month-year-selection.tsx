@@ -1,12 +1,8 @@
 import { merge } from 'lodash';
 import { createMemo } from 'solid-js';
 
-import AutoComplete, {
-  type AutoCompleteExtraData,
-  type AutoCompleteOption,
-  autoCompleteUtils,
-} from '$/components/auto-complete';
 import Button, { ButtonSentiment } from '$/components/button';
+import Combobox, { type ComboboxExtraData, type ComboboxOption, comboboxUtils } from '$/components/combobox';
 import styles from '$/components/date-picker/date-picker.module.css';
 import { clickOutside } from '$/stores/click-outside';
 
@@ -96,23 +92,23 @@ const DatePickerMonthYearSelection = (passedProps: DatePickerMonthYearSelectionP
   const defaultMonth = months.find((month) => month.value === props.defaultMonth);
   const defaultYear = years().find((year) => year.value === props.defaultYear);
 
-  const monthAutoCompleteStore = autoCompleteUtils.createAutoCompleteValue<AutoCompleteExtraData>({
+  const monthComboboxStore = comboboxUtils.createComboboxValue<ComboboxExtraData>({
     defaultValue: defaultMonth ? [defaultMonth] : [],
   });
-  const yearAutoCompleteStore = autoCompleteUtils.createAutoCompleteValue<AutoCompleteExtraData>({
+  const yearComboboxStore = comboboxUtils.createComboboxValue<ComboboxExtraData>({
     defaultValue: defaultYear ? [defaultYear] : [],
   });
 
-  const setMonth = (options: AutoCompleteOption[]) => {
-    monthAutoCompleteStore.setSelected(options);
+  const setMonth = (options: ComboboxOption[]) => {
+    monthComboboxStore.setSelected(options);
 
     if (props.onSelectMonth) {
       props.onSelectMonth(options[0].value as number);
     }
   };
 
-  const setYear = (options: AutoCompleteOption[]) => {
-    yearAutoCompleteStore.setSelected(options);
+  const setYear = (options: ComboboxOption[]) => {
+    yearComboboxStore.setSelected(options);
 
     if (props.onSelectYear) {
       props.onSelectYear(options[0].value as number);
@@ -122,30 +118,30 @@ const DatePickerMonthYearSelection = (passedProps: DatePickerMonthYearSelectionP
   return (
     <div class={styles.monthYearSelection} use:clickOutside={props.toggleDisplay}>
       <div class={styles.monthYearInputs}>
-        <AutoComplete
+        <Combobox
           showClearIcon={false}
           forceSelection
           autoShowOptions
           options={months}
           setSelected={setMonth}
-          selected={monthAutoCompleteStore.selected()}
+          selected={monthComboboxStore.selected()}
           placeholder="Month"
           name="datePickerMonth"
-          selectedComponent={AutoComplete.SelectedOption}
-          selectableComponent={AutoComplete.SelectableOption}
+          selectedComponent={Combobox.SelectedOption}
+          selectableComponent={Combobox.SelectableOption}
         />
         <div class={styles.yearSelection}>
-          <AutoComplete
+          <Combobox
             showClearIcon={false}
             forceSelection
             autoShowOptions
             options={years()}
             setSelected={setYear}
-            selected={yearAutoCompleteStore.selected()}
+            selected={yearComboboxStore.selected()}
             placeholder="Year"
             name="datePickerYear"
-            selectedComponent={AutoComplete.SelectedOption}
-            selectableComponent={AutoComplete.SelectableOption}
+            selectedComponent={Combobox.SelectedOption}
+            selectableComponent={Combobox.SelectableOption}
           />
         </div>
       </div>

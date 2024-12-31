@@ -9,6 +9,7 @@ import Button from '../../../../../packages/components/button';
 import { ThemeName } from '../../../../../packages/utils/styles';
 import { applicationStore } from '../../stores/application-store';
 
+import ScrollArea from '$/components/scroll-area';
 import ApplicationFrameSubNavigation from './application-frame-sub-navigation';
 
 interface ApplicationFrameNavigationProps extends JSX.HTMLAttributes<HTMLDivElement>, CommonDataAttributes {
@@ -23,14 +24,14 @@ const ApplicationFrameNavigation = (passedProps: ApplicationFrameNavigationProps
   };
 
   return (
-    <>
-      <div data-id="navigation" class={classnames(styles.navigation, props.class)} {...restOfProps}>
-        <Button onClick={onToggleTheme} class={styles.toggleThemeTrigger}>
-          Toggle Theme
-        </Button>
-        <ApplicationFrameSubNavigation routes={props.routes} />
-      </div>
-    </>
+    <div data-id="navigation" class={classnames(styles.navigation, props.class)} {...restOfProps}>
+      {/*<ScrollArea>*/}
+      <Button onClick={onToggleTheme} class={styles.toggleThemeTrigger}>
+        Toggle Theme
+      </Button>
+      <ApplicationFrameSubNavigation routes={props.routes} />
+      {/*</ScrollArea>*/}
+    </div>
   );
 };
 

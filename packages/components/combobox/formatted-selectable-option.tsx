@@ -1,19 +1,17 @@
 import classnames from 'classnames';
 import { Match, Switch } from 'solid-js';
 
-import styles from '$/components/auto-complete/auto-complete.module.css';
-import type { AutoCompleteExtraData, AutoCompleteSelectableOptionProps } from '$/components/auto-complete/utils';
+import styles from '$/components/combobox/combobox.module.css';
+import type { ComboboxExtraData, ComboboxSelectableOptionProps } from '$/components/combobox/utils';
 import Icon from '$/components/icon';
 import iconStyles from '$/components/icon/icon.module.css';
 import List from '$/components/list';
 
-const FormattedSelectableOption = <TData extends AutoCompleteExtraData>(
-  props: AutoCompleteSelectableOptionProps<TData>,
-) => {
+const FormattedSelectableOption = <TData extends ComboboxExtraData>(props: ComboboxSelectableOptionProps<TData>) => {
   return (
     <List.Item
       data-id={`option${props.isFocusedOption(props.optionIndex) ? ' highlighted-option' : ''}`}
-      data-auto-complete-value={props.option.value}
+      data-combobox-value={props.option.value}
       class={classnames(styles.selectableOption, styles.listOption)}
       isSelected={props.isFocusedOption(props.optionIndex)}
       onMouseEnter={() => props.onMouseEnterOption(props.optionIndex)}

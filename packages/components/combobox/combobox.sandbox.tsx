@@ -2,15 +2,15 @@ import classnames from 'classnames';
 import { For, Show, createSignal } from 'solid-js';
 import * as zod from 'zod';
 
-import AutoComplete, {
-  type AutoCompleteOption,
-  type AutoCompleteProps,
-  type AutoCompleteSelectableOptionProps,
-  type AutoCompleteSelectedOptionProps,
-  autoCompleteUtils,
-} from '$/components/auto-complete';
-import styles from '$/components/auto-complete/auto-complete.module.css';
 import Button from '$/components/button';
+import Combobox, {
+  type ComboboxOption,
+  type ComboboxProps,
+  type ComboboxSelectableOptionProps,
+  type ComboboxSelectedOptionProps,
+  comboboxUtils,
+} from '$/components/combobox';
+import styles from '$/components/combobox/combobox.module.css';
 import FormField from '$/components/form-field';
 import Label from '$/components/label';
 import List from '$/components/list';
@@ -19,7 +19,7 @@ import { FormInputValidationState, formStoreUtils } from '$/stores/form';
 import { zodUtils } from '$/utils/zod';
 
 export default {
-  title: 'Components/AutoComplete',
+  title: 'Components/Combobox',
 };
 
 type CustomExtraData = {
@@ -28,7 +28,7 @@ type CustomExtraData = {
   };
 };
 
-const getOptionsAsync = async (inputValue?: string): Promise<AutoCompleteOption<CustomExtraData>[]> => {
+const getOptionsAsync = async (inputValue?: string): Promise<ComboboxOption<CustomExtraData>[]> => {
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   return [
@@ -45,20 +45,20 @@ interface ExampleProps {
   forceSelection?: boolean;
   placeholder?: string;
   useAsync?: boolean;
-  onSelected?: (options: AutoCompleteOption<CustomExtraData>[]) => void;
-  filterOptions?: AutoCompleteProps<CustomExtraData>['filterOptions'];
-  selectedComponent?: AutoCompleteProps<CustomExtraData>['selectedComponent'] | null;
-  selectableComponent?: AutoCompleteProps<CustomExtraData>['selectableComponent'];
+  onSelected?: (options: ComboboxOption<CustomExtraData>[]) => void;
+  filterOptions?: ComboboxProps<CustomExtraData>['filterOptions'];
+  selectedComponent?: ComboboxProps<CustomExtraData>['selectedComponent'] | null;
+  selectableComponent?: ComboboxProps<CustomExtraData>['selectableComponent'];
   removeOnDuplicateSingleSelect?: boolean;
   disabled?: boolean;
-  options?: AutoCompleteOption<CustomExtraData>[];
+  options?: ComboboxOption<CustomExtraData>[];
   supportingText?: string[];
   validationState?: FormInputValidationState;
 }
 
-const getSelectedComponent = (selectedComponent?: AutoCompleteProps<CustomExtraData>['selectedComponent'] | null) => {
+const getSelectedComponent = (selectedComponent?: ComboboxProps<CustomExtraData>['selectedComponent'] | null) => {
   if (selectedComponent === undefined) {
-    return AutoComplete.SelectedOption;
+    return Combobox.SelectedOption;
   }
 
   return selectedComponent === null ? undefined : selectedComponent;
@@ -73,16 +73,16 @@ const baseOptions = [
 
 const BasicExample = (props: ExampleProps) => {
   const defaultOptions = props.options ?? baseOptions;
-  const [options] = createSignal<AutoCompleteOption<CustomExtraData>[]>(props.useAsync ? [] : defaultOptions);
-  const autoCompleteStore = autoCompleteUtils.createAutoCompleteValue({
+  const [options] = createSignal<ComboboxOption<CustomExtraData>[]>(props.useAsync ? [] : defaultOptions);
+  const comboboxStore = comboboxUtils.createComboboxValue({
     defaultValue:
       props.selectedOptionIndex !== undefined && props.selectedOptionIndex >= 0
         ? [options()[props.selectedOptionIndex]]
         : [],
   });
 
-  const setSelected = (options: AutoCompleteOption<CustomExtraData>[]) => {
-    autoCompleteStore.setSelected(options);
+  const setSelected = (options: ComboboxOption<CustomExtraData>[]) => {
+    comboboxStore.setSelected(options);
 
     if (props.onSelected) {
       props.onSelected(options);
@@ -101,18 +101,18 @@ const BasicExample = (props: ExampleProps) => {
     <>
       <FormField>
         <Label>Label</Label>
-        <AutoComplete
+        <Combobox
           forceSelection={props.forceSelection}
           autoShowOptions={props.autoShowOptions}
           options={options()}
-          filterOptions={props.filterOptions ?? autoCompleteUtils.excludeSelectedFilter}
+          filterOptions={props.filterOptions ?? comboboxUtils.excludeSelectedFilter}
           setSelected={setSelected}
-          selected={autoCompleteStore.selected()}
+          selected={comboboxStore.selected()}
           placeholder={props.disabled ? 'disabled' : props.placeholder}
           getOptionsAsync={props.useAsync ? getOptionsAsync : undefined}
-          name="autoComplete"
+          name="combobox"
           selectedComponent={getSelectedComponent(props.selectedComponent)}
-          selectableComponent={props.selectableComponent ?? AutoComplete.SelectableOption}
+          selectableComponent={props.selectableComponent ?? Combobox.SelectableOption}
           removeOnDuplicateSingleSelect={!!props.removeOnDuplicateSingleSelect}
           disabled={!!props.disabled}
           validationState={props.validationState}
@@ -130,10 +130,8 @@ const BasicExample = (props: ExampleProps) => {
       <Button data-id="set-selected-button" onClick={onSetSelected}>
         manually set selected
       </Button>
-      <Show when={autoCompleteStore.selected().length > 0}>
-        <div data-id="check-selected-auto-complete-value">
-          selected item value: {autoCompleteStore.selected()[0].display}
-        </div>
+      <Show when={comboboxStore.selected().length > 0}>
+        <div data-id="check-selected-combobox-value">selected item value: {comboboxStore.selected()[0].display}</div>
       </Show>
     </>
   );
@@ -141,20 +139,20 @@ const BasicExample = (props: ExampleProps) => {
 
 const MultiSelectExample = (props: ExampleProps) => {
   const defaultOptions = props.options ?? baseOptions;
-  const [options] = createSignal<AutoCompleteOption<CustomExtraData>[]>(props.useAsync ? [] : defaultOptions);
-  const autoCompleteStore = autoCompleteUtils.createAutoCompleteValue({
+  const [options] = createSignal<ComboboxOption<CustomExtraData>[]>(props.useAsync ? [] : defaultOptions);
+  const comboboxStore = comboboxUtils.createComboboxValue({
     defaultValue:
       props.selectedOptionIndex !== undefined && props.selectedOptionIndex >= 0
         ? [options()[props.selectedOptionIndex]]
         : [],
   });
 
-  const onDeleteOption = (deletedOption: AutoCompleteOption<CustomExtraData>) => {
+  const onDeleteOption = (deletedOption: ComboboxOption<CustomExtraData>) => {
     console.log(JSON.stringify(deletedOption));
   };
 
-  const setSelected = (options: AutoCompleteOption<CustomExtraData>[]) => {
-    autoCompleteStore.setSelected(options);
+  const setSelected = (options: ComboboxOption<CustomExtraData>[]) => {
+    comboboxStore.setSelected(options);
 
     if (props.onSelected) {
       props.onSelected(options);
@@ -173,20 +171,20 @@ const MultiSelectExample = (props: ExampleProps) => {
     <>
       <FormField>
         <Label>Label</Label>
-        <AutoComplete
+        <Combobox
           forceSelection={props.forceSelection}
           autoShowOptions={props.autoShowOptions}
           options={options()}
-          filterOptions={props.filterOptions ?? autoCompleteUtils.excludeSelectedFilter}
+          filterOptions={props.filterOptions ?? comboboxUtils.excludeSelectedFilter}
           setSelected={setSelected}
-          selected={autoCompleteStore.selected()}
+          selected={comboboxStore.selected()}
           onDeleteOption={onDeleteOption}
           placeholder={props.disabled ? 'disabled' : props.placeholder}
           getOptionsAsync={props.useAsync ? getOptionsAsync : undefined}
           isMulti
-          name="autoComplete"
+          name="combobox"
           selectedComponent={getSelectedComponent(props.selectedComponent)}
-          selectableComponent={props.selectableComponent ?? AutoComplete.SelectableOption}
+          selectableComponent={props.selectableComponent ?? Combobox.SelectableOption}
           removeOnDuplicateSingleSelect={!!props.removeOnDuplicateSingleSelect}
           disabled={!!props.disabled}
           validationState={props.validationState}
@@ -204,9 +202,9 @@ const MultiSelectExample = (props: ExampleProps) => {
       <Button data-id="set-selected-button" onClick={onSetSelected}>
         manually set selected
       </Button>
-      <Show when={autoCompleteStore.selected().length > 0}>
+      <Show when={comboboxStore.selected().length > 0}>
         <hr />
-        <For each={autoCompleteStore.selected()}>
+        <For each={comboboxStore.selected()}>
           {(selected) => {
             return (
               <div data-id="manual-selected-options">
@@ -220,7 +218,7 @@ const MultiSelectExample = (props: ExampleProps) => {
   );
 };
 
-const CustomSelectedOption = (props: AutoCompleteSelectedOptionProps<CustomExtraData>) => {
+const CustomSelectedOption = (props: ComboboxSelectedOptionProps<CustomExtraData>) => {
   return (
     <span data-id="selected-option" class={styles.selectedOption}>
       {props.option.display}
@@ -235,7 +233,7 @@ const CustomSelectedOption = (props: AutoCompleteSelectedOptionProps<CustomExtra
   );
 };
 
-const CustomSelectableOption = (props: AutoCompleteSelectableOptionProps<CustomExtraData>) => {
+const CustomSelectableOption = (props: ComboboxSelectableOptionProps<CustomExtraData>) => {
   return (
     <List.Item
       data-id={`option${props.isFocusedOption(props.optionIndex) ? ' highlighted-option' : ''}`}
@@ -282,8 +280,8 @@ export const MultiWithMissingData = () => {
 export const SingleFormattedSelectables = () => {
   return (
     <BasicExample
-      selectableComponent={AutoComplete.FormattedSelectableOption}
-      filterOptions={autoCompleteUtils.simpleFilter}
+      selectableComponent={Combobox.FormattedSelectableOption}
+      filterOptions={comboboxUtils.simpleFilter}
       selectedComponent={null}
     />
   );
@@ -292,8 +290,8 @@ export const SingleFormattedSelectables = () => {
 export const MultiFormattedSelectables = () => {
   return (
     <MultiSelectExample
-      selectableComponent={AutoComplete.FormattedSelectableOption}
-      filterOptions={autoCompleteUtils.simpleFilter}
+      selectableComponent={Combobox.FormattedSelectableOption}
+      filterOptions={comboboxUtils.simpleFilter}
       selectedComponent={null}
     />
   );
@@ -302,8 +300,8 @@ export const MultiFormattedSelectables = () => {
 export const MultiFormattedSelectablesAutoShow = () => {
   return (
     <MultiSelectExample
-      selectableComponent={AutoComplete.FormattedSelectableOption}
-      filterOptions={autoCompleteUtils.simpleFilter}
+      selectableComponent={Combobox.FormattedSelectableOption}
+      filterOptions={comboboxUtils.simpleFilter}
       selectedComponent={null}
       autoShowOptions
     />
@@ -313,8 +311,8 @@ export const MultiFormattedSelectablesAutoShow = () => {
 export const SingleFormattedSelectablesRemoveDuplicateSelect = () => {
   return (
     <BasicExample
-      selectableComponent={AutoComplete.FormattedSelectableOption}
-      filterOptions={autoCompleteUtils.simpleFilter}
+      selectableComponent={Combobox.FormattedSelectableOption}
+      filterOptions={comboboxUtils.simpleFilter}
       selectedComponent={null}
       removeOnDuplicateSingleSelect
     />
@@ -333,8 +331,8 @@ export const MultiPreselectedFormattedAutoShow = () => {
   return (
     <MultiSelectExample
       selectedOptionIndex={2}
-      selectableComponent={AutoComplete.FormattedSelectableOption}
-      filterOptions={autoCompleteUtils.simpleFilter}
+      selectableComponent={Combobox.FormattedSelectableOption}
+      filterOptions={comboboxUtils.simpleFilter}
       selectedComponent={null}
       autoShowOptions
     />
@@ -382,31 +380,31 @@ export const MultiDisabled = () => {
 };
 
 interface FormData {
-  autoComplete: number[];
+  combobox: number[];
 }
 
 const formDataSchema = zodUtils.schemaForType<FormData>()(
   zod.object({
-    autoComplete: zod.number().array().min(1, 'must select at least 1 value'),
+    combobox: zod.number().array().min(1, 'must select at least 1 value'),
   }),
 );
 
 export const SingleInForm = () => {
-  const { form, setValue, errors } = formStoreUtils.createForm({
+  const { form, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
     schema: formDataSchema,
     initialValues: {
-      autoComplete: [],
+      combobox: [],
     },
     onSubmit: async (values) => {
       console.log(values);
     },
   });
 
-  const onSelected = (options: AutoCompleteOption<CustomExtraData>[]) => {
+  const onSelected = (options: ComboboxOption<CustomExtraData>[]) => {
     // cast needed since auto complete values can be a number of types
     const value = options.map((option) => option.value) as number[];
 
-    setValue('autoComplete', value);
+    setValue('combobox', value);
   };
 
   return (
@@ -414,9 +412,9 @@ export const SingleInForm = () => {
       <BasicExample
         onSelected={onSelected}
         validationState={
-          errors().autoComplete?.errors ? FormInputValidationState.INVALID : FormInputValidationState.NEUTRAL
+          errors().combobox?.errors ? FormInputValidationState.INVALID : FormInputValidationState.NEUTRAL
         }
-        supportingText={errors().autoComplete?.errors}
+        supportingText={errors().combobox?.errors}
       />
       <button type="submit">Submit</button>
     </form>
@@ -424,30 +422,30 @@ export const SingleInForm = () => {
 };
 
 export const MultiInForm = () => {
-  const { form, setValue, errors } = formStoreUtils.createForm({
+  const { form, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
     schema: formDataSchema,
     initialValues: {
-      autoComplete: [],
+      combobox: [],
     },
     onSubmit: async (values) => {
       console.log(values);
     },
   });
 
-  const onSelected = (options: AutoCompleteOption<CustomExtraData>[]) => {
+  const onSelected = (options: ComboboxOption<CustomExtraData>[]) => {
     // cast needed since auto complete values can be a number of types
     const value = options.map((option) => option.value) as number[];
 
-    setValue('autoComplete', value);
+    setValue('combobox', value);
   };
 
   return (
     <form use:form>
       <MultiSelectExample
         onSelected={onSelected}
-        supportingText={errors().autoComplete?.errors}
+        supportingText={errors().combobox?.errors}
         validationState={
-          errors().autoComplete?.errors ? FormInputValidationState.INVALID : FormInputValidationState.NEUTRAL
+          errors().combobox?.errors ? FormInputValidationState.INVALID : FormInputValidationState.NEUTRAL
         }
       />
       <button type="submit">Submit</button>
@@ -456,21 +454,21 @@ export const MultiInForm = () => {
 };
 
 export const SingleInFormAutoShowOptions = () => {
-  const { form, setValue, errors } = formStoreUtils.createForm({
+  const { form, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
     schema: formDataSchema,
     initialValues: {
-      autoComplete: [],
+      combobox: [],
     },
     onSubmit: async (values) => {
       console.log(values);
     },
   });
 
-  const onSelected = (options: AutoCompleteOption<CustomExtraData>[]) => {
+  const onSelected = (options: ComboboxOption<CustomExtraData>[]) => {
     // cast needed since auto complete values can be a number of types
     const value = options.map((option) => option.value) as number[];
 
-    setValue('autoComplete', value);
+    setValue('combobox', value);
   };
 
   return (
@@ -478,9 +476,9 @@ export const SingleInFormAutoShowOptions = () => {
       <BasicExample
         onSelected={onSelected}
         autoShowOptions
-        supportingText={errors().autoComplete?.errors}
+        supportingText={errors().combobox?.errors}
         validationState={
-          errors().autoComplete?.errors ? FormInputValidationState.INVALID : FormInputValidationState.NEUTRAL
+          errors().combobox?.errors ? FormInputValidationState.INVALID : FormInputValidationState.NEUTRAL
         }
       />
       <button type="submit">Submit</button>
@@ -489,21 +487,21 @@ export const SingleInFormAutoShowOptions = () => {
 };
 
 export const MultiInFormAutoShowOptions = () => {
-  const { form, setValue, errors } = formStoreUtils.createForm({
+  const { form, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
     schema: formDataSchema,
     initialValues: {
-      autoComplete: [],
+      combobox: [],
     },
     onSubmit: async (values) => {
       console.log(values);
     },
   });
 
-  const onSelected = (options: AutoCompleteOption<CustomExtraData>[]) => {
+  const onSelected = (options: ComboboxOption<CustomExtraData>[]) => {
     // cast needed since auto complete values can be a number of types
     const value = options.map((option) => option.value) as number[];
 
-    setValue('autoComplete', value);
+    setValue('combobox', value);
   };
 
   return (
@@ -511,9 +509,9 @@ export const MultiInFormAutoShowOptions = () => {
       <MultiSelectExample
         onSelected={onSelected}
         autoShowOptions
-        supportingText={errors().autoComplete?.errors}
+        supportingText={errors().combobox?.errors}
         validationState={
-          errors().autoComplete?.errors ? FormInputValidationState.INVALID : FormInputValidationState.NEUTRAL
+          errors().combobox?.errors ? FormInputValidationState.INVALID : FormInputValidationState.NEUTRAL
         }
       />
       <button type="submit">Submit</button>
