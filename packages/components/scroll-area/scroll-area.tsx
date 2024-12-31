@@ -9,7 +9,6 @@ import styles from '$/components/scroll-area/scroll-area.module.css';
 
 const defaultScrollbarOptions: PartialOptions = {
   scrollbars: {
-    autoHide: 'leave',
     autoHideDelay: 100,
   },
 };

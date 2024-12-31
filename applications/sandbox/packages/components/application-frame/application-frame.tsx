@@ -2,9 +2,8 @@ import classnames from 'classnames';
 import { type JSX, type ParentProps, Show, splitProps } from 'solid-js';
 
 import styles from '$sandbox/components/application-frame/application-frame.module.css';
-
-// @todo(refactor) replace with sandbox specific store
 import type { CommonDataAttributes } from '../../../../../packages/types/generic';
+// @todo(refactor) replace with sandbox specific store
 import type { DynamicRouteNavigation } from '../../stores/dynamic-routes';
 
 import ApplicationFrameNavigation from './application-frame-navigation';

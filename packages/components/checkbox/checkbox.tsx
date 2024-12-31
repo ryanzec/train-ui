@@ -1,12 +1,12 @@
 import classnames from 'classnames';
-import { type JSX, createSignal, splitProps } from 'solid-js';
+import { type JSX, Show, createSignal, splitProps } from 'solid-js';
 
 import styles from '$/components/checkbox/checkbox.module.css';
 import Icon from '$/components/icon';
 import type { FormInputValidationState } from '$/stores/form/utils';
 
 export interface CheckboxProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
-  labelElement: JSX.Element;
+  labelElement?: JSX.Element;
   alignEnd?: boolean;
   validationState?: FormInputValidationState;
 }
@@ -67,7 +67,9 @@ const Checkbox = (passedProps: CheckboxProps) => {
       <label>
         <input data-id="checkbox" {...restOfProps} type="checkbox" onChange={onChange} />
         <Icon class={classnames(styles.icon)} icon={getCheckedStateIcon(checkedState())} />
-        <span class={styles.label}>{props.labelElement}</span>
+        <Show when={props.labelElement}>
+          <span class={styles.label}>{props.labelElement}</span>
+        </Show>
       </label>
     </span>
   );
