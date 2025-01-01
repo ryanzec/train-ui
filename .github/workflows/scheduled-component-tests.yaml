@@ -14,10 +14,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
-          cache: npm
+          cache: pnpm
       - name: install depedencies
-        run: npm ci --ignore-scripts
+        run: pnpm ci --ignore-scripts
       - name: setup playwright
-        run: npx playwright install chromium
+        run: pnpx playwright install chromium
       - name: run component tests
-        run: npm run test:components
+        run: pnpm run test:components
