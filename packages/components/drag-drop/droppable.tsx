@@ -28,7 +28,6 @@ const Droppable = (props: DroppableProps) => {
     });
 
     onCleanup(() => {
-      console.log('test');
       droppableCleanup();
     });
   };

@@ -22,7 +22,7 @@ export const Button = (passedProps: ParentProps<ButtonProps>) => {
     mergeProps(
       {
         variant: ButtonVariant.FILLED,
-        sentiment: ButtonSentiment.NEUTRAL,
+        sentiment: ButtonSentiment.BRAND,
         state: ButtonState.DEFAULT,
         loadingIconPosition: ButtonIconPosition.PRE,
       },

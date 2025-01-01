@@ -24,6 +24,7 @@ export const Default = () => {
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}
+            sentiment={ButtonSentiment.NEUTRAL}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
             preItem={<Icon icon="close" />}
@@ -39,6 +40,7 @@ export const Default = () => {
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}
+            sentiment={ButtonSentiment.NEUTRAL}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
             preItem={<Icon icon="close" />}
@@ -62,6 +64,7 @@ export const Default = () => {
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}
+            sentiment={ButtonSentiment.NEUTRAL}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
             preItem={<Icon icon="close" />}
@@ -86,6 +89,7 @@ export const Default = () => {
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}
+            sentiment={ButtonSentiment.NEUTRAL}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
             preItem={<Icon icon="close" />}

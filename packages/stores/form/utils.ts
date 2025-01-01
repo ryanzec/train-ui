@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import { produce } from 'immer';
 import * as lodash from 'lodash';
-import { type Accessor, type Setter, createSignal } from 'solid-js';
+import { type Accessor, type Setter, createSignal, onCleanup } from 'solid-js';
 import type * as zod from 'zod';
 
 import { InputType, domUtils } from '$/utils/dom';
@@ -100,7 +100,6 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
   passedOptions: CreateFormOptions<TFormData, TSchemaObject>,
 ): CreateFormReturn<TFormData, TSchemaObject> => {
   const options = Object.assign({}, defaultCreateFormOptions, passedOptions);
-  const [formInitialized, setFormInitialized] = createSignal(false);
   const [errors, setErrors] = createSignal<FormErrorsData<TFormData>>({});
   const [data, setData] = createSignal<Partial<TFormData>>(options.initialValues ?? {});
   const [touchedFields, setTouchedFields] = createSignal<Array<keyof TFormData>>([]);
@@ -388,8 +387,6 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
       }),
     );
 
-    console.log(`form is initialized ${formInitialized()}`);
-
     triggerValueChanged(name, lodash.get(data(), name), previousValue, {
       isTouched: true,
     });
@@ -577,7 +574,9 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
 
     domObserver.observe(element, { childList: true, subtree: true });
 
-    setFormInitialized(true);
+    onCleanup(() => {
+      domObserver.disconnect();
+    });
   };
 
   const addArrayField = (name: string, value: unknown) => {

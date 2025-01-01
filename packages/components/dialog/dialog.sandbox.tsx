@@ -17,14 +17,14 @@ export const Default = () => {
         closeDialog={dialogStore.closeDialog}
         headerElement="Header"
         footerElement={
-          <div>
-            <Button sentiment={ButtonSentiment.BRAND} onClick={() => alert('test')}>
-              Primary
-            </Button>
+          <Button.Group>
             <Button variant={ButtonVariant.GHOST} onClick={() => dialogStore.closeDialog()}>
               Close
             </Button>
-          </div>
+            <Button sentiment={ButtonSentiment.BRAND} onClick={() => alert('test')}>
+              Primary
+            </Button>
+          </Button.Group>
         }
       >
         This is a dialog
@@ -45,14 +45,14 @@ export const CloseOnClickOverlay = () => {
         headerElement="Header"
         closeOnClickOverlay
         footerElement={
-          <div>
-            <Button sentiment={ButtonSentiment.BRAND} onClick={() => alert('test')}>
-              Primary
-            </Button>
+          <Button.Group>
             <Button variant={ButtonVariant.GHOST} onClick={() => dialogStore.closeDialog()}>
               Close
             </Button>
-          </div>
+            <Button sentiment={ButtonSentiment.BRAND} onClick={() => alert('test')}>
+              Primary
+            </Button>
+          </Button.Group>
         }
       >
         This is a dialog

@@ -3,10 +3,12 @@
   position: fixed;
   inset: 0;
   background-color: var(--color-overlay-background);
+  cursor: default;
 }
 
 .overlay-local {
   position: absolute;
+  cursor: default;
 }
 
 .strong {
