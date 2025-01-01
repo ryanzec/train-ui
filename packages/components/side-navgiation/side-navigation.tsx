@@ -5,11 +5,6 @@ import Box from '$/components/box';
 import styles from '$/components/side-navgiation/side-navigation.module.css';
 import { type ToggleStoreInstance, toggleStoreUtils } from '$/stores/toggle';
 
-export enum SideNavigationState {
-  COLLAPSED = 'collapsed',
-  EXPANDED = 'expanded',
-}
-
 export interface SideNavigationProps extends JSX.HTMLAttributes<HTMLDivElement> {
   headerItem: JSX.Element;
   toggleStore?: ToggleStoreInstance;

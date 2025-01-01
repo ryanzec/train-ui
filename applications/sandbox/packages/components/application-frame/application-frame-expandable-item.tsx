@@ -3,7 +3,7 @@ import { type JSX, Show, createEffect, createSignal, splitProps } from 'solid-js
 
 import styles from '$sandbox/components/application-frame/application-frame.module.css';
 
-import SideNavigation, { SideNavigationState } from '$/components/side-navgiation';
+import SideNavigation from '$/components/side-navgiation';
 import type { CommonDataAttributes } from '$/types/generic';
 import type { DynamicRouteNavigation } from '$sandbox/stores/dynamic-routes';
 
@@ -24,8 +24,8 @@ const ApplicationFrameExpandableItem = (passedProps: ApplicationFrameExpandableI
   const hasSubNavigation = () => typeof Object.values(props.routes)[0] !== 'string';
 
   const isCurrentSideNavigation = (currentPath: string) => {
-    if (hasSubNavigation()) {
-      return;
+    if (hasSubNavigation() || currentPath.length <= 1) {
+      return false;
     }
 
     const sideNavigationGroupRoutePrefix = ((Object.values(props.routes)[0] as string) || '').substring(

@@ -1,4 +1,4 @@
-import SideNavigation, { SideNavigationState } from '$/components/side-navgiation';
+import SideNavigation from '$/components/side-navgiation';
 import { toggleStoreUtils } from '$/stores/toggle';
 
 export default {
