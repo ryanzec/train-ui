@@ -15,18 +15,23 @@ export type DialogProps = JSX.HTMLAttributes<HTMLDivElement> & {
   headerElement?: JSX.Element;
   footerElement?: JSX.Element;
   footerAlignment?: DialogFooterAlignment;
+  closeOnClickOverlay?: boolean;
 };
 
 const Dialog = (passedProps: ParentProps<DialogProps>) => {
-  const [props, restOfProps] = splitProps(mergeProps({ footerAlignment: DialogFooterAlignment.RIGHT }, passedProps), [
-    'children',
-    'class',
-    'isOpen',
-    'closeDialog',
-    'headerElement',
-    'footerElement',
-    'footerAlignment',
-  ]);
+  const [props, restOfProps] = splitProps(
+    mergeProps({ footerAlignment: DialogFooterAlignment.RIGHT, closeOnClickOverlay: false }, passedProps),
+    [
+      'children',
+      'class',
+      'isOpen',
+      'closeDialog',
+      'headerElement',
+      'footerElement',
+      'footerAlignment',
+      'closeOnClickOverlay',
+    ],
+  );
   const modalRef = () => {
     const keyDownListener = (event: KeyboardEvent) => {
       if (event.key === Key.ESCAPE) {
@@ -39,6 +44,14 @@ const Dialog = (passedProps: ParentProps<DialogProps>) => {
     onCleanup(() => {
       document.removeEventListener('keydown', keyDownListener);
     });
+  };
+
+  const handleClickOverlay = () => {
+    if (props.closeOnClickOverlay === false) {
+      return;
+    }
+
+    props.closeDialog();
   };
 
   return (
@@ -66,7 +79,7 @@ const Dialog = (passedProps: ParentProps<DialogProps>) => {
           </Show>
         </div>
       </Portal>
-      <Overlay />
+      <Overlay onClick={handleClickOverlay} />
     </Show>
   );
 };

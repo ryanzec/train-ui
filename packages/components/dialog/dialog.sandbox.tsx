@@ -32,3 +32,31 @@ export const Default = () => {
     </div>
   );
 };
+
+export const CloseOnClickOverlay = () => {
+  const dialogStore = dialogUtils.createDialog();
+
+  return (
+    <div>
+      <Button onclick={dialogStore.openDialog}>Toggle Dialog</Button>
+      <Dialog
+        isOpen={dialogStore.isOpen()}
+        closeDialog={dialogStore.closeDialog}
+        headerElement="Header"
+        closeOnClickOverlay
+        footerElement={
+          <div>
+            <Button sentiment={ButtonSentiment.BRAND} onClick={() => alert('test')}>
+              Primary
+            </Button>
+            <Button variant={ButtonVariant.GHOST} onClick={() => dialogStore.closeDialog()}>
+              Close
+            </Button>
+          </div>
+        }
+      >
+        This is a dialog
+      </Dialog>
+    </div>
+  );
+};
