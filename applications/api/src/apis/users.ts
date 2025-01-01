@@ -35,6 +35,8 @@ export const registerUsersApi = (api: FastifyInstance) => {
     const createdItem = {
       id: faker.string.nanoid(),
       ...request.body,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
     };
 
     db.data.users.push(createdItem);

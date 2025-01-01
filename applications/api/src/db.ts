@@ -24,6 +24,8 @@ const defaultDatabase: MockDatabase = {
       lastName: 'User1',
       email: 'test.user1@example.com',
       password: 'password',
+      createdAt: '2021-01-01T00:00:00.000Z',
+      updatedAt: '2021-01-01T00:00:00.000Z',
     },
     {
       id: faker.string.nanoid(),
@@ -31,6 +33,8 @@ const defaultDatabase: MockDatabase = {
       lastName: 'User2',
       email: 'test.user2@example.com',
       password: 'password',
+      createdAt: '2021-01-01T00:00:00.000Z',
+      updatedAt: '2021-01-01T00:00:00.000Z',
     },
     {
       id: faker.string.nanoid(),
@@ -38,6 +42,8 @@ const defaultDatabase: MockDatabase = {
       lastName: 'User3',
       email: 'test.user3@example.com',
       password: 'password',
+      createdAt: '2021-01-01T00:00:00.000Z',
+      updatedAt: '2021-01-01T00:00:00.000Z',
     },
   ],
 };
