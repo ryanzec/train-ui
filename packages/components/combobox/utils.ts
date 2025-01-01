@@ -116,7 +116,7 @@ export type GetInputPropsReturns = {
   onFocus: (event: Event) => void;
   onBlur: (event: Event) => void;
   onKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent>;
-  onKeyUp: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent>;
+  onInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent>;
   placeholder?: string;
   id?: string;
   name: string;
@@ -513,7 +513,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     }
   };
 
-  const onKeyUpInput: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent> = (event) => {
+  const onInputInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (event) => {
     if (event.currentTarget.value === comboboxStore.inputValue) {
       return;
     }
@@ -662,7 +662,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
       onFocus: onFocusInput,
       onBlur: onBlurInput,
       onKeyDown: onKeyDownInput,
-      onKeyUp: onKeyUpInput,
+      onInput: onInputInput,
       placeholder: props.placeholder,
       id: props.id,
       name: props.name,
@@ -768,7 +768,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     onFocusInput,
     onBlurInput,
     onKeyDownInput,
-    onKeyUpInput,
+    onKeyUpInput: onInputInput,
     onMouseDownSelectableOption,
     onMouseEnterSelectableOption,
     onMouseLeaveSelectableOption,

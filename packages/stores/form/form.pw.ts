@@ -35,7 +35,7 @@ const locators = {
   arrayFieldElement: '[data-id="array-field-element"]',
 };
 
-test.describe('form store', () => {
+test.describe('form store @form-store', () => {
   test.describe('core', () => {
     test('set value outside of input element @component', async ({ page }) => {
       await page.goto(playwrightUtils.buildUrl(urls.setValue));
@@ -69,9 +69,9 @@ test.describe('form store', () => {
     test('reset form without initial data @component', async ({ page }) => {
       await page.goto(playwrightUtils.buildUrl(urls.resetWithoutInitial));
 
-      await page.locator(locators.input).nth(0).type('first');
-      await page.locator(locators.input).nth(1).type('second');
-      await page.locator(locators.textarea).nth(0).type('third');
+      await page.locator(locators.input).nth(0).fill('first');
+      await page.locator(locators.input).nth(1).fill('second');
+      await page.locator(locators.textarea).nth(0).fill('third');
 
       expect(await page.locator(locators.input).nth(0).inputValue()).toBe('first');
       expect(await page.locator(locators.input).nth(1).inputValue()).toBe('second');
@@ -158,7 +158,7 @@ test.describe('form store', () => {
     test('value changed event @component', async ({ page }) => {
       await page.goto(playwrightUtils.buildUrl(urls.events));
 
-      await page.locator(locators.input).nth(0).type('t');
+      await page.locator(locators.input).nth(0).fill('t');
 
       await expect(page.locator(locators.valueChangeEventTriggeredIndicator)).toHaveCount(1);
     });
@@ -168,7 +168,7 @@ test.describe('form store', () => {
     test('shows when invalid @component', async ({ page }) => {
       await page.goto(playwrightUtils.buildUrl(urls.validateOnChange));
 
-      await page.locator(locators.input).nth(0).type('t');
+      await page.locator(locators.input).nth(0).fill('t');
       await page.locator(locators.input).nth(0).press('Backspace');
 
       await expect(page.locator(locators.validationMessage)).toHaveCount(1);
@@ -186,7 +186,7 @@ test.describe('form store', () => {
       await page.goto(playwrightUtils.buildUrl(urls.validateOnChange));
 
       await page.locator(locators.submitButton).click();
-      await page.locator(locators.input).nth(0).type('t');
+      await page.locator(locators.input).nth(0).fill('t');
 
       await expect(page.locator(locators.validationMessage)).toHaveCount(0);
     });
@@ -213,7 +213,7 @@ test.describe('form store', () => {
       await page.goto(playwrightUtils.buildUrl(urls.noValidateOnChange));
 
       await page.locator(locators.submitButton).click();
-      await page.locator(locators.input).nth(0).type('t');
+      await page.locator(locators.input).nth(0).fill('t');
 
       await expect(page.locator(locators.validationMessage)).toHaveCount(1);
 
@@ -258,7 +258,7 @@ test.describe('form store', () => {
 
       await expect(page.locator(locators.validationMessage)).toHaveCount(0);
 
-      await page.locator(locators.input).nth(0).type('t');
+      await page.locator(locators.input).nth(0).fill('t');
       await page.locator(locators.input).nth(0).press('Backspace');
 
       await expect(page.locator(locators.validationMessage)).toHaveCount(1);

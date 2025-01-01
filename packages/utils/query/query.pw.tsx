@@ -1,6 +1,7 @@
 import { Page, expect, test } from '@playwright/test';
 
 import { playwrightUtils } from '$/utils/playwright';
+import { playwrightMockerUtils } from '$/utils/playwright-mocker';
 
 const urls = {
   cachingData: '/utils/query/caching-data',
@@ -24,7 +25,11 @@ const locators = {
   creatingIndicator: '[data-id="creating-indicator"]',
 };
 
-test.describe('query', () => {
+test.describe('query @query-utils', () => {
+  test.beforeEach(async ({ page }) => {
+    await playwrightMockerUtils.mockGetSandboxQueryEndpoint(page, { delay: 1000 });
+  });
+
   test.describe('core', () => {
     test('getting data @component', async ({ page }) => {
       await page.goto(
@@ -49,7 +54,7 @@ test.describe('query', () => {
 
       await expect(page.locator(locators.item)).toHaveCount(2);
 
-      await page.locator(locators.filterInput).type('filter');
+      await page.locator(locators.filterInput).fill('filter');
 
       await expect(page.locator(locators.loadingIndicator)).toHaveCount(0);
 
@@ -125,7 +130,7 @@ test.describe('query', () => {
     test('can mutate the cached data as part of a mutation query @component', async ({ page }) => {
       await page.goto(playwrightUtils.buildUrl(urls.mutationQuery, { includeApiMocks: true }));
 
-      await page.locator(locators.createInput).type('create');
+      await page.locator(locators.createInput).fill('create');
       await page.locator(locators.addItemTrigger).click();
 
       await expect(page.locator(locators.creatingIndicator)).toHaveCount(1);
@@ -164,7 +169,7 @@ test.describe('query', () => {
         }),
       );
 
-      await page.locator(locators.createInput).type('mockerror|test|');
+      await page.locator(locators.createInput).fill('mockerror|test|');
       await page.locator(locators.addItemTrigger).click();
 
       await expect(page.locator(locators.item)).toHaveCount(3);

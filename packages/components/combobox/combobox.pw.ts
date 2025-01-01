@@ -70,7 +70,7 @@ const testNoSelectedValue = async (page: Page, isMultiSelect: boolean, errorCont
   await expect(page.locator(locators.checkSelectedComboboxValue), errorContext).toHaveCount(0);
 };
 
-test.describe('auto complete', () => {
+test.describe('combobox @combobox-component', () => {
   test.describe('core functionality', () => {
     test('focusing the input should not show the list when not configured @component', async ({ page }) => {
       const testUrls = [urls.single, urls.multi];
@@ -109,7 +109,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('1');
+        await page.locator(locators.comboboxInput).fill('1');
 
         await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(1);
         await expect(page.locator(locators.comboboxHighlightedOption), loopErrorContext).toHaveCount(0);
@@ -125,7 +125,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
         await page.locator(locators.comboboxInput).press('ArrowDown');
         await page.locator(locators.comboboxInput).press('ArrowDown');
 
@@ -142,7 +142,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
         await page.locator(locators.firstComboboxOption).hover();
 
         await expect(page.locator(locators.comboboxHighlightedOption), loopErrorContext).toHaveText('test1');
@@ -158,7 +158,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
         await page.locator(locators.comboboxInput).press('ArrowDown');
         await page.locator(locators.comboboxInput).press('ArrowDown');
         await page.locator(locators.comboboxInput).press('Enter');
@@ -177,7 +177,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
         await page.locator(locators.comboboxInput).press('Escape');
 
         await expect(page.locator(locators.comboboxOptions), loopErrorContext).toBeHidden();
@@ -194,7 +194,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
         await page.locator(locators.comboboxInput).press('Escape');
 
         await expect(page.locator(locators.comboboxInput), loopErrorContext).toBeFocused();
@@ -255,7 +255,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
         await page.locator(locators.comboboxInput).press('Tab');
 
         await expect(page.locator(locators.comboboxInput), loopErrorContext).not.toBeFocused();
@@ -273,7 +273,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
         await page.locator(locators.comboboxInput).press('Tab');
 
         expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe('');
@@ -292,7 +292,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
         await page.locator(locators.comboboxInput).press('ArrowDown');
         await page.locator(locators.comboboxInput).press('Tab');
 
@@ -314,7 +314,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
         await page.locator(locators.comboboxInput).blur();
 
         await expect(page.locator(locators.comboboxInput), loopErrorContext).not.toBeFocused();
@@ -334,7 +334,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
         await page.locator(locators.comboboxInput).blur();
 
         expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe('');
@@ -355,7 +355,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('testing new value');
+        await page.locator(locators.comboboxInput).fill('testing new value');
         await page.locator(locators.comboboxInput).blur();
 
         expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe(
@@ -376,7 +376,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
         await page.locator(locators.comboboxInput).press('ArrowDown');
         await page.locator(locators.comboboxInput).blur();
 
@@ -400,7 +400,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('Backspace');
+        await page.locator(locators.comboboxInput).fill('Backspace');
         await page.locator(locators.comboboxInput).blur();
 
         expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe(
@@ -423,7 +423,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
         await page.locator(locators.firstComboboxOption).click();
         await page.locator(locators.comboboxInput).click();
         await page.locator(locators.comboboxInput).press('Backspace');
@@ -504,7 +504,7 @@ test.describe('auto complete', () => {
 
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
         await page.locator(locators.comboboxInput).press('ArrowDown');
         await page.locator(locators.comboboxInput).press('Backspace');
 
@@ -599,7 +599,7 @@ test.describe('auto complete', () => {
 
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
         await page.locator(locators.comboboxInput).press('ArrowDown');
         await page.locator(locators.comboboxInput).blur();
         await page.locator(locators.comboboxInput).focus();
@@ -619,7 +619,7 @@ test.describe('auto complete', () => {
 
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
         await page.locator(locators.comboboxInput).press('ArrowDown');
         await page.locator(locators.comboboxInput).blur();
         await page.locator(locators.clearIconTrigger).click();
@@ -719,7 +719,7 @@ test.describe('auto complete', () => {
         await page.locator(locators.comboboxInput).press('Enter');
         await page.locator(locators.secondSelectedOptionDeleteIndicator).click();
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
 
         await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(3);
         await expect(page.locator(locators.comboboxOptions, { hasText: 'test2' }), loopErrorContext).toHaveCount(1);
@@ -775,7 +775,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('testing new value');
+        await page.locator(locators.comboboxInput).fill('testing new value');
         await page.locator(locators.comboboxInput).press('ArrowDown');
         await page.locator(locators.comboboxInput).press('Enter');
         await page.locator(locators.inputIconIndicator).click();
@@ -872,7 +872,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
 
         // we need to limit the timeout in the case as the no options found would go away when the debounce
         // async call is executed so we want to make sure the no options is not visible before then
@@ -893,7 +893,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('t');
+        await page.locator(locators.comboboxInput).fill('t');
 
         await expect(page.locator(locators.asyncDataLoadingIndicator), loopErrorContext).toHaveCount(0);
 
@@ -917,7 +917,7 @@ test.describe('auto complete', () => {
         await page.goto(playwrightUtils.buildUrl(testUrls[i]));
 
         await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).type('tes');
+        await page.locator(locators.comboboxInput).fill('tes');
 
         await expect(page.locator(locators.asyncDataLoadingIndicator), loopErrorContext).toHaveCount(1);
         await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(4);
