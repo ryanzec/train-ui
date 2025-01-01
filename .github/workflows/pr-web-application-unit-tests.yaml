@@ -11,12 +11,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: input node
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
           cache: pnpm
-      - name: install depedencies
-        run: pnpm ci --ignore-scripts
+      - name: install dependencies
+        run: pnpm install --frozen-lockfile --ignore-scripts
       - name: run unit tests
-        run: pnpm run test:unit
+        run: pnpm test:unit

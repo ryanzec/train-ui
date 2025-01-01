@@ -16,8 +16,8 @@ jobs:
           node-version-file: ".nvmrc"
           cache: pnpm
       - name: install depedencies
-        run: pnpm ci --ignore-scripts
+        run: pnpm install --frozen-lockfile --ignore-scripts
       - name: setup playwright
         run: pnpx playwright install chromium
       - name: run component tests
-        run: pnpm run test:components
+        run: pnpm  test:components
