@@ -11,11 +11,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Node.js
+      - name: setup node
         uses: actions/setup-node@v3
         with:
           node-version-file: ".nvmrc"
           cache: pnpm
+      - name: install pnpm
+        uses: pnpm/action-setup@v3
+        with:
+          version: 9
       - name: install pnpm
         run: npm install -g pnpm
       - name: install dependencies
