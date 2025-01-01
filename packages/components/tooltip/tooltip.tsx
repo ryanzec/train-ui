@@ -2,10 +2,10 @@ import { type Placement, autoUpdate, computePosition, flip, offset, shift } from
 import { type JSX, type ParentProps, createEffect, createSignal, mergeProps, onCleanup, splitProps } from 'solid-js';
 
 import { type TooltipStore, TooltipTriggerEvent } from '$/components/tooltip/utils';
-import { clickOutside } from '$/directives/click-outside';
+import { clickOutsideDirective } from '$/directives/click-outside-directive';
 
 // this is needed to avoid this code being stripped in compilation because of the way directive work in SolidJS
-clickOutside;
+clickOutsideDirective;
 
 export type TooltipProps = JSX.HTMLAttributes<HTMLDivElement> & {
   placement?: Placement;
@@ -113,7 +113,7 @@ const Tooltip = (passedProps: ParentProps<TooltipProps>) => {
   return (
     <div
       {...restOfProps}
-      use:clickOutside={props.triggerEvent === TooltipTriggerEvent.CLICK ? disableToolTip : undefined}
+      use:clickOutsideDirective={props.triggerEvent === TooltipTriggerEvent.CLICK ? disableToolTip : undefined}
       ref={containerRef}
     >
       {props.children}

@@ -57,10 +57,10 @@ export const CheckedByDefault = () => {
     },
   });
 
-  const form = formStore.form;
+  const formDirective = formStore.formDirective;
 
   return (
-    <form use:form>
+    <form use:formDirective>
       <Checkbox
         labelElement="checkbox"
         name="checkbox"

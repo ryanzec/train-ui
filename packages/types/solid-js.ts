@@ -1,15 +1,11 @@
+import { clickOutsideDirective } from '$/directives/click-outside-directive';
+
 declare module 'solid-js' {
   namespace JSX {
     interface Directives {
-      // solid-dnd directives
-      sortable: boolean;
-      droppable: boolean;
-
       // custom directives
-      form: boolean;
-      clickOutside: (() => void) | undefined;
+      formDirective: boolean;
+      clickOutsideDirective: (() => void) | undefined;
     }
   }
 }
-
-export {};

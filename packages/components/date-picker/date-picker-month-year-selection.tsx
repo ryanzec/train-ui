@@ -4,10 +4,10 @@ import { createMemo } from 'solid-js';
 import Button, { ButtonSentiment } from '$/components/button';
 import Combobox, { type ComboboxExtraData, type ComboboxOption, comboboxUtils } from '$/components/combobox';
 import styles from '$/components/date-picker/date-picker.module.css';
-import { clickOutside } from '$/directives/click-outside';
+import { clickOutsideDirective } from '$/directives/click-outside-directive';
 
 // this is needed to avoid this code being stripped in compilation because of the way directive work in SolidJS
-clickOutside;
+clickOutsideDirective;
 
 type DatePickerMonthYearSelectionProps = {
   defaultMonth?: number;
@@ -116,7 +116,7 @@ const DatePickerMonthYearSelection = (passedProps: DatePickerMonthYearSelectionP
   };
 
   return (
-    <div class={styles.monthYearSelection} use:clickOutside={props.toggleDisplay}>
+    <div class={styles.monthYearSelection} use:clickOutsideDirective={props.toggleDisplay}>
       <div class={styles.monthYearInputs}>
         <Combobox
           showClearIcon={false}

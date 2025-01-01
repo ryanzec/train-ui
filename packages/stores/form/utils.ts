@@ -66,7 +66,7 @@ type SetValueOption = {
 };
 
 export type CreateFormReturn<TFormData extends object, TSchemaObject extends zod.ZodRawShape> = {
-  form: FormDirective;
+  formDirective: FormDirective;
   data: Accessor<Partial<TFormData>>;
   // @todo(refactor) would prefer a type that matched the string to what is can be based on the TFormData but not
   // @todo(refactor) sure if that is possible
@@ -558,7 +558,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     return Array.from(currentFormElement.querySelectorAll(selector));
   };
 
-  const form = (element: HTMLFormElement) => {
+  const formDirective = (element: HTMLFormElement) => {
     const inputElements = getAllInputElements(element);
 
     for (const inputElement of inputElements) {
@@ -720,7 +720,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
   };
 
   return {
-    form,
+    formDirective,
     data,
     addArrayField,
     removeArrayField,

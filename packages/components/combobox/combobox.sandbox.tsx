@@ -390,7 +390,7 @@ const formDataSchema = zodUtils.schemaForType<FormData>()(
 );
 
 export const SingleInForm = () => {
-  const { form, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
+  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],
@@ -408,7 +408,7 @@ export const SingleInForm = () => {
   };
 
   return (
-    <form use:form>
+    <form use:formDirective>
       <BasicExample
         onSelected={onSelected}
         validationState={
@@ -422,7 +422,7 @@ export const SingleInForm = () => {
 };
 
 export const MultiInForm = () => {
-  const { form, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
+  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],
@@ -440,7 +440,7 @@ export const MultiInForm = () => {
   };
 
   return (
-    <form use:form>
+    <form use:formDirective>
       <MultiSelectExample
         onSelected={onSelected}
         supportingText={errors().combobox?.errors}
@@ -454,7 +454,7 @@ export const MultiInForm = () => {
 };
 
 export const SingleInFormAutoShowOptions = () => {
-  const { form, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
+  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],
@@ -472,7 +472,7 @@ export const SingleInFormAutoShowOptions = () => {
   };
 
   return (
-    <form use:form>
+    <form use:formDirective>
       <BasicExample
         onSelected={onSelected}
         autoShowOptions
@@ -487,7 +487,7 @@ export const SingleInFormAutoShowOptions = () => {
 };
 
 export const MultiInFormAutoShowOptions = () => {
-  const { form, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
+  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],
@@ -505,7 +505,7 @@ export const MultiInFormAutoShowOptions = () => {
   };
 
   return (
-    <form use:form>
+    <form use:formDirective>
       <MultiSelectExample
         onSelected={onSelected}
         autoShowOptions

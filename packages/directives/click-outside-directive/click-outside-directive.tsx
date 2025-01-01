@@ -1,6 +1,6 @@
 import { type Accessor, onCleanup } from 'solid-js';
 
-export default function clickOutside(element: HTMLElement, callbackAccessor?: Accessor<() => void>) {
+export default function clickOutsideDirective(element: HTMLElement, callbackAccessor?: Accessor<() => void>) {
   if (!callbackAccessor) {
     return;
   }
