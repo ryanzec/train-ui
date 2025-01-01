@@ -5,10 +5,12 @@ import SelectableOption from '$/components/combobox/selectable-option';
 import SelectedOption from '$/components/combobox/selected-option';
 
 export type {
+  FormComboboxComboboxItem,
   ComboboxOptionValue,
   ComboboxExtraData,
   ComboboxOption,
   ComboboxProps,
+  FormComboboxProps,
   ComboboxValueStore,
   ComboboxStore,
   ComboboxSelectableOptionProps,
@@ -22,8 +24,6 @@ export {
   comboboxUtils,
   AsyncOptionsState,
 } from '$/components/combobox/utils';
-
-export type { FormComboboxComboboxItem } from '$/components/combobox/form-combobox';
 
 export default Object.assign(Combobox, {
   SelectableOption,

@@ -127,7 +127,7 @@ export default Object.assign(Button, { Group });
 
 ## Utils
 
-Util should define non-exported methods for all the utility functionality that is needed along with any exported interface that is needed externally. Each of these methods that need to be used externally needs to be export as an object named `[fileName]Utils` like this:
+Util should define non-exported methods for all the utility functionality that is needed along with any exported interface /type that is needed externally. Each of these methods that need to be used externally needs to be export as an object named `[fileName]Utils` like this:
 
 ```tsx
 const processLogin = () => { \* ... *\ };
@@ -198,7 +198,7 @@ There are a few cases where we want to prefix or suffix certain data to help wit
 `[FunctionName]Params`
 
 ```tsx
-interface BuildProviderParams<T> {
+type BuildProviderParams<T>  = {
   context: React.Context<T>;
   getState: () => T;
 }
@@ -215,7 +215,7 @@ const buildProvider =
 `[FunctionName]Returns`
 
 ```tsx
-interface DoSomethingReturns {
+type DoSomethingReturns  = {
   foo: string;
   bar: number;
 }
@@ -238,8 +238,7 @@ type ComparerSignature = (value1: string, value2: string) => boolean;
 `[ComponentName]Props`
 
 ```tsx
-interface ButtonProps
-  extends React.DetailedHTMLProps<
+type ButtonProps = React.DetailedHTMLProps<
     React.HTMLAttributes<HTMLButtonElement>,
     HTMLButtonElement
   > {
@@ -254,7 +253,7 @@ interface ButtonProps
 `[FormName]FormData`
 
 ```tsx
-interface EditIncidentFormData {
+type EditIncidentFormData  = {
   firstName: string;
   combobox: number;
   email: string;
@@ -516,7 +515,7 @@ When referencing other data types, it should only be done when there is a true d
 ```tsx
 import { UserListItemsProps } from "$/components/user-list/user-list-item";
 
-interface UserListProps {
+type UserListProps  = {
   users: Array<UserListItemsProps["user"]>;
 }
 ```
@@ -526,12 +525,19 @@ We should not be referencing other types if there is just a loose coupling.
 ```tsx
 import { GetAllUserReturns } from "$/apis/users";
 
-interface UserListProps {
+type UserListProps  = {
   // while this component might use the results of that api, this component might use mutliple data sources and
   // the api might be used for multiple components
   users: GetAllUserReturns["users"];
 }
 ```
+
+## Prefer types over interfaces when possible
+
+For consistency, prefer types to interfaces when possible, the reason for this is:
+- interfaces can only be used for objects and types can be used for anything
+- while interfaces can be used for tuples, types provide a much cleaner and simpler syntax
+- interfaces are opened so when you define an interface that already exist it just adds to it and while this might be needed (generally in context with 3rd party libraries), this pattern makes is hard to reason about what an interface includes and therefore should be avoid when possible 
 
 # Testing / Storybook coding guide
 
@@ -706,7 +712,7 @@ There might be times when you might have something that will always be defined e
 
 ```tsx
 // bad
-export interface IAuthenticationContext {
+export type IAuthenticationContext  = {
   //...
   login: ILogin | null;
 }
@@ -727,7 +733,7 @@ In cases like these, whenever possible, we should be doing something like this:
 
 ```tsx
 // good
-export interface IAuthenticationContext {
+export type IAuthenticationContext  = {
   //...
   login: ILogin;
 }
@@ -744,7 +750,7 @@ Then the calling code can just do:
 context.login();
 ```
 
-This might always be practical (method with really complex interfaces) or possible (3rd party code) but this should be the default way we handle this situation and if we can’t, we add a comment about why.
+This might always be practical (method with really complex interfaces / types) or possible (3rd party code) but this should be the default way we handle this situation and if we can’t, we add a comment about why.
 
 # Tips and Tricks
 

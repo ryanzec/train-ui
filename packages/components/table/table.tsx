@@ -6,12 +6,13 @@ import styles from '$/components/table/table.module.css';
 import { TableShape } from '$/components/table/utils';
 import type { CommonDataAttributes } from '$/types/generic';
 
-export interface TableProps extends JSX.HTMLAttributes<HTMLTableElement>, CommonDataAttributes {
-  hasFixedHeader?: boolean;
-  shape?: TableShape;
-  tableHead?: JSX.Element;
-  tableFooter?: JSX.Element;
-}
+export type TableProps = JSX.HTMLAttributes<HTMLTableElement> &
+  CommonDataAttributes & {
+    hasFixedHeader?: boolean;
+    shape?: TableShape;
+    tableHead?: JSX.Element;
+    tableFooter?: JSX.Element;
+  };
 
 const Table = (passedProps: TableProps) => {
   const [props, restOfProps] = splitProps(mergeProps({ hasFixedHeader: false }, passedProps), [

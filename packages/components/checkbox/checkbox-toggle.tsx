@@ -4,11 +4,11 @@ import { type JSX, createSignal, splitProps } from 'solid-js';
 import styles from '$/components/checkbox/checkbox.module.css';
 import type { FormInputValidationState } from '$/stores/form/utils';
 
-export interface CheckboxToggleProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
+export type CheckboxToggleProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
   labelElement: JSX.Element;
   alignEnd?: boolean;
   validationState?: FormInputValidationState;
-}
+};
 
 // we exposed a plain input in the off chance we need an input not hooked up to react-hook-form directly (like the
 // auto complete component)

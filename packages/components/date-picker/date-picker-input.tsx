@@ -17,17 +17,16 @@ export enum WhichDate {
   SECOND = 'second',
 }
 
-export interface DatePickerInputProps
-  extends InputProps,
-    Omit<DatePickerProps, 'onSelectDate' | 'defaultSelectedDate' | 'defaultDisplayDate'>,
-    CommonDataAttributes {
-  isRange?: boolean;
-  onSelectDate?: (date?: Date, which?: WhichDate) => void;
-  defaultStartDisplayDate?: Date;
-  defaultStartSelectedDate?: Date;
-  defaultEndDisplayDate?: Date;
-  defaultEndSelectedDate?: Date;
-}
+export type DatePickerInputProps = InputProps &
+  Omit<DatePickerProps, 'onSelectDate' | 'defaultSelectedDate' | 'defaultDisplayDate'> &
+  CommonDataAttributes & {
+    isRange?: boolean;
+    onSelectDate?: (date?: Date, which?: WhichDate) => void;
+    defaultStartDisplayDate?: Date;
+    defaultStartSelectedDate?: Date;
+    defaultEndDisplayDate?: Date;
+    defaultEndSelectedDate?: Date;
+  };
 
 const DatePickerInput = (passedProps: DatePickerInputProps) => {
   const [customProps, restOfProps] = splitProps(

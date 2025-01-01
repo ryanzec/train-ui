@@ -9,19 +9,19 @@ import { type JSX, mergeProps, splitProps } from 'solid-js';
 // eslint-disable-next-line import/order
 import emojis from '$/assets/json/emojis.json';
 
-interface EmojiJsonData {
+type EmojiJsonData = {
   short_name: string;
   unified: string;
-}
+};
 import styles from '$/components/emoji/emoji.module.css';
 import { EmojiSpacing } from '$/components/emoji/utils';
 import { IconSize } from '$/components/icon';
 
-export interface EmojiProps extends JSX.HTMLAttributes<HTMLSpanElement> {
+export type EmojiProps = JSX.HTMLAttributes<HTMLSpanElement> & {
   emoji: string | string[];
   spacing?: EmojiSpacing;
   size?: IconSize;
-}
+};
 
 const Emoji = (passedProps: EmojiProps) => {
   const [props, restOfProps] = splitProps(mergeProps({ size: IconSize.BASE }, passedProps), [

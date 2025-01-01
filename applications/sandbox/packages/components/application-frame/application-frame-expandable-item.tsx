@@ -11,10 +11,11 @@ import { toggleStoreUtils } from '$/stores/toggle';
 import ApplicationFrameSubNavigation from '$sandbox/components/application-frame/application-frame-sub-navigation';
 import { useLocation } from '@solidjs/router';
 
-interface ApplicationFrameExpandableItemProps extends JSX.HTMLAttributes<HTMLDivElement>, CommonDataAttributes {
-  routes: DynamicRouteNavigation;
-  routeKey: string;
-}
+type ApplicationFrameExpandableItemProps = JSX.HTMLAttributes<HTMLDivElement> &
+  CommonDataAttributes & {
+    routes: DynamicRouteNavigation;
+    routeKey: string;
+  };
 
 const ApplicationFrameExpandableItem = (passedProps: ApplicationFrameExpandableItemProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['routes', 'class', 'routeKey']);

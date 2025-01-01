@@ -6,12 +6,13 @@ import TableData from '$/components/table/table-data';
 import styles from '$/components/table/table.module.css';
 import type { CommonDataAttributes } from '$/types/generic';
 
-export interface TableRowProps extends JSX.HTMLAttributes<HTMLTableRowElement>, CommonDataAttributes {
-  isSelectable?: boolean;
-  isSelected?: boolean;
-  onSelected?: (id: string) => void;
-  id?: string;
-}
+export type TableRowProps = JSX.HTMLAttributes<HTMLTableRowElement> &
+  CommonDataAttributes & {
+    isSelectable?: boolean;
+    isSelected?: boolean;
+    onSelected?: (id: string) => void;
+    id?: string;
+  };
 
 const TableRow = (passedProps: TableRowProps) => {
   const [props, restOfProps] = splitProps(mergeProps({ isSelectable: false }, passedProps), [

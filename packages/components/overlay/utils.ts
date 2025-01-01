@@ -3,9 +3,9 @@ export enum OverlayStrength {
   WEAK = 'weak',
 }
 
-export interface OverlayProps {
+export type OverlayProps = {
   strength?: OverlayStrength;
-}
+};
 
 export const defaultOverlayProps: Partial<OverlayProps> = {
   strength: OverlayStrength.STRONG,

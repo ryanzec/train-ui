@@ -30,13 +30,13 @@ export default {
   title: 'Stores/Form',
 };
 
-interface DeepNestedStructure {
+type DeepNestedStructure = {
   partA: string;
   partB?: string;
   nested: NestStructure2[];
-}
+};
 
-interface NestStructure2 {
+type NestStructure2 = {
   partA: string;
   partB?: string;
   partC?: string;
@@ -47,18 +47,18 @@ interface NestStructure2 {
   partH?: string;
   partI?: string;
   partJ?: string;
-}
+};
 
-interface NestStructure {
+type NestStructure = {
   partA: string;
   partB?: string;
-}
+};
 
-interface SimpleFormData {
+type SimpleFormData = {
   title: string;
   title2?: string;
   textarea?: string;
-}
+};
 
 const simpleFormDataSchema = zodUtils.schemaForType<SimpleFormData>()(
   zod.object({
@@ -479,9 +479,9 @@ export const NoValidateOnChange = () => {
   );
 };
 
-interface SimpleArrayFormData {
+type SimpleArrayFormData = {
   array: NestStructure[];
-}
+};
 
 const simpleArrayFormDataSchema = zodUtils.schemaForType<SimpleArrayFormData>()(
   zod.object({
@@ -588,12 +588,12 @@ export const ArrayFields = () => {
   );
 };
 
-interface NestedArrayFormData {
+type NestedArrayFormData = {
   array: DeepNestedStructure[];
   object: {
     test: string;
   };
-}
+};
 
 const nestedArrayFormDataSchema = zodUtils.schemaForType<NestedArrayFormData>()(
   zod.object({
@@ -932,11 +932,11 @@ export const NestedArrayFields = () => {
   );
 };
 
-interface DynamicFormData {
+type DynamicFormData = {
   title: string;
   addDefaultValue: string[];
   [key: string]: CommonDataType;
-}
+};
 
 const dynamicFormDataSchema = zodUtils.schemaForType<DynamicFormData>()(
   zod.object({
@@ -961,11 +961,11 @@ enum RandomFormFieldType {
   ARRAY = 'array',
 }
 
-interface RandomFormField {
+type RandomFormField = {
   name: string;
   type: RandomFormFieldType;
   validation: zod.ZodType;
-}
+};
 
 const possibleRandomFields: RandomFormField[] = [
   {

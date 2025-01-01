@@ -4,12 +4,12 @@ import { For, type JSX, type ParentProps, Show, splitProps } from 'solid-js';
 import styles from '$/components/supporting-text/supporting-text.module.css';
 import { SupportingTextSentiment } from '$/components/supporting-text/utils';
 
-export interface SupportingTextProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type SupportingTextProps = JSX.HTMLAttributes<HTMLDivElement> & {
   sentiment?: SupportingTextSentiment;
 
   // this is added to make it easier to use form errors with this component
   supportingText?: string[];
-}
+};
 
 const SupportingText = (passedProps: ParentProps<SupportingTextProps>) => {
   const [props, restOfProps] = splitProps(passedProps, ['class', 'children', 'supportingText', 'sentiment']);

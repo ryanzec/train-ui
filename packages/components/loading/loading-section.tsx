@@ -6,7 +6,9 @@ import Loading from '$/components/loading/loading';
 import Overlay from '$/components/overlay';
 import { OverlayStrength } from '$/components/overlay/utils';
 
-const LoadingSection = (passedProps: ParentProps<CalloutProps>) => {
+export type LoadingSectionProps = CalloutProps;
+
+const LoadingSection = (passedProps: LoadingSectionProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['children']);
 
   return (

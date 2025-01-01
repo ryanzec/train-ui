@@ -12,9 +12,9 @@ import {
   globalNotificationsStore,
 } from '$/stores/global-notifications';
 
-export interface GlobalNotificationsListItemProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type GlobalNotificationsListItemProps = JSX.HTMLAttributes<HTMLDivElement> & {
   notification: GlobalNotification;
-}
+};
 
 const GlobalNotificationsListItem = (passedProps: GlobalNotificationsListItemProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['notification', 'class']);

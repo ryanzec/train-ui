@@ -4,9 +4,10 @@ import { type JSX, Show, splitProps } from 'solid-js';
 import styles from '$/components/avatar/avatar.module.css';
 import type { CommonDataAttributes } from '$/types/generic';
 
-export interface AvatarProps extends JSX.HTMLAttributes<HTMLDivElement>, CommonDataAttributes {
-  src?: string;
-}
+export type AvatarProps = JSX.HTMLAttributes<HTMLDivElement> &
+  CommonDataAttributes & {
+    src?: string;
+  };
 
 const Avatar = (passedProps: AvatarProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['children', 'class', 'src']);

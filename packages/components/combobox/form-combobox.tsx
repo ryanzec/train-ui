@@ -3,28 +3,9 @@ import { type Accessor, mergeProps } from 'solid-js';
 import Combobox from '$/components/combobox/combobox';
 import FormattedSelectableOption from '$/components/combobox/formatted-selectable-option';
 import SelectableOption from '$/components/combobox/selectable-option';
-import { type ComboboxOption, comboboxUtils } from '$/components/combobox/utils';
+import { type ComboboxOption, type FormComboboxProps, comboboxUtils } from '$/components/combobox/utils';
 import type { FormErrorsData } from '$/stores/form';
 import { FormInputValidationState } from '$/stores/form/utils';
-
-export interface FormComboboxComboboxItem {
-  display: string;
-  value: string;
-}
-
-interface FormComboboxProps<TFormData> {
-  errors?: Accessor<FormErrorsData<TFormData>>;
-  label?: string;
-  class?: string;
-  setSelected: (comboboxOptions: ComboboxOption[]) => void;
-  selected: ComboboxOption[];
-  options: FormComboboxComboboxItem[];
-  name: keyof TFormData;
-  placeholder?: string;
-  disabledPlaceholder?: string;
-  isLoading?: boolean;
-  isMulti?: boolean;
-}
 
 const FormCombobox = <TFormData,>(passedProps: FormComboboxProps<TFormData>) => {
   const props = mergeProps(

@@ -31,6 +31,6 @@ export type BaseCommonDataType = boolean | string | number | object;
 
 export type CommonDataType = BaseCommonDataType | BaseCommonDataType[];
 
-export interface CommonDataAttributes {
+export type CommonDataAttributes = {
   'data-id'?: string;
-}
+};

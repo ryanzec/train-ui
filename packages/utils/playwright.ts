@@ -8,11 +8,11 @@ const mockApi = async (page: Page, url: string, responseData: Record<string, any
   });
 };
 
-interface DragAndDropParams {
+type DragAndDropParams = {
   page: Page;
   dragLocator: Locator;
   dropLocator: Locator;
-}
+};
 
 // based on this article
 // https://reflect.run/articles/how-to-test-drag-and-drop-interactions-in-playwright/
@@ -53,9 +53,9 @@ const pauseTest = async (time: number) => {
   return new Promise((resolve) => setTimeout(resolve, time));
 };
 
-interface BuildUrlOptions {
+type BuildUrlOptions = {
   includeApiMocks?: boolean;
-}
+};
 
 const defaultBuildUrlOptions = {
   includeApiMocks: false,

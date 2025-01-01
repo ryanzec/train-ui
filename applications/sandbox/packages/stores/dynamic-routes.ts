@@ -2,15 +2,15 @@ import { type Accessor, type JSX, createRoot, createSignal } from 'solid-js';
 
 import { stringUtils } from '../../../../packages/utils/string';
 
-export interface DynamicRouteNavigation {
+export type DynamicRouteNavigation = {
   [key: string]: DynamicRouteNavigation | string;
-}
+};
 
-export interface DynamicRoute {
+export type DynamicRoute = {
   path: string;
   title: string;
   component: () => JSX.Element;
-}
+};
 
 const setNestedObjectValue = (
   keys: string[],
@@ -43,12 +43,12 @@ const setNestedObjectValue = (
   return nestedObject;
 };
 
-export interface DynamicRouteStore {
+export type DynamicRouteStore = {
   routes: Accessor<DynamicRoute[]>;
   navigation: Accessor<DynamicRouteNavigation>;
   isLoading: Accessor<boolean>;
   load: () => void;
-}
+};
 
 const createDynamicRoutesStore = (): DynamicRouteStore => {
   const [isLoading, setIsLoading] = createSignal(true);

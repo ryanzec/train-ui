@@ -7,9 +7,9 @@ import type { DynamicRouteNavigation } from '$sandbox/stores/dynamic-routes';
 import ApplicationFrameExpandableItem from '$sandbox/components/application-frame/application-frame-expandable-item';
 import ApplicationFrameNavigationItem from '$sandbox/components/application-frame/application-frame-navigation-item';
 
-interface ApplicationFrameSubNavigationProps {
+type ApplicationFrameSubNavigationProps = {
   routes: DynamicRouteNavigation;
-}
+};
 
 const ApplicationFrameSubNavigation = (props: ApplicationFrameSubNavigationProps) => {
   return (

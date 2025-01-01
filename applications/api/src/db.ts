@@ -10,10 +10,10 @@ import { FAKER_STANDARD_SEED } from './utils';
 
 faker.seed(FAKER_STANDARD_SEED);
 
-export interface MockDatabase {
+export type MockDatabase = {
   authenticationTokens: NonNullable<AuthenticationToken[]>;
   users: NonNullable<GetUsersResponse['data']>;
-}
+};
 
 const defaultDatabase: MockDatabase = {
   authenticationTokens: [{ token: 'default-token' }, { token: 'bad-token' }],

@@ -19,7 +19,7 @@
 .input {
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
-  letter-spacing: var(--letter-height-base);
+  letter-spacing: var(--letter-spacing-base);
   outline: 0;
   background: 0;
   border: 0;

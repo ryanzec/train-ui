@@ -2,9 +2,9 @@ import { type ParentProps, Show, createSignal } from 'solid-js';
 
 import Button from '../../../../../packages/components/button/button';
 
-interface ExpandableCodeProps {
+type ExpandableCodeProps = {
   label: string;
-}
+};
 
 const ExpandableCode = (props: ParentProps<ExpandableCodeProps>) => {
   const [toggle, setToggle] = createSignal(true);

@@ -4,10 +4,10 @@ import { type JSX, mergeProps, splitProps } from 'solid-js';
 import Icon, { type IconProps, IconSentiment, IconSize } from '$/components/icon';
 import styles from '$/components/loading/loading.module.css';
 
-export interface LoadingProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type LoadingProps = JSX.HTMLAttributes<HTMLDivElement> & {
   iconSize?: IconProps['size'];
   iconSentiment?: IconProps['sentiment'];
-}
+};
 
 // @todo get a design for how the application should look while the application is doing the
 // @todo initial load (for authentication data, feature flags, etc.) and implement it here

@@ -9,13 +9,13 @@ import Icon from '$/components/icon';
 import Overlay from '$/components/overlay';
 import { Key } from '$/types/generic';
 
-export interface DialogProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type DialogProps = JSX.HTMLAttributes<HTMLDivElement> & {
   isOpen: boolean;
   closeDialog: () => void;
   headerElement?: JSX.Element;
   footerElement?: JSX.Element;
   footerAlignment?: DialogFooterAlignment;
-}
+};
 
 const Dialog = (passedProps: ParentProps<DialogProps>) => {
   const [props, restOfProps] = splitProps(mergeProps({ footerAlignment: DialogFooterAlignment.RIGHT }, passedProps), [

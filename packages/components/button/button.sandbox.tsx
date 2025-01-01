@@ -610,30 +610,30 @@ export const Icons = () => {
   );
 };
 
-export const ToggleButton = () => {
+export const Toggle = () => {
   return (
     <>
       <Button.Group isAttached>
-        <Button.ToggleButton postItem={<Icon icon="home" />} />
-        <Button.ToggleButton>Weak</Button.ToggleButton>
-        <Button.ToggleButton isSelected preItem={<Icon icon="add" />}>
+        <Button.Toggle postItem={<Icon icon="home" />} />
+        <Button.Toggle>Weak</Button.Toggle>
+        <Button.Toggle isSelected preItem={<Icon icon="add" />}>
           Outlined
-        </Button.ToggleButton>
-        <Button.ToggleButton postItem={<Icon icon="add" />} />
-        <Button.ToggleButton preItem={<Icon icon="add" />} postItem={<Icon icon="add" />}>
+        </Button.Toggle>
+        <Button.Toggle postItem={<Icon icon="add" />} />
+        <Button.Toggle preItem={<Icon icon="add" />} postItem={<Icon icon="add" />}>
           Text
-        </Button.ToggleButton>
-        <Button.ToggleButton disabled>Filled</Button.ToggleButton>
-        <Button.ToggleButton disabled>Weak</Button.ToggleButton>
-        <Button.ToggleButton preItem={<Icon icon="add" />} disabled>
+        </Button.Toggle>
+        <Button.Toggle disabled>Filled</Button.Toggle>
+        <Button.Toggle disabled>Weak</Button.Toggle>
+        <Button.Toggle preItem={<Icon icon="add" />} disabled>
           Outlined
-        </Button.ToggleButton>
-        <Button.ToggleButton postItem={<Icon icon="add" />} disabled>
+        </Button.Toggle>
+        <Button.Toggle postItem={<Icon icon="add" />} disabled>
           Ghost
-        </Button.ToggleButton>
-        <Button.ToggleButton preItem={<Icon icon="add" />} postItem={<Icon icon="add" />} disabled>
+        </Button.Toggle>
+        <Button.Toggle preItem={<Icon icon="add" />} postItem={<Icon icon="add" />} disabled>
           Text
-        </Button.ToggleButton>
+        </Button.Toggle>
       </Button.Group>
     </>
   );

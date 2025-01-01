@@ -5,11 +5,11 @@ import styles from '$/components/checkbox/checkbox.module.css';
 import Icon from '$/components/icon';
 import type { FormInputValidationState } from '$/stores/form/utils';
 
-export interface CheckboxProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
+export type CheckboxProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
   labelElement?: JSX.Element;
   alignEnd?: boolean;
   validationState?: FormInputValidationState;
-}
+};
 
 enum CheckedState {
   UNCHECKED = 'unchecked',

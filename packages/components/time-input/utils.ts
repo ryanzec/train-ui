@@ -11,9 +11,9 @@ export enum EditItem {
 
 export const editItemsOrder = [EditItem.HOURS, EditItem.MINUTES, EditItem.MERIDIEM];
 
-interface GetNewEditItemIndexOptions {
+type GetNewEditItemIndexOptions = {
   allowWrapping?: boolean;
-}
+};
 
 const getNewEditItemIndex = (currentIndex: number, move: number, optionOverrides: GetNewEditItemIndexOptions = {}) => {
   const options = Object.assign({ allowWrapping: false }, optionOverrides);

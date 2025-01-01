@@ -1,14 +1,14 @@
 import { createSignal } from 'solid-js';
 
-interface CreateToggleProps {
+type CreateToggleProps = {
   isToggled?: boolean;
-}
+};
 
-export interface ToggleStoreInstance {
+export type ToggleStoreInstance = {
   isToggled: () => boolean;
   setIsToggled: (value: boolean) => void;
   toggle: () => void;
-}
+};
 
 const createToggle = (options: CreateToggleProps = {}): ToggleStoreInstance => {
   const [isToggled, setIsToggled] = createSignal<boolean>(options.isToggled ?? false);

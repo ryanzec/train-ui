@@ -3,14 +3,14 @@ import pullAt from 'lodash/pullAt';
 import { nanoid } from 'nanoid';
 import { type JSX, createRoot, createSignal } from 'solid-js';
 
-export interface GlobalNotification {
+export type GlobalNotification = {
   id: string;
   message: () => JSX.Element;
   emoji?: string;
   autoClose?: number;
   isRemoving?: boolean;
   removeAnimationDuration?: number;
-}
+};
 
 export const DEFAULT_AUTO_CLOSE = 3000;
 

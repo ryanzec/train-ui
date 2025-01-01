@@ -9,7 +9,7 @@ import { clickOutside } from '$/stores/click-outside';
 // this is needed to avoid this code being stripped in compilation because of the way directive work in SolidJS
 clickOutside;
 
-interface DatePickerMonthYearSelectionProps {
+type DatePickerMonthYearSelectionProps = {
   defaultMonth?: number;
   defaultYear?: number;
   endYear?: number;
@@ -17,7 +17,7 @@ interface DatePickerMonthYearSelectionProps {
   onSelectMonth?: (month: number) => void;
   onSelectYear?: (year: number) => void;
   toggleDisplay?: () => void;
-}
+};
 
 const months = [
   {

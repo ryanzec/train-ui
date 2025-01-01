@@ -4,10 +4,11 @@ import { type JSX, Show, mergeProps, splitProps } from 'solid-js';
 import styles from '$/components/list/list.module.css';
 import type { CommonDataAttributes } from '$/types/generic';
 
-export interface ListItemProps extends JSX.HTMLAttributes<HTMLDivElement>, CommonDataAttributes {
-  isSelected?: boolean;
-  preItem?: JSX.Element;
-}
+export type ListItemProps = JSX.HTMLAttributes<HTMLDivElement> &
+  CommonDataAttributes & {
+    isSelected?: boolean;
+    preItem?: JSX.Element;
+  };
 
 const ListItem = (passedProps: ListItemProps) => {
   const [props, restOfProps] = splitProps(mergeProps({ isSelected: false }, passedProps), [

@@ -6,12 +6,13 @@ import { ButtonSentiment, ButtonVariant } from '$/components/button/utils';
 import Icon from '$/components/icon';
 import type { CommonDataAttributes } from '$/types/generic';
 
-export interface IconButtonProps extends JSX.ButtonHTMLAttributes<HTMLButtonElement>, CommonDataAttributes {
-  variant?: ButtonVariant;
-  sentiment?: ButtonSentiment;
-  isLoading?: boolean;
-  icon: string;
-}
+export type IconButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> &
+  CommonDataAttributes & {
+    variant?: ButtonVariant;
+    sentiment?: ButtonSentiment;
+    isLoading?: boolean;
+    icon: string;
+  };
 
 const IconButton = (passedProps: IconButtonProps) => {
   const [props, restOfProps] = splitProps(

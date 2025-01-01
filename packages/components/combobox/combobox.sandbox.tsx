@@ -39,7 +39,7 @@ const getOptionsAsync = async (inputValue?: string): Promise<ComboboxOption<Cust
   ];
 };
 
-interface ExampleProps {
+type ExampleProps = {
   selectedOptionIndex?: number;
   autoShowOptions?: boolean;
   forceSelection?: boolean;
@@ -54,7 +54,7 @@ interface ExampleProps {
   options?: ComboboxOption<CustomExtraData>[];
   supportingText?: string[];
   validationState?: FormInputValidationState;
-}
+};
 
 const getSelectedComponent = (selectedComponent?: ComboboxProps<CustomExtraData>['selectedComponent'] | null) => {
   if (selectedComponent === undefined) {
@@ -379,9 +379,9 @@ export const MultiDisabled = () => {
   return <MultiSelectExample disabled autoShowOptions />;
 };
 
-interface FormData {
+type FormData = {
   combobox: number[];
-}
+};
 
 const formDataSchema = zodUtils.schemaForType<FormData>()(
   zod.object({

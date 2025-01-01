@@ -11,7 +11,7 @@
   font-weight: bold;
   font-size: var(--font-size-lg);
   line-height: var(--line-height-lg);
-  letter-spacing: var(--letter-height-lg);
+  letter-spacing: var(--letter-spacing-lg);
 }
 
 .header-with-content {

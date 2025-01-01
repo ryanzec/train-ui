@@ -11,15 +11,15 @@ import { FormInputValidationState } from '$/stores/form';
 import { dateTimeFormat } from '$/utils/date';
 import { loggerUtils } from '$/utils/logger';
 
-interface DayData {
+type DayData = {
   isDisabled: boolean;
   isCurrentMonth: boolean;
   date: Dayjs;
   day: string;
   formatCurrentCheck: string;
-}
+};
 
-export interface DatePickerProps {
+export type DatePickerProps = {
   defaultDisplayDate?: Date;
   defaultSelectedDate?: Date;
   onSelectDate?: (selectedDate?: Date) => void;
@@ -28,7 +28,7 @@ export interface DatePickerProps {
   includeFooter?: boolean;
   disableBefore?: Date;
   disableAfter?: Date;
-}
+};
 
 const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivElement>) => {
   const [props, restOfProps] = splitProps(

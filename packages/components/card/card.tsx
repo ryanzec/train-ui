@@ -4,13 +4,13 @@ import { type JSX, type ParentProps, Show, mergeProps, splitProps } from 'solid-
 import styles from '$/components/card/card.module.css';
 import { CardFooterAlignment } from '$/components/card/utils';
 
-export interface CardProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type CardProps = JSX.HTMLAttributes<HTMLDivElement> & {
   headerText?: string;
   headerPreItem?: JSX.Element;
   headerPostItem?: JSX.Element;
   footerElement?: JSX.Element;
   footerAlignment?: CardFooterAlignment;
-}
+};
 const Card = (passedProps: ParentProps<CardProps>) => {
   const [props, restOfProps] = splitProps(mergeProps({ footerAlignment: CardFooterAlignment.RIGHT }, passedProps), [
     'children',

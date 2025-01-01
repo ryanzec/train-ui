@@ -6,10 +6,10 @@ import styles from '$/components/global-notifications-list/global-notifications-
 import { GlobalNotificationPosition } from '$/components/global-notifications-list/utils';
 import type { GlobalNotification } from '$/stores/global-notifications';
 
-export interface GlobalNotificationsListProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type GlobalNotificationsListProps = JSX.HTMLAttributes<HTMLDivElement> & {
   notifications?: GlobalNotification[];
   position?: GlobalNotificationPosition;
-}
+};
 
 const GlobalNotificationsList = (passedProps: GlobalNotificationsListProps) => {
   const [props, restOfProps] = splitProps(

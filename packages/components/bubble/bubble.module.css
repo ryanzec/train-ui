@@ -81,7 +81,7 @@
 .icon > span {
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
-  letter-spacing: var(--letter-height-base);
+  letter-spacing: var(--letter-spacing-base);
 
   /* this makes sure the icon is center with the text in the button */
   display: flex;
@@ -90,7 +90,7 @@
 .bubble-small {
   font-size: var(--font-size-sm);
   line-height: var(--line-height-sma);
-  letter-spacing: var(--letter-height-sm);
+  letter-spacing: var(--letter-spacing-sm);
 }
 
 .icon-small {

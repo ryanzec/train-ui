@@ -3,9 +3,9 @@ import { type JSX, splitProps } from 'solid-js';
 
 import styles from '$/components/side-navgiation/side-navigation.module.css';
 
-export interface SideNavigationItemProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type SideNavigationItemProps = JSX.HTMLAttributes<HTMLDivElement> & {
   isActive?: boolean;
-}
+};
 
 const SideNavigationItem = (passedProps: SideNavigationItemProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['children', 'class', 'isActive']);

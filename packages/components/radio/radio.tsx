@@ -5,11 +5,11 @@ import Icon from '$/components/icon';
 import styles from '$/components/radio/radio.module.css';
 import type { FormInputValidationState } from '$/stores/form/utils';
 
-export interface RadioProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
+export type RadioProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
   labelElement: JSX.Element;
   alignEnd?: boolean;
   validationState?: FormInputValidationState;
-}
+};
 
 // we exposed a plain input in the off chance we need an input not hooked up to react-hook-form directly (like the
 // auto complete component)

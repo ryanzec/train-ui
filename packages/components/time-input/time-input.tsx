@@ -4,10 +4,10 @@ import Input, { type InputProps } from '$/components/input';
 import { DEFAULT_VALUE, EditItem, editItemsOrder, timeInputUtils } from '$/components/time-input/utils';
 import { Key } from '$/types/generic';
 
-export interface TimeInputProps extends InputProps {
+export type TimeInputProps = InputProps & {
   // @todo(!!!) implement
   format?: string;
-}
+};
 
 const TimeInput = (passedProps: TimeInputProps) => {
   const [props, restOfProps] = splitProps(mergeProps({ placeholder: 'Time', format: '' }, passedProps), ['format']);

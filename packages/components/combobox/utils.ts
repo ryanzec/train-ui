@@ -2,18 +2,23 @@ import { debounce } from '@solid-primitives/scheduled';
 import { type Accessor, type JSX, createEffect, createSignal, onCleanup } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
 
-import type { FormInputValidationState } from '$/stores/form/utils';
+import type { FormErrorsData, FormInputValidationState } from '$/stores/form/utils';
 import { Key } from '$/types/generic';
 import { domUtils } from '$/utils/dom';
 
 export type ComboboxOptionValue = string | number;
 
+export type FormComboboxComboboxItem = {
+  display: string;
+  value: string;
+};
+
 // we use the as the default for extending the auto complete option to allow any data
-export interface ComboboxExtraData {
+export type ComboboxExtraData = {
   // biome-ignore lint/suspicious/noExplicitAny: to make this be easier to be used as a generic type, we need to
   // biome-ignore lint/suspicious/noExplicitAny: allow any extra data for auto complete options
   [key: string]: any;
-}
+};
 
 export type ComboboxOption<TData = ComboboxExtraData> = {
   display: string;
@@ -40,7 +45,7 @@ export enum AsyncOptionsState {
   BEFORE_THRESHOLD = 'before-threshold',
 }
 
-export interface ComboboxSelectableOptionProps<TData extends ComboboxExtraData> {
+export type ComboboxSelectableOptionProps<TData extends ComboboxExtraData> = {
   option: ComboboxOption<TData>;
   optionIndex: number;
   isFocusedOption: (optionIndex: number) => boolean;
@@ -48,15 +53,15 @@ export interface ComboboxSelectableOptionProps<TData extends ComboboxExtraData> 
   onMouseEnterOption: (optionIndex: number) => void;
   onMouseLeaveOption: () => void;
   onMouseDownOption: (option: ComboboxOption<TData>) => void;
-}
+};
 
-export interface ComboboxSelectedOptionProps<TData extends ComboboxExtraData> {
+export type ComboboxSelectedOptionProps<TData extends ComboboxExtraData> = {
   option: ComboboxOption<TData>;
   optionIndex: number;
   removeValue: (optionIndex: number) => void;
-}
+};
 
-export interface ComboboxProps<TData extends ComboboxExtraData> extends JSX.HTMLAttributes<HTMLDivElement> {
+export type ComboboxProps<TData extends ComboboxExtraData> = JSX.HTMLAttributes<HTMLDivElement> & {
   selected: ComboboxOption<TData>[];
   setSelected: (option: ComboboxOption<TData>[]) => void;
   placeholder?: string;
@@ -80,17 +85,31 @@ export interface ComboboxProps<TData extends ComboboxExtraData> extends JSX.HTML
   disabled?: boolean;
   validationState?: FormInputValidationState;
   showClearIcon?: boolean;
-}
+};
 
-export interface GetSelectableOptionPropsReturns<TData extends ComboboxExtraData> {
+export type FormComboboxProps<TFormData> = {
+  errors?: Accessor<FormErrorsData<TFormData>>;
+  label?: string;
+  class?: string;
+  setSelected: (comboboxOptions: ComboboxOption[]) => void;
+  selected: ComboboxOption[];
+  options: FormComboboxComboboxItem[];
+  name: keyof TFormData;
+  placeholder?: string;
+  disabledPlaceholder?: string;
+  isLoading?: boolean;
+  isMulti?: boolean;
+};
+
+export type GetSelectableOptionPropsReturns<TData extends ComboboxExtraData> = {
   isFocusedOption: (optionIndex: number) => boolean;
   isSelectedOption: (value: ComboboxOptionValue) => boolean;
   onMouseEnterOption: (optionIndex: number) => void;
   onMouseLeaveOption: () => void;
   onMouseDownOption: (option: ComboboxOption<TData>) => void;
-}
+};
 
-export interface GetInputPropsReturns {
+export type GetInputPropsReturns = {
   ref: (element: HTMLInputElement) => void;
   disabled: boolean;
   value: string;
@@ -101,17 +120,17 @@ export interface GetInputPropsReturns {
   placeholder?: string;
   id?: string;
   name: string;
-}
+};
 
-export interface GetSelectedOptionPropsReturns {
+export type GetSelectedOptionPropsReturns = {
   removeValue: (optionIndex: number) => void;
-}
+};
 
-export interface GetOptionsContainerPropsReturns {
+export type GetOptionsContainerPropsReturns = {
   ref: (element: HTMLDivElement) => void;
-}
+};
 
-export interface ComboboxStore<TData extends ComboboxExtraData> {
+export type ComboboxStore<TData extends ComboboxExtraData> = {
   disabled: boolean;
   inputValue: string;
   isOpen: boolean;
@@ -124,7 +143,7 @@ export interface ComboboxStore<TData extends ComboboxExtraData> {
   isLoadingAsyncOptions: boolean;
   asyncOptionsState: AsyncOptionsState;
   asyncThreshold: number;
-}
+};
 
 const removeInvalidOptions = <TData>(options: ComboboxOption<TData>[]) => {
   return options.filter((option) => {
@@ -274,9 +293,9 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     return;
   };
 
-  interface SelectValueOptions {
+  type SelectValueOptions = {
     removeDuplicateSingle?: boolean;
-  }
+  };
 
   const selectValue = (option: ComboboxOption<TData>, options: SelectValueOptions = {}) => {
     // if the user is able to click on a selectable option that is already selected, we assume this value should
@@ -764,15 +783,15 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
   };
 };
 
-interface CreateProps<TData = ComboboxExtraData> {
+type CreateProps<TData = ComboboxExtraData> = {
   defaultValue?: ComboboxOption<TData>[];
   onSetSelected?: (selected: ComboboxOption<TData>[]) => void;
-}
+};
 
-export interface ComboboxValueStore<TData = ComboboxExtraData> {
+export type ComboboxValueStore<TData = ComboboxExtraData> = {
   selected: Accessor<ComboboxOption<TData>[]>;
   setSelected: (selected: ComboboxOption<TData>[]) => void;
-}
+};
 
 const createComboboxValue = <TData = ComboboxExtraData>(options?: CreateProps<TData>): ComboboxValueStore<TData> => {
   const [selected, internalSetSelected] = createSignal<ComboboxOption<TData>[]>(options?.defaultValue ?? []);

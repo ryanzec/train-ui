@@ -3,9 +3,9 @@ import { type JSX, splitProps } from 'solid-js';
 
 import styles from '$/components/input/input.module.css';
 
-export interface InputIconProps extends JSX.HTMLAttributes<HTMLSpanElement> {
+export type InputIconProps = JSX.HTMLAttributes<HTMLSpanElement> & {
   icon: JSX.Element;
-}
+};
 
 // we exposed a plain input in the off chance we need an input not hooked up to react-hook-form
 // directly (like the auto complete component)

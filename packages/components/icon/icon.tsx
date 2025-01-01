@@ -4,12 +4,12 @@ import { type JSX, mergeProps, splitProps } from 'solid-js';
 import styles from '$/components/icon/icon.module.css';
 import { IconSentiment, IconSize, IconVariant } from '$/components/icon/utils';
 
-export interface IconProps extends JSX.HTMLAttributes<HTMLSpanElement> {
+export type IconProps = JSX.HTMLAttributes<HTMLSpanElement> & {
   icon: string;
   variant?: IconVariant;
   size?: IconSize;
   sentiment?: IconSentiment;
-}
+};
 
 const Icon = (passedProps: IconProps) => {
   const [props, restOfProps] = splitProps(

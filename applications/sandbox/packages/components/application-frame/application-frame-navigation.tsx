@@ -12,9 +12,10 @@ import { applicationStore } from '$sandbox/stores/application-store';
 import ScrollArea from '$/components/scroll-area';
 import ApplicationFrameSubNavigation from './application-frame-sub-navigation';
 
-interface ApplicationFrameNavigationProps extends JSX.HTMLAttributes<HTMLDivElement>, CommonDataAttributes {
-  routes: DynamicRouteNavigation;
-}
+type ApplicationFrameNavigationProps = JSX.HTMLAttributes<HTMLDivElement> &
+  CommonDataAttributes & {
+    routes: DynamicRouteNavigation;
+  };
 
 const ApplicationFrameNavigation = (passedProps: ApplicationFrameNavigationProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['routes', 'class']);

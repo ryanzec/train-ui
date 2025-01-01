@@ -47,7 +47,7 @@ export type FormSetValue<TFormData> = (name: keyof TFormData, value: unknown) =>
 
 export type FormData<TFormData> = Accessor<Partial<TFormData>>;
 
-interface CreateFormOptions<TFormData extends object, TSchemaObject extends zod.ZodRawShape> {
+type CreateFormOptions<TFormData extends object, TSchemaObject extends zod.ZodRawShape> = {
   onSubmit: (data: Partial<TFormData>) => void;
   onClear?: () => void;
   onReset?: () => void;
@@ -55,17 +55,17 @@ interface CreateFormOptions<TFormData extends object, TSchemaObject extends zod.
   // seems like any is needed to support the zod schema type
   schema?: zod.ZodObject<TSchemaObject>;
   validateOnChange?: boolean;
-}
+};
 
 const defaultCreateFormOptions = {
   validateOnChange: true,
 };
 
-interface SetValueOption {
+type SetValueOption = {
   markAsTouched?: boolean;
-}
+};
 
-export interface CreateFormReturn<TFormData extends object, TSchemaObject extends zod.ZodRawShape> {
+export type CreateFormReturn<TFormData extends object, TSchemaObject extends zod.ZodRawShape> = {
   form: FormDirective;
   data: Accessor<Partial<TFormData>>;
   // @todo(refactor) would prefer a type that matched the string to what is can be based on the TFormData but not
@@ -88,7 +88,7 @@ export interface CreateFormReturn<TFormData extends object, TSchemaObject extend
 
   // since this is a generic system, we need to allow any
   setSchema: Setter<zod.ZodObject<TSchemaObject> | undefined>;
-}
+};
 
 export type FormWatcher<TFormData extends object> = (name: keyof TFormData, data: Partial<TFormData>) => void;
 
@@ -135,9 +135,9 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     setDirtyFields((previousTouchedFields) => previousTouchedFields.filter((fieldName) => fieldName !== name));
   };
 
-  interface TriggerValueChangeOptions {
+  type TriggerValueChangeOptions = {
     isTouched?: boolean;
-  }
+  };
 
   const triggerValueChanged = (
     name: string,

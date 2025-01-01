@@ -1,6 +1,6 @@
 import Dialog, { type DialogProps } from '$/components/dialog/dialog';
 
-export { DialogFooterAlignment } from '$/components/dialog/utils';
+export { DialogFooterAlignment, dialogUtils } from '$/components/dialog/utils';
 
 export type { DialogProps };
 

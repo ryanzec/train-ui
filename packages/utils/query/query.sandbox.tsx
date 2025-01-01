@@ -20,17 +20,17 @@ export default {
 
 const SANDBOX_QUERY_GET_LIST = 'sandbox-query-get-list';
 
-interface QueryApiData {
+type QueryApiData = {
   id: string;
-}
+};
 
-interface GetListReturns {
+type GetListReturns = {
   query: Array<QueryApiData>;
-}
+};
 
-interface GetListParams {
+type GetListParams = {
   filter?: string;
-}
+};
 
 export const getList = (getParams?: () => GetListParams, queryOptions?: Partial<CreateTrackedQueryOptions>) => {
   const [resource, refetch, mutate, dataInitiallyFetched] = queryUtils.createTrackedQuery(
@@ -67,15 +67,15 @@ export const getList = (getParams?: () => GetListParams, queryOptions?: Partial<
   };
 };
 
-interface CreateInput {
+type CreateInput = {
   id: string;
-}
+};
 
-interface CreateReturns {
+type CreateReturns = {
   query: {
     id: string;
   };
-}
+};
 
 export const createMutation = (options?: CreateMutationOptions<CreateInput, CreateReturns>) =>
   queryUtils.createMutation(

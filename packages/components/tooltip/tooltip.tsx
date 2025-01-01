@@ -7,11 +7,11 @@ import { clickOutside } from '$/stores/click-outside';
 // this is needed to avoid this code being stripped in compilation because of the way directive work in SolidJS
 clickOutside;
 
-export interface TooltipProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type TooltipProps = JSX.HTMLAttributes<HTMLDivElement> & {
   placement?: Placement;
   store: TooltipStore;
   triggerEvent?: TooltipTriggerEvent;
-}
+};
 
 const Tooltip = (passedProps: ParentProps<TooltipProps>) => {
   const [props, restOfProps] = splitProps(

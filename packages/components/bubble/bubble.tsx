@@ -5,13 +5,13 @@ import styles from '$/components/bubble/bubble.module.css';
 import { BubbleSentiment, BubbleSize, BubbleStrength } from '$/components/bubble/utils';
 import Icon from '$/components/icon';
 
-export interface BubbleProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type BubbleProps = JSX.HTMLAttributes<HTMLDivElement> & {
   sentiment?: BubbleSentiment;
   strength?: BubbleStrength;
   size?: BubbleSize;
   preIcon?: string;
   postIcon?: string;
-}
+};
 
 const Bubble = (passedProps: ParentProps<BubbleProps>) => {
   const [props, restOfProps] = splitProps(

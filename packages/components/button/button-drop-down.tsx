@@ -7,15 +7,16 @@ import ButtonDropDownContent from '$/components/button/button-drop-down-content'
 import styles from '$/components/button/button.module.css';
 import Tooltip, { TooltipTriggerEvent, type TooltipStore } from '$/components/tooltip';
 
-export interface ButtonDropDownProps extends ButtonProps, JSX.HTMLAttributes<HTMLButtonElement> {
-  label: string | JSX.Element;
-  placement?: Placement;
-  defaultIsEnabled?: boolean;
-  triggerEvent?: TooltipTriggerEvent;
-  buttonClass?: string;
-  contentClass?: string;
-  tooltipStore: TooltipStore;
-}
+export type ButtonDropDownProps = ButtonProps &
+  JSX.HTMLAttributes<HTMLButtonElement> & {
+    label: string | JSX.Element;
+    placement?: Placement;
+    defaultIsEnabled?: boolean;
+    triggerEvent?: TooltipTriggerEvent;
+    buttonClass?: string;
+    contentClass?: string;
+    tooltipStore: TooltipStore;
+  };
 
 export const ButtonDropDown = (passedProps: ParentProps<ButtonDropDownProps>) => {
   const [props, restOfProps] = splitProps(

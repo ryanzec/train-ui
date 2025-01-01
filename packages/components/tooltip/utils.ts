@@ -6,14 +6,14 @@ export enum TooltipTriggerEvent {
   STRICT_HOVER = 'strict-hover',
 }
 
-interface CreateStoreParams {
+type CreateStoreParams = {
   defaultIsEnabled?: boolean;
-}
+};
 
-export interface TooltipStore {
+export type TooltipStore = {
   isEnabled: Accessor<boolean>;
   toggle: (overrideIsEnabled?: boolean) => void;
-}
+};
 
 const createStore = (params: CreateStoreParams = {}): TooltipStore => {
   const [isEnabled, setIsEnabled] = createSignal(params.defaultIsEnabled ?? false);

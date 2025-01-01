@@ -1,18 +1,18 @@
 import type { CommonDataType } from '$/types/generic';
 
-export interface ResponseError {
+export type ResponseError = {
   message: string;
   [key: string]: CommonDataType;
-}
+};
 
-export interface ResponseMeta {
+export type ResponseMeta = {
   total?: number;
   currentLastItemCount?: number;
   [key: string]: CommonDataType | undefined;
-}
+};
 
-export interface ResponseWrapper<TResponseData> {
+export type ResponseWrapper<TResponseData> = {
   data?: TResponseData;
   meta?: ResponseMeta;
   error?: ResponseError;
-}
+};

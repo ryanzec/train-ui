@@ -1,14 +1,13 @@
 import classnames from 'classnames';
 import { type JSX, splitProps } from 'solid-js';
 
-import Box from '$/components/box';
 import styles from '$/components/side-navgiation/side-navigation.module.css';
 import { type ToggleStoreInstance, toggleStoreUtils } from '$/stores/toggle';
 
-export interface SideNavigationProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type SideNavigationProps = JSX.HTMLAttributes<HTMLDivElement> & {
   headerItem: JSX.Element;
   toggleStore?: ToggleStoreInstance;
-}
+};
 
 const SideNavigation = (passedProps: SideNavigationProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['children', 'class', 'headerItem', 'toggleStore']);
@@ -22,10 +21,10 @@ const SideNavigation = (passedProps: SideNavigationProps) => {
       })}
       {...restOfProps}
     >
-      <Box class={styles.header} onClick={props.toggleStore.toggle}>
+      <button type="button" class={styles.header} onClick={props.toggleStore.toggle}>
         <div class={styles.headerIndicator} />
         {props.headerItem}
-      </Box>
+      </button>
       <div class={styles.items}>{props.children}</div>
     </div>
   );

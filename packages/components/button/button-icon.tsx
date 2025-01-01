@@ -5,12 +5,12 @@ import styles from '$/components/button/button.module.css';
 import { ButtonIconPosition } from '$/components/button/utils';
 import Icon from '$/components/icon';
 
-export interface ButtonIconProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type ButtonIconProps = JSX.HTMLAttributes<HTMLDivElement> & {
   position?: ButtonIconPosition;
   isLoading?: boolean;
   item: JSX.Element;
   isIconOnly?: boolean;
-}
+};
 
 const ButtonIcon = (passedProps: ButtonIconProps) => {
   const [props, restOfProps] = splitProps(

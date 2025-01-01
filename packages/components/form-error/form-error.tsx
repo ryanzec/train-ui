@@ -5,11 +5,11 @@ import { type JSX, createEffect, createSignal, mergeProps, splitProps } from 'so
 import Callout, { CalloutSentiment } from '$/components/callout';
 import styles from '$/components/form-error/form-error.module.css';
 
-export interface FormErrorProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type FormErrorProps = JSX.HTMLAttributes<HTMLDivElement> & {
   errorMessage?: string;
   offset?: number;
   behavior?: ScrollBehavior;
-}
+};
 
 const FormError = (passedProps: FormErrorProps) => {
   let formErrorRef: HTMLDivElement | undefined;

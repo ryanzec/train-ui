@@ -8,10 +8,11 @@ import type { DynamicRouteNavigation } from '../../stores/dynamic-routes';
 
 import ApplicationFrameNavigation from './application-frame-navigation';
 
-interface ApplicationFrameProps extends JSX.HTMLAttributes<HTMLDivElement>, CommonDataAttributes {
-  isLoading: boolean;
-  navigation: DynamicRouteNavigation;
-}
+type ApplicationFrameProps = JSX.HTMLAttributes<HTMLDivElement> &
+  CommonDataAttributes & {
+    isLoading: boolean;
+    navigation: DynamicRouteNavigation;
+  };
 
 const ApplicationFrame = (passedProps: ParentProps<ApplicationFrameProps>) => {
   const [props, restOfProps] = splitProps(passedProps, ['isLoading', 'navigation', 'class', 'children']);

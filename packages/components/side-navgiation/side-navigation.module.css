@@ -12,7 +12,7 @@
   padding-bottom: var(--space-2xs);
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
-  letter-spacing: var(--letter-height-base);
+  letter-spacing: var(--letter-spacing-base);
   text-transform: uppercase;
   font-weight: bold;
   cursor: pointer;

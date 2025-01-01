@@ -1,16 +1,16 @@
-export interface AuthenticationToken {
+export type AuthenticationToken = {
   authenticationToken: string;
-}
+};
 
-export interface User {
+export type User = {
   id: string;
   firstName: string;
   lastName: string;
   email: string;
   password: string;
-}
+};
 
-export interface Database {
+export type Database = {
   authenticationTokens: AuthenticationToken[];
   users: User[];
-}
+};

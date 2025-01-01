@@ -19,7 +19,7 @@
   font-weight: bold;
   font-size: var(--font-size-lg);
   line-height: var(--line-height-lg);
-  letter-spacing: var(--letter-height-lg);
+  letter-spacing: var(--letter-spacing-lg);
   padding: var(--space-xs) var(--space-sm);
   border-bottom: 1px solid var(--color-outline);
 }

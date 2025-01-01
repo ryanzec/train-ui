@@ -4,9 +4,9 @@ import { type JSX, type ParentProps, splitProps } from 'solid-js';
 import styles from '$/components/radio/radio.module.css';
 import type { FormInputValidationState } from '$/stores/form/utils';
 
-export interface RadioGroupProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type RadioGroupProps = JSX.HTMLAttributes<HTMLDivElement> & {
   validationState?: FormInputValidationState;
-}
+};
 
 // we exposed a plain input in the off chance we need an input not hooked up to react-hook-form directly (like the
 // auto complete component)

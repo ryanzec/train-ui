@@ -6,11 +6,11 @@ import iconStyles from '$/components/icon/icon.module.css';
 import styles from '$/components/label/label.module.css';
 import Loading from '$/components/loading';
 
-export interface LabelProps extends JSX.LabelHTMLAttributes<HTMLLabelElement> {
+export type LabelProps = JSX.LabelHTMLAttributes<HTMLLabelElement> & {
   isLoading?: boolean;
   postItem?: JSX.Element;
   iconSize?: IconSize;
-}
+};
 
 const Label = (passedProps: LabelProps) => {
   const [props, restOfProps] = splitProps(mergeProps({ isLoading: false }, passedProps), [

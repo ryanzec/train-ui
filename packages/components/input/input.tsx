@@ -4,7 +4,7 @@ import { type JSX, Show, createSignal, mergeProps, splitProps } from 'solid-js';
 import styles from '$/components/input/input.module.css';
 import { FormInputValidationState } from '$/stores/form/utils';
 
-export interface InputProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
+export type InputProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
   validationState?: FormInputValidationState;
   preItem?: JSX.Element;
   preItemIsInline?: boolean;
@@ -12,7 +12,7 @@ export interface InputProps extends JSX.InputHTMLAttributes<HTMLInputElement> {
   postItemIsClickable?: boolean;
   inputContainerClass?: string;
   includeReadonlyStyles?: false;
-}
+};
 
 const Input = (passedProps: InputProps) => {
   const [props, restOfProps] = splitProps(

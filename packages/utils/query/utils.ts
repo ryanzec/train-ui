@@ -25,13 +25,14 @@ type CachedData = Record<
   }
 >;
 type TrackedShouldFetch = Record<string, [Accessor<boolean>, Setter<boolean>]>;
-export interface QueryData {
+
+export type QueryData = {
   trackedMutators: TrackedMutators;
   trackedRefetchers: TrackedRefetchers;
   trackedResources: TrackedResources;
   cachedData: CachedData;
   trackedShouldFetch: TrackedShouldFetch;
-}
+};
 
 // global data trackers for query system
 const _queryData: QueryData = {
@@ -68,11 +69,11 @@ export type CreateMutationReturns<TMutateInput, TMutateResult> = {
   result: Accessor<TMutateResult | undefined>;
 };
 
-export interface CreateMutationOptions<TMutationInput, TMutationResult> {
+export type CreateMutationOptions<TMutationInput, TMutationResult> = {
   onSuccess?: (mutateResponse: TMutationResult) => Promise<void> | void;
   onMutate?: (mutateInput: TMutationInput) => Promise<void> | void;
   onError?: (mutateInput: TMutationInput, error: unknown) => Promise<boolean | void> | boolean | void;
-}
+};
 
 export type QueryCacheKey = [string] | [string, () => CommonDataType];
 
@@ -184,10 +185,10 @@ export const removeTrackedRefetcher = (queryData: QueryData, key: string) => {
   delete queryData.trackedRefetchers[key];
 };
 
-interface TriggerRefetcherOptions {
+type TriggerRefetcherOptions = {
   info?: unknown;
   secondaryKey?: () => CommonDataType;
-}
+};
 
 export const triggerRefetcher = async (queryData: QueryData, key: string, options: TriggerRefetcherOptions = {}) => {
   if (!queryData.trackedRefetchers[key]) {
@@ -326,10 +327,10 @@ export const getTrackedShouldFetch = (queryData: QueryData, key: string) => {
   return queryData.trackedShouldFetch[key];
 };
 
-export interface CreateTrackedQueryOptions {
+export type CreateTrackedQueryOptions = {
   cacheTime?: number;
   doInitialFetch?: boolean;
-}
+};
 
 const createTrackedQueryOptionDefaults: CreateTrackedQueryOptions = {
   cacheTime: 0,

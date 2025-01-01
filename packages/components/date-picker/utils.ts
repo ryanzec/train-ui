@@ -4,16 +4,16 @@ import { type Accessor, createSignal } from 'solid-js';
 import { WhichDate } from '$/components/date-picker/date-picker-input';
 import { dateTimeFormat } from '$/utils/date';
 
-export interface DatePickerInputDateStore {
+export type DatePickerInputDateStore = {
   date: Accessor<Date | undefined>;
   setDate: (date?: Date) => void;
   getFormattedDate: () => string;
-}
+};
 
-interface CreateDatePickerInputDateOptions {
+type CreateDatePickerInputDateOptions = {
   defaultDate?: Date;
   includeTime?: boolean;
-}
+};
 
 const createDatePickerInputDate = (options: CreateDatePickerInputDateOptions): DatePickerInputDateStore => {
   const [date, setDate] = createSignal<Date | undefined>(options.defaultDate);
@@ -39,17 +39,17 @@ const createDatePickerInputDate = (options: CreateDatePickerInputDateOptions): D
 
 export type DateFormValue = undefined | Array<Date | undefined>;
 
-export interface DatePickerInputValueStore {
+export type DatePickerInputValueStore = {
   startDate: Accessor<Date | undefined>;
   endDate: Accessor<Date | undefined>;
   setDate: (date?: Date, which?: WhichDate) => void;
   getFormValue: () => DateFormValue;
-}
+};
 
-interface createDatePickerInputValueOptions {
+type createDatePickerInputValueOptions = {
   defaultStartDate?: Date;
   defaultEndDate?: Date;
-}
+};
 
 const createDatePickerInputValue = (options: createDatePickerInputValueOptions = {}): DatePickerInputValueStore => {
   const [startDate, setStartDate] = createSignal<Date | undefined>(options.defaultStartDate);

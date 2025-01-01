@@ -4,13 +4,13 @@ import { type JSX, Show, mergeProps, splitProps } from 'solid-js';
 import styles from '$/components/callout/callout.module.css';
 import { CalloutSentiment, CalloutStrength } from '$/components/callout/utils';
 
-export interface CalloutProps extends JSX.HTMLAttributes<HTMLDivElement> {
+export type CalloutProps = JSX.HTMLAttributes<HTMLDivElement> & {
   sentiment?: CalloutSentiment;
   strength?: CalloutStrength;
   isCentered?: boolean;
   preItem?: JSX.Element;
   postItem?: JSX.Element;
-}
+};
 
 const Callout = (passedProps: CalloutProps) => {
   const [props, restOfProps] = splitProps(

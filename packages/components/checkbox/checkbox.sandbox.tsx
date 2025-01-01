@@ -38,9 +38,9 @@ export const Indeterminate = () => {
 };
 
 export const CheckedByDefault = () => {
-  interface FormData {
+  type FormData = {
     checkbox: string[];
-  }
+  };
   const formSchema = zodUtils.schemaForType<FormData>()(
     zod.object({
       checkbox: zod.string().array().min(1, 'Required'),

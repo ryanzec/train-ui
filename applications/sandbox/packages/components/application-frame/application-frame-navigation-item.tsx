@@ -5,9 +5,10 @@ import SideNavigation from '$/components/side-navgiation';
 
 import type { CommonDataAttributes } from '../../../../../packages/types/generic';
 
-interface ApplicationFrameNavigationItemProps extends JSX.HTMLAttributes<HTMLDivElement>, CommonDataAttributes {
-  path: string;
-}
+type ApplicationFrameNavigationItemProps = JSX.HTMLAttributes<HTMLDivElement> &
+  CommonDataAttributes & {
+    path: string;
+  };
 
 const ApplicationFrameNavigationItem = (passedProps: ParentProps<ApplicationFrameNavigationItemProps>) => {
   const [props, restOfProps] = splitProps(passedProps, ['path', 'class', 'children']);
