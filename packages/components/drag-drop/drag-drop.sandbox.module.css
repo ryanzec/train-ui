@@ -14,7 +14,7 @@
   width: 100%;
   background-color: var(--color-neutral-subtle2);
 
-  &:has([data-is-dropping="true"]) {
+  &:has([data-is-dropping="true"]):not(:has([data-is-dragging="true"])) {
     opacity: 0.3;
   }
 }
@@ -27,7 +27,8 @@
   color: var(--color-on-brand);
   width: 100%;
 
-  &:has([data-is-dragging="true"]) {
+  &[data-is-dragging="true"],
+  &[data-is-dropping="true"] {
     opacity: 0.3;
   }
 }

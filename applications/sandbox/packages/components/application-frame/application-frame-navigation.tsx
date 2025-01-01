@@ -5,9 +5,9 @@ import type { CommonDataAttributes } from '$/types/generic';
 import styles from '$sandbox/components/application-frame/application-frame.module.css';
 import type { DynamicRouteNavigation } from '$sandbox/stores/dynamic-routes';
 
-import Button from '../../../../../packages/components/button';
-import { ThemeName } from '../../../../../packages/utils/styles';
-import { applicationStore } from '../../stores/application-store';
+import Button from '$/components/button';
+import { ThemeName } from '$/utils/styles';
+import { applicationStore } from '$sandbox/stores/application-store';
 
 import ScrollArea from '$/components/scroll-area';
 import ApplicationFrameSubNavigation from './application-frame-sub-navigation';

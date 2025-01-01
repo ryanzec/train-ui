@@ -1,1 +1,1 @@
-export { toggleStoreUtils } from '$/stores/toggle/utils';
+export { toggleStoreUtils, type ToggleStoreInstance } from '$/stores/toggle/utils';

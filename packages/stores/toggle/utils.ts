@@ -4,7 +4,13 @@ interface CreateToggleProps {
   isToggled?: boolean;
 }
 
-const createToggle = (options: CreateToggleProps = {}) => {
+export interface ToggleStoreInstance {
+  isToggled: () => boolean;
+  setIsToggled: (value: boolean) => void;
+  toggle: () => void;
+}
+
+const createToggle = (options: CreateToggleProps = {}): ToggleStoreInstance => {
   const [isToggled, setIsToggled] = createSignal<boolean>(options.isToggled ?? false);
 
   const toggle = () => {

@@ -45,14 +45,13 @@ const Draggable = (props: DraggableProps) => {
         }),
         getDropEffect: () => 'move',
         onDragEnter: ({ self }) => {
-          // (self.element as HTMLElement).dataset.isDropping = 'true';
+          (self.element as HTMLElement).dataset.isDropping = 'true';
         },
         onDragLeave: ({ self }) => {
-          // (self.element as HTMLElement).removeAttribute('data-is-dropping');
+          (self.element as HTMLElement).removeAttribute('data-is-dropping');
         },
-        onDrop: (args) => {
-          // (self.element as HTMLElement).removeAttribute('data-is-dropping');
-          // props.onDropOn?.(args);
+        onDrop: ({ self }) => {
+          (self.element as HTMLElement).removeAttribute('data-is-dropping');
         },
       });
     }

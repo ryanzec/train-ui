@@ -1,8 +1,9 @@
 import classnames from 'classnames';
-import { type JSX, createSignal, mergeProps, splitProps } from 'solid-js';
+import { type JSX, splitProps } from 'solid-js';
 
 import Box from '$/components/box';
 import styles from '$/components/side-navgiation/side-navigation.module.css';
+import { type ToggleStoreInstance, toggleStoreUtils } from '$/stores/toggle';
 
 export enum SideNavigationState {
   COLLAPSED = 'collapsed',
@@ -11,31 +12,22 @@ export enum SideNavigationState {
 
 export interface SideNavigationProps extends JSX.HTMLAttributes<HTMLDivElement> {
   headerItem: JSX.Element;
-  defaultState?: SideNavigationState;
+  toggleStore?: ToggleStoreInstance;
 }
 
 const SideNavigation = (passedProps: SideNavigationProps) => {
-  const [props, restOfProps] = splitProps(mergeProps({ defaultState: SideNavigationState.COLLAPSED }, passedProps), [
-    'children',
-    'class',
-    'headerItem',
-    'defaultState',
-  ]);
+  const [props, restOfProps] = splitProps(passedProps, ['children', 'class', 'headerItem', 'toggleStore']);
 
-  const [isExpanded, setIsExpanded] = createSignal(props.defaultState === SideNavigationState.EXPANDED);
-
-  const toggleIsExpanded = () => {
-    setIsExpanded(!isExpanded());
-  };
+  props.toggleStore = props.toggleStore ?? toggleStoreUtils.createToggle();
 
   return (
     <div
       class={classnames(styles.sideNavigation, props.class, {
-        [styles.isCollapsed]: !isExpanded(),
+        [styles.isCollapsed]: !props.toggleStore.isToggled(),
       })}
       {...restOfProps}
     >
-      <Box class={styles.header} onClick={toggleIsExpanded}>
+      <Box class={styles.header} onClick={props.toggleStore.toggle}>
         <div class={styles.headerIndicator} />
         {props.headerItem}
       </Box>
