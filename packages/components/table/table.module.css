@@ -30,7 +30,8 @@
 }
 
 /* biome-ignore lint/suspicious/noEmptyBlock: just a placeholder */
-.table-row {}
+.table-row {
+}
 
 .table-row-is-selected td {
   background-color: var(--color-brand-subtle);

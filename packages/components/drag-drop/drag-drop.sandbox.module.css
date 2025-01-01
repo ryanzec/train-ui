@@ -1,0 +1,39 @@
+.lists-container {
+  display: flex;
+  gap: var(--space-sm);
+  height: 100%;
+  width: 100%;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+  padding: var(--space-sm);
+  height: 100%;
+  width: 100%;
+  background-color: var(--color-neutral-subtle2);
+
+  &:has([data-is-dropping="true"]) {
+    opacity: 0.3;
+  }
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  background-color: var(--color-brand);
+  padding: var(--space-xs);
+  color: var(--color-on-brand);
+  width: 100%;
+
+  &:has([data-is-dragging="true"]) {
+    opacity: 0.3;
+  }
+}
+
+.list-item-drag-handle {
+  display: inline-flex;
+  cursor: pointer;
+  margin-right: var(--space-2xs);
+}

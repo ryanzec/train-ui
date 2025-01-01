@@ -1,5 +1,4 @@
 .application-frame {
-
   height: 100vh;
   width: 100vw;
   display: flex;
@@ -32,4 +31,5 @@
 
 .main-content {
   padding: var(--space-base);
+  min-height: 100%;
 }
