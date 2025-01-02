@@ -1,7 +1,7 @@
 import { merge } from 'lodash';
 import { createMemo } from 'solid-js';
 
-import Button, { ButtonSentiment } from '$/components/button';
+import Button, { ButtonColor } from '$/components/button';
 import Combobox, { type ComboboxExtraData, type ComboboxOption, comboboxUtils } from '$/components/combobox';
 import styles from '$/components/date-picker/date-picker.module.css';
 import { clickOutsideDirective } from '$/directives/click-outside-directive';
@@ -145,7 +145,7 @@ const DatePickerMonthYearSelection = (passedProps: DatePickerMonthYearSelectionP
           />
         </div>
       </div>
-      <Button sentiment={ButtonSentiment.BRAND} onClick={props.toggleDisplay}>
+      <Button color={ButtonColor.BRAND} onClick={props.toggleDisplay}>
         Done
       </Button>
     </div>

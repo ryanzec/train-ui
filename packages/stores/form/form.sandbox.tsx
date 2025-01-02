@@ -16,7 +16,7 @@ import FormField from '$/components/form-field';
 import Input from '$/components/input';
 import Label from '$/components/label';
 import Radio from '$/components/radio';
-import SupportingText, { SupportingTextSentiment } from '$/components/supporting-text';
+import SupportingText, { SupportingTextColor } from '$/components/supporting-text';
 import Textarea from '$/components/textarea';
 import TimeInput, { timeInputUtils } from '$/components/time-input';
 import { formStoreUtils } from '$/stores/form';
@@ -366,7 +366,7 @@ export const Events = () => {
             <SupportingText
               data-id={dynamicDataId.VALIDATION_MESSAGE}
               supportingText={errors().title?.errors}
-              sentiment={SupportingTextSentiment.DANGER}
+              color={SupportingTextColor.DANGER}
             />
           </Show>
         </FormField>
@@ -425,7 +425,7 @@ export const ValidateOnChange = () => {
             <SupportingText
               data-id={dynamicDataId.VALIDATION_MESSAGE}
               supportingText={errors().title?.errors}
-              sentiment={SupportingTextSentiment.DANGER}
+              color={SupportingTextColor.DANGER}
             />
           </Show>
         </FormField>
@@ -469,7 +469,7 @@ export const NoValidateOnChange = () => {
             <SupportingText
               data-id={dynamicDataId.VALIDATION_MESSAGE}
               supportingText={errors().title?.errors}
-              sentiment={SupportingTextSentiment.DANGER}
+              color={SupportingTextColor.DANGER}
             />
           </Show>
         </FormField>
@@ -545,7 +545,7 @@ export const ArrayFields = () => {
                     <SupportingText
                       data-id={dynamicDataId.VALIDATION_MESSAGE}
                       supportingText={getArrayFieldError().partA?.errors}
-                      sentiment={SupportingTextSentiment.DANGER}
+                      color={SupportingTextColor.DANGER}
                     />
                   </Show>
                 </FormField>
@@ -564,7 +564,7 @@ export const ArrayFields = () => {
                     <SupportingText
                       data-id={dynamicDataId.VALIDATION_MESSAGE}
                       supportingText={getArrayFieldError().partB?.errors}
-                      sentiment={SupportingTextSentiment.DANGER}
+                      color={SupportingTextColor.DANGER}
                     />
                   </Show>
                 </FormField>
@@ -582,7 +582,7 @@ export const ArrayFields = () => {
         <SupportingText
           data-id={dynamicDataId.VALIDATION_MESSAGE}
           supportingText={errors().array?.errors}
-          sentiment={errors().array?.errors ? SupportingTextSentiment.DANGER : undefined}
+          color={errors().array?.errors ? SupportingTextColor.DANGER : undefined}
         />
         <div>
           <Button data-id="submit-button" type="submit">
@@ -667,7 +667,7 @@ export const NestedArrayFields = () => {
                     <SupportingText
                       data-id={dynamicDataId.VALIDATION_MESSAGE}
                       supportingText={getArrayFieldError().partA?.errors}
-                      sentiment={SupportingTextSentiment.DANGER}
+                      color={SupportingTextColor.DANGER}
                     />
                   </Show>
                 </FormField>
@@ -686,7 +686,7 @@ export const NestedArrayFields = () => {
                     <SupportingText
                       data-id={dynamicDataId.VALIDATION_MESSAGE}
                       supportingText={getArrayFieldError().partB?.errors}
-                      sentiment={SupportingTextSentiment.DANGER}
+                      color={SupportingTextColor.DANGER}
                     />
                   </Show>
                 </FormField>
@@ -724,7 +724,7 @@ export const NestedArrayFields = () => {
                               <SupportingText
                                 data-id={dynamicDataId.VALIDATION_MESSAGE}
                                 supportingText={getArrayFieldError2().partA?.errors}
-                                sentiment={SupportingTextSentiment.DANGER}
+                                color={SupportingTextColor.DANGER}
                               />
                             </Show>
                           </FormField>
@@ -743,7 +743,7 @@ export const NestedArrayFields = () => {
                               <SupportingText
                                 data-id={dynamicDataId.VALIDATION_MESSAGE}
                                 supportingText={getArrayFieldError2().partB?.errors}
-                                sentiment={SupportingTextSentiment.DANGER}
+                                color={SupportingTextColor.DANGER}
                               />
                             </Show>
                           </FormField>
@@ -762,7 +762,7 @@ export const NestedArrayFields = () => {
                               <SupportingText
                                 data-id={dynamicDataId.VALIDATION_MESSAGE}
                                 supportingText={getArrayFieldError2().partC?.errors}
-                                sentiment={SupportingTextSentiment.DANGER}
+                                color={SupportingTextColor.DANGER}
                               />
                             </Show>
                           </FormField>
@@ -781,7 +781,7 @@ export const NestedArrayFields = () => {
                               <SupportingText
                                 data-id={dynamicDataId.VALIDATION_MESSAGE}
                                 supportingText={getArrayFieldError2().partD?.errors}
-                                sentiment={SupportingTextSentiment.DANGER}
+                                color={SupportingTextColor.DANGER}
                               />
                             </Show>
                           </FormField>
@@ -800,7 +800,7 @@ export const NestedArrayFields = () => {
                               <SupportingText
                                 data-id={dynamicDataId.VALIDATION_MESSAGE}
                                 supportingText={getArrayFieldError2().partE?.errors}
-                                sentiment={SupportingTextSentiment.DANGER}
+                                color={SupportingTextColor.DANGER}
                               />
                             </Show>
                           </FormField>
@@ -819,7 +819,7 @@ export const NestedArrayFields = () => {
                               <SupportingText
                                 data-id={dynamicDataId.VALIDATION_MESSAGE}
                                 supportingText={getArrayFieldError2().partF?.errors}
-                                sentiment={SupportingTextSentiment.DANGER}
+                                color={SupportingTextColor.DANGER}
                               />
                             </Show>
                           </FormField>
@@ -838,7 +838,7 @@ export const NestedArrayFields = () => {
                               <SupportingText
                                 data-id={dynamicDataId.VALIDATION_MESSAGE}
                                 supportingText={getArrayFieldError2().partG?.errors}
-                                sentiment={SupportingTextSentiment.DANGER}
+                                color={SupportingTextColor.DANGER}
                               />
                             </Show>
                           </FormField>
@@ -857,7 +857,7 @@ export const NestedArrayFields = () => {
                               <SupportingText
                                 data-id={dynamicDataId.VALIDATION_MESSAGE}
                                 supportingText={getArrayFieldError2().partH?.errors}
-                                sentiment={SupportingTextSentiment.DANGER}
+                                color={SupportingTextColor.DANGER}
                               />
                             </Show>
                           </FormField>
@@ -876,7 +876,7 @@ export const NestedArrayFields = () => {
                               <SupportingText
                                 data-id={dynamicDataId.VALIDATION_MESSAGE}
                                 supportingText={getArrayFieldError2().partI?.errors}
-                                sentiment={SupportingTextSentiment.DANGER}
+                                color={SupportingTextColor.DANGER}
                               />
                             </Show>
                           </FormField>
@@ -895,7 +895,7 @@ export const NestedArrayFields = () => {
                               <SupportingText
                                 data-id={dynamicDataId.VALIDATION_MESSAGE}
                                 supportingText={getArrayFieldError2().partJ?.errors}
-                                sentiment={SupportingTextSentiment.DANGER}
+                                color={SupportingTextColor.DANGER}
                               />
                             </Show>
                           </FormField>
@@ -925,7 +925,7 @@ export const NestedArrayFields = () => {
         <SupportingText
           data-id={dynamicDataId.VALIDATION_MESSAGE}
           supportingText={errors().array?.errors}
-          sentiment={errors().array?.errors ? SupportingTextSentiment.DANGER : undefined}
+          color={errors().array?.errors ? SupportingTextColor.DANGER : undefined}
         />
         <div>
           <Button data-id="submit-button" type="submit">
@@ -1165,7 +1165,7 @@ export const DynamicFormElements = () => {
             <SupportingText
               data-id={dynamicDataId.VALIDATION_MESSAGE}
               supportingText={formStore.errors().title?.errors}
-              sentiment={SupportingTextSentiment.DANGER}
+              color={SupportingTextColor.DANGER}
             />
           </Show>
         </FormField>
@@ -1294,7 +1294,7 @@ export const DynamicFormElements = () => {
                                   <SupportingText
                                     data-id={dynamicDataId.VALIDATION_MESSAGE}
                                     supportingText={getArrayFieldErrors().partA?.errors}
-                                    sentiment={SupportingTextSentiment.DANGER}
+                                    color={SupportingTextColor.DANGER}
                                   />
                                 </Show>
                               </FormField>
@@ -1314,7 +1314,7 @@ export const DynamicFormElements = () => {
                                   <SupportingText
                                     data-id={dynamicDataId.VALIDATION_MESSAGE}
                                     supportingText={getArrayFieldErrors().partB?.errors}
-                                    sentiment={SupportingTextSentiment.DANGER}
+                                    color={SupportingTextColor.DANGER}
                                   />
                                 </Show>
                               </FormField>
@@ -1366,7 +1366,7 @@ export const DynamicFormElements = () => {
                   <SupportingText
                     data-id={dynamicDataId.VALIDATION_MESSAGE}
                     supportingText={formStore.errors()[input.name]?.errors}
-                    sentiment={formStore.errors()[input.name]?.errors ? SupportingTextSentiment.DANGER : undefined}
+                    color={formStore.errors()[input.name]?.errors ? SupportingTextColor.DANGER : undefined}
                   />
                 </FormField>
               );

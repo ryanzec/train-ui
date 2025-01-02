@@ -1,4 +1,4 @@
-export enum SupportingTextSentiment {
+export enum SupportingTextColor {
   NEUTRAL = 'neutral',
   DANGER = 'danger',
 }

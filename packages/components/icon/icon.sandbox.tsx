@@ -1,29 +1,29 @@
-import Icon, { IconSentiment, IconSize } from '$/components/icon';
+import Icon, { IconColor, IconSize } from '$/components/icon';
 
 export default {
   title: 'Components/Icon',
 };
 
-export const Sentiment = () => {
+export const Colors = () => {
   return (
     <>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.NEUTRAL} />
+        <Icon icon="refresh" color={IconColor.NEUTRAL} />
       </div>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.BRAND} />
+        <Icon icon="refresh" color={IconColor.BRAND} />
       </div>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.SUCCESS} />
+        <Icon icon="refresh" color={IconColor.SUCCESS} />
       </div>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.INFO} />
+        <Icon icon="refresh" color={IconColor.INFO} />
       </div>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.WARNING} />
+        <Icon icon="refresh" color={IconColor.WARNING} />
       </div>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.DANGER} />
+        <Icon icon="refresh" color={IconColor.DANGER} />
       </div>
     </>
   );
@@ -33,22 +33,22 @@ export const Sizes = () => {
   return (
     <>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.NEUTRAL} size={IconSize.EXTRA_SMALL} />
+        <Icon icon="refresh" color={IconColor.NEUTRAL} size={IconSize.EXTRA_SMALL} />
       </div>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.BRAND} size={IconSize.SMALL} />
+        <Icon icon="refresh" color={IconColor.BRAND} size={IconSize.SMALL} />
       </div>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.SUCCESS} size={IconSize.BASE} />
+        <Icon icon="refresh" color={IconColor.SUCCESS} size={IconSize.BASE} />
       </div>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.INFO} size={IconSize.LARGE} />
+        <Icon icon="refresh" color={IconColor.INFO} size={IconSize.LARGE} />
       </div>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.WARNING} size={IconSize.EXTRA_LARGE} />
+        <Icon icon="refresh" color={IconColor.WARNING} size={IconSize.EXTRA_LARGE} />
       </div>
       <div>
-        <Icon icon="refresh" sentiment={IconSentiment.DANGER} size={IconSize.EXTRA_LARGE2} />
+        <Icon icon="refresh" color={IconColor.DANGER} size={IconSize.EXTRA_LARGE2} />
       </div>
     </>
   );

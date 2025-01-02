@@ -1,4 +1,4 @@
-export enum CalloutSentiment {
+export enum CalloutColor {
   NEUTRAL = 'neutral',
   BRAND = 'brand',
   SUCCESS = 'success',
@@ -7,7 +7,7 @@ export enum CalloutSentiment {
   DANGER = 'danger',
 }
 
-export enum CalloutStrength {
+export enum CalloutVariant {
   WEAK = 'weak',
   STRONG = 'strong',
 }

@@ -1,4 +1,4 @@
-import Button, { ButtonVariant, ButtonSentiment } from '$/components/button';
+import Button, { ButtonVariant, ButtonColor } from '$/components/button';
 import Dialog from '$/components/dialog/dialog';
 import { dialogUtils } from '$/components/dialog/utils';
 
@@ -21,7 +21,7 @@ export const Default = () => {
             <Button variant={ButtonVariant.GHOST} onClick={() => dialogStore.closeDialog()}>
               Close
             </Button>
-            <Button sentiment={ButtonSentiment.BRAND} onClick={() => alert('test')}>
+            <Button color={ButtonColor.BRAND} onClick={() => alert('test')}>
               Primary
             </Button>
           </Button.Group>
@@ -49,7 +49,7 @@ export const CloseOnClickOverlay = () => {
             <Button variant={ButtonVariant.GHOST} onClick={() => dialogStore.closeDialog()}>
               Close
             </Button>
-            <Button sentiment={ButtonSentiment.BRAND} onClick={() => alert('test')}>
+            <Button color={ButtonColor.BRAND} onClick={() => alert('test')}>
               Primary
             </Button>
           </Button.Group>

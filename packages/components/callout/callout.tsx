@@ -2,11 +2,11 @@ import classnames from 'classnames';
 import { type JSX, Show, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/callout/callout.module.css';
-import { CalloutSentiment, CalloutStrength } from '$/components/callout/utils';
+import { CalloutColor, CalloutVariant } from '$/components/callout/utils';
 
 export type CalloutProps = JSX.HTMLAttributes<HTMLDivElement> & {
-  sentiment?: CalloutSentiment;
-  strength?: CalloutStrength;
+  color?: CalloutColor;
+  variant?: CalloutVariant;
   isCentered?: boolean;
   preItem?: JSX.Element;
   postItem?: JSX.Element;
@@ -16,31 +16,31 @@ const Callout = (passedProps: CalloutProps) => {
   const [props, restOfProps] = splitProps(
     mergeProps(
       {
-        sentiment: CalloutSentiment.BRAND,
-        strength: CalloutStrength.WEAK,
+        color: CalloutColor.BRAND,
+        variant: CalloutVariant.WEAK,
         isCentered: true,
       },
       passedProps,
     ),
-    ['sentiment', 'strength', 'class', 'children', 'isCentered', 'preItem', 'postItem'],
+    ['color', 'variant', 'class', 'children', 'isCentered', 'preItem', 'postItem'],
   );
-  const isStrong = props.strength === CalloutStrength.STRONG;
+  const isStrong = props.variant === CalloutVariant.STRONG;
 
   return (
     <div
       class={classnames(props.class, styles.callout, {
-        [styles.neutral]: props.sentiment === CalloutSentiment.NEUTRAL,
-        [styles.neutralStrong]: props.sentiment === CalloutSentiment.NEUTRAL && isStrong,
-        [styles.brand]: props.sentiment === CalloutSentiment.BRAND,
-        [styles.brandStrong]: props.sentiment === CalloutSentiment.BRAND && isStrong,
-        [styles.success]: props.sentiment === CalloutSentiment.SUCCESS,
-        [styles.successStrong]: props.sentiment === CalloutSentiment.SUCCESS && isStrong,
-        [styles.info]: props.sentiment === CalloutSentiment.INFO,
-        [styles.infoStrong]: props.sentiment === CalloutSentiment.INFO && isStrong,
-        [styles.warning]: props.sentiment === CalloutSentiment.WARNING,
-        [styles.warningStrong]: props.sentiment === CalloutSentiment.WARNING && isStrong,
-        [styles.danger]: props.sentiment === CalloutSentiment.DANGER,
-        [styles.dangerStrong]: props.sentiment === CalloutSentiment.DANGER && isStrong,
+        [styles.neutral]: props.color === CalloutColor.NEUTRAL,
+        [styles.neutralStrong]: props.color === CalloutColor.NEUTRAL && isStrong,
+        [styles.brand]: props.color === CalloutColor.BRAND,
+        [styles.brandStrong]: props.color === CalloutColor.BRAND && isStrong,
+        [styles.success]: props.color === CalloutColor.SUCCESS,
+        [styles.successStrong]: props.color === CalloutColor.SUCCESS && isStrong,
+        [styles.info]: props.color === CalloutColor.INFO,
+        [styles.infoStrong]: props.color === CalloutColor.INFO && isStrong,
+        [styles.warning]: props.color === CalloutColor.WARNING,
+        [styles.warningStrong]: props.color === CalloutColor.WARNING && isStrong,
+        [styles.danger]: props.color === CalloutColor.DANGER,
+        [styles.dangerStrong]: props.color === CalloutColor.DANGER && isStrong,
       })}
       {...restOfProps}
     >

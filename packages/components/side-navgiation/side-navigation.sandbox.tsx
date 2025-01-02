@@ -14,7 +14,7 @@ export const Expanded = () => {
         <SideNavigation.Item>DropDown</SideNavigation.Item>
         <SideNavigation.Item isActive>IconButton</SideNavigation.Item>
         <SideNavigation.Item>Loading</SideNavigation.Item>
-        <SideNavigation.Item>Sentiment</SideNavigation.Item>
+        <SideNavigation.Item>Color</SideNavigation.Item>
         <SideNavigation.Item>Variant</SideNavigation.Item>
       </SideNavigation>
     </div>
@@ -30,7 +30,7 @@ export const Collapsed = () => {
         <SideNavigation.Item>DropDown</SideNavigation.Item>
         <SideNavigation.Item isActive>IconButton</SideNavigation.Item>
         <SideNavigation.Item>Loading</SideNavigation.Item>
-        <SideNavigation.Item>Sentiment</SideNavigation.Item>
+        <SideNavigation.Item>Color</SideNavigation.Item>
         <SideNavigation.Item>Variant</SideNavigation.Item>
       </SideNavigation>
     </div>

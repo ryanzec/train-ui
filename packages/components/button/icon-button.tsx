@@ -2,14 +2,14 @@ import classnames from 'classnames';
 import { type JSX, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/button/button.module.css';
-import { ButtonSentiment, ButtonVariant } from '$/components/button/utils';
+import { ButtonColor, ButtonVariant } from '$/components/button/utils';
 import Icon from '$/components/icon';
 import type { CommonDataAttributes } from '$/types/generic';
 
 export type IconButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> &
   CommonDataAttributes & {
     variant?: ButtonVariant;
-    sentiment?: ButtonSentiment;
+    color?: ButtonColor;
     isLoading?: boolean;
     icon: string;
   };
@@ -20,11 +20,11 @@ const IconButton = (passedProps: IconButtonProps) => {
       {
         variant: ButtonVariant.TEXT,
         isLoading: false,
-        sentiment: ButtonSentiment.NEUTRAL,
+        color: ButtonColor.NEUTRAL,
       },
       passedProps,
     ),
-    ['variant', 'sentiment', 'isLoading', 'icon', 'class', 'disabled'],
+    ['variant', 'color', 'isLoading', 'icon', 'class', 'disabled'],
   );
   const dataId = () => {
     return `icon-button${props.isLoading ? ' loading' : ''}`;
@@ -39,12 +39,12 @@ const IconButton = (passedProps: IconButtonProps) => {
         [styles.outlined]: props.variant === ButtonVariant.OUTLINED,
         [styles.text]: props.variant === ButtonVariant.TEXT,
         [styles.ghost]: props.variant === ButtonVariant.GHOST,
-        [styles.neutral]: props.sentiment === ButtonSentiment.NEUTRAL,
-        [styles.brand]: props.sentiment === ButtonSentiment.BRAND,
-        [styles.success]: props.sentiment === ButtonSentiment.SUCCESS,
-        [styles.info]: props.sentiment === ButtonSentiment.INFO,
-        [styles.warning]: props.sentiment === ButtonSentiment.WARNING,
-        [styles.danger]: props.sentiment === ButtonSentiment.DANGER,
+        [styles.neutral]: props.color === ButtonColor.NEUTRAL,
+        [styles.brand]: props.color === ButtonColor.BRAND,
+        [styles.success]: props.color === ButtonColor.SUCCESS,
+        [styles.info]: props.color === ButtonColor.INFO,
+        [styles.warning]: props.color === ButtonColor.WARNING,
+        [styles.danger]: props.color === ButtonColor.DANGER,
         [styles.isLoading]: props.isLoading,
       })}
       {...restOfProps}

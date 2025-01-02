@@ -1,4 +1,4 @@
-import Button, { ButtonSentiment, ButtonVariant } from '$/components/button';
+import Button, { ButtonColor, ButtonVariant } from '$/components/button';
 import Card, { CardFooterAlignment } from '$/components/card';
 import styles from '$/components/dialog/dialog.sandbox.module.css';
 import Icon, { IconSize } from '$/components/icon';
@@ -24,7 +24,7 @@ export const Default = () => {
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}
-            sentiment={ButtonSentiment.NEUTRAL}
+            color={ButtonColor.NEUTRAL}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
             preItem={<Icon icon="close" />}
@@ -40,7 +40,7 @@ export const Default = () => {
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}
-            sentiment={ButtonSentiment.NEUTRAL}
+            color={ButtonColor.NEUTRAL}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
             preItem={<Icon icon="close" />}
@@ -48,8 +48,8 @@ export const Default = () => {
         }
         footerElement={
           <Button.Group>
-            <Button sentiment={ButtonSentiment.BRAND}>Action 1</Button>
-            <Button sentiment={ButtonSentiment.NEUTRAL} variant={ButtonVariant.WEAK}>
+            <Button color={ButtonColor.BRAND}>Action 1</Button>
+            <Button color={ButtonColor.NEUTRAL} variant={ButtonVariant.WEAK}>
               Action 2
             </Button>
           </Button.Group>
@@ -64,7 +64,7 @@ export const Default = () => {
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}
-            sentiment={ButtonSentiment.NEUTRAL}
+            color={ButtonColor.NEUTRAL}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
             preItem={<Icon icon="close" />}
@@ -73,8 +73,8 @@ export const Default = () => {
         footerAlignment={CardFooterAlignment.LEFT}
         footerElement={
           <Button.Group>
-            <Button sentiment={ButtonSentiment.BRAND}>Action 1</Button>
-            <Button sentiment={ButtonSentiment.NEUTRAL} variant={ButtonVariant.WEAK}>
+            <Button color={ButtonColor.BRAND}>Action 1</Button>
+            <Button color={ButtonColor.NEUTRAL} variant={ButtonVariant.WEAK}>
               Action 2
             </Button>
           </Button.Group>
@@ -89,7 +89,7 @@ export const Default = () => {
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}
-            sentiment={ButtonSentiment.NEUTRAL}
+            color={ButtonColor.NEUTRAL}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
             preItem={<Icon icon="close" />}

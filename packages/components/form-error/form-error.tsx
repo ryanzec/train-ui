@@ -2,10 +2,10 @@ import classnames from 'classnames';
 import getScrollParent from 'scrollparent';
 import { type JSX, createEffect, createSignal, mergeProps, splitProps } from 'solid-js';
 
-import Callout, { CalloutSentiment } from '$/components/callout';
+import Callout, { CalloutColor, type CalloutProps, CalloutVariant } from '$/components/callout';
 import styles from '$/components/form-error/form-error.module.css';
 
-export type FormErrorProps = JSX.HTMLAttributes<HTMLDivElement> & {
+export type FormErrorProps = CalloutProps & {
   errorMessage?: string;
   offset?: number;
   behavior?: ScrollBehavior;
@@ -16,7 +16,6 @@ const FormError = (passedProps: FormErrorProps) => {
 
   const [props, restOfProps] = splitProps(mergeProps({ offset: 10, behavior: 'auto' as ScrollBehavior }, passedProps), [
     'errorMessage',
-    'class',
     'offset',
     'behavior',
   ]);
@@ -51,10 +50,10 @@ const FormError = (passedProps: FormErrorProps) => {
       ref={formErrorRef}
       // we use css to hide the element instead of <Show /> because we need the element to be present in the dom
       // for the ref to work properly
-      class={classnames(styles.formError, props.class, {
+      class={classnames(styles.formError, {
         [styles.formErrorHidden]: !props.errorMessage,
       })}
-      sentiment={CalloutSentiment.DANGER}
+      color={CalloutColor.DANGER}
       {...restOfProps}
     >
       {props.errorMessage}

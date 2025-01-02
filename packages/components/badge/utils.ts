@@ -1,4 +1,4 @@
-export enum BadgeSentiment {
+export enum BadgeColor {
   NEUTRAL = 'neutral',
   BRAND = 'brand',
   SUCCESS = 'success',
@@ -7,7 +7,7 @@ export enum BadgeSentiment {
   DANGER = 'danger',
 }
 
-export enum BadgeStrength {
+export enum BadgeVariant {
   WEAK = 'weak',
   STRONG = 'strong',
 }

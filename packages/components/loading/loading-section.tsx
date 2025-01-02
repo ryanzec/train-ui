@@ -1,10 +1,10 @@
 import { type ParentProps, splitProps } from 'solid-js';
 
-import Callout, { type CalloutProps, CalloutSentiment, CalloutStrength } from '$/components/callout';
-import { IconSentiment, IconSize } from '$/components/icon';
+import Callout, { type CalloutProps, CalloutColor, CalloutVariant } from '$/components/callout';
+import { IconColor, IconSize } from '$/components/icon';
 import Loading from '$/components/loading/loading';
 import Overlay from '$/components/overlay';
-import { OverlayStrength } from '$/components/overlay/utils';
+import { OverlayVariant } from '$/components/overlay/utils';
 
 export type LoadingSectionProps = CalloutProps;
 
@@ -13,12 +13,12 @@ const LoadingSection = (passedProps: LoadingSectionProps) => {
 
   return (
     <div>
-      <Overlay.Local strength={OverlayStrength.WEAK} />
+      <Overlay.Local variant={OverlayVariant.WEAK} />
       <Overlay.ContentLocal>
         <Callout
-          sentiment={CalloutSentiment.INFO}
-          strength={CalloutStrength.STRONG}
-          preItem={<Loading iconSize={IconSize.BASE} iconSentiment={IconSentiment.INHERIT} />}
+          color={CalloutColor.INFO}
+          variant={CalloutVariant.STRONG}
+          preItem={<Loading iconSize={IconSize.BASE} iconColor={IconColor.INHERIT} />}
           {...restOfProps}
         >
           {props.children}

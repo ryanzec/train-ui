@@ -2,7 +2,7 @@ import { produce } from 'immer';
 import { For, type JSX, Show, createSignal, onCleanup, onMount } from 'solid-js';
 
 import Button from '$/components/button/button';
-import Callout, { CalloutSentiment, CalloutStrength } from '$/components/callout';
+import Callout, { CalloutColor, CalloutVariant } from '$/components/callout';
 import Input from '$/components/input';
 import { HttpMethod, httpUtils } from '$/utils/http';
 import {
@@ -362,11 +362,7 @@ export const MutationQuery = () => {
           Pull From API
         </Button>
         <Show when={lastCreateFailed()}>
-          <Callout
-            data-id="create-failed-indicator"
-            sentiment={CalloutSentiment.DANGER}
-            strength={CalloutStrength.STRONG}
-          >
+          <Callout data-id="create-failed-indicator" color={CalloutColor.DANGER} variant={CalloutVariant.STRONG}>
             Last create request failed
           </Callout>{' '}
         </Show>
@@ -432,11 +428,7 @@ export const MutationQueryOptimistic = () => {
           Pull From API
         </Button>
         <Show when={lastCreateFailed()}>
-          <Callout
-            data-id="create-failed-indicator"
-            sentiment={CalloutSentiment.DANGER}
-            strength={CalloutStrength.STRONG}
-          >
+          <Callout data-id="create-failed-indicator" color={CalloutColor.DANGER} variant={CalloutVariant.STRONG}>
             Last create request failed
           </Callout>{' '}
         </Show>

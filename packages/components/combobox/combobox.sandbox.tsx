@@ -14,7 +14,7 @@ import styles from '$/components/combobox/combobox.module.css';
 import FormField from '$/components/form-field';
 import Label from '$/components/label';
 import List from '$/components/list';
-import SupportingText, { SupportingTextSentiment } from '$/components/supporting-text';
+import SupportingText, { SupportingTextColor } from '$/components/supporting-text';
 import { FormInputValidationState, formStoreUtils } from '$/stores/form';
 import { zodUtils } from '$/utils/zod';
 
@@ -119,9 +119,7 @@ const BasicExample = (props: ExampleProps) => {
         />
         <SupportingText
           supportingText={props.supportingText}
-          sentiment={
-            props.validationState === FormInputValidationState.INVALID ? SupportingTextSentiment.DANGER : undefined
-          }
+          color={props.validationState === FormInputValidationState.INVALID ? SupportingTextColor.DANGER : undefined}
         />
       </FormField>
       <Button data-id="reset-selected-button" onClick={onResetSelected}>
@@ -191,9 +189,7 @@ const MultiSelectExample = (props: ExampleProps) => {
         />
         <SupportingText
           supportingText={props.supportingText}
-          sentiment={
-            props.validationState === FormInputValidationState.INVALID ? SupportingTextSentiment.DANGER : undefined
-          }
+          color={props.validationState === FormInputValidationState.INVALID ? SupportingTextColor.DANGER : undefined}
         />
       </FormField>
       <Button data-id="reset-selected-button" onClick={onResetSelected}>

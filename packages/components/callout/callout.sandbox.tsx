@@ -1,6 +1,5 @@
 import Button from '$/components/button';
-import Callout, { CalloutSentiment, CalloutStrength } from '$/components/callout';
-import calloutStyles from '$/components/callout/callout.module.css';
+import Callout, { CalloutColor, CalloutVariant } from '$/components/callout';
 import Icon from '$/components/icon';
 import SandboxExamplesContainer from '$sandbox/components/sandbox-examples-container/sandbox-examples-container';
 
@@ -8,48 +7,48 @@ export default {
   title: 'Components/Callout',
 };
 
-export const Strength = () => {
+export const Variant = () => {
   return (
     <div>
       <h2>Weak</h2>
       <SandboxExamplesContainer>
-        <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.NEUTRAL}>
+        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.NEUTRAL}>
           Primary
         </Callout>
-        <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.BRAND}>
+        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.BRAND}>
           Primary
         </Callout>
-        <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.SUCCESS}>
+        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.SUCCESS}>
           Success
         </Callout>
-        <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.INFO}>
+        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.INFO}>
           Info
         </Callout>
-        <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.WARNING}>
+        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.WARNING}>
           Warning
         </Callout>
-        <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.DANGER}>
+        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.DANGER}>
           Danger
         </Callout>
       </SandboxExamplesContainer>
       <h2>Strong</h2>
       <SandboxExamplesContainer>
-        <Callout strength={CalloutStrength.STRONG} sentiment={CalloutSentiment.NEUTRAL}>
+        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.NEUTRAL}>
           Primary
         </Callout>
-        <Callout strength={CalloutStrength.STRONG} sentiment={CalloutSentiment.BRAND}>
+        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.BRAND}>
           Primary
         </Callout>
-        <Callout strength={CalloutStrength.STRONG} sentiment={CalloutSentiment.SUCCESS}>
+        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.SUCCESS}>
           Success
         </Callout>
-        <Callout strength={CalloutStrength.STRONG} sentiment={CalloutSentiment.INFO}>
+        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.INFO}>
           Info
         </Callout>
-        <Callout strength={CalloutStrength.STRONG} sentiment={CalloutSentiment.WARNING}>
+        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.WARNING}>
           Warning
         </Callout>
-        <Callout strength={CalloutStrength.STRONG} sentiment={CalloutSentiment.DANGER}>
+        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.DANGER}>
           Danger
         </Callout>
       </SandboxExamplesContainer>
@@ -62,107 +61,91 @@ export const PrePostItems = () => {
     <div>
       <h2>Pre</h2>
       <SandboxExamplesContainer>
-        <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.NEUTRAL} preItem={<Icon icon="check" />}>
+        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.NEUTRAL} preItem={<Icon icon="check" />}>
           Primary
         </Callout>
-        <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.BRAND} preItem={<Button>Button</Button>}>
+        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.BRAND} preItem={<Button>Button</Button>}>
           Primary
         </Callout>
-        <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.SUCCESS} preItem={<Icon icon="check" />}>
+        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.SUCCESS} preItem={<Icon icon="check" />}>
           Success
         </Callout>
-        <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.INFO} preItem={<Icon icon="check" />}>
+        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.INFO} preItem={<Icon icon="check" />}>
           Info
         </Callout>
-        <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.WARNING} preItem={<Icon icon="check" />}>
+        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.WARNING} preItem={<Icon icon="check" />}>
           Warning
         </Callout>
-        <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.DANGER} preItem={<Icon icon="check" />}>
+        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.DANGER} preItem={<Icon icon="check" />}>
           Danger
         </Callout>
       </SandboxExamplesContainer>
       <h2>Post</h2>
       <SandboxExamplesContainer>
-        <Callout
-          strength={CalloutStrength.STRONG}
-          sentiment={CalloutSentiment.NEUTRAL}
-          postItem={<Icon icon="check" />}
-        >
+        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.NEUTRAL} postItem={<Icon icon="check" />}>
           Primary
         </Callout>
-        <Callout
-          strength={CalloutStrength.STRONG}
-          sentiment={CalloutSentiment.BRAND}
-          postItem={<Button>Button</Button>}
-        >
+        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.BRAND} postItem={<Button>Button</Button>}>
           Primary
         </Callout>
-        <Callout
-          strength={CalloutStrength.STRONG}
-          sentiment={CalloutSentiment.SUCCESS}
-          postItem={<Icon icon="check" />}
-        >
+        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.SUCCESS} postItem={<Icon icon="check" />}>
           Success
         </Callout>
-        <Callout strength={CalloutStrength.STRONG} sentiment={CalloutSentiment.INFO} postItem={<Icon icon="check" />}>
+        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.INFO} postItem={<Icon icon="check" />}>
           Info
         </Callout>
-        <Callout
-          strength={CalloutStrength.STRONG}
-          sentiment={CalloutSentiment.WARNING}
-          postItem={<Icon icon="check" />}
-        >
+        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.WARNING} postItem={<Icon icon="check" />}>
           Warning
         </Callout>
-        <Callout strength={CalloutStrength.STRONG} sentiment={CalloutSentiment.DANGER} postItem={<Icon icon="check" />}>
+        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.DANGER} postItem={<Icon icon="check" />}>
           Danger
         </Callout>
       </SandboxExamplesContainer>
       <h2>Both</h2>
       <SandboxExamplesContainer>
         <Callout
-          strength={CalloutStrength.STRONG}
-          sentiment={CalloutSentiment.NEUTRAL}
+          variant={CalloutVariant.STRONG}
+          color={CalloutColor.NEUTRAL}
           preItem={<Icon icon="check" />}
           postItem={<Icon icon="check" />}
         >
           Primary
         </Callout>
         <Callout
-          strength={CalloutStrength.STRONG}
-          sentiment={CalloutSentiment.BRAND}
+          variant={CalloutVariant.STRONG}
+          color={CalloutColor.BRAND}
           preItem={<Button>Button</Button>}
           postItem={<Button>Button</Button>}
         >
           Primary
         </Callout>
         <Callout
-          strength={CalloutStrength.STRONG}
-          sentiment={CalloutSentiment.SUCCESS}
+          variant={CalloutVariant.STRONG}
+          color={CalloutColor.SUCCESS}
           preItem={<Icon icon="check" />}
           postItem={<Icon icon="check" />}
         >
           Success
         </Callout>
         <Callout
-          strength={CalloutStrength.STRONG}
-          sentiment={CalloutSentiment.INFO}
+          variant={CalloutVariant.STRONG}
+          color={CalloutColor.INFO}
           preItem={<Icon icon="check" />}
           postItem={<Icon icon="check" />}
         >
           Info
         </Callout>
         <Callout
-          strength={CalloutStrength.STRONG}
-          sentiment={CalloutSentiment.WARNING}
+          variant={CalloutVariant.STRONG}
+          color={CalloutColor.WARNING}
           preItem={<Icon icon="check" />}
           postItem={<Icon icon="check" />}
         >
           Warning
         </Callout>
         <Callout
-          strength={CalloutStrength.STRONG}
-          sentiment={CalloutSentiment.DANGER}
+          variant={CalloutVariant.STRONG}
+          color={CalloutColor.DANGER}
           preItem={<Icon icon="check" />}
           postItem={<Icon icon="check" />}
         >

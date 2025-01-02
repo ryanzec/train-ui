@@ -15,7 +15,7 @@ export enum IconSize {
   EXTRA_LARGE2 = 'extra-large2',
 }
 
-export enum IconSentiment {
+export enum IconColor {
   NONE = 'none',
   NEUTRAL = 'neutral',
   BRAND = 'brand',

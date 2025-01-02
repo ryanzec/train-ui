@@ -1,9 +1,9 @@
 import Badge, { type BadgeProps } from '$/components/badge/badge';
 
 export {
-  BadgeSentiment,
+  BadgeColor,
   BadgeSize,
-  BadgeStrength,
+  BadgeVariant,
 } from '$/components/badge/utils';
 
 export type { BadgeProps };

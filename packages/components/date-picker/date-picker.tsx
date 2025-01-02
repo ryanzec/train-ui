@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import dayjs, { type Dayjs } from 'dayjs';
 import { Index, type JSX, Show, createMemo, createSignal, mergeProps, splitProps } from 'solid-js';
 
-import Button, { ButtonSentiment, ButtonVariant } from '$/components/button';
+import Button, { ButtonColor, ButtonVariant } from '$/components/button';
 import DatePickerMonthYearSelection from '$/components/date-picker/date-picker-month-year-selection';
 import styles from '$/components/date-picker/date-picker.module.css';
 import Icon from '$/components/icon';
@@ -258,7 +258,7 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
             Clear
           </Button>
           <Show when={props.onDone}>
-            <Button variant={ButtonVariant.FILLED} sentiment={ButtonSentiment.BRAND} onClick={props.onDone}>
+            <Button variant={ButtonVariant.FILLED} color={ButtonColor.BRAND} onClick={props.onDone}>
               Done
             </Button>
           </Show>

@@ -1,4 +1,4 @@
-import Button, { ButtonSentiment } from '$/components/button';
+import Button, { ButtonColor } from '$/components/button';
 import Peek, { peekComponentUtils } from '$/components/peek';
 
 export default {

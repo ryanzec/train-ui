@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import { type JSX, Show, splitProps } from 'solid-js';
 
 import Button, { ButtonVariant } from '$/components/button';
-import Callout, { CalloutSentiment } from '$/components/callout';
+import Callout, { CalloutColor } from '$/components/callout';
 import Emoji, { EmojiSpacing } from '$/components/emoji';
 import styles from '$/components/global-notifications-list/global-notifications-list.module.css';
 import Icon, { IconSize } from '$/components/icon';
@@ -25,7 +25,7 @@ const GlobalNotificationsListItem = (passedProps: GlobalNotificationsListItemPro
         [styles.isRemoving]: props.notification.isRemoving || false,
       })}
       {...restOfProps}
-      sentiment={CalloutSentiment.NEUTRAL}
+      color={CalloutColor.NEUTRAL}
       style={{ 'animation-duration': `${REMOVE_ANIMATION_DURATION * 1.05}ms` }}
     >
       <Show when={!!props.notification.emoji}>

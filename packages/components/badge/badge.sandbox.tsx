@@ -1,4 +1,4 @@
-import Badge, { BadgeSentiment, BadgeSize, BadgeStrength } from '$/components/badge';
+import Badge, { BadgeColor, BadgeSize, BadgeVariant } from '$/components/badge';
 import { BadgeShape } from '$/components/badge/utils';
 import SandboxExamplesContainer from '$sandbox/components/sandbox-examples-container/sandbox-examples-container';
 
@@ -6,48 +6,48 @@ export default {
   title: 'Components/Badge',
 };
 
-export const Strength = () => {
+export const Variant = () => {
   return (
     <div>
       <h2>Weak</h2>
       <SandboxExamplesContainer asRow>
-        <Badge strength={BadgeStrength.WEAK} sentiment={BadgeSentiment.NEUTRAL}>
+        <Badge variant={BadgeVariant.WEAK} color={BadgeColor.NEUTRAL}>
           Neutral
         </Badge>
-        <Badge strength={BadgeStrength.WEAK} sentiment={BadgeSentiment.BRAND}>
+        <Badge variant={BadgeVariant.WEAK} color={BadgeColor.BRAND}>
           Brand
         </Badge>
-        <Badge strength={BadgeStrength.WEAK} sentiment={BadgeSentiment.SUCCESS}>
+        <Badge variant={BadgeVariant.WEAK} color={BadgeColor.SUCCESS}>
           Success
         </Badge>
-        <Badge strength={BadgeStrength.WEAK} sentiment={BadgeSentiment.INFO}>
+        <Badge variant={BadgeVariant.WEAK} color={BadgeColor.INFO}>
           Info
         </Badge>
-        <Badge strength={BadgeStrength.WEAK} sentiment={BadgeSentiment.WARNING}>
+        <Badge variant={BadgeVariant.WEAK} color={BadgeColor.WARNING}>
           Warning
         </Badge>
-        <Badge strength={BadgeStrength.WEAK} sentiment={BadgeSentiment.DANGER}>
+        <Badge variant={BadgeVariant.WEAK} color={BadgeColor.DANGER}>
           Danger
         </Badge>
       </SandboxExamplesContainer>
       <h2>Strong</h2>
       <SandboxExamplesContainer asRow>
-        <Badge strength={BadgeStrength.STRONG} sentiment={BadgeSentiment.NEUTRAL}>
+        <Badge variant={BadgeVariant.STRONG} color={BadgeColor.NEUTRAL}>
           Neutral
         </Badge>
-        <Badge strength={BadgeStrength.STRONG} sentiment={BadgeSentiment.BRAND}>
+        <Badge variant={BadgeVariant.STRONG} color={BadgeColor.BRAND}>
           Brand
         </Badge>
-        <Badge strength={BadgeStrength.STRONG} sentiment={BadgeSentiment.SUCCESS}>
+        <Badge variant={BadgeVariant.STRONG} color={BadgeColor.SUCCESS}>
           Success
         </Badge>
-        <Badge strength={BadgeStrength.STRONG} sentiment={BadgeSentiment.INFO}>
+        <Badge variant={BadgeVariant.STRONG} color={BadgeColor.INFO}>
           Info
         </Badge>
-        <Badge strength={BadgeStrength.STRONG} sentiment={BadgeSentiment.WARNING}>
+        <Badge variant={BadgeVariant.STRONG} color={BadgeColor.WARNING}>
           Warning
         </Badge>
-        <Badge strength={BadgeStrength.STRONG} sentiment={BadgeSentiment.DANGER}>
+        <Badge variant={BadgeVariant.STRONG} color={BadgeColor.DANGER}>
           Danger
         </Badge>
       </SandboxExamplesContainer>
@@ -58,13 +58,13 @@ export const Strength = () => {
 export const Icons = () => {
   return (
     <SandboxExamplesContainer asRow>
-      <Badge strength={BadgeStrength.STRONG} sentiment={BadgeSentiment.BRAND} preIcon="check">
+      <Badge variant={BadgeVariant.STRONG} color={BadgeColor.BRAND} preIcon="check">
         Brand
       </Badge>
-      <Badge strength={BadgeStrength.STRONG} sentiment={BadgeSentiment.SUCCESS} postIcon="check">
+      <Badge variant={BadgeVariant.STRONG} color={BadgeColor.SUCCESS} postIcon="check">
         Success
       </Badge>
-      <Badge strength={BadgeStrength.STRONG} sentiment={BadgeSentiment.INFO} preIcon="check" postIcon="check">
+      <Badge variant={BadgeVariant.STRONG} color={BadgeColor.INFO} preIcon="check" postIcon="check">
         Info
       </Badge>
     </SandboxExamplesContainer>
@@ -74,20 +74,10 @@ export const Icons = () => {
 export const Shapes = () => {
   return (
     <SandboxExamplesContainer asRow>
-      <Badge
-        shape={BadgeShape.ROUNDED}
-        strength={BadgeStrength.STRONG}
-        sentiment={BadgeSentiment.BRAND}
-        preIcon="check"
-      >
+      <Badge shape={BadgeShape.ROUNDED} variant={BadgeVariant.STRONG} color={BadgeColor.BRAND} preIcon="check">
         Rounded
       </Badge>
-      <Badge
-        shape={BadgeShape.PILL}
-        strength={BadgeStrength.STRONG}
-        sentiment={BadgeSentiment.SUCCESS}
-        postIcon="check"
-      >
+      <Badge shape={BadgeShape.PILL} variant={BadgeVariant.STRONG} color={BadgeColor.SUCCESS} postIcon="check">
         Pill
       </Badge>
     </SandboxExamplesContainer>
@@ -99,21 +89,16 @@ export const Size = () => {
     <div>
       <h2>Small</h2>
       <SandboxExamplesContainer asRow>
-        <Badge size={BadgeSize.SMALL} strength={BadgeStrength.STRONG} sentiment={BadgeSentiment.BRAND} preIcon="check">
+        <Badge size={BadgeSize.SMALL} variant={BadgeVariant.STRONG} color={BadgeColor.BRAND} preIcon="check">
           Brand
         </Badge>
-        <Badge
-          size={BadgeSize.SMALL}
-          strength={BadgeStrength.STRONG}
-          sentiment={BadgeSentiment.SUCCESS}
-          postIcon="check"
-        >
+        <Badge size={BadgeSize.SMALL} variant={BadgeVariant.STRONG} color={BadgeColor.SUCCESS} postIcon="check">
           Success
         </Badge>
         <Badge
           size={BadgeSize.SMALL}
-          strength={BadgeStrength.STRONG}
-          sentiment={BadgeSentiment.INFO}
+          variant={BadgeVariant.STRONG}
+          color={BadgeColor.INFO}
           preIcon="check"
           postIcon="check"
         >
@@ -122,21 +107,16 @@ export const Size = () => {
       </SandboxExamplesContainer>
       <h2>Medium</h2>
       <SandboxExamplesContainer asRow>
-        <Badge size={BadgeSize.MEDIUM} strength={BadgeStrength.STRONG} sentiment={BadgeSentiment.BRAND} preIcon="check">
+        <Badge size={BadgeSize.MEDIUM} variant={BadgeVariant.STRONG} color={BadgeColor.BRAND} preIcon="check">
           Primary
         </Badge>
-        <Badge
-          size={BadgeSize.MEDIUM}
-          strength={BadgeStrength.STRONG}
-          sentiment={BadgeSentiment.SUCCESS}
-          postIcon="check"
-        >
+        <Badge size={BadgeSize.MEDIUM} variant={BadgeVariant.STRONG} color={BadgeColor.SUCCESS} postIcon="check">
           Success
         </Badge>
         <Badge
           size={BadgeSize.MEDIUM}
-          strength={BadgeStrength.STRONG}
-          sentiment={BadgeSentiment.INFO}
+          variant={BadgeVariant.STRONG}
+          color={BadgeColor.INFO}
           preIcon="check"
           postIcon="check"
         >

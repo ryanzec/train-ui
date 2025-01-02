@@ -2,7 +2,7 @@ import FormField from '$/components/form-field';
 import Icon from '$/components/icon';
 import Input from '$/components/input';
 import Label from '$/components/label';
-import SupportingText, { SupportingTextSentiment } from '$/components/supporting-text';
+import SupportingText, { SupportingTextColor } from '$/components/supporting-text';
 import { FormInputValidationState } from '$/stores/form';
 
 export default {
@@ -66,7 +66,7 @@ export const Default = () => {
       <FormField>
         <Label for="test11">Invalid</Label>
         <Input id="test11" placeholder="Just a placeholder" validationState={FormInputValidationState.INVALID} />
-        <SupportingText supportingText={['supporting text']} sentiment={SupportingTextSentiment.DANGER} />
+        <SupportingText supportingText={['supporting text']} color={SupportingTextColor.DANGER} />
       </FormField>
       <FormField>
         <Label for="test12">Disabled</Label>

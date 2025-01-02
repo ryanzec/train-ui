@@ -1,6 +1,6 @@
 import FormField from '$/components/form-field';
 import Label from '$/components/label';
-import SupportingText, { SupportingTextSentiment } from '$/components/supporting-text';
+import SupportingText, { SupportingTextColor } from '$/components/supporting-text';
 import Textarea from '$/components/textarea';
 
 export default {
@@ -21,7 +21,7 @@ export const Default = () => {
       <FormField>
         <Label for="test3">Error</Label>
         <Textarea id="test3" placeholder="Placeholder value" />
-        <SupportingText supportingText={['supporting text']} sentiment={SupportingTextSentiment.DANGER} />
+        <SupportingText supportingText={['supporting text']} color={SupportingTextColor.DANGER} />
       </FormField>
       <FormField>
         <Label for="test4">Disabled</Label>

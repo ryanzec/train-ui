@@ -1,7 +1,7 @@
 import { Show, createSignal } from 'solid-js';
 
-import Button, { ButtonSentiment } from '$/components/button';
-import Overlay, { OverlayStrength } from '$/components/overlay';
+import Button, { ButtonColor } from '$/components/button';
+import Overlay, { OverlayVariant } from '$/components/overlay';
 
 export default {
   title: 'Components/Overlay',
@@ -24,7 +24,7 @@ export const Default = () => {
         <Show when={overlayToggled()}>
           <Overlay.Content>
             <Button
-              sentiment={ButtonSentiment.BRAND}
+              color={ButtonColor.BRAND}
               onclick={() => {
                 setOverlayToggled(!overlayToggled());
               }}
@@ -46,7 +46,7 @@ export const Default = () => {
         <Show when={overlayToggledWeak()}>
           <Overlay.Content>
             <Button
-              sentiment={ButtonSentiment.BRAND}
+              color={ButtonColor.BRAND}
               onclick={() => {
                 setOverlayToggledWeak(!overlayToggledWeak());
               }}
@@ -54,7 +54,7 @@ export const Default = () => {
               Close Overlay
             </Button>
           </Overlay.Content>
-          <Overlay strength={OverlayStrength.WEAK} />
+          <Overlay variant={OverlayVariant.WEAK} />
         </Show>
       </div>
     </>
@@ -76,7 +76,7 @@ export const Local = () => {
       <Show when={overlayToggled()}>
         <Overlay.ContentLocal>
           <Button
-            sentiment={ButtonSentiment.BRAND}
+            color={ButtonColor.BRAND}
             onclick={() => {
               setOverlayToggled(!overlayToggled());
             }}

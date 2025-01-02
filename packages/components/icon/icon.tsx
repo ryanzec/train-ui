@@ -2,13 +2,13 @@ import classnames from 'classnames';
 import { type JSX, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/icon/icon.module.css';
-import { IconSentiment, IconSize, IconVariant } from '$/components/icon/utils';
+import { IconColor, IconSize, IconVariant } from '$/components/icon/utils';
 
 export type IconProps = JSX.HTMLAttributes<HTMLSpanElement> & {
   icon: string;
   variant?: IconVariant;
   size?: IconSize;
-  sentiment?: IconSentiment;
+  color?: IconColor;
 };
 
 const Icon = (passedProps: IconProps) => {
@@ -17,11 +17,11 @@ const Icon = (passedProps: IconProps) => {
       {
         variant: IconVariant.OUTLINED,
         size: IconSize,
-        sentiment: IconSentiment.NONE,
+        color: IconColor.NONE,
       },
       passedProps,
     ),
-    ['class', 'icon', 'variant', 'size', 'sentiment'],
+    ['class', 'icon', 'variant', 'size', 'color'],
   );
 
   return (
@@ -34,13 +34,13 @@ const Icon = (passedProps: IconProps) => {
         [styles.large]: props.size === IconSize.LARGE,
         [styles.extra_large]: props.size === IconSize.EXTRA_LARGE,
         [styles.extra_large2]: props.size === IconSize.EXTRA_LARGE2,
-        [styles.neutral]: props.sentiment === IconSentiment.NEUTRAL,
-        [styles.brand]: props.sentiment === IconSentiment.BRAND,
-        [styles.success]: props.sentiment === IconSentiment.SUCCESS,
-        [styles.info]: props.sentiment === IconSentiment.INFO,
-        [styles.warning]: props.sentiment === IconSentiment.WARNING,
-        [styles.danger]: props.sentiment === IconSentiment.DANGER,
-        [styles.inherit]: props.sentiment === IconSentiment.INHERIT,
+        [styles.neutral]: props.color === IconColor.NEUTRAL,
+        [styles.brand]: props.color === IconColor.BRAND,
+        [styles.success]: props.color === IconColor.SUCCESS,
+        [styles.info]: props.color === IconColor.INFO,
+        [styles.warning]: props.color === IconColor.WARNING,
+        [styles.danger]: props.color === IconColor.DANGER,
+        [styles.inherit]: props.color === IconColor.INHERIT,
       })}
       {...restOfProps}
     >

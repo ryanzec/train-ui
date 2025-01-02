@@ -1,6 +1,6 @@
 import Callout, { type CalloutProps } from '$/components/callout/callout';
 
-export { CalloutSentiment, CalloutStrength } from '$/components/callout/utils';
+export { CalloutColor, CalloutVariant } from '$/components/callout/utils';
 
 export type { CalloutProps };
 

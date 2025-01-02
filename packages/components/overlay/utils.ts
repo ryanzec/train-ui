@@ -1,16 +1,16 @@
 import type { JSX } from 'solid-js';
 
-export enum OverlayStrength {
+export enum OverlayVariant {
   STRONG = 'strong',
   WEAK = 'weak',
 }
 
 export type OverlayProps = JSX.HTMLAttributes<HTMLButtonElement> & {
-  strength?: OverlayStrength;
+  variant?: OverlayVariant;
   closeOnClick?: boolean;
 };
 
 export const defaultOverlayProps: Partial<OverlayProps> = {
-  strength: OverlayStrength.STRONG,
+  variant: OverlayVariant.STRONG,
   closeOnClick: false,
 };

@@ -2,25 +2,25 @@ import classnames from 'classnames';
 import { For, type JSX, type ParentProps, Show, splitProps } from 'solid-js';
 
 import styles from '$/components/supporting-text/supporting-text.module.css';
-import { SupportingTextSentiment } from '$/components/supporting-text/utils';
+import { SupportingTextColor } from '$/components/supporting-text/utils';
 
 export type SupportingTextProps = JSX.HTMLAttributes<HTMLDivElement> & {
-  sentiment?: SupportingTextSentiment;
+  color?: SupportingTextColor;
 
   // this is added to make it easier to use form errors with this component
   supportingText?: string[];
 };
 
 const SupportingText = (passedProps: ParentProps<SupportingTextProps>) => {
-  const [props, restOfProps] = splitProps(passedProps, ['class', 'children', 'supportingText', 'sentiment']);
+  const [props, restOfProps] = splitProps(passedProps, ['class', 'children', 'supportingText', 'color']);
   const shouldShow = () => (props.supportingText && props.supportingText.length > 0) || props.children;
 
   return (
     <Show when={shouldShow()}>
       <div
         class={classnames(props.class, styles.supportingText, {
-          [styles.neutral]: props.sentiment === SupportingTextSentiment.NEUTRAL,
-          [styles.danger]: props.sentiment === SupportingTextSentiment.DANGER,
+          [styles.neutral]: props.color === SupportingTextColor.NEUTRAL,
+          [styles.danger]: props.color === SupportingTextColor.DANGER,
         })}
         {...restOfProps}
       >

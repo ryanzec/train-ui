@@ -3,14 +3,14 @@ import { type JSX, type ParentProps, mergeProps, splitProps } from 'solid-js';
 
 import ButtonPrePostItem from '$/components/button/button-icon';
 import styles from '$/components/button/button.module.css';
-import { ButtonIconPosition, ButtonSentiment, ButtonState, ButtonVariant } from '$/components/button/utils';
+import { ButtonColor, ButtonIconPosition, ButtonState, ButtonVariant } from '$/components/button/utils';
 import Icon from '$/components/icon';
 import type { CommonDataAttributes } from '$/types/generic';
 
 export type ButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> &
   CommonDataAttributes & {
     variant?: ButtonVariant;
-    sentiment?: ButtonSentiment;
+    color?: ButtonColor;
     state?: ButtonState;
     preItem?: JSX.Element;
     postItem?: JSX.Element;
@@ -22,13 +22,13 @@ export const Button = (passedProps: ParentProps<ButtonProps>) => {
     mergeProps(
       {
         variant: ButtonVariant.FILLED,
-        sentiment: ButtonSentiment.BRAND,
+        color: ButtonColor.BRAND,
         state: ButtonState.DEFAULT,
         loadingIconPosition: ButtonIconPosition.PRE,
       },
       passedProps,
     ),
-    ['children', 'variant', 'disabled', 'class', 'preItem', 'postItem', 'loadingIconPosition', 'state', 'sentiment'],
+    ['children', 'variant', 'disabled', 'class', 'preItem', 'postItem', 'loadingIconPosition', 'state', 'color'],
   );
 
   const isLoading = () => props.state === ButtonState.IS_LOADING;
@@ -43,12 +43,12 @@ export const Button = (passedProps: ParentProps<ButtonProps>) => {
         [styles.outlined]: props.variant === ButtonVariant.OUTLINED,
         [styles.text]: props.variant === ButtonVariant.TEXT,
         [styles.ghost]: props.variant === ButtonVariant.GHOST,
-        [styles.neutral]: props.sentiment === ButtonSentiment.NEUTRAL,
-        [styles.brand]: props.sentiment === ButtonSentiment.BRAND,
-        [styles.success]: props.sentiment === ButtonSentiment.SUCCESS,
-        [styles.info]: props.sentiment === ButtonSentiment.INFO,
-        [styles.warning]: props.sentiment === ButtonSentiment.WARNING,
-        [styles.danger]: props.sentiment === ButtonSentiment.DANGER,
+        [styles.neutral]: props.color === ButtonColor.NEUTRAL,
+        [styles.brand]: props.color === ButtonColor.BRAND,
+        [styles.success]: props.color === ButtonColor.SUCCESS,
+        [styles.info]: props.color === ButtonColor.INFO,
+        [styles.warning]: props.color === ButtonColor.WARNING,
+        [styles.danger]: props.color === ButtonColor.DANGER,
         [styles.isLoading]: isLoading(),
       })}
       disabled={props.disabled || isLoading()}

@@ -20,7 +20,7 @@ export enum ButtonState {
   IS_LOADING = 'is-loading',
 }
 
-export enum ButtonSentiment {
+export enum ButtonColor {
   NEUTRAL = 'neutral',
   BRAND = 'brand',
   SUCCESS = 'success',
