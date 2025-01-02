@@ -1,4 +1,4 @@
-export enum BubbleSentiment {
+export enum BadgeSentiment {
   NEUTRAL = 'neutral',
   BRAND = 'brand',
   SUCCESS = 'success',
@@ -7,12 +7,12 @@ export enum BubbleSentiment {
   DANGER = 'danger',
 }
 
-export enum BubbleStrength {
+export enum BadgeStrength {
   WEAK = 'weak',
   STRONG = 'strong',
 }
 
-export enum BubbleSize {
+export enum BadgeSize {
   SMALL = 'small',
   MEDIUM = 'medium',
 }

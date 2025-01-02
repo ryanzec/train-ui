@@ -1,4 +1,4 @@
-.bubble {
+.badge {
   display: inline-flex;
   align-items: center;
   border-radius: var(--border-radius-sm);
@@ -87,9 +87,9 @@
   display: flex;
 }
 
-.bubble-small {
+.badge-small {
   font-size: var(--font-size-sm);
-  line-height: var(--line-height-sma);
+  line-height: var(--line-height-sm);
   letter-spacing: var(--letter-spacing-sm);
 }
 
