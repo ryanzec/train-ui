@@ -292,7 +292,7 @@ export const applicationFrameTranslations = {
 
 ## Auto formatting
 
-There are a number of pattern that are not listed here however are enforced by the auto formatting that we do with our code so whatever changes formatting with `eslint` / `prettier` should just be kept.
+There are a number of patterns that are not listed here however are enforced by the auto code formatting so adhering to them manually is not necessary.
 
 ## No magic strings
 
@@ -374,11 +374,9 @@ This make it easier to reason about import paths and make copying / moving code 
 
 If any code in the `applications` directory also has a `packages` directory, an alais should be made for that, for example `applications/sandbox/packages` would be mapped to `$sandbox/`.
 
-## Overriding `eslint` code inline
+## Overriding linting / formatting rules
 
-Overriding `eslint` rules should be the exception to the rule so when doing so, there must be a solid reason for doing it and a comment must be added to explain why which will help with PR reviews and people later reading the code to understand the reasoning (if the reason is spelled out, someone might see it and know of a way around that issue).
-
-We also should only be disabling specific `eslint` rules for specific lines, we should never be disabling `eslint` for a file in whole.
+When rules need to be overridden (sometimes that does happen), we should add a comment explaining why the rule is being overridden with the disable comment.
 
 ## Use `data-id` for general purpose selector needs
 

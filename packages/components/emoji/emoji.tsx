@@ -5,8 +5,6 @@ import { type JSX, mergeProps, splitProps } from 'solid-js';
 // https://raw.githubusercontent.com/iamcal/emoji-data/refs/heads/master/emoji.json
 // and then stripping out all data expect short_name and unified with this tool:
 // https://jsoneditoronline.org/
-// for some reason the order formatting placing this here even though it is an error so just ignoring it for now
-// eslint-disable-next-line import/order
 import emojis from '$/assets/json/emojis.json';
 
 type EmojiJsonData = {

@@ -27,7 +27,6 @@ const config: PlaywrightTestConfig = {
     viewport: { width: 1024, height: 768 },
 
     // not sure why this produces a typescript error but it does work so ignoring for now
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-expect-error
     ctViteConfig: viteUtils.baseConfiguration,
   },
