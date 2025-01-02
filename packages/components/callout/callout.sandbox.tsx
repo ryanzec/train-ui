@@ -2,6 +2,7 @@ import Button from '$/components/button';
 import Callout, { CalloutSentiment, CalloutStrength } from '$/components/callout';
 import calloutStyles from '$/components/callout/callout.module.css';
 import Icon from '$/components/icon';
+import SandboxExamplesContainer from '$sandbox/components/sandbox-examples-container/sandbox-examples-container';
 
 export default {
   title: 'Components/Callout',
@@ -11,7 +12,7 @@ export const Strength = () => {
   return (
     <div>
       <h2>Weak</h2>
-      <div>
+      <SandboxExamplesContainer>
         <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.NEUTRAL}>
           Primary
         </Callout>
@@ -30,9 +31,9 @@ export const Strength = () => {
         <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.DANGER}>
           Danger
         </Callout>
-      </div>
+      </SandboxExamplesContainer>
       <h2>Strong</h2>
-      <div>
+      <SandboxExamplesContainer>
         <Callout strength={CalloutStrength.STRONG} sentiment={CalloutSentiment.NEUTRAL}>
           Primary
         </Callout>
@@ -51,7 +52,7 @@ export const Strength = () => {
         <Callout strength={CalloutStrength.STRONG} sentiment={CalloutSentiment.DANGER}>
           Danger
         </Callout>
-      </div>
+      </SandboxExamplesContainer>
     </div>
   );
 };
@@ -60,7 +61,7 @@ export const PrePostItems = () => {
   return (
     <div>
       <h2>Pre</h2>
-      <div>
+      <SandboxExamplesContainer>
         <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.NEUTRAL} preItem={<Icon icon="check" />}>
           Primary
         </Callout>
@@ -79,9 +80,9 @@ export const PrePostItems = () => {
         <Callout strength={CalloutStrength.WEAK} sentiment={CalloutSentiment.DANGER} preItem={<Icon icon="check" />}>
           Danger
         </Callout>
-      </div>
+      </SandboxExamplesContainer>
       <h2>Post</h2>
-      <div>
+      <SandboxExamplesContainer>
         <Callout
           strength={CalloutStrength.STRONG}
           sentiment={CalloutSentiment.NEUTRAL}
@@ -116,9 +117,9 @@ export const PrePostItems = () => {
         <Callout strength={CalloutStrength.STRONG} sentiment={CalloutSentiment.DANGER} postItem={<Icon icon="check" />}>
           Danger
         </Callout>
-      </div>
+      </SandboxExamplesContainer>
       <h2>Both</h2>
-      <div>
+      <SandboxExamplesContainer>
         <Callout
           strength={CalloutStrength.STRONG}
           sentiment={CalloutSentiment.NEUTRAL}
@@ -167,7 +168,7 @@ export const PrePostItems = () => {
         >
           Danger
         </Callout>
-      </div>
+      </SandboxExamplesContainer>
     </div>
   );
 };

@@ -10,29 +10,20 @@ export default {
 };
 
 export const Indeterminate = () => {
-  let checkedInputRef: HTMLInputElement | undefined;
-  let uncheckedInputRef: HTMLInputElement | undefined;
+  let inputRef: HTMLInputElement | undefined;
 
   onMount(() => {
-    if (!checkedInputRef) {
+    if (!inputRef) {
       return;
     }
 
-    checkedInputRef.indeterminate = true;
-    checkedInputRef.dispatchEvent(new Event('change'));
-
-    if (!uncheckedInputRef) {
-      return;
-    }
-
-    uncheckedInputRef.indeterminate = true;
-    uncheckedInputRef.dispatchEvent(new Event('change'));
+    inputRef.indeterminate = true;
+    inputRef.dispatchEvent(new Event('change'));
   });
 
   return (
     <div>
-      <Checkbox ref={checkedInputRef} labelElement="Indeterminate Checked" />
-      <Checkbox ref={uncheckedInputRef} labelElement="Indeterminate Unchecked" />
+      <Checkbox ref={inputRef} labelElement="Indeterminate" />
     </div>
   );
 };
