@@ -11,10 +11,21 @@
   line-height: var(--line-height-base);
   letter-spacing: var(--letter-spacing-base);
   font-weight: bold;
+  border-width: 1px;
 }
 
 .avatar img {
   height: var(--size-2xl);
   width: var(--size-2xl);
   border-radius: var(--border-radius-full);
+}
+
+.avatar-stack {
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+
+  & > :not(:last-child) {
+    margin-left: calc(var(--space-sm) * -1);
+  }
 }

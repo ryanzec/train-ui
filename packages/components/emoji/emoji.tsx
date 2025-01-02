@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import { type JSX, mergeProps, splitProps } from 'solid-js';
 
 // this json files was generated using this file as a base:
-// https://raw.githubusercontent.com/iamcal/emoji-data/master/emoji.json
+// https://raw.githubusercontent.com/iamcal/emoji-data/refs/heads/master/emoji.json
 // and then stripping out all data expect short_name and unified with this tool:
 // https://jsoneditoronline.org/
 // for some reason the order formatting placing this here even though it is an error so just ignoring it for now
@@ -71,6 +71,7 @@ const Emoji = (passedProps: EmojiProps) => {
 
   return (
     <span
+      data-id="emoji"
       role="img"
       aria-label={emojisToRender().join(' ')}
       class={classnames(props.class, {
@@ -80,8 +81,8 @@ const Emoji = (passedProps: EmojiProps) => {
         [styles.large]: props.size === IconSize.LARGE,
         [styles.extra_large]: props.size === IconSize.EXTRA_LARGE,
         [styles.extra_large2]: props.size === IconSize.EXTRA_LARGE2,
-        [styles.spacingLeft]: props.spacing === EmojiSpacing.LEFT,
-        [styles.spacingRight]: props.spacing === EmojiSpacing.RIGHT,
+        [styles.spacingLeft]: props.spacing === EmojiSpacing.LEFT || props.spacing === EmojiSpacing.BOTH,
+        [styles.spacingRight]: props.spacing === EmojiSpacing.RIGHT || props.spacing === EmojiSpacing.BOTH,
       })}
       {...restOfProps}
       innerHTML={getEmojiHtml()}
