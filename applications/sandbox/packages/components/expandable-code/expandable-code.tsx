@@ -1,6 +1,6 @@
 import { type ParentProps, Show, createSignal } from 'solid-js';
 
-import Button from '../../../../../packages/components/button/button';
+import Button from '$/components/button';
 
 type ExpandableCodeProps = {
   label: string;

@@ -1,5 +1,5 @@
+import Badge, { BadgeSentiment, BadgeSize, BadgeStrength } from '$/components/badge';
 import Icon from '$/components/icon';
-import Badge, { BadgeSentiment, BadgeSize, BadgeStrength } from 'packages/components/badge';
 
 export default {
   title: 'Components/Badge',

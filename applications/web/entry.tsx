@@ -1,18 +1,18 @@
 /* @refresh reload */
-import '../../packages/types/solid-js';
+import '$/types/solid-js';
 
 import '@fontsource/roboto';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 
 import 'material-icons/iconfont/material-icons.css';
-import '../../packages/styles/variables.css';
-import '../../packages/styles/keyframes.css';
-import '../../packages/styles/normalize.css';
-import '../../packages/styles/base.css';
+import '$/styles/variables.css';
+import '$/styles/keyframes.css';
+import '$/styles/normalize.css';
+import '$/styles/base.css';
 import { render } from 'solid-js/web';
 
-import Application from './packages/components/application';
+import Application from '$sandbox/components/application';
 
 const start = async () => {
   render(() => <Application.Router />, document.getElementById('application-mount') as HTMLElement);
