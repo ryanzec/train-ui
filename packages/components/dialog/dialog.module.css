@@ -16,7 +16,7 @@
 .dialog-header {
   display: flex;
   align-items: center;
-  font-weight: bold;
+  font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-lg);
   line-height: var(--line-height-lg);
   letter-spacing: var(--letter-spacing-lg);

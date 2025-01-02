@@ -1,6 +1,10 @@
 [data-theme] {
 %LIGHT_COLOR_VARIABLES%
 
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+
 %FONT_SIZE_VARIABLES%
 
 %LINE_HEIGHT_VARIABLES%

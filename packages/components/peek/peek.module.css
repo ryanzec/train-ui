@@ -19,7 +19,7 @@
   font-size: var(--font-size-xl);
   line-height: var(--line-height-xl);
   letter-spacing: var(--letter-spacing-xl);
-  font-weight: bold;
+  font-weight: var(--font-weight-semibold);
   padding: var(--space-base);
 }
 

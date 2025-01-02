@@ -14,7 +14,7 @@
   line-height: var(--line-height-base);
   letter-spacing: var(--letter-spacing-base);
   text-transform: uppercase;
-  font-weight: bold;
+  font-weight: var(--font-weight-semibold);
   cursor: pointer;
 }
 
