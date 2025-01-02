@@ -1,4 +1,5 @@
 import Avatar from '$/components/avatar';
+import SandboxExamplesContainer from '$sandbox/components/sandbox-examples-container/sandbox-examples-container';
 
 export default {
   title: 'Components/Avatar',
@@ -6,19 +7,19 @@ export default {
 
 export const Default = () => {
   return (
-    <div>
+    <SandboxExamplesContainer>
       <Avatar label="SJ" />
       <Avatar src="https://avatars.githubusercontent.com/u/444206?v=4">SJ</Avatar>
-    </div>
+    </SandboxExamplesContainer>
   );
 };
 
 export const Count = () => {
   return (
-    <div>
+    <SandboxExamplesContainer>
       <Avatar count={12} />
       <Avatar count={123} />
-    </div>
+    </SandboxExamplesContainer>
   );
 };
 

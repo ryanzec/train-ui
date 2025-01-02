@@ -6,6 +6,10 @@
   border: 1px solid transparent;
 }
 
+.badge-pill {
+  border-radius: var(--border-radius-full);
+}
+
 /* neutral */
 .neutral {
   border-color: var(--color-neutral-bold);

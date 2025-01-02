@@ -2,12 +2,13 @@ import classnames from 'classnames';
 import { type JSX, type ParentProps, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/badge/badge.module.css';
-import { BadgeSentiment, BadgeSize, BadgeStrength } from '$/components/badge/utils';
+import { BadgeSentiment, BadgeShape, BadgeSize, BadgeStrength } from '$/components/badge/utils';
 import Icon from '$/components/icon';
 
 export type BadgeProps = JSX.HTMLAttributes<HTMLDivElement> & {
   sentiment?: BadgeSentiment;
   strength?: BadgeStrength;
+  shape?: BadgeShape;
   size?: BadgeSize;
   preIcon?: string;
   postIcon?: string;
@@ -19,11 +20,12 @@ const Badge = (passedProps: ParentProps<BadgeProps>) => {
       {
         sentiment: BadgeSentiment.BRAND,
         strength: BadgeStrength.WEAK,
+        shape: BadgeShape.ROUNDED,
         size: BadgeSize.SMALL,
       },
       passedProps,
     ),
-    ['sentiment', 'strength', 'size', 'class', 'children', 'preIcon', 'postIcon'],
+    ['sentiment', 'strength', 'shape', 'size', 'class', 'children', 'preIcon', 'postIcon'],
   );
   const isStrong = props.strength === BadgeStrength.STRONG;
 
@@ -31,6 +33,7 @@ const Badge = (passedProps: ParentProps<BadgeProps>) => {
     <div
       class={classnames(props.class, styles.badge, {
         [styles.badgeSmall]: props.size === BadgeSize.SMALL,
+        [styles.badgePill]: props.shape === BadgeShape.PILL,
         [styles.neutral]: props.sentiment === BadgeSentiment.NEUTRAL,
         [styles.neutralStrong]: props.sentiment === BadgeSentiment.NEUTRAL && isStrong,
         [styles.brand]: props.sentiment === BadgeSentiment.BRAND,

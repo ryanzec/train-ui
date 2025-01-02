@@ -3,3 +3,7 @@
   flex-direction: column;
   gap: var(--space-base);
 }
+
+.row {
+  flex-direction: row;
+}

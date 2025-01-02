@@ -16,3 +16,8 @@ export enum BadgeSize {
   SMALL = 'small',
   MEDIUM = 'medium',
 }
+
+export enum BadgeShape {
+  ROUNDED = 'rounded',
+  PILL = 'pill',
+}
