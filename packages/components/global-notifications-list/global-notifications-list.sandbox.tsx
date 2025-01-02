@@ -1,6 +1,7 @@
 import { type JSX, createSignal } from 'solid-js';
 
 import Button from '$/components/button';
+import { CalloutColor } from '$/components/callout';
 import Input from '$/components/input';
 import { globalNotificationsStore } from '$/stores/global-notifications';
 
@@ -39,6 +40,17 @@ export const Default = () => {
         }}
       >
         Add Perm Notification
+      </Button>
+      <Button
+        onClick={() => {
+          globalNotificationsStore.addNotification({
+            message: () => 'This is a test message',
+            color: CalloutColor.DANGER,
+            autoClose: 0,
+          });
+        }}
+      >
+        Add Perm Notification (Danger)
       </Button>
       <Button
         onClick={() => {

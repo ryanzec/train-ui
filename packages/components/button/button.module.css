@@ -20,8 +20,18 @@
   align-items: center;
 }
 
+.button-main-content {
+  display: inline-flex;
+}
+
 .button[disabled]:not(.unstyled) {
   opacity: var(--opacity-disabled);
+}
+
+/* shapes */
+.circle {
+  border-radius: var(--border-radius-full);
+  padding: var(--space-xs);
 }
 
 /* outlined */
@@ -267,25 +277,20 @@
   background-color: var(--color-danger-subtle3);
 }
 
-/* icon button */
-.icon-button {
-  padding: var(--space-xs) var(--space-base);
-}
-
-/* icons */
-.icon {
+/* pre post items */
+.pre-post-item {
   display: inline-flex;
 }
 
-.icon.pre-item {
+.pre-post-item.pre-item {
   margin-right: var(--space-2xs);
 }
 
-.icon.post-item {
+.pre-post-item.post-item {
   margin-left: var(--space-2xs);
 }
 
-.is-loading .icon {
+.is-loading .pre-post-item {
   :global {
     animation: spin 1s linear;
     animation-iteration-count: infinite;

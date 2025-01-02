@@ -253,7 +253,7 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
         </div>
       </Show>
       <Show when={props.includeFooter}>
-        <div class={styles.footer}>
+        <Button.Group class={styles.footer}>
           <Button variant={ButtonVariant.TEXT} onClick={clearDate}>
             Clear
           </Button>
@@ -262,7 +262,7 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
               Done
             </Button>
           </Show>
-        </div>
+        </Button.Group>
       </Show>
       <Show when={showMonthYearSelection()}>
         <DatePickerMonthYearSelection

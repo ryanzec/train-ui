@@ -1,4 +1,4 @@
-import Button, { ButtonVariant, ButtonColor } from '$/components/button';
+import Button, { ButtonVariant, ButtonColor, ButtonShape } from '$/components/button';
 import { ButtonState } from '$/components/button/utils';
 import Icon from '$/components/icon';
 import { tooltipUtils } from '$/components/tooltip';
@@ -421,26 +421,41 @@ export const Colors = () => {
 export const Icons = () => {
   return (
     <>
-      Filled
-      <Button.Group>
-        <Button preItem={<Icon icon="home" />} variant={ButtonVariant.FILLED} />
-        <Button preItem={<Icon icon="home" />} variant={ButtonVariant.FILLED} disabled />
-      </Button.Group>
-      Outlined
-      <Button.Group>
-        <Button postItem={<Icon icon="home" />} variant={ButtonVariant.OUTLINED} />
-        <Button postItem={<Icon icon="home" />} variant={ButtonVariant.OUTLINED} disabled />
-      </Button.Group>
-      Text
-      <Button.Group>
-        <Button preItem={<Icon icon="home" />} variant={ButtonVariant.TEXT} />
-        <Button preItem={<Icon icon="home" />} variant={ButtonVariant.TEXT} disabled />
-      </Button.Group>
-      Ghost
-      <Button.Group>
-        <Button postItem={<Icon icon="home" />} variant={ButtonVariant.GHOST} />
-        <Button postItem={<Icon icon="home" />} variant={ButtonVariant.GHOST} disabled />
-      </Button.Group>
+      <Button variant={ButtonVariant.FILLED}>
+        <Icon icon="home" />
+      </Button>
+    </>
+  );
+};
+
+export const Shapes = () => {
+  return (
+    <>
+      <Button shape={ButtonShape.CIRCLE} variant={ButtonVariant.FILLED}>
+        <Icon icon="home" />
+      </Button>
+      <Button shape={ButtonShape.ROUNDED} variant={ButtonVariant.FILLED}>
+        Rounded
+      </Button>
+    </>
+  );
+};
+
+export const PrePostItems = () => {
+  return (
+    <>
+      <div>Pre Item</div>
+      <Button preItem={<Icon icon="home" />} variant={ButtonVariant.FILLED}>
+        Button
+      </Button>
+      <div>Pre Item</div>
+      <Button postItem={<Icon icon="home" />} variant={ButtonVariant.FILLED}>
+        Button
+      </Button>
+      <div>Pre and Post Item</div>
+      <Button preItem={<Icon icon="home" />} postItem={<Icon icon="home" />} variant={ButtonVariant.FILLED}>
+        Button
+      </Button>
     </>
   );
 };

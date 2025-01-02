@@ -31,6 +31,7 @@ const Badge = (passedProps: ParentProps<BadgeProps>) => {
 
   return (
     <div
+      data-id="badge"
       class={classnames(props.class, styles.badge, {
         [styles.badgeSmall]: props.size === BadgeSize.SMALL,
         [styles.badgePill]: props.shape === BadgeShape.PILL,

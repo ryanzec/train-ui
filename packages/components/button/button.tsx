@@ -1,9 +1,9 @@
 import classnames from 'classnames';
 import { type JSX, type ParentProps, mergeProps, splitProps } from 'solid-js';
 
-import ButtonPrePostItem from '$/components/button/button-icon';
+import ButtonPrePostItem from '$/components/button/button-pre-post-item';
 import styles from '$/components/button/button.module.css';
-import { ButtonColor, ButtonIconPosition, ButtonState, ButtonVariant } from '$/components/button/utils';
+import { ButtonColor, ButtonItemPosition, ButtonShape, ButtonState, ButtonVariant } from '$/components/button/utils';
 import Icon from '$/components/icon';
 import type { CommonDataAttributes } from '$/types/generic';
 
@@ -12,9 +12,10 @@ export type ButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> &
     variant?: ButtonVariant;
     color?: ButtonColor;
     state?: ButtonState;
+    shape?: ButtonShape;
     preItem?: JSX.Element;
     postItem?: JSX.Element;
-    loadingIconPosition?: ButtonIconPosition;
+    loadingIconPosition?: ButtonItemPosition;
   };
 
 export const Button = (passedProps: ParentProps<ButtonProps>) => {
@@ -24,19 +25,32 @@ export const Button = (passedProps: ParentProps<ButtonProps>) => {
         variant: ButtonVariant.FILLED,
         color: ButtonColor.BRAND,
         state: ButtonState.DEFAULT,
-        loadingIconPosition: ButtonIconPosition.PRE,
+        shape: ButtonShape.ROUNDED,
+        loadingIconPosition: ButtonItemPosition.PRE,
       },
       passedProps,
     ),
-    ['children', 'variant', 'disabled', 'class', 'preItem', 'postItem', 'loadingIconPosition', 'state', 'color'],
+    [
+      'children',
+      'variant',
+      'disabled',
+      'class',
+      'preItem',
+      'postItem',
+      'loadingIconPosition',
+      'state',
+      'color',
+      'shape',
+    ],
   );
 
   const isLoading = () => props.state === ButtonState.IS_LOADING;
-  const hasPreItem = () => props.preItem || (isLoading() && props.loadingIconPosition === ButtonIconPosition.PRE);
-  const hasPostItem = () => props.postItem || (isLoading() && props.loadingIconPosition === ButtonIconPosition.POST);
+  const hasPreItem = () => props.preItem || (isLoading() && props.loadingIconPosition === ButtonItemPosition.PRE);
+  const hasPostItem = () => props.postItem || (isLoading() && props.loadingIconPosition === ButtonItemPosition.POST);
 
   return (
     <button
+      data-id="button"
       class={classnames(styles.button, props.class, {
         [styles.filled]: props.variant === ButtonVariant.FILLED,
         [styles.weak]: props.variant === ButtonVariant.WEAK,
@@ -50,9 +64,9 @@ export const Button = (passedProps: ParentProps<ButtonProps>) => {
         [styles.warning]: props.color === ButtonColor.WARNING,
         [styles.danger]: props.color === ButtonColor.DANGER,
         [styles.isLoading]: isLoading(),
+        [styles.circle]: props.shape === ButtonShape.CIRCLE,
       })}
       disabled={props.disabled || isLoading()}
-      data-id="button"
       type="button"
       {...restOfProps}
     >
@@ -60,27 +74,16 @@ export const Button = (passedProps: ParentProps<ButtonProps>) => {
         {isLoading() && (
           <ButtonPrePostItem
             class={styles.preIcon}
-            position={ButtonIconPosition.PRE}
+            position={ButtonItemPosition.PRE}
             item={<Icon icon="refresh" class={styles.iconIsLoading} />}
-            isIconOnly={!props.children}
           />
         )}
         {!isLoading() && hasPreItem() && (
-          <ButtonPrePostItem
-            class={styles.preIcon}
-            position={ButtonIconPosition.PRE}
-            item={props.preItem}
-            isIconOnly={!props.children}
-          />
+          <ButtonPrePostItem class={styles.preIcon} position={ButtonItemPosition.PRE} item={props.preItem} />
         )}
-        <span>{props.children}</span>
+        <span class={styles.buttonMainContent}>{props.children}</span>
         {!isLoading() && hasPostItem() && (
-          <ButtonPrePostItem
-            class={styles.preIcon}
-            position={ButtonIconPosition.POST}
-            item={props.postItem}
-            isIconOnly={!props.children}
-          />
+          <ButtonPrePostItem class={styles.preIcon} position={ButtonItemPosition.POST} item={props.postItem} />
         )}
       </span>
     </button>

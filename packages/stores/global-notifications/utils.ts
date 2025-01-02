@@ -1,3 +1,4 @@
+import type { CalloutColor } from '$/components/callout';
 import { produce } from 'immer';
 import pullAt from 'lodash/pullAt';
 import { nanoid } from 'nanoid';
@@ -10,6 +11,7 @@ export type GlobalNotification = {
   autoClose?: number;
   isRemoving?: boolean;
   removeAnimationDuration?: number;
+  color?: CalloutColor;
 };
 
 export const DEFAULT_AUTO_CLOSE = 3000;

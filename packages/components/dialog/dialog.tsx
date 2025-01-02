@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import { type JSX, type ParentProps, Show, mergeProps, onCleanup, splitProps } from 'solid-js';
 import { Portal } from 'solid-js/web';
 
-import Button, { ButtonColor, ButtonVariant } from '$/components/button';
+import Button, { ButtonColor, ButtonShape, ButtonVariant } from '$/components/button';
 import styles from '$/components/dialog/dialog.module.css';
 import { DialogFooterAlignment } from '$/components/dialog/utils';
 import Icon from '$/components/icon';
@@ -61,12 +61,14 @@ const Dialog = (passedProps: ParentProps<DialogProps>) => {
           <div class={styles.dialogHeader}>
             {props.headerElement}
             <Button
-              variant={ButtonVariant.TEXT}
+              variant={ButtonVariant.GHOST}
               color={ButtonColor.NEUTRAL}
               class={styles.closeHeaderTrigger}
               onclick={() => props.closeDialog()}
-              preItem={<Icon icon="close" />}
-            />
+              shape={ButtonShape.CIRCLE}
+            >
+              <Icon icon="close" />
+            </Button>
           </div>
           <div class={styles.dialogContent}>{props.children}</div>
           <Show when={props.footerElement}>

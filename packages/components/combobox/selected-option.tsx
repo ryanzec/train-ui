@@ -1,4 +1,4 @@
-import Button from '$/components/button';
+import Button, { ButtonShape } from '$/components/button';
 import styles from '$/components/combobox/combobox.module.css';
 import type { ComboboxExtraData, ComboboxSelectedOptionProps } from '$/components/combobox/utils';
 import Icon from '$/components/icon';
@@ -9,11 +9,13 @@ const SelectedOption = <TData extends ComboboxExtraData>(props: ComboboxSelected
       {props.option.display}
       <Button
         data-id="delete-indicator"
-        preItem={<Icon icon="close" />}
         onClick={() => {
           props.removeValue(props.optionIndex);
         }}
-      />
+        shape={ButtonShape.CIRCLE}
+      >
+        <Icon icon="close" />
+      </Button>
     </div>
   );
 };

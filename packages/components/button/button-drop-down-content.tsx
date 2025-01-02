@@ -8,7 +8,7 @@ const ButtonDropDownContent = (passedProps: ParentProps<ButtonDropDownContentPro
   const [props, restOfProps] = splitProps(passedProps, ['children']);
 
   return (
-    <div {...restOfProps} class={styles.dropDownContent}>
+    <div data-id="button-drop-down-content" {...restOfProps} class={styles.dropDownContent}>
       {props.children}
     </div>
   );

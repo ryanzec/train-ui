@@ -10,7 +10,7 @@ export enum ButtonVariant {
   UNSTYLED = 'unstyled',
 }
 
-export enum ButtonIconPosition {
+export enum ButtonItemPosition {
   PRE = 'pre',
   POST = 'post',
 }
@@ -27,4 +27,9 @@ export enum ButtonColor {
   INFO = 'info',
   WARNING = 'warning',
   DANGER = 'danger',
+}
+
+export enum ButtonShape {
+  ROUNDED = 'rounded',
+  CIRCLE = 'circle',
 }

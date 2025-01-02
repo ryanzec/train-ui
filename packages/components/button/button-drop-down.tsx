@@ -55,7 +55,7 @@ export const ButtonDropDown = (passedProps: ParentProps<ButtonDropDownProps>) =>
        * does work when the button is disabled
        */}
       <span>
-        <Button {...restOfProps} class={props.buttonClass}>
+        <Button {...restOfProps} data-id="button-drop-down-trigger" class={props.buttonClass}>
           {props.label}
         </Button>
       </span>
