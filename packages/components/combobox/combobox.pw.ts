@@ -1,4 +1,4 @@
-import { type Page, expect, test } from '@playwright/test';
+import { type Locator, type Page, expect, test } from '@playwright/test';
 
 import { playwrightUtils } from '$/utils/playwright';
 
@@ -29,296 +29,504 @@ const urls = {
   multiWithMissingData: '/components/combobox/multi-with-missing-data',
 };
 
-const locators = {
-  resetSelectedButton: '[data-id="reset-selected-button"]',
-  setSelectedButton: '[data-id="set-selected-button"]',
-  comboboxInput: '[data-id="combobox"] [data-id="input"]',
-  comboboxOptionsContainer: '[data-id="combobox"] [data-id="options"]',
-  comboboxOptions: '[data-id="combobox"] [data-id="options"] [data-id*="option"]',
-  firstComboboxOption: '[data-id="combobox"] [data-id="options"] [data-id*="option"]:nth-child(1)',
-  comboboxHighlightedOption: '[data-id="combobox"] [data-id="options"] [data-id*="highlighted-option"]',
-  checkSelectedComboboxValue: '[data-id="check-selected-combobox-value"]',
-  checkFormValue: '[data-id="check-form-value"]',
-  selectedOptions: '[data-id="combobox"] [data-id="selected-option"]',
-  secondSelectedOptionDeleteIndicator:
-    '[data-id="combobox"] [data-id="selected-option"]:nth-child(2) [data-id="delete-indicator"]',
-  asyncDataLoadingIndicator: '[data-id="combobox"] [data-id="async-options-loading"]',
-  asyncDataBeforeThreshold: '[data-id="combobox"] [data-id="async-options-before-threshold"]',
-  noOptionsFound: '[data-id="combobox"] [data-id*="no-options-found"]',
-  inputIconIndicator: '[data-id="combobox"] [data-id="input-icon-indicator"]',
-  clearIconTrigger: '[data-id="combobox"] [data-id="clear-icon-trigger"]',
-  manualSelectedOptions: '[data-id="manual-selected-options"]',
-};
+class ComboboxPage {
+  readonly page: Page;
 
-const testSelectedValue = async (page: Page, checkValue: string, isMultiSelect: boolean, errorContext?: string) => {
-  if (isMultiSelect) {
-    await expect(page.locator(locators.selectedOptions), errorContext).toContainText(checkValue);
+  readonly comboboxInput: Locator;
 
-    return;
+  readonly resetSelectedButton: Locator;
+
+  readonly setSelectedButton: Locator;
+
+  readonly comboboxOptionsContainer: Locator;
+
+  readonly comboboxOption: Locator;
+
+  readonly firstComboboxOption: Locator;
+
+  readonly comboboxHighlightedOption: Locator;
+
+  readonly checkSelectedComboboxValue: Locator;
+
+  readonly checkFormValue: Locator;
+
+  readonly selectedOption: Locator;
+
+  readonly secondSelectedOptionDeleteIndicator: Locator;
+
+  readonly asyncDataLoadingIndicator: Locator;
+
+  readonly asyncDataBeforeThreshold: Locator;
+
+  readonly noOptionsFound: Locator;
+
+  readonly inputIconIndicator: Locator;
+
+  readonly clearIconTrigger: Locator;
+
+  readonly manualSelectedOptions: Locator;
+
+  constructor(page: Page) {
+    this.page = page;
+
+    this.comboboxInput = page.locator('[data-id="combobox"] [data-id="input"]');
+    this.resetSelectedButton = page.locator('[data-id="reset-selected-button"]');
+    this.setSelectedButton = page.locator('[data-id="set-selected-button"]');
+    this.comboboxOptionsContainer = page.locator('[data-id="combobox"] [data-id="options"]');
+    this.comboboxOption = page.locator('[data-id="combobox"] [data-id="options"] [data-id*="option"]');
+    this.firstComboboxOption = page.locator(
+      '[data-id="combobox"] [data-id="options"] [data-id*="option"]:nth-child(1)',
+    );
+    this.comboboxHighlightedOption = page.locator(
+      '[data-id="combobox"] [data-id="options"] [data-id*="highlighted-option"]',
+    );
+    this.checkSelectedComboboxValue = page.locator('[data-id="check-selected-combobox-value"]');
+    this.checkFormValue = page.locator('[data-id="check-form-value"]');
+    this.selectedOption = page.locator('[data-id="combobox"] [data-id="selected-option"]');
+    this.secondSelectedOptionDeleteIndicator = page.locator(
+      '[data-id="combobox"] [data-id="selected-option"]:nth-child(2) [data-id="delete-indicator"]',
+    );
+    this.asyncDataLoadingIndicator = page.locator('[data-id="combobox"] [data-id="async-options-loading"]');
+    this.asyncDataBeforeThreshold = page.locator('[data-id="combobox"] [data-id="async-options-before-threshold"]');
+    this.noOptionsFound = page.locator('[data-id="combobox"] [data-id*="no-options-found"]');
+    this.inputIconIndicator = page.locator('[data-id="combobox"] [data-id="input-icon-indicator"]');
+    this.clearIconTrigger = page.locator('[data-id="combobox"] [data-id="clear-icon-trigger"]');
+    this.manualSelectedOptions = page.locator('[data-id="manual-selected-options"]');
   }
 
-  await expect(page.locator(locators.checkSelectedComboboxValue), errorContext).toContainText(checkValue);
-};
-
-const testNoSelectedValue = async (page: Page, isMultiSelect: boolean, errorContext?: string) => {
-  if (isMultiSelect) {
-    await expect(page.locator(locators.selectedOptions), errorContext).toHaveCount(0);
-
-    return;
+  async goto(url: string) {
+    return await playwrightUtils.goto(this.page, url);
   }
 
-  await expect(page.locator(locators.checkSelectedComboboxValue), errorContext).toHaveCount(0);
-};
+  // selectors
+  getSelectedOptionDeleteIndicator(index: number) {
+    return this.page.locator(
+      `[data-id="combobox"] [data-id="selected-option"]:nth-child(${index}) [data-id="delete-indicator"]`,
+    );
+  }
+
+  getOption(index: number) {
+    return this.page.locator(`[data-id="combobox"] [data-id="options"] [data-id*="option"]:nth-child(${index})`);
+  }
+
+  // actions
+  async clickInput() {
+    await this.comboboxInput.click();
+  }
+
+  async fillInput(value: string) {
+    await this.comboboxInput.fill(value);
+  }
+
+  async pressInput(value: string) {
+    await this.comboboxInput.press(value);
+  }
+
+  async blurInput() {
+    await this.comboboxInput.blur();
+  }
+
+  async focusInput() {
+    await this.comboboxInput.focus();
+  }
+
+  async clickOption(index: number) {
+    await this.getOption(index).click();
+  }
+
+  async hoverOverOption(index: number) {
+    await this.getOption(index).hover();
+  }
+
+  async clickSetSelectedButton() {
+    await this.setSelectedButton.click();
+  }
+
+  async clickResetSelectedButton() {
+    await this.resetSelectedButton.click();
+  }
+
+  async clickInputIconIndicator() {
+    await this.inputIconIndicator.click();
+  }
+
+  async clickClearIconIndicator() {
+    await this.clearIconTrigger.click();
+  }
+
+  async clickSelectedOptionDeleteIndicator(index: number) {
+    await this.getSelectedOptionDeleteIndicator(index).click();
+  }
+
+  // validations
+  async expectOptionsContainerToBeVisible(errorMessage: string) {
+    await expect(this.comboboxOptionsContainer, errorMessage).toBeVisible();
+  }
+
+  async expectOptionsContainerNotToBeVisible(errorMessage: string) {
+    await expect(this.comboboxOptionsContainer, errorMessage).not.toBeVisible();
+  }
+
+  async expectOptionsCount(count: number, errorMessage: string) {
+    await expect(this.comboboxOption, errorMessage).toHaveCount(count);
+  }
+
+  async expectOptionToHaveText(text: string, errorMessage: string, count = 1) {
+    await expect(
+      this.page.locator('[data-id="combobox"] [data-id="options"] [data-id*="option"]', { hasText: text }),
+      errorMessage,
+    ).toHaveCount(count);
+  }
+
+  async expectSelectedOptionToHaveText(text: string, errorMessage: string, count = 1) {
+    await expect(
+      this.page.locator('[data-id="combobox"] [data-id="selected-option"]', { hasText: text }),
+      errorMessage,
+    ).toHaveCount(count);
+  }
+
+  async expectSelectedOptionsCount(count: number, errorMessage: string) {
+    await expect(this.selectedOption, errorMessage).toHaveCount(count);
+  }
+
+  async expectHighlightedOptionsCount(count: number, errorMessage: string) {
+    await expect(this.comboboxHighlightedOption, errorMessage).toHaveCount(count);
+  }
+
+  async expectHighlightedOptionDisplay(display: string, errorMessage: string) {
+    await expect(this.comboboxHighlightedOption, errorMessage).toHaveText(display);
+  }
+
+  async expectOptionsNotToBeVisible(errorMessage: string) {
+    await expect(this.comboboxOption, errorMessage).not.toBeVisible();
+  }
+
+  async expectInputToBeFocused(errorMessage: string) {
+    await expect(this.comboboxInput, errorMessage).toBeFocused();
+  }
+
+  async expectInputNotToBeFocused(errorMessage: string) {
+    await expect(this.comboboxInput, errorMessage).not.toBeFocused();
+  }
+
+  async expectInputValue(inputValue: string, errorMessage: string) {
+    expect(await this.comboboxInput.inputValue(), errorMessage).toBe(inputValue);
+  }
+
+  async expectInputAttribute(attribute: string, value: string, errorMessage: string) {
+    await expect(this.comboboxInput, errorMessage).toHaveAttribute(attribute, value);
+  }
+
+  async expectInputToBeDisabled(errorMessage: string) {
+    await expect(this.comboboxInput, errorMessage).toBeDisabled();
+  }
+
+  async expectManualSelectedOptionToHaveText(text: string, errorMessage: string, count = 1) {
+    await expect(this.page.locator('[data-id="manual-selected-options"]', { hasText: text }), errorMessage).toHaveCount(
+      count,
+    );
+  }
+
+  async expectNoOptionsFoundNotToBeVisible(errorMessage: string) {
+    // we need to limit the timeout in the case as the no options found would go away when the debounce
+    // async call is executed so we want to make sure the no options is not visible before then
+    await expect(this.noOptionsFound, errorMessage).toHaveCount(0, { timeout: 50 });
+  }
+
+  async expectAsyncDataLoadingIndicatorNotToBeVisible(errorMessage: string) {
+    await expect(this.asyncDataLoadingIndicator, errorMessage).toHaveCount(0);
+  }
+
+  async expectAsyncDataLoadingIndicatorToBeVisible(errorMessage: string) {
+    await expect(this.asyncDataLoadingIndicator, errorMessage).toHaveCount(1);
+  }
+
+  async expectAsyncDataBeforeThresholdIndicatorToBeVisible(errorMessage: string) {
+    await expect(this.asyncDataBeforeThreshold, errorMessage).toHaveCount(1);
+  }
+
+  async testSelectedValue(checkValue: string, isMultiSelect: boolean, errorContext?: string) {
+    if (isMultiSelect) {
+      await expect(this.selectedOption, errorContext).toContainText(checkValue);
+
+      return;
+    }
+
+    await expect(this.checkSelectedComboboxValue, errorContext).toContainText(checkValue);
+  }
+
+  async testNoSelectedValue(isMultiSelect: boolean, errorContext?: string) {
+    if (isMultiSelect) {
+      await expect(this.selectedOption, errorContext).toHaveCount(0);
+
+      return;
+    }
+
+    await expect(this.checkSelectedComboboxValue, errorContext).toHaveCount(0);
+  }
+}
 
 test.describe('combobox @combobox-component', () => {
   test.describe('core functionality', () => {
     test('focusing the input should not show the list when not configured @component', async ({ page }) => {
       const testUrls = [urls.single, urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
+        await componentPage.clickInput();
 
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(0);
+        await componentPage.expectOptionsCount(0, loopErrorContext);
       }
     });
 
     test('focusing the input shows the list when configured @component', async ({ page }) => {
       const testUrls = [urls.singleAutoShowOptions, urls.multiAutoShowOptions];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
+        await componentPage.clickInput();
 
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(4);
+        await componentPage.expectOptionsCount(4, loopErrorContext);
       }
     });
 
     test('typing filters the list @component', async ({ page }) => {
       const testUrls = [urls.single, urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('1');
+        await componentPage.clickInput();
+        await componentPage.fillInput('1');
 
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(1);
-        await expect(page.locator(locators.comboboxHighlightedOption), loopErrorContext).toHaveCount(0);
+        await componentPage.expectOptionsCount(1, loopErrorContext);
+        await componentPage.expectHighlightedOptionsCount(0, loopErrorContext);
       }
     });
 
     test('using keyboard highlights item @component', async ({ page }) => {
       const testUrls = [urls.single, urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('t');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('ArrowDown');
 
-        await expect(page.locator(locators.comboboxHighlightedOption), loopErrorContext).toHaveText('test2');
+        await componentPage.expectHighlightedOptionDisplay('test2', loopErrorContext);
       }
     });
 
     test('using mouse highlights item @component', async ({ page }) => {
       const testUrls = [urls.single, urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('t');
-        await page.locator(locators.firstComboboxOption).hover();
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
+        await componentPage.hoverOverOption(1);
 
-        await expect(page.locator(locators.comboboxHighlightedOption), loopErrorContext).toHaveText('test1');
+        await componentPage.expectHighlightedOptionDisplay('test1', loopErrorContext);
       }
     });
 
     test('selecting an item hides the list @component', async ({ page }) => {
       const testUrls = [urls.single, urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('t');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
 
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(0);
+        await componentPage.expectOptionsCount(0, loopErrorContext);
       }
     });
 
     test('the escape key hides the list @component', async ({ page }) => {
       const testUrls = [urls.single, urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('t');
-        await page.locator(locators.comboboxInput).press('Escape');
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
+        await componentPage.pressInput('Escape');
 
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toBeHidden();
+        await componentPage.expectOptionsNotToBeVisible(loopErrorContext);
       }
     });
 
     test('the escape key works properly when showing items on focus @component', async ({ page }) => {
       const testUrls = [urls.singleAutoShowOptions, urls.multiAutoShowOptions];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('t');
-        await page.locator(locators.comboboxInput).press('Escape');
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
+        await componentPage.pressInput('Escape');
 
-        await expect(page.locator(locators.comboboxInput), loopErrorContext).toBeFocused();
-        expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe('');
+        await componentPage.expectInputToBeFocused(loopErrorContext);
+        await componentPage.expectInputValue('', loopErrorContext);
+        await componentPage.expectOptionsContainerToBeVisible(loopErrorContext);
 
-        await expect(page.locator(locators.comboboxOptionsContainer), loopErrorContext).toBeVisible();
-        await page.locator(locators.comboboxInput).press('Escape');
+        await componentPage.pressInput('Escape');
 
-        await expect(page.locator(locators.comboboxInput), loopErrorContext).not.toBeFocused();
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toBeHidden();
+        await componentPage.expectInputNotToBeFocused(loopErrorContext);
+        await componentPage.expectOptionsNotToBeVisible(loopErrorContext);
       }
     });
 
     test('preselection works @component', async ({ page }) => {
       const testUrls = [urls.singlePreselected, urls.multiPreselected];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
         if (!isMultiMode) {
-          expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe('test1');
+          await componentPage.expectInputValue('test1', loopErrorContext);
         }
 
-        await testSelectedValue(page, 'test1', isMultiMode);
+        await componentPage.testSelectedValue('test1', isMultiMode);
       }
     });
 
     test('escape clears selection @component', async ({ page }) => {
       const testUrls = [urls.singlePreselected, urls.multiPreselected];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).press('Escape');
+        await componentPage.clickInput();
+        await componentPage.pressInput('Escape');
 
-        expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe('');
+        await componentPage.expectInputValue('', loopErrorContext);
 
         if (!isMultiMode) {
-          await testNoSelectedValue(page, isMultiMode, loopErrorContext);
+          await componentPage.testNoSelectedValue(isMultiMode, loopErrorContext);
         }
       }
     });
 
     test('tab hides the list @component', async ({ page }) => {
       const testUrls = [urls.single, urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('t');
-        await page.locator(locators.comboboxInput).press('Tab');
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
+        await componentPage.pressInput('Tab');
 
-        await expect(page.locator(locators.comboboxInput), loopErrorContext).not.toBeFocused();
-        await expect(page.locator(locators.comboboxOptionsContainer), loopErrorContext).toBeHidden();
+        await componentPage.expectInputNotToBeFocused(loopErrorContext);
+        await componentPage.expectOptionsContainerNotToBeVisible(loopErrorContext);
       }
     });
 
     test('tab with nothing selected does nothing @component', async ({ page }) => {
       const testUrls = [urls.single, urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('t');
-        await page.locator(locators.comboboxInput).press('Tab');
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
+        await componentPage.pressInput('Tab');
 
-        expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe('');
+        await componentPage.expectInputValue('', loopErrorContext);
 
-        await testNoSelectedValue(page, isMultiMode, loopErrorContext);
+        await componentPage.testNoSelectedValue(isMultiMode, loopErrorContext);
       }
     });
 
-    test('tab with selection should select that item @component', async ({ page }) => {
+    test('tab with selection should do nothing @component', async ({ page }) => {
       const testUrls = [urls.single, urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('t');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Tab');
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Tab');
 
-        expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe(
-          isMultiMode ? '' : 'test1',
-        );
+        await componentPage.expectInputValue('', loopErrorContext);
 
-        await testSelectedValue(page, 'test1', isMultiMode, loopErrorContext);
+        await componentPage.testNoSelectedValue(isMultiMode, loopErrorContext);
       }
     });
 
     test('blurring hides the list @component', async ({ page }) => {
       const testUrls = [urls.single, urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('t');
-        await page.locator(locators.comboboxInput).blur();
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
+        await componentPage.blurInput();
 
-        await expect(page.locator(locators.comboboxInput), loopErrorContext).not.toBeFocused();
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toBeHidden();
+        await componentPage.expectInputNotToBeFocused(loopErrorContext);
+        await componentPage.expectOptionsNotToBeVisible(loopErrorContext);
       }
     });
 
@@ -326,65 +534,21 @@ test.describe('combobox @combobox-component', () => {
       page,
     }) => {
       const testUrls = [urls.single, urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('t');
-        await page.locator(locators.comboboxInput).blur();
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
+        await componentPage.blurInput();
 
-        expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe('');
+        await componentPage.expectInputValue('', loopErrorContext);
 
-        await testNoSelectedValue(page, isMultiMode, loopErrorContext);
-      }
-    });
-
-    test('blurring with input value and nothing selected uses input value without force selection @component', async ({
-      page,
-    }) => {
-      const testUrls = [urls.singleNoForceSelection, urls.multiNoForceSelection];
-
-      for (let i = 0; i < testUrls.length; i++) {
-        const isMultiMode = testUrls[i].includes('/multi');
-        const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
-
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
-
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('testing new value');
-        await page.locator(locators.comboboxInput).blur();
-
-        expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe(
-          isMultiMode ? '' : 'testing new value',
-        );
-
-        await testSelectedValue(page, 'testing new value', isMultiMode, loopErrorContext);
-      }
-    });
-
-    test('blurring with selection should select that value @component', async ({ page }) => {
-      const testUrls = [urls.single, urls.multi];
-
-      for (let i = 0; i < testUrls.length; i++) {
-        const isMultiMode = testUrls[i].includes('/multi');
-        const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
-
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
-
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('t');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).blur();
-
-        expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe(
-          isMultiMode ? '' : 'test1',
-        );
-
-        await testSelectedValue(page, 'test1', isMultiMode, loopErrorContext);
+        await componentPage.testNoSelectedValue(isMultiMode, loopErrorContext);
       }
     });
 
@@ -392,22 +556,21 @@ test.describe('combobox @combobox-component', () => {
       page,
     }) => {
       const testUrls = [urls.singlePreselected, urls.multiPreselected];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('Backspace');
-        await page.locator(locators.comboboxInput).blur();
+        await componentPage.clickInput();
+        await componentPage.fillInput('Backspace');
+        await componentPage.blurInput();
 
-        expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe(
-          isMultiMode ? '' : 'test1',
-        );
+        await componentPage.expectInputValue(isMultiMode ? '' : 'test1', loopErrorContext);
 
-        await testSelectedValue(page, 'test1', isMultiMode, loopErrorContext);
+        await componentPage.testSelectedValue('test1', isMultiMode, loopErrorContext);
       }
     });
 
@@ -415,41 +578,38 @@ test.describe('combobox @combobox-component', () => {
       page,
     }) => {
       const testUrls = [urls.singleAutoShowOptions, urls.multiAutoShowOptions];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('t');
-        await page.locator(locators.firstComboboxOption).click();
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).press('Backspace');
-        await page.locator(locators.comboboxInput).blur();
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
+        await componentPage.clickOption(1);
+        await componentPage.clickInput();
+        await componentPage.pressInput('Backspace');
+        await componentPage.blurInput();
 
-        expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe(
-          isMultiMode ? '' : 'test1',
-        );
+        await componentPage.expectInputValue(isMultiMode ? '' : 'test1', loopErrorContext);
 
-        await testSelectedValue(page, 'test1', isMultiMode, loopErrorContext);
+        await componentPage.testSelectedValue('test1', isMultiMode, loopErrorContext);
       }
     });
 
     test('placeholder works @component', async ({ page }) => {
       const testUrls = [urls.singlePlaceholder, urls.multiPlaceholder];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await expect(page.locator(locators.comboboxInput), loopErrorContext).toHaveAttribute(
-          'placeholder',
-          'placeholder',
-        );
+        await componentPage.expectInputAttribute('placeholder', 'placeholder', loopErrorContext);
       }
     });
 
@@ -458,17 +618,18 @@ test.describe('combobox @combobox-component', () => {
     }) => {
       // multi select does not display anything in the input when something is selected
       const testUrls = [urls.single];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.setSelectedButton).click();
+        await componentPage.clickSetSelectedButton();
 
-        await expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe('tes4');
-        await testSelectedValue(page, 'tes4', isMultiMode, loopErrorContext);
+        await componentPage.expectInputValue('tes4', loopErrorContext);
+        await componentPage.testSelectedValue('tes4', isMultiMode, loopErrorContext);
       }
     });
 
@@ -477,18 +638,19 @@ test.describe('combobox @combobox-component', () => {
     }) => {
       // multi select does not display anything in the input when something is selected
       const testUrls = [urls.single];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.setSelectedButton).click();
-        await page.locator(locators.resetSelectedButton).click();
+        await componentPage.clickSetSelectedButton();
+        await componentPage.clickResetSelectedButton();
 
-        await expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe('');
-        await testNoSelectedValue(page, isMultiMode, loopErrorContext);
+        await componentPage.expectInputValue('', loopErrorContext);
+        await componentPage.testNoSelectedValue(isMultiMode, loopErrorContext);
       }
     });
 
@@ -497,39 +659,41 @@ test.describe('combobox @combobox-component', () => {
     }) => {
       // multi select does not display anything in the input when something is selected
       const testUrls = [urls.single];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).fill('t');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Backspace');
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
+        await componentPage.pressInput('Backspace');
+        await componentPage.pressInput('Backspace');
 
-        // validate no options are visible which means that nothing should be selected
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(0);
+        await componentPage.expectOptionsCount(0, loopErrorContext);
 
-        await page.locator(locators.comboboxInput).blur();
+        await componentPage.blurInput();
 
-        await expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe('');
+        await componentPage.expectInputValue('', loopErrorContext);
       }
     });
 
-    test('input icon indicator work when there is no value @component', async ({ page }) => {
+    test('input icon indicator work when there is no value @component @flaky', async ({ page }) => {
       // multi select does not display anything in the input when something is selected
       const testUrls = [urls.singleNoForceSelection, urls.multiNoForceSelection];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.inputIconIndicator).click();
+        await componentPage.clickInputIconIndicator();
 
-        await expect(page.locator(locators.comboboxInput), loopErrorContext).toBeFocused();
+        await componentPage.expectInputNotToBeFocused(loopErrorContext);
       }
     });
 
@@ -538,30 +702,32 @@ test.describe('combobox @combobox-component', () => {
     }) => {
       // multi select does not display anything in the input when something is selected
       const testUrls = [urls.single, urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).press('ArrowDown');
+        await componentPage.clickInput();
+        await componentPage.pressInput('ArrowDown');
 
-        await expect(page.locator(locators.comboboxInput), loopErrorContext).toBeFocused();
-        await expect(page.locator(locators.comboboxOptionsContainer), loopErrorContext).toBeVisible();
+        await componentPage.expectInputToBeFocused(loopErrorContext);
+        await componentPage.expectOptionsContainerToBeVisible(loopErrorContext);
       }
     });
 
     test('disabled @component', async ({ page }) => {
       const testUrls = [urls.singleDisabled, urls.multiDisabled];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await expect(page.locator(locators.comboboxInput), loopErrorContext).toBeDisabled();
+        await componentPage.expectInputToBeDisabled(loopErrorContext);
       }
     });
 
@@ -571,19 +737,20 @@ test.describe('combobox @combobox-component', () => {
       test.setTimeout(30000);
 
       const testUrls = [urls.singleWithMissingData, urls.multiWithMissingData];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
+        await componentPage.clickInput();
 
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(4);
-        await expect(page.locator(locators.comboboxOptions, { hasText: 'test1' }), loopErrorContext).toHaveCount(1);
-        await expect(page.locator(locators.comboboxOptions, { hasText: 'test2' }), loopErrorContext).toHaveCount(1);
-        await expect(page.locator(locators.comboboxOptions, { hasText: 'tes3' }), loopErrorContext).toHaveCount(1);
-        await expect(page.locator(locators.comboboxOptions, { hasText: 'tes4' }), loopErrorContext).toHaveCount(1);
+        await componentPage.expectOptionsCount(4, loopErrorContext);
+        await componentPage.expectOptionToHaveText('test1', loopErrorContext);
+        await componentPage.expectOptionToHaveText('test2', loopErrorContext);
+        await componentPage.expectOptionToHaveText('tes3', loopErrorContext);
+        await componentPage.expectOptionToHaveText('tes4', loopErrorContext);
       }
     });
   });
@@ -592,40 +759,44 @@ test.describe('combobox @combobox-component', () => {
     test('selecting a value should not filter that value out @component', async ({ page }) => {
       // multi select does not display anything in the input when something is selected
       const testUrls = [urls.singleAutoShowOptions];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).fill('t');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).blur();
-        await page.locator(locators.comboboxInput).focus();
-        await page.locator(locators.comboboxInput).press('Backspace');
+        await componentPage.clickInput();
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
+        await componentPage.blurInput();
+        await componentPage.focusInput();
+        await componentPage.pressInput('Backspace');
 
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(2);
+        await componentPage.expectOptionsCount(2, loopErrorContext);
       }
     });
 
     test('input icon indicator should work when there is a selected value @component', async ({ page }) => {
       // multi select does not display anything in the input when something is selected
       const testUrls = [urls.singleNoForceSelection];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).fill('t');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).blur();
-        await page.locator(locators.clearIconTrigger).click();
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.blurInput();
+        await componentPage.clickClearIconIndicator();
 
-        await testNoSelectedValue(page, isMultiMode, loopErrorContext);
-        await expect(page.locator(locators.comboboxInput), loopErrorContext).not.toBeFocused();
+        await componentPage.testNoSelectedValue(isMultiMode, loopErrorContext);
+        await componentPage.expectInputNotToBeFocused(loopErrorContext);
       }
     });
   });
@@ -633,96 +804,120 @@ test.describe('combobox @combobox-component', () => {
   test.describe('multi-select mode core functionality', () => {
     test('does not show previously selected items @component', async ({ page }) => {
       const testUrls = [urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
+        await componentPage.clickInput();
 
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(0);
+        await componentPage.expectOptionsCount(0, loopErrorContext);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
+        await componentPage.clickInput();
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
+        await componentPage.pressInput('ArrowDown');
 
-        await expect(page.locator(locators.comboboxOptions, { hasText: 'test1' }), loopErrorContext).toHaveCount(0);
+        await componentPage.expectSelectedOptionToHaveText('test1', loopErrorContext);
       }
     });
 
     test('can selected multiple items @component', async ({ page }) => {
       const testUrls = [urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
+        await componentPage.clickInput();
 
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(0);
+        await componentPage.expectOptionsCount(0, loopErrorContext);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
+        await componentPage.clickInput();
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
 
-        await expect(page.locator(locators.selectedOptions), loopErrorContext).toHaveCount(2);
-        await expect(page.locator(locators.selectedOptions, { hasText: 'test1' }), loopErrorContext).toHaveCount(1);
-        await expect(page.locator(locators.selectedOptions, { hasText: 'test2' }), loopErrorContext).toHaveCount(1);
+        await componentPage.expectSelectedOptionsCount(2, loopErrorContext);
+        await componentPage.expectSelectedOptionToHaveText('test1', loopErrorContext);
+        await componentPage.expectSelectedOptionToHaveText('test2', loopErrorContext);
       }
     });
 
     test('delete selected item works @component', async ({ page }) => {
       const testUrls = [urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
+        await componentPage.expectOptionsCount(0, loopErrorContext);
 
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(0);
+        await componentPage.clickInput();
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
+        await componentPage.clickSelectedOptionDeleteIndicator(2);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
-        await page.locator(locators.secondSelectedOptionDeleteIndicator).click();
+        await componentPage.expectSelectedOptionsCount(1, loopErrorContext);
+        await componentPage.expectSelectedOptionToHaveText('test1', loopErrorContext);
+      }
+    });
 
-        await expect(page.locator(locators.selectedOptions), loopErrorContext).toHaveCount(1);
-        await expect(page.locator(locators.selectedOptions, { hasText: 'test1' }), loopErrorContext).toHaveCount(1);
+    test('delete selected item does not show menu @component', async ({ page }) => {
+      const testUrls = [urls.multi];
+      const componentPage = new ComboboxPage(page);
+
+      for (let i = 0; i < testUrls.length; i++) {
+        const loopErrorContext = `failed url: ${testUrls[i]}`;
+
+        await componentPage.goto(testUrls[i]);
+
+        await componentPage.expectOptionsCount(0, loopErrorContext);
+
+        await componentPage.clickInput();
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
+        await componentPage.clickSelectedOptionDeleteIndicator(2);
+
+        await componentPage.expectOptionsContainerNotToBeVisible(loopErrorContext);
       }
     });
 
     test('delete selected item shows back in list @component', async ({ page }) => {
       const testUrls = [urls.multi];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
+        await componentPage.clickInput();
 
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(0);
+        await componentPage.expectOptionsCount(0, loopErrorContext);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
-        await page.locator(locators.secondSelectedOptionDeleteIndicator).click();
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('t');
+        await componentPage.clickInput();
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
+        await componentPage.clickSelectedOptionDeleteIndicator(2);
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
 
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(3);
-        await expect(page.locator(locators.comboboxOptions, { hasText: 'test2' }), loopErrorContext).toHaveCount(1);
+        await componentPage.expectOptionsCount(3, loopErrorContext);
+        await componentPage.expectOptionToHaveText('test2', loopErrorContext);
       }
     });
 
@@ -730,18 +925,19 @@ test.describe('combobox @combobox-component', () => {
       page,
     }) => {
       const testUrls = [urls.multiAutoShowOptions];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.firstComboboxOption).click();
+        await componentPage.clickInput();
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.clickOption(1);
 
-        await expect(page.locator(locators.comboboxOptionsContainer), loopErrorContext).toBeVisible();
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(3);
+        await componentPage.expectOptionsContainerToBeVisible(loopErrorContext);
+        await componentPage.expectOptionsCount(3, loopErrorContext);
       }
     });
 
@@ -749,39 +945,41 @@ test.describe('combobox @combobox-component', () => {
       page,
     }) => {
       const testUrls = [urls.multiAutoShowOptions];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
+        await componentPage.clickInput();
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
 
-        await expect(page.locator(locators.comboboxOptionsContainer), loopErrorContext).toBeVisible();
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(3);
+        await componentPage.expectOptionsContainerToBeVisible(loopErrorContext);
+        await componentPage.expectOptionsCount(3, loopErrorContext);
       }
     });
 
     test('input icon indicator should work when there is a selected value @component', async ({ page }) => {
       // multi select does not display anything in the input when something is selected
       const testUrls = [urls.multiNoForceSelection];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const isMultiMode = testUrls[i].includes('/multi');
         const loopErrorContext = `failed url: ${testUrls[i]}${isMultiMode ? '(multi mode)' : ''}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('testing new value');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
-        await page.locator(locators.inputIconIndicator).click();
+        await componentPage.clickInput();
+        await componentPage.fillInput('testing new value');
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
+        await componentPage.clickInputIconIndicator();
 
-        await testSelectedValue(page, 'testing new value', isMultiMode, loopErrorContext);
-        await expect(page.locator(locators.comboboxInput)).toBeFocused();
+        await componentPage.testSelectedValue('testing new value', isMultiMode, loopErrorContext);
+        await componentPage.expectInputToBeFocused(loopErrorContext);
       }
     });
   });
@@ -789,25 +987,24 @@ test.describe('combobox @combobox-component', () => {
   test.describe('show selected option in list of options', () => {
     test('selected value still show up in list of options @component', async ({ page }) => {
       const testUrls = [urls.multiFormattedSelectables];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
+        await componentPage.clickInput();
 
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(0);
+        await componentPage.expectOptionsCount(0, loopErrorContext);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
+        await componentPage.clickInput();
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
+        await componentPage.pressInput('ArrowDown');
 
-        await expect(page.locator(locators.comboboxOptions, { hasText: 'test1' }), loopErrorContext).toHaveCount(1);
-        await expect(page.locator(locators.manualSelectedOptions, { hasText: 'test1' }), loopErrorContext).toHaveCount(
-          1,
-        );
+        await componentPage.expectOptionToHaveText('test1', loopErrorContext);
+        await componentPage.expectManualSelectedOptionToHaveText('test1', loopErrorContext);
       }
     });
 
@@ -815,25 +1012,24 @@ test.describe('combobox @combobox-component', () => {
       page,
     }) => {
       const testUrls = [urls.multiFormattedSelectables];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
+        await componentPage.clickInput();
 
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(0);
+        await componentPage.expectOptionsCount(0, loopErrorContext);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
+        await componentPage.clickInput();
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
 
-        await expect(page.locator(locators.manualSelectedOptions, { hasText: 'test1' }), loopErrorContext).toHaveCount(
-          0,
-        );
+        await componentPage.expectManualSelectedOptionToHaveText('test1', loopErrorContext, 0);
       }
     });
 
@@ -841,23 +1037,24 @@ test.describe('combobox @combobox-component', () => {
       page,
     }) => {
       const testUrls = [urls.singleFormattedSelectablesRemoveDuplicateSelect];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
+        await componentPage.clickInput();
 
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(0);
+        await componentPage.expectOptionsCount(0, loopErrorContext);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
+        await componentPage.clickInput();
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
 
-        await testNoSelectedValue(page, false, loopErrorContext);
+        await componentPage.testNoSelectedValue(false, loopErrorContext);
       }
     });
   });
@@ -865,18 +1062,17 @@ test.describe('combobox @combobox-component', () => {
   test.describe('async item retrieval', () => {
     test('no option does not show up while the debounce is wait to be processed @component', async ({ page }) => {
       const testUrls = [urls.singleAsync, urls.multiAsync];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('t');
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
 
-        // we need to limit the timeout in the case as the no options found would go away when the debounce
-        // async call is executed so we want to make sure the no options is not visible before then
-        await expect(page.locator(locators.noOptionsFound), loopErrorContext).toHaveCount(0, { timeout: 50 });
+        await componentPage.expectNoOptionsFoundNotToBeVisible(loopErrorContext);
       }
     });
 
@@ -886,21 +1082,22 @@ test.describe('combobox @combobox-component', () => {
       test.setTimeout(30000);
 
       const testUrls = [urls.singleAsync, urls.multiAsync];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('t');
+        await componentPage.clickInput();
+        await componentPage.fillInput('t');
 
-        await expect(page.locator(locators.asyncDataLoadingIndicator), loopErrorContext).toHaveCount(0);
+        await componentPage.expectAsyncDataLoadingIndicatorNotToBeVisible(loopErrorContext);
 
-        // we delay in order to make sure that the debounce happen and we are still showing the before threshold content
+        // we delay in order to make sure the debounce happens, and we are still showing the before threshold content
         await playwrightUtils.pauseTest(500);
 
-        await expect(page.locator(locators.asyncDataBeforeThreshold), loopErrorContext).toHaveCount(1);
+        await componentPage.expectAsyncDataBeforeThresholdIndicatorToBeVisible(loopErrorContext);
       }
     });
 
@@ -910,17 +1107,18 @@ test.describe('combobox @combobox-component', () => {
       test.setTimeout(30000);
 
       const testUrls = [urls.singleAsync, urls.multiAsync];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).fill('tes');
+        await componentPage.clickInput();
+        await componentPage.fillInput('tes');
 
-        await expect(page.locator(locators.asyncDataLoadingIndicator), loopErrorContext).toHaveCount(1);
-        await expect(page.locator(locators.comboboxOptions), loopErrorContext).toHaveCount(4);
+        await componentPage.expectAsyncDataLoadingIndicatorToBeVisible(loopErrorContext);
+        await componentPage.expectOptionsCount(4, loopErrorContext);
       }
     });
   });
@@ -929,26 +1127,21 @@ test.describe('combobox @combobox-component', () => {
     // this needs to be testing in a form context as Enter has special meaning for an input when in a form
     test('multi select selects item with enter and keeps input focused without typing @component', async ({ page }) => {
       const testUrls = [urls.multiInForm, urls.multiInFormAutoShowOptions];
+      const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
         const loopErrorContext = `failed url: ${testUrls[i]}`;
 
-        await page.goto(playwrightUtils.buildUrl(testUrls[i]));
+        await componentPage.goto(testUrls[i]);
 
-        await page.locator(locators.comboboxInput).click();
-        await page.locator(locators.comboboxInput).press('ArrowDown');
-        await page.locator(locators.comboboxInput).press('Enter');
+        await componentPage.clickInput();
+        await componentPage.pressInput('ArrowDown');
+        await componentPage.pressInput('Enter');
 
-        await expect(page.locator(locators.selectedOptions), loopErrorContext).toHaveCount(1);
-        await expect(await page.locator(locators.comboboxInput).inputValue(), loopErrorContext).toBe('');
-        await expect(page.locator(locators.comboboxInput), loopErrorContext).toBeFocused();
+        await componentPage.expectSelectedOptionsCount(1, loopErrorContext);
+        await componentPage.expectInputValue('', loopErrorContext);
+        await componentPage.expectInputToBeFocused(loopErrorContext);
       }
     });
-  });
-
-  test.describe('native select replacement', () => {
-    test.fixme('TODO: select value still show in list', async ({ page }) => {});
-
-    test.fixme('TODO: scrolls to the selected option', async ({ page }) => {});
   });
 });

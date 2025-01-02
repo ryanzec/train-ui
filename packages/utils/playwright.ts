@@ -73,9 +73,14 @@ const buildUrl = (baseUrl: string, optionOverrides: BuildUrlOptions = {}) => {
   return `${url}?${searchParams.toString()}`;
 };
 
+const goto = async (page: Page, url: string) => {
+  await page.goto(url);
+};
+
 export const playwrightUtils = {
   mockApi,
   dragAndDrop,
   pauseTest,
   buildUrl,
+  goto,
 };

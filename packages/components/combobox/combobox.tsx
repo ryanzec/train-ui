@@ -72,25 +72,50 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
 
   return (
     <div data-id="combobox" {...restOfProps} class={classnames(styles.combobox, props.class)}>
-      <Input
-        {...comboboxStore.getInputProps()}
-        inputContainerClass={comboboxStore.store.isOpen ? styles.inputContainer : undefined}
-        type="text"
-        data-uncontrolled-value="true"
-        disabled={props.disabled}
-        validationState={props.validationState}
-        postItem={
-          props.disabled ? null : (
-            <>
-              <Show when={props.showClearIcon && !comboboxStore.store.isOpen && comboboxStore.inputHasClearableValue()}>
-                <Icon data-id="clear-icon-trigger" icon="close" onClick={onClickClearTrigger} />
-              </Show>
-              <Icon data-id="input-icon-indicator" icon="arrow_drop_down" onClick={onClickDropDownIndicator} />
-            </>
-          )
-        }
-        postItemIsClickable
-      />
+      <div>
+        <Input
+          {...comboboxStore.getInputProps()}
+          inputContainerClass={comboboxStore.store.isOpen ? styles.inputContainer : undefined}
+          type="text"
+          data-uncontrolled-value="true"
+          disabled={props.disabled}
+          validationState={props.validationState}
+          preItemIsInline
+          inlineItem={
+            <Show when={props.isMulti && props.selected.length > 0 && !!props.selectedComponent}>
+              {/*<div class={styles.selectedOptions}>*/}
+              {/*  <div data-id="selected-options">*/}
+              <For each={props.selected}>
+                {(option: ComboboxOption<TData>, optionIndex: Accessor<number>) => {
+                  return (
+                    <Dynamic
+                      component={passedProps.selectedComponent}
+                      {...comboboxStore.getSelectedOptionProps()}
+                      option={option}
+                      optionIndex={optionIndex()}
+                    />
+                  );
+                }}
+              </For>
+              {/*  </div>*/}
+              {/*</div>*/}
+            </Show>
+          }
+          postItem={
+            props.disabled ? null : (
+              <>
+                <Show
+                  when={props.showClearIcon && !comboboxStore.store.isOpen && comboboxStore.inputHasClearableValue()}
+                >
+                  <Icon data-id="clear-icon-trigger" icon="close" onClick={onClickClearTrigger} />
+                </Show>
+                <Icon data-id="input-icon-indicator" icon="arrow_drop_down" onClick={onClickDropDownIndicator} />
+              </>
+            )
+          }
+          postItemIsClickable
+        />
+      </div>
       <List
         data-id="options"
         class={classnames(styles.list, {
@@ -136,22 +161,6 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
           </For>
         </Show>
       </List>
-      <Show when={props.isMulti && props.selected.length > 0 && !!props.selectedComponent}>
-        <div data-id="selected-options">
-          <For each={props.selected}>
-            {(option: ComboboxOption<TData>, optionIndex: Accessor<number>) => {
-              return (
-                <Dynamic
-                  component={passedProps.selectedComponent}
-                  {...comboboxStore.getSelectedOptionProps()}
-                  option={option}
-                  optionIndex={optionIndex()}
-                />
-              );
-            }}
-          </For>
-        </div>
-      </Show>
     </div>
   );
 };

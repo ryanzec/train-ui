@@ -16,6 +16,14 @@
   border-color: var(--color-outline-active);
 }
 
+.input-inner-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2xs);
+}
+
 .input {
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
@@ -23,12 +31,10 @@
   outline: 0;
   background: 0;
   border: 0;
-  width: 100%;
-  height: 100%;
 }
 
 .container-disabled {
-  opacity: var(--opacitiy-disabled);
+  opacity: var(--opacity-disabled);
 }
 
 .container-readonly .input-container {

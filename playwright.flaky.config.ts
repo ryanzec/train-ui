@@ -10,7 +10,7 @@ const DEV_SERVER_URL = 'http://localhost:6006';
  * See https://playwright.dev/docs/test-configuration.
  */
 const config: PlaywrightTestConfig = {
-  grep: /^(?!.*@flaky).*@component/,
+  grep: /@flaky/,
   testMatch: ['*.pw.ts', '*.pw.tsx'],
   testDir: './',
   snapshotDir: './__snapshots__',

@@ -39,8 +39,8 @@
   border: 1px solid transparent;
 }
 
-.text .button-underlay {
-  background-color: transparent;
+.text {
+  padding: 0;
 }
 
 /* neutral */

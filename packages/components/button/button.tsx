@@ -51,6 +51,7 @@ export const Button = (passedProps: ButtonProps) => {
   return (
     <button
       data-id="button"
+      type="button"
       {...restOfProps}
       class={classnames(styles.button, props.class, {
         [styles.filled]: props.variant === ButtonVariant.FILLED,
@@ -68,7 +69,6 @@ export const Button = (passedProps: ButtonProps) => {
         [styles.circle]: props.shape === ButtonShape.CIRCLE,
       })}
       disabled={props.disabled || isLoading()}
-      type="button"
     >
       <span class={styles.buttonContent}>
         {isLoading() && (

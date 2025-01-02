@@ -17,6 +17,7 @@
     "test:unit": "vitest --config ./vite.test.config.ts run",
     "test:unit:coverage": "vitest --config ./vite.test.config.ts --coverage run",
     "test:components": "playwright test -c playwright.component.config.ts",
+    "test:components:flaky": "playwright test -c playwright.flaky.config.ts",
     "test:components:ui": "playwright test -c playwright.component.config.ts --ui",
     "test:visual": "playwright test -c playwright.visual.config.ts",
     "test:visual:update": "playwright test --update-snapshots -c playwright.visual.config.ts ",

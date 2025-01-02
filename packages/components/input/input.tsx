@@ -9,6 +9,7 @@ export type InputProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
   preItem?: JSX.Element;
   preItemIsInline?: boolean;
   postItem?: JSX.Element;
+  inlineItem?: JSX.Element;
   postItemIsClickable?: boolean;
   inputContainerClass?: string;
   includeReadonlyStyles?: false;
@@ -27,6 +28,7 @@ const Input = (passedProps: InputProps) => {
       'preItem',
       'preItemIsInline',
       'postItem',
+      'inlineItem',
       'postItemIsClickable',
       'inputContainerClass',
       'includeReadonlyStyles',
@@ -79,18 +81,21 @@ const Input = (passedProps: InputProps) => {
             {props.preItem}
           </div>
         </Show>
-        <input
-          data-id="input"
-          {...restOfProps}
-          class={classnames(props.class, styles.input, {
-            [styles.errorState]: props.validationState === FormInputValidationState.INVALID,
-          })}
-          disabled={props.disabled}
-          readonly={props.readonly}
-          onFocus={onFocus}
-          onBlur={onBlur}
-          autocomplete="off"
-        />
+        <div class={styles.inputInnerContainer}>
+          <Show when={!!props.inlineItem}>{props.inlineItem}</Show>
+          <input
+            data-id="input"
+            {...restOfProps}
+            class={classnames(styles.input, props.class, {
+              [styles.errorState]: props.validationState === FormInputValidationState.INVALID,
+            })}
+            disabled={props.disabled}
+            readonly={props.readonly}
+            onFocus={onFocus}
+            onBlur={onBlur}
+            autocomplete="off"
+          />
+        </div>
         <Show when={props.postItem}>
           <div
             class={classnames(styles.postItem, {

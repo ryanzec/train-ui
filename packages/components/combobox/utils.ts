@@ -295,20 +295,28 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
 
   type SelectValueOptions = {
     removeDuplicateSingle?: boolean;
+    triggeredByBlur?: boolean;
   };
 
-  const selectValue = (option: ComboboxOption<TData>, options: SelectValueOptions = {}) => {
+  const defaultSelectValueOptions: SelectValueOptions = {
+    removeDuplicateSingle: false,
+    triggeredByBlur: false,
+  };
+
+  const selectValue = (option: ComboboxOption<TData>, optionOverrides: SelectValueOptions = {}) => {
+    const options = Object.assign({}, defaultSelectValueOptions, optionOverrides);
+
     // if the user is able to click on a selectable option that is already selected, we assume this value should
     // be unselected regardless if in multi mode since this library is opinionated in that you should not be able
     // to select the same thing multiple times
     if (props.isMulti && isSelectedOption(option.value)) {
       removeValue(getSelectedOptionIndex(option));
     } else {
-      // there are cases where we do and don't what to remove the value if already selected in single-select mode
+      // there are cases where we do and don't want to remove the value if already selected in single-select mode
       //  depending on how the select value was triggered so we use the removeDuplicateSingle to determine this
       if (options.removeDuplicateSingle && isSelectedOption(option.value)) {
         removeValue(getSelectedOptionIndex(option));
-      } else {
+      } else if (options.triggeredByBlur === false) {
         props.setSelected(props.isMulti ? [...props.selected, option] : [option]);
       }
     }
@@ -413,6 +421,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
   };
 
   const onBlurInput = () => {
+    console.log('blur');
     if (comboboxStore.keepFocusOnBlur) {
       comboboxStore.inputRef?.focus();
 
@@ -427,10 +436,12 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
 
     const selectedValue = getSelectValue();
 
+    console.log(selectedValue);
+
     if (selectedValue) {
       // regardless of the props passed in for this functionality, we don't want to do this when blurring as
-      // removal should be an explicit user interaction and not a implicit one
-      selectValue(selectedValue, { removeDuplicateSingle: false });
+      // removal should be an explicit user interaction and not an implicit one
+      selectValue(selectedValue, { removeDuplicateSingle: false, triggeredByBlur: true });
     }
 
     closeCombobox();
@@ -482,9 +493,9 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
         break;
       }
 
-      case Key.TAB:
       case Key.ENTER: {
         const selectedValue = getSelectValue();
+        console.log('enter', selectedValue);
 
         if (selectedValue) {
           // since there is a selected value, we should not do the default for these keys since we are selecting

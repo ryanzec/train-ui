@@ -14,15 +14,15 @@ const urls = {
 };
 
 const locators = {
-  item: '[data-id="item"]',
-  loadingIndicator: '[data-id="loading-indicator"]',
-  initiallyFetchedIndicator: '[data-id="initially-fetched-indicator"]',
-  refetchDataTrigger: '[data-id="refetch-data-trigger"]',
-  addItemTrigger: '[data-id="add-item-trigger"]',
-  filterInput: '[data-id="filter-input"]',
-  createInput: '[data-id="create-input"]',
-  createFailedIndicator: '[data-id="create-failed-indicator"]',
-  creatingIndicator: '[data-id="creating-indicator"]',
+  item: '[data-id="sandbox-main-content"] [data-id="item"]',
+  loadingIndicator: '[data-id="sandbox-main-content"] [data-id="loading-indicator"]',
+  initiallyFetchedIndicator: '[data-id="sandbox-main-content"] [data-id="initially-fetched-indicator"]',
+  refetchDataTrigger: '[data-id="sandbox-main-content"] [data-id="refetch-data-trigger"]',
+  addItemTrigger: '[data-id="sandbox-main-content"] [data-id="add-item-trigger"]',
+  filterInput: '[data-id="sandbox-main-content"] [data-id="filter-input"]',
+  createInput: '[data-id="sandbox-main-content"] [data-id="create-input"]',
+  createFailedIndicator: '[data-id="sandbox-main-content"] [data-id="create-failed-indicator"]',
+  creatingIndicator: '[data-id="sandbox-main-content"] [data-id="creating-indicator"]',
 };
 
 test.describe('query @query-utils', () => {

@@ -22,7 +22,9 @@ const ApplicationFrame = (passedProps: ApplicationFrameProps) => {
       <Show when={props.isLoading === false} fallback={<div>Loading</div>}>
         <ApplicationFrameNavigation routes={props.navigation} />
         <div class={classnames(styles.subContainer)}>
-          <div class={classnames(styles.mainContent)}>{props.children}</div>
+          <div data-id="sandbox-main-content" class={classnames(styles.mainContent)}>
+            {props.children}
+          </div>
         </div>
       </Show>
     </div>
