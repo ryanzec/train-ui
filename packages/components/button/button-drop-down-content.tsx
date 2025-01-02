@@ -1,10 +1,10 @@
-import { type JSX, type ParentProps, splitProps } from 'solid-js';
+import { type JSX, splitProps } from 'solid-js';
 
 import styles from '$/components/button/button.module.css';
 
 export type ButtonDropDownContentProps = JSX.HTMLAttributes<HTMLDivElement>;
 
-const ButtonDropDownContent = (passedProps: ParentProps<ButtonDropDownContentProps>) => {
+const ButtonDropDownContent = (passedProps: ButtonDropDownContentProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['children']);
 
   return (

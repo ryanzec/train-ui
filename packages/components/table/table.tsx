@@ -32,7 +32,7 @@ const Table = (passedProps: TableProps) => {
     >
       <div class={styles.innerContainer}>
         <ScrollArea class={styles.tableScrollArea}>
-          <table class={classnames(styles.table, props.class)} {...restOfProps}>
+          <table data-id="table" {...restOfProps} class={classnames(styles.table, props.class)}>
             <Show when={props.tableHead}>
               <thead class={classnames({ [styles.tableHeadSticky]: props.hasFixedHeader })}>{props.tableHead}</thead>
             </Show>

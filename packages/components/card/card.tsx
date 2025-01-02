@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { type JSX, type ParentProps, Show, mergeProps, splitProps } from 'solid-js';
+import { type JSX, Show, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/card/card.module.css';
 import { CardFooterAlignment } from '$/components/card/utils';
@@ -11,7 +11,7 @@ export type CardProps = JSX.HTMLAttributes<HTMLDivElement> & {
   footerElement?: JSX.Element;
   footerAlignment?: CardFooterAlignment;
 };
-const Card = (passedProps: ParentProps<CardProps>) => {
+const Card = (passedProps: CardProps) => {
   const [props, restOfProps] = splitProps(mergeProps({ footerAlignment: CardFooterAlignment.RIGHT }, passedProps), [
     'children',
     'class',
@@ -25,7 +25,7 @@ const Card = (passedProps: ParentProps<CardProps>) => {
   const hasContent = () => !!props.children;
 
   return (
-    <div class={classnames(styles.card, props.class)} {...restOfProps}>
+    <div data-id="card" {...restOfProps} class={classnames(styles.card, props.class)}>
       <Show when={hasHeader()}>
         <div
           class={classnames(styles.header, {

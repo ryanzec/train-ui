@@ -31,7 +31,7 @@ const Avatar = (passedProps: AvatarProps) => {
   };
 
   return (
-    <div data-id="avatar" class={classnames(styles.avatar, props.class)} {...restOfProps}>
+    <div data-id="avatar" {...restOfProps} class={classnames(styles.avatar, props.class)}>
       <Show when={props.src}>
         <img alt="avatar inage" src={props.src} />
       </Show>

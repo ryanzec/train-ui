@@ -20,6 +20,7 @@ const ScrollArea = (passedProps: OverlayScrollbarsComponentProps) => {
   return (
     <OverlayScrollbarsComponent
       defer
+      {...restOfProps}
       class={styles.scrollArea}
       options={{
         ...props.options,
@@ -28,7 +29,6 @@ const ScrollArea = (passedProps: OverlayScrollbarsComponentProps) => {
           ...defaultScrollbarOptions.scrollbars,
         },
       }}
-      {...restOfProps}
     />
   );
 };

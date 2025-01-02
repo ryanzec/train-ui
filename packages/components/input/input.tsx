@@ -80,11 +80,11 @@ const Input = (passedProps: InputProps) => {
           </div>
         </Show>
         <input
+          data-id="input"
+          {...restOfProps}
           class={classnames(props.class, styles.input, {
             [styles.errorState]: props.validationState === FormInputValidationState.INVALID,
           })}
-          data-id="input"
-          {...restOfProps}
           disabled={props.disabled}
           readonly={props.readonly}
           onFocus={onFocus}

@@ -74,6 +74,7 @@ const Emoji = (passedProps: EmojiProps) => {
       data-id="emoji"
       role="img"
       aria-label={emojisToRender().join(' ')}
+      {...restOfProps}
       class={classnames(props.class, {
         [styles.extra_small]: props.size === IconSize.EXTRA_SMALL,
         [styles.small]: props.size === IconSize.SMALL,
@@ -84,7 +85,6 @@ const Emoji = (passedProps: EmojiProps) => {
         [styles.spacingLeft]: props.spacing === EmojiSpacing.LEFT || props.spacing === EmojiSpacing.BOTH,
         [styles.spacingRight]: props.spacing === EmojiSpacing.RIGHT || props.spacing === EmojiSpacing.BOTH,
       })}
-      {...restOfProps}
       innerHTML={getEmojiHtml()}
     />
   );

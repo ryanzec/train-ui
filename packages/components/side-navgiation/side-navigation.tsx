@@ -16,10 +16,11 @@ const SideNavigation = (passedProps: SideNavigationProps) => {
 
   return (
     <div
+      data-id="side-navigation"
+      {...restOfProps}
       class={classnames(styles.sideNavigation, props.class, {
         [styles.isCollapsed]: !props.toggleStore.isToggled(),
       })}
-      {...restOfProps}
     >
       <button type="button" class={styles.header} onClick={props.toggleStore.toggle}>
         <div class={styles.headerIndicator} />

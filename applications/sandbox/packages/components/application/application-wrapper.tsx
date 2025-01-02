@@ -1,4 +1,4 @@
-import { type ParentProps, Suspense } from 'solid-js';
+import { type JSX, Suspense } from 'solid-js';
 
 import GlobalNotificationsList from '$/components/global-notifications-list';
 import Loading from '$/components/loading';
@@ -7,7 +7,7 @@ import { globalNotificationsStore } from '$/stores/global-notifications';
 import ApplicationFrame from '$sandbox/components/application-frame';
 import { dynamicRoutesStore } from '$sandbox/stores/dynamic-routes';
 
-const ApplicationWrapper = (props: ParentProps) => {
+const ApplicationWrapper = (props: JSX.ButtonHTMLAttributes<HTMLElement>) => {
   return (
     <>
       <ScrollArea>

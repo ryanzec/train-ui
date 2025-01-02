@@ -1,29 +1,32 @@
 import { type Placement, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
-import { type JSX, type ParentProps, createEffect, createSignal, mergeProps, onCleanup, splitProps } from 'solid-js';
+import { type JSX, createEffect, createSignal, mergeProps, onCleanup, splitProps } from 'solid-js';
 
 import { type TooltipStore, TooltipTriggerEvent } from '$/components/tooltip/utils';
 import { clickOutsideDirective } from '$/directives/click-outside-directive';
+import type { CommonDataAttributes } from '$/types/generic';
 
 // this is needed to avoid this code being stripped in compilation because of the way directive work in SolidJS
 clickOutsideDirective;
 
-export type TooltipProps = JSX.HTMLAttributes<HTMLDivElement> & {
-  placement?: Placement;
-  store: TooltipStore;
-  triggerEvent?: TooltipTriggerEvent;
+export type TooltipProps = JSX.HTMLAttributes<HTMLDivElement> &
+  CommonDataAttributes & {
+    placement?: Placement;
+    store: TooltipStore;
+    triggerEvent?: TooltipTriggerEvent;
+  };
+
+const defaultProps: Omit<TooltipProps, 'store'> = {
+  placement: 'bottom-end',
+  triggerEvent: TooltipTriggerEvent.HOVER,
 };
 
-const Tooltip = (passedProps: ParentProps<TooltipProps>) => {
-  const [props, restOfProps] = splitProps(
-    mergeProps(
-      {
-        placement: 'bottom-end',
-        triggerEvent: TooltipTriggerEvent.HOVER,
-      } as Required<TooltipProps>,
-      passedProps,
-    ),
-    ['placement', 'triggerEvent', 'store', 'children'],
-  );
+const Tooltip = (passedProps: TooltipProps) => {
+  const [props, restOfProps] = splitProps(mergeProps(defaultProps, passedProps), [
+    'placement',
+    'triggerEvent',
+    'store',
+    'children',
+  ]);
 
   const [containerElement, setContainerElement] = createSignal<HTMLDivElement>();
 
@@ -112,9 +115,10 @@ const Tooltip = (passedProps: ParentProps<TooltipProps>) => {
 
   return (
     <div
+      ref={containerRef}
+      data-id="tooltip"
       {...restOfProps}
       use:clickOutsideDirective={props.triggerEvent === TooltipTriggerEvent.CLICK ? disableToolTip : undefined}
-      ref={containerRef}
     >
       {props.children}
     </div>

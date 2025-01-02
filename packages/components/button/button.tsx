@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { type JSX, type ParentProps, mergeProps, splitProps } from 'solid-js';
+import { type JSX, mergeProps, splitProps } from 'solid-js';
 
 import ButtonPrePostItem from '$/components/button/button-pre-post-item';
 import styles from '$/components/button/button.module.css';
@@ -18,7 +18,7 @@ export type ButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> &
     loadingIconPosition?: ButtonItemPosition;
   };
 
-export const Button = (passedProps: ParentProps<ButtonProps>) => {
+export const Button = (passedProps: ButtonProps) => {
   const [props, restOfProps] = splitProps(
     mergeProps(
       {
@@ -51,6 +51,7 @@ export const Button = (passedProps: ParentProps<ButtonProps>) => {
   return (
     <button
       data-id="button"
+      {...restOfProps}
       class={classnames(styles.button, props.class, {
         [styles.filled]: props.variant === ButtonVariant.FILLED,
         [styles.weak]: props.variant === ButtonVariant.WEAK,
@@ -68,7 +69,6 @@ export const Button = (passedProps: ParentProps<ButtonProps>) => {
       })}
       disabled={props.disabled || isLoading()}
       type="button"
-      {...restOfProps}
     >
       <span class={styles.buttonContent}>
         {isLoading() && (

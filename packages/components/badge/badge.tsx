@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { type JSX, type ParentProps, mergeProps, splitProps } from 'solid-js';
+import { type JSX, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/badge/badge.module.css';
 import { BadgeColor, BadgeShape, BadgeSize, BadgeVariant } from '$/components/badge/utils';
@@ -14,7 +14,7 @@ export type BadgeProps = JSX.HTMLAttributes<HTMLDivElement> & {
   postIcon?: string;
 };
 
-const Badge = (passedProps: ParentProps<BadgeProps>) => {
+const Badge = (passedProps: BadgeProps) => {
   const [props, restOfProps] = splitProps(
     mergeProps(
       {
@@ -32,6 +32,7 @@ const Badge = (passedProps: ParentProps<BadgeProps>) => {
   return (
     <div
       data-id="badge"
+      {...restOfProps}
       class={classnames(props.class, styles.badge, {
         [styles.badgeSmall]: props.size === BadgeSize.SMALL,
         [styles.badgePill]: props.shape === BadgeShape.PILL,
@@ -48,7 +49,6 @@ const Badge = (passedProps: ParentProps<BadgeProps>) => {
         [styles.danger]: props.color === BadgeColor.DANGER,
         [styles.dangerStrong]: props.color === BadgeColor.DANGER && isStrong,
       })}
-      {...restOfProps}
     >
       {props.preIcon && (
         <Icon

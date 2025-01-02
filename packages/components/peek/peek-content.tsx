@@ -12,7 +12,7 @@ const PeekContent = (passedProps: PeekContentProps) => {
 
   return (
     <ScrollArea>
-      <div data-id="content" class={classnames(styles.peekContent, props.class)} {...restOfProps}>
+      <div data-id="content" {...restOfProps} class={classnames(styles.peekContent, props.class)}>
         {props.children}
       </div>
     </ScrollArea>

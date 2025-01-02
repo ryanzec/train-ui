@@ -26,6 +26,8 @@ const Icon = (passedProps: IconProps) => {
 
   return (
     <span
+      data-id="icon"
+      {...restOfProps}
       class={classnames(styles.icon, props.class, {
         'material-icons': props.variant === IconVariant.FILLED,
         [`material-icons-${props.variant}`]: props.variant !== IconVariant.FILLED,
@@ -42,7 +44,6 @@ const Icon = (passedProps: IconProps) => {
         [styles.danger]: props.color === IconColor.DANGER,
         [styles.inherit]: props.color === IconColor.INHERIT,
       })}
-      {...restOfProps}
     >
       {props.icon}
     </span>

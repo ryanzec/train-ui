@@ -10,7 +10,7 @@ const TableData = (passedProps: TableDataProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['children', 'class']);
 
   return (
-    <td class={classnames(styles.tableData, props.class)} {...restOfProps}>
+    <td data-id="data" {...restOfProps} class={classnames(styles.tableData, props.class)}>
       {props.children}
     </td>
   );

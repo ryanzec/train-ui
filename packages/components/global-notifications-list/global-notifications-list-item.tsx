@@ -31,10 +31,11 @@ const GlobalNotificationsListItem = (passedProps: GlobalNotificationsListItemPro
 
   return (
     <Callout
+      data-id="global-notifications-list-item"
+      {...restOfProps}
       class={classnames(styles.notification, props.class, {
         [styles.isRemoving]: props.notification.isRemoving || false,
       })}
-      {...restOfProps}
       color={calloutColor()}
       style={{ 'animation-duration': `${REMOVE_ANIMATION_DURATION * 1.05}ms` }}
     >

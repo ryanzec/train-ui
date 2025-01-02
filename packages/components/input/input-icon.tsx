@@ -13,7 +13,7 @@ const InputIcon = (props: InputIconProps) => {
   const [local, restOfProps] = splitProps(props, ['icon', 'class']);
 
   return (
-    <span class={classnames(local.class, styles.icon)} data-id="icon" {...restOfProps}>
+    <span data-id="input-icon" {...restOfProps} class={classnames(local.class, styles.icon)}>
       {local.icon}
     </span>
   );

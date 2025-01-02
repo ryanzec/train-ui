@@ -48,13 +48,14 @@ const FormError = (passedProps: FormErrorProps) => {
   return (
     <Callout
       ref={formErrorRef}
+      data-id="form-error"
+      {...restOfProps}
       // we use css to hide the element instead of <Show /> because we need the element to be present in the dom
       // for the ref to work properly
       class={classnames(styles.formError, {
         [styles.formErrorHidden]: !props.errorMessage,
       })}
       color={CalloutColor.DANGER}
-      {...restOfProps}
     >
       {props.errorMessage}
     </Callout>

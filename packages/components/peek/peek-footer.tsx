@@ -10,7 +10,7 @@ const PeekFooter = (passedProps: PeekFooterProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['children', 'class']);
 
   return (
-    <div data-id="footer" class={classnames(styles.peekFooter, props.class)} {...restOfProps}>
+    <div data-id="footer" {...restOfProps} class={classnames(styles.peekFooter, props.class)}>
       {props.children}
     </div>
   );

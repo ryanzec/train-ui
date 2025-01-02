@@ -9,12 +9,13 @@ const OverlayLocal = (passedProps: OverlayProps) => {
 
   return (
     <button
+      data-id="overlay-local"
+      {...restOfProps}
       type="button"
       class={classnames(styles.overlay, styles.overlayLocal, props.class, {
         [styles.strong]: props.variant === OverlayVariant.STRONG,
         [styles.weak]: props.variant === OverlayVariant.WEAK,
       })}
-      {...restOfProps}
     />
   );
 };

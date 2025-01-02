@@ -214,8 +214,9 @@ const DatePickerInput = (passedProps: DatePickerInputProps) => {
     >
       <Input
         ref={inputRef}
-        onFocus={showDatePicker}
+        data-id="date-picker-input"
         {...restOfProps}
+        onFocus={showDatePicker}
         readonly
         includeReadonlyStyles={false}
         data-uncontrolled-value="true"

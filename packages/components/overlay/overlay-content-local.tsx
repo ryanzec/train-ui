@@ -1,10 +1,10 @@
 import classnames from 'classnames';
-import type { ParentProps } from 'solid-js';
+import type { JSX } from 'solid-js';
 
 import styles from '$/components/overlay/overlay.module.css';
 
-const OverlayContentLocal = (props: ParentProps) => {
-  return <div class={classnames(styles.content, styles.contentLocal)} {...props} />;
+const OverlayContentLocal = (props: JSX.HTMLAttributes<HTMLDivElement>) => {
+  return <div data-id="overlay-content-local" {...props} class={classnames(styles.content, styles.contentLocal)} />;
 };
 
 export default OverlayContentLocal;

@@ -11,12 +11,13 @@ const Overlay = (passedProps: OverlayProps) => {
   return (
     <Portal>
       <button
+        data-id="overlay"
+        {...restOfProps}
         type="button"
         class={classnames(styles.overlay, props.class, {
           [styles.strong]: props.variant === OverlayVariant.STRONG,
           [styles.weak]: props.variant === OverlayVariant.WEAK,
         })}
-        {...restOfProps}
       />
     </Portal>
   );

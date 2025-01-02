@@ -9,7 +9,7 @@ export type ListProps = JSX.HTMLAttributes<HTMLDivElement> & CommonDataAttribute
 const List = (passedProps: ListProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['class']);
 
-  return <div data-id="list" class={classnames(styles.list, props.class)} {...restOfProps} />;
+  return <div data-id="list" {...restOfProps} class={classnames(styles.list, props.class)} />;
 };
 
 export default List;

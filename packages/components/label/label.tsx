@@ -23,7 +23,7 @@ const Label = (passedProps: LabelProps) => {
   return (
     <div data-id="label" class={classnames(styles.container, props.class)}>
       {/* biome-ignore lint/a11y/noLabelWithoutControl: provided by ...restOfProps */}
-      <label class={styles.label} {...restOfProps}>
+      <label data-id="label" {...restOfProps} class={classnames(styles.label, props.class)}>
         {props.children}
         <Show when={props.isLoading}>
           <Loading class={iconStyles.spacingLeft} iconSize={IconSize.EXTRA_SMALL} />

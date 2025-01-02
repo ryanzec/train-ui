@@ -13,7 +13,7 @@ const AvatarStack = (passedProps: AvatarStackProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['children', 'class', 'src']);
 
   return (
-    <div data-id="avatar-stack" class={classnames(styles.avatarStack, props.class)} {...restOfProps}>
+    <div data-id="avatar-stack" {...restOfProps} class={classnames(styles.avatarStack, props.class)}>
       <Show when={props.src}>
         <img alt="avatar inage" src={props.src} />
       </Show>

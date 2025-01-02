@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { type JSX, type ParentProps, Show, splitProps } from 'solid-js';
+import { type JSX, Show, splitProps } from 'solid-js';
 
 import styles from '$sandbox/components/application-frame/application-frame.module.css';
 import type { CommonDataAttributes } from '../../../../../packages/types/generic';
@@ -14,7 +14,7 @@ type ApplicationFrameProps = JSX.HTMLAttributes<HTMLDivElement> &
     navigation: DynamicRouteNavigation;
   };
 
-const ApplicationFrame = (passedProps: ParentProps<ApplicationFrameProps>) => {
+const ApplicationFrame = (passedProps: ApplicationFrameProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['isLoading', 'navigation', 'class', 'children']);
 
   return (

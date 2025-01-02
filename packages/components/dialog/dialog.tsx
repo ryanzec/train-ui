@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { type JSX, type ParentProps, Show, mergeProps, onCleanup, splitProps } from 'solid-js';
+import { type JSX, Show, mergeProps, onCleanup, splitProps } from 'solid-js';
 import { Portal } from 'solid-js/web';
 
 import Button, { ButtonColor, ButtonShape, ButtonVariant } from '$/components/button';
@@ -18,7 +18,7 @@ export type DialogProps = JSX.HTMLAttributes<HTMLDivElement> & {
   closeOnClickOverlay?: boolean;
 };
 
-const Dialog = (passedProps: ParentProps<DialogProps>) => {
+const Dialog = (passedProps: DialogProps) => {
   const [props, restOfProps] = splitProps(
     mergeProps({ footerAlignment: DialogFooterAlignment.RIGHT, closeOnClickOverlay: false }, passedProps),
     [
@@ -57,7 +57,7 @@ const Dialog = (passedProps: ParentProps<DialogProps>) => {
   return (
     <Show when={props.isOpen}>
       <Portal>
-        <div ref={modalRef} class={classnames(styles.dialog, props.class)} {...restOfProps}>
+        <div ref={modalRef} data-id="dialog" {...restOfProps} class={classnames(styles.dialog, props.class)}>
           <div class={styles.dialogHeader}>
             {props.headerElement}
             <Button

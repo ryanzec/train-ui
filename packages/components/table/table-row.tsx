@@ -34,8 +34,9 @@ const TableRow = (passedProps: TableRowProps) => {
 
   return (
     <tr
-      class={classnames(styles.tableRow, props.class, { [styles.tableRowIsSelected]: props.isSelected })}
+      data-id="row"
       {...restOfProps}
+      class={classnames(styles.tableRow, props.class, { [styles.tableRowIsSelected]: props.isSelected })}
     >
       <Show when={props.isSelectable}>
         {/* setting the width to 1px will make the table data element only take up the width of the content */}

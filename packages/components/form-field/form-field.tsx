@@ -1,15 +1,15 @@
 import classnames from 'classnames';
-import { type JSX, type ParentProps, splitProps } from 'solid-js';
+import { type JSX, splitProps } from 'solid-js';
 
 import styles from '$/components/form-field/form-field.module.css';
 
 export type FormFieldProps = JSX.HTMLAttributes<HTMLDivElement>;
 
-const FormField = (passedProps: ParentProps<FormFieldProps>) => {
+const FormField = (passedProps: FormFieldProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['class', 'children']);
 
   return (
-    <div class={classnames(props.class, styles.formField)} data-id="form-field" {...restOfProps}>
+    <div data-id="form-field" {...restOfProps} class={classnames(props.class, styles.formField)}>
       {props.children}
     </div>
   );

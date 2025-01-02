@@ -5,7 +5,7 @@ export enum OverlayVariant {
   WEAK = 'weak',
 }
 
-export type OverlayProps = JSX.HTMLAttributes<HTMLButtonElement> & {
+export type OverlayProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> & {
   variant?: OverlayVariant;
   closeOnClick?: boolean;
 };

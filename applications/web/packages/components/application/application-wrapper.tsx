@@ -1,12 +1,12 @@
 import { A } from '@solidjs/router';
-import { type ParentProps, Show, Suspense } from 'solid-js';
+import { type JSX, Show, Suspense } from 'solid-js';
 
 import Loading from '$/components/loading';
 import styles from '$web/components/application/application.module.css';
 import { authenticationStore } from '$web/stores/authentication.store';
 import { themeManagerStore } from '$web/stores/theme-manager.store';
 
-const ApplicationWrapper = (props: ParentProps) => {
+const ApplicationWrapper = (props: JSX.HTMLAttributes<HTMLDivElement>) => {
   authenticationStore.initialize();
 
   return (

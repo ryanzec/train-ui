@@ -1,14 +1,14 @@
 import type { Placement } from '@floating-ui/dom';
-import classnames from 'classnames';
-import { type JSX, type ParentProps, Show, mergeProps, splitProps } from 'solid-js';
+import { type JSX, Show, mergeProps, splitProps } from 'solid-js';
 
 import Button, { type ButtonProps } from '$/components/button/button';
 import ButtonDropDownContent from '$/components/button/button-drop-down-content';
 import styles from '$/components/button/button.module.css';
 import Tooltip, { TooltipTriggerEvent, type TooltipStore } from '$/components/tooltip';
+import type { CommonDataAttributes } from '$/types/generic';
 
 export type ButtonDropDownProps = ButtonProps &
-  JSX.HTMLAttributes<HTMLButtonElement> & {
+  CommonDataAttributes & {
     label: string | JSX.Element;
     placement?: Placement;
     defaultIsEnabled?: boolean;
@@ -18,33 +18,29 @@ export type ButtonDropDownProps = ButtonProps &
     tooltipStore: TooltipStore;
   };
 
-export const ButtonDropDown = (passedProps: ParentProps<ButtonDropDownProps>) => {
-  const [props, restOfProps] = splitProps(
-    mergeProps(
-      {
-        placement: 'bottom-end',
-        defaultIsEnabled: false,
-      } as Required<ButtonDropDownProps>,
-      passedProps,
-    ),
-    [
-      'label',
-      'placement',
-      'defaultIsEnabled',
-      'triggerEvent',
-      'children',
-      'class',
-      'buttonClass',
-      'contentClass',
-      'tooltipStore',
-    ],
-  );
+const defaultProps: Omit<ButtonDropDownProps, 'label' | 'tooltipStore'> = {
+  placement: 'bottom-end',
+  defaultIsEnabled: false,
+};
+
+export const ButtonDropDown = (passedProps: ButtonDropDownProps) => {
+  const [props, restOfProps] = splitProps(mergeProps(defaultProps, passedProps), [
+    'label',
+    'placement',
+    'defaultIsEnabled',
+    'triggerEvent',
+    'children',
+    'class',
+    'buttonClass',
+    'contentClass',
+    'tooltipStore',
+  ]);
 
   const getDefaultTriggerEvent = () => (passedProps.disabled ? TooltipTriggerEvent.HOVER : TooltipTriggerEvent.CLICK);
 
   return (
     <Tooltip
-      class={classnames(styles.dropDown, props.class)}
+      class={styles.dropDown}
       store={props.tooltipStore}
       placement={props.placement}
       triggerEvent={props.triggerEvent ?? getDefaultTriggerEvent()}
@@ -55,13 +51,13 @@ export const ButtonDropDown = (passedProps: ParentProps<ButtonDropDownProps>) =>
        * does work when the button is disabled
        */}
       <span>
-        <Button {...restOfProps} data-id="button-drop-down-trigger" class={props.buttonClass}>
+        <Button data-id="button-drop-down-trigger" {...restOfProps} class={props.class}>
           {props.label}
         </Button>
       </span>
       <ButtonDropDownContent
         classList={{
-          [props.contentClass]: !!props.contentClass,
+          [props.contentClass ?? '']: !!props.contentClass,
           [styles.dropDownContentIsEnabled]: props.tooltipStore.isEnabled(),
         }}
       >

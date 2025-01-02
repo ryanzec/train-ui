@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { type JSX, type ParentProps, splitProps } from 'solid-js';
+import { type JSX, splitProps } from 'solid-js';
 
 import styles from '$/components/radio/radio.module.css';
 import type { FormInputValidationState } from '$/stores/form/utils';
@@ -10,11 +10,11 @@ export type RadioGroupProps = JSX.HTMLAttributes<HTMLDivElement> & {
 
 // we exposed a plain input in the off chance we need an input not hooked up to react-hook-form directly (like the
 // auto complete component)
-const RadioGroup = (passedProps: ParentProps<RadioGroupProps>) => {
+const RadioGroup = (passedProps: RadioGroupProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['class', 'children', 'validationState']);
 
   return (
-    <div data-id="radio-group" class={classnames(styles.group, props.class)} {...restOfProps}>
+    <div data-id="radio-group" {...restOfProps} class={classnames(styles.group, props.class)}>
       {props.children}
     </div>
   );

@@ -21,10 +21,10 @@ const ListItem = (passedProps: ListItemProps) => {
   return (
     <div
       data-id="list-item"
+      {...restOfProps}
       class={classnames(styles.listItem, props.class, {
         [styles.selectedItem]: props.isSelected,
       })}
-      {...restOfProps}
     >
       <Show when={props.preItem}>
         <span class={styles.preItem}>{props.preItem}</span>

@@ -11,7 +11,7 @@ export type TextareaProps = JSX.TextareaHTMLAttributes<HTMLTextAreaElement> & {
 const Textarea = (passedProps: TextareaProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['class', 'validationState']);
 
-  return <textarea class={classnames(styles.textarea, props.class)} {...restOfProps} />;
+  return <textarea data-id="textarea" {...restOfProps} class={classnames(styles.textarea, props.class)} />;
 };
 
 export default Textarea;

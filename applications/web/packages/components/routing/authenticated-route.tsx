@@ -1,9 +1,9 @@
 import { Navigate } from '@solidjs/router';
-import type { ParentProps } from 'solid-js';
+import type { JSX } from 'solid-js';
 
 import { authenticationStore } from '$web/stores/authentication.store';
 
-const AuthenticatedRoute = (props: ParentProps) => {
+const AuthenticatedRoute = (props: JSX.HTMLAttributes<HTMLDivElement>) => {
   if (!authenticationStore.isAuthenticated()) {
     return <Navigate href="/login" />;
   }

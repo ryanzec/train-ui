@@ -28,6 +28,8 @@ const Callout = (passedProps: CalloutProps) => {
 
   return (
     <div
+      data-id="callout"
+      {...restOfProps}
       class={classnames(props.class, styles.callout, {
         [styles.neutral]: props.color === CalloutColor.NEUTRAL,
         [styles.neutralStrong]: props.color === CalloutColor.NEUTRAL && isStrong,
@@ -42,7 +44,6 @@ const Callout = (passedProps: CalloutProps) => {
         [styles.danger]: props.color === CalloutColor.DANGER,
         [styles.dangerStrong]: props.color === CalloutColor.DANGER && isStrong,
       })}
-      {...restOfProps}
     >
       <Show when={props.preItem}>
         <div class={styles.preItem}>{props.preItem}</div>

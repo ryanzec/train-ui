@@ -13,10 +13,10 @@ const ButtonGroup = (passedProps: ButtonGroupProps) => {
   return (
     <div
       data-id="button-group"
+      {...restOfProps}
       class={classnames(styles.buttonGroup, props.class, {
         [styles.buttonGroupAttached]: props.isAttached,
       })}
-      {...restOfProps}
     />
   );
 };

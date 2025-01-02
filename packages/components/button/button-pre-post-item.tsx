@@ -19,11 +19,11 @@ const ButtonPrePostItem = (passedProps: ButtonIconProps) => {
   return (
     <div
       data-id="button-icon"
+      {...restOfProps}
       class={classnames(styles.prePostItem, props.class, {
         [styles.preItem]: props.position === ButtonItemPosition.PRE,
         [styles.postItem]: props.position === ButtonItemPosition.POST,
       })}
-      {...restOfProps}
     >
       {props.item}
     </div>

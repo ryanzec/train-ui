@@ -49,6 +49,7 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
       'removeOnDuplicateSingleSelect',
       'validationState',
       'showClearIcon',
+      'class',
 
       // we move out the id in order to assign it to the input so things like label for works
       'id',
@@ -70,7 +71,7 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
   };
 
   return (
-    <div data-id="combobox" class={styles.combobox} {...restOfProps}>
+    <div data-id="combobox" {...restOfProps} class={classnames(styles.combobox, props.class)}>
       <Input
         {...comboboxStore.getInputProps()}
         inputContainerClass={comboboxStore.store.isOpen ? styles.inputContainer : undefined}

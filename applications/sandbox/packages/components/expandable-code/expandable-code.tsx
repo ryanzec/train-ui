@@ -1,12 +1,12 @@
-import { type ParentProps, Show, createSignal } from 'solid-js';
+import { type JSX, Show, createSignal } from 'solid-js';
 
 import Button from '$/components/button';
 
-type ExpandableCodeProps = {
+type ExpandableCodeProps = JSX.ButtonHTMLAttributes<HTMLDivElement> & {
   label: string;
 };
 
-const ExpandableCode = (props: ParentProps<ExpandableCodeProps>) => {
+const ExpandableCode = (props: ExpandableCodeProps) => {
   const [toggle, setToggle] = createSignal(true);
 
   return (

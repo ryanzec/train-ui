@@ -21,13 +21,14 @@ const GlobalNotificationsList = (passedProps: GlobalNotificationsListProps) => {
     <Show when={props.notifications.length > 0}>
       {/*<Portal mount={props.mount}>*/}
       <div
+        data-id="global-notifications-list"
+        {...restOfProps}
         class={classnames(props.class, styles.notifications, {
           [styles.topLeft]: props.position === GlobalNotificationPosition.TOP_LEFT,
           [styles.topRight]: props.position === GlobalNotificationPosition.TOP_RIGHT,
           [styles.bottomLeft]: props.position === GlobalNotificationPosition.BOTTOM_LEFT,
           [styles.bottomRight]: props.position === GlobalNotificationPosition.BOTTOM_RIGHT,
         })}
-        {...restOfProps}
       >
         <For each={props.notifications}>
           {(notification) => {

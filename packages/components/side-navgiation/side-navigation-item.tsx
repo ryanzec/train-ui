@@ -12,10 +12,11 @@ const SideNavigationItem = (passedProps: SideNavigationItemProps) => {
 
   return (
     <div
+      data-id="item"
+      {...restOfProps}
       class={classnames(styles.item, props.class, {
         [styles.itemActive]: props.isActive,
       })}
-      {...restOfProps}
     >
       {props.children}
     </div>

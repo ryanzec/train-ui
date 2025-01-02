@@ -15,10 +15,10 @@ const ToggleButton = (passedProps: ButtonToggleProps) => {
   return (
     <Button
       data-id="toggle-button"
+      {...restOfProps}
       class={classnames(props.class, { [styles.isSelected]: props.isSelected })}
       variant={ButtonVariant.OUTLINED}
       color={ButtonColor.NEUTRAL}
-      {...restOfProps}
     />
   );
 };

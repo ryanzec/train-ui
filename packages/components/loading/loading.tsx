@@ -18,7 +18,7 @@ const Loading = (passedProps: LoadingProps) => {
   );
 
   return (
-    <div class={classnames(props.class, styles.loading)} {...restOfProps}>
+    <div data-id="loading" {...restOfProps} class={classnames(props.class, styles.loading)}>
       <Icon icon="refresh" size={props.iconSize} class={styles.icon} color={props.iconColor} />
     </div>
   );

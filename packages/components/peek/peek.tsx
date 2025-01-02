@@ -139,7 +139,7 @@ const Peek = (passedProps: PeekProps) => {
     <Show when={props.peekStore.isOpened()}>
       <Portal>
         <div data-id="peek">
-          <div ref={peekRef} class={classnames(styles.peek, props.class)} {...restOfProps}>
+          <div ref={peekRef} {...restOfProps} class={classnames(styles.peek, props.class)}>
             {props.children}
           </div>
           <Show when={props.hasOverlay}>

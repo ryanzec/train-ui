@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from '@solidjs/router';
-import { type JSX, type ParentProps, splitProps } from 'solid-js';
+import { type JSX, splitProps } from 'solid-js';
 
 import SideNavigation from '$/components/side-navgiation';
 
@@ -10,7 +10,7 @@ type ApplicationFrameNavigationItemProps = JSX.HTMLAttributes<HTMLDivElement> &
     path: string;
   };
 
-const ApplicationFrameNavigationItem = (passedProps: ParentProps<ApplicationFrameNavigationItemProps>) => {
+const ApplicationFrameNavigationItem = (passedProps: ApplicationFrameNavigationItemProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['path', 'class', 'children']);
   const navigate = useNavigate();
   const location = useLocation();
