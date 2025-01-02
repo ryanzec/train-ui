@@ -32,7 +32,7 @@ const Dialog = (passedProps: DialogProps) => {
       'closeOnClickOverlay',
     ],
   );
-  const modalRef = () => {
+  const dialogRef = () => {
     const keyDownListener = (event: KeyboardEvent) => {
       if (event.key === Key.ESCAPE) {
         props.closeDialog();
@@ -57,7 +57,7 @@ const Dialog = (passedProps: DialogProps) => {
   return (
     <Show when={props.isOpen}>
       <Portal>
-        <div ref={modalRef} data-id="dialog" {...restOfProps} class={classnames(styles.dialog, props.class)}>
+        <div ref={dialogRef} data-id="dialog" {...restOfProps} class={classnames(styles.dialog, props.class)}>
           <div class={styles.dialogHeader}>
             {props.headerElement}
             <Button

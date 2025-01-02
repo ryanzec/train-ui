@@ -70,14 +70,14 @@ All common code should live within the `./packages` directory which includes sub
 
 - `packages/apis/*` - Each directory under this should store apis that are related to a specific resource (i.e. `packages/apis/users`, `packages/apis/roles`, etc.)
 - `pacakges/assets` - This should store static assets (.e. images, json, etc.)
-- `packages/components/*` - Smaller scale components such as a button, form input, etc. and medium scale components such as forms, modal, etc. (each component or collection of related components needs to be in their own sub-directory)
+- `packages/components/*` - Smaller scale components such as a button, form input, etc. and medium scale components such as forms, dialog, etc. (each component or collection of related components needs to be in their own sub-directory)
 - `packages/locale/*` - Top level language files for i18n (these files should only include other localization files that are stored closer to the code that uses it)
 - `packages/stores/*` - Any general SolidJS custom store
 - `packages/styles/*` - Any styling related code
 - `packages/types/*` - These should be used for global types, any types that fit into the scope of a utility file should be place in that utility file
 - `packages/utils/*` - Utility methods and constants, each file should be grouped by logic functionality (`string.ts` for `stringUtils`, `user.ts` for `userUtils`, etc.), this should also include types, constants, and api calls that directly relate to the utility domain
 - `packages/utils/data-models` - Utility files that are specific to data models (workflow, user, incident, etc.) that contain utility functions for either request that data or working with that data
-- `packages/views/*` - Each directory under this should store larges views (like pages, modals, etc.)
+- `packages/views/*` - Each directory under this should store larges views (like pages, dialog, etc.)
 
 ## Tests
 
