@@ -1,9 +1,9 @@
 import classnames from 'classnames';
 import { For, type JSX, Show, mergeProps, splitProps } from 'solid-js';
 
-import GlobalNotificationsListItem from '$/components/global-notifications-list/global-notifications-list-item';
-import styles from '$/components/global-notifications-list/global-notifications-list.module.css';
-import { GlobalNotificationPosition } from '$/components/global-notifications-list/utils';
+import GlobalNotificationsItem from '$/components/global-notifications/global-notifications-item';
+import styles from '$/components/global-notifications/global-notifications.module.css';
+import { GlobalNotificationPosition } from '$/components/global-notifications/utils';
 import type { GlobalNotification } from '$/stores/global-notifications';
 
 export type GlobalNotificationsListProps = JSX.HTMLAttributes<HTMLDivElement> & {
@@ -11,7 +11,7 @@ export type GlobalNotificationsListProps = JSX.HTMLAttributes<HTMLDivElement> & 
   position?: GlobalNotificationPosition;
 };
 
-const GlobalNotificationsList = (passedProps: GlobalNotificationsListProps) => {
+const GlobalNotifications = (passedProps: GlobalNotificationsListProps) => {
   const [props, restOfProps] = splitProps(
     mergeProps({ notifications: [], position: GlobalNotificationPosition.TOP_RIGHT }, passedProps),
     ['notifications', 'class', 'position'],
@@ -21,7 +21,7 @@ const GlobalNotificationsList = (passedProps: GlobalNotificationsListProps) => {
     <Show when={props.notifications.length > 0}>
       {/*<Portal mount={props.mount}>*/}
       <div
-        data-id="global-notifications-list"
+        data-id="global-notifications"
         {...restOfProps}
         class={classnames(props.class, styles.notifications, {
           [styles.topLeft]: props.position === GlobalNotificationPosition.TOP_LEFT,
@@ -32,7 +32,7 @@ const GlobalNotificationsList = (passedProps: GlobalNotificationsListProps) => {
       >
         <For each={props.notifications}>
           {(notification) => {
-            return <GlobalNotificationsListItem notification={notification} />;
+            return <GlobalNotificationsItem notification={notification} />;
           }}
         </For>
       </div>
@@ -41,4 +41,4 @@ const GlobalNotificationsList = (passedProps: GlobalNotificationsListProps) => {
   );
 };
 
-export default GlobalNotificationsList;
+export default GlobalNotifications;

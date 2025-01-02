@@ -6,7 +6,7 @@ import Input from '$/components/input';
 import { globalNotificationsStore } from '$/stores/global-notifications';
 
 export default {
-  title: 'Components/GlobalNotificationsList',
+  title: 'Components/GlobalNotifications',
 };
 
 export const Default = () => {

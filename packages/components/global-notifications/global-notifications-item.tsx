@@ -4,7 +4,7 @@ import { type JSX, Show, splitProps } from 'solid-js';
 import Button, { ButtonColor, ButtonShape, ButtonVariant } from '$/components/button';
 import Callout, { CalloutColor } from '$/components/callout';
 import Emoji, { EmojiSpacing } from '$/components/emoji';
-import styles from '$/components/global-notifications-list/global-notifications-list.module.css';
+import styles from '$/components/global-notifications/global-notifications.module.css';
 import Icon, { IconSize } from '$/components/icon';
 import {
   type GlobalNotification,
@@ -25,13 +25,13 @@ const calloutColorToButtonColor: Record<CalloutColor, ButtonColor> = {
   [CalloutColor.DANGER]: ButtonColor.DANGER,
 };
 
-const GlobalNotificationsListItem = (passedProps: GlobalNotificationsListItemProps) => {
+const GlobalNotificationsItem = (passedProps: GlobalNotificationsListItemProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['notification', 'class']);
   const calloutColor = () => props.notification.color ?? CalloutColor.NEUTRAL;
 
   return (
     <Callout
-      data-id="global-notifications-list-item"
+      data-id="global-notifications-item"
       {...restOfProps}
       class={classnames(styles.notification, props.class, {
         [styles.isRemoving]: props.notification.isRemoving || false,
@@ -58,4 +58,4 @@ const GlobalNotificationsListItem = (passedProps: GlobalNotificationsListItemPro
   );
 };
 
-export default GlobalNotificationsListItem;
+export default GlobalNotificationsItem;

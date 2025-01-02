@@ -1,6 +1,6 @@
 import { type JSX, Suspense } from 'solid-js';
 
-import GlobalNotificationsList from '$/components/global-notifications-list';
+import GlobalNotifications from '$/components/global-notifications';
 import Loading from '$/components/loading';
 import ScrollArea from '$/components/scroll-area';
 import { globalNotificationsStore } from '$/stores/global-notifications';
@@ -15,7 +15,7 @@ const ApplicationWrapper = (props: JSX.ButtonHTMLAttributes<HTMLElement>) => {
           <Suspense fallback={<Loading />}>{props.children}</Suspense>
         </ApplicationFrame>
       </ScrollArea>
-      <GlobalNotificationsList notifications={globalNotificationsStore.notifications()} />
+      <GlobalNotifications notifications={globalNotificationsStore.notifications()} />
     </>
   );
 };
