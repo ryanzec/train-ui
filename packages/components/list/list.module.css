@@ -1,5 +1,5 @@
-/* biome-ignore lint/suspicious/noEmptyBlock: just a placeholder */
 .list {
+  --list-selected-item-background-color: var(--color-surface-secondary);
 }
 
 .list-item {
@@ -10,6 +10,10 @@
   padding: var(--space-2xs) var(--space-xs);
   border: 1px solid var(--color-outline);
   border-bottom: 0;
+
+  &[data-combobox-highlighted-option="true"] {
+    background-color: var(--list-selected-item-background-color);
+  }
 }
 
 .list-item:last-child {
@@ -17,7 +21,7 @@
 }
 
 .selected-item {
-  background-color: var(--color-surface-secondary);
+  background-color: var(--list-selected-item-background-color);
 }
 
 .pre-item {

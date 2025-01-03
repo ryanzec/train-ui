@@ -1,5 +1,6 @@
 import { type Locator, type Page, expect, test } from '@playwright/test';
 
+import { COMBOBOX_HIGHLIGHTED_OPTION_DATA_ATTRIBUTE } from '$/components/combobox/utils';
 import { playwrightUtils } from '$/utils/playwright';
 
 const urls = {
@@ -72,13 +73,15 @@ class ComboboxPage {
     this.comboboxInput = page.locator('[data-id="combobox"] [data-id="input"]');
     this.resetSelectedButton = page.locator('[data-id="reset-selected-button"]');
     this.setSelectedButton = page.locator('[data-id="set-selected-button"]');
-    this.comboboxOptionsContainer = page.locator('[data-id="combobox"] [data-id="options"]');
-    this.comboboxOption = page.locator('[data-id="combobox"] [data-id="options"] [data-id*="option"]');
+    this.comboboxOptionsContainer = page.locator('[data-id="combobox"] [data-id="selectable-options"]');
+    this.comboboxOption = page.locator(
+      '[data-id="combobox"] [data-id="selectable-options"] [data-id="selectable-option"]',
+    );
     this.firstComboboxOption = page.locator(
-      '[data-id="combobox"] [data-id="options"] [data-id*="option"]:nth-child(1)',
+      '[data-id="combobox"] [data-id="selectable-options"] [data-id="selectable-option"]:nth-child(1)',
     );
     this.comboboxHighlightedOption = page.locator(
-      '[data-id="combobox"] [data-id="options"] [data-id*="highlighted-option"]',
+      `[data-id="combobox"] [data-id="selectable-options"] [${COMBOBOX_HIGHLIGHTED_OPTION_DATA_ATTRIBUTE}="true"]`,
     );
     this.checkSelectedComboboxValue = page.locator('[data-id="check-selected-combobox-value"]');
     this.checkFormValue = page.locator('[data-id="check-form-value"]');
@@ -106,7 +109,9 @@ class ComboboxPage {
   }
 
   getOption(index: number) {
-    return this.page.locator(`[data-id="combobox"] [data-id="options"] [data-id*="option"]:nth-child(${index})`);
+    return this.page.locator(
+      `[data-id="combobox"] [data-id="selectable-options"] [data-id="selectable-option"]:nth-child(${index})`,
+    );
   }
 
   // actions
@@ -173,7 +178,9 @@ class ComboboxPage {
 
   async expectOptionToHaveText(text: string, errorMessage: string, count = 1) {
     await expect(
-      this.page.locator('[data-id="combobox"] [data-id="options"] [data-id*="option"]', { hasText: text }),
+      this.page.locator('[data-id="combobox"] [data-id="selectable-options"] [data-id="selectable-option"]', {
+        hasText: text,
+      }),
       errorMessage,
     ).toHaveCount(count);
   }
@@ -231,6 +238,10 @@ class ComboboxPage {
     // we need to limit the timeout in the case as the no options found would go away when the debounce
     // async call is executed so we want to make sure the no options is not visible before then
     await expect(this.noOptionsFound, errorMessage).toHaveCount(0, { timeout: 50 });
+  }
+
+  async expectNoOptionsFoundToBeVisible(errorMessage: string) {
+    await expect(this.noOptionsFound, errorMessage).toHaveCount(1);
   }
 
   async expectAsyncDataLoadingIndicatorNotToBeVisible(errorMessage: string) {
@@ -753,6 +764,22 @@ test.describe('combobox @combobox-component', () => {
         await componentPage.expectOptionToHaveText('tes4', loopErrorContext);
       }
     });
+
+    test('no options show properly @component', async ({ page }) => {
+      const testUrls = [urls.single, urls.multi];
+      const componentPage = new ComboboxPage(page);
+
+      for (let i = 0; i < testUrls.length; i++) {
+        const loopErrorContext = `failed url: ${testUrls[i]}`;
+
+        await componentPage.goto(testUrls[i]);
+
+        await componentPage.clickInput();
+        await componentPage.fillInput('testing');
+
+        await componentPage.expectNoOptionsFoundToBeVisible(loopErrorContext);
+      }
+    });
   });
 
   test.describe('single-select mode', () => {
@@ -799,6 +826,10 @@ test.describe('combobox @combobox-component', () => {
         await componentPage.expectInputNotToBeFocused(loopErrorContext);
       }
     });
+
+    test.skip('auto scroll functionality works properly', async ({ page }) => {});
+
+    test.skip('changing local options works properly', async ({ page }) => {});
   });
 
   test.describe('multi-select mode core functionality', () => {

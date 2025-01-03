@@ -11,6 +11,12 @@
   }
 }
 
+.combobox[data-combobox-grouped="true"] {
+  .selectable-option {
+    padding-left: var(--space-lg);
+  }
+}
+
 .list {
   display: none;
   z-index: var(--z-index-combobox-options);
@@ -27,7 +33,7 @@
   position: absolute;
   width: 100%;
   overflow-y: scroll;
-  max-height: 150px;
+  max-height: 250px;
   z-index: var(--z-index-combobox-options-opened);
 }
 
@@ -55,6 +61,10 @@
 
 .list-option:last-child {
   border-bottom: 0;
+}
+
+.selectable-group-header {
+  font-weight: var(--font-weight-semibold);
 }
 
 .selectable-option,

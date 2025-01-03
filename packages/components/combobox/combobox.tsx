@@ -1,9 +1,10 @@
 import classnames from 'classnames';
-import { type Accessor, For, Show, mergeProps, splitProps } from 'solid-js';
+import { type Accessor, For, Show, batch, createEffect, createSignal, mergeProps, splitProps } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 
 import {
   AsyncOptionsState,
+  COMBOBOX_GROUPED_DATA_ATTRIBUTE,
   type ComboboxExtraData,
   type ComboboxOption,
   type ComboboxProps,
@@ -14,6 +15,7 @@ import iconStyles from '$/components/icon/icon.module.css';
 import Input from '$/components/input';
 import List from '$/components/list';
 
+import Options from '$/components/combobox/options';
 import styles from './combobox.module.css';
 
 const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TData>) => {
@@ -28,6 +30,7 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
         removeOnDuplicateSingleSelect: false,
         disabled: false,
         showClearIcon: true,
+        ungroupedKey: 'Ungrouped',
       },
       passedProps,
     ),
@@ -50,6 +53,7 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
       'validationState',
       'showClearIcon',
       'class',
+      'ungroupedKey',
 
       // we move out the id in order to assign it to the input so things like label for works
       'id',
@@ -59,6 +63,11 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
   );
 
   const comboboxStore = comboboxUtils.createCombobox(props);
+
+  const [groupedOptions, setGroupedOptions] = createSignal<ComboboxOption<TData>[][]>([]);
+  const [groupedOptionKeys, setGroupedOptionKeys] = createSignal<string[]>([]);
+  const [indexOffsets, setIndexOffsets] = createSignal<number[]>([]);
+  const [totalOptionsCount, setTotalOptionsCount] = createSignal(0);
 
   const onClickClearTrigger = () => {
     if (comboboxStore.inputHasClearableValue()) {
@@ -70,8 +79,51 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
     comboboxStore.store.inputRef?.focus();
   };
 
+  const dynamicProps = {
+    [COMBOBOX_GROUPED_DATA_ATTRIBUTE]: comboboxStore.isGrouped() ? 'true' : 'false',
+  };
+
+  // maintained the list of displayed options in the grouped format
+  createEffect(() => {
+    const defaultGroupKey = comboboxStore.isGrouped() ? props.ungroupedKey : '';
+    const tempGroupedOptions = comboboxStore.store.displayOptions.reduce<Record<string, ComboboxOption<TData>[]>>(
+      (collector, displayOption) => {
+        const groupKey = displayOption.groupKey ?? defaultGroupKey;
+
+        if (!collector[groupKey]) {
+          collector[groupKey] = [];
+        }
+
+        collector[groupKey].push(displayOption);
+
+        return collector;
+      },
+      {},
+    );
+
+    // @todo add ordering
+
+    const indexOffsets: number[] = [];
+    const testGroupedOptions2: ComboboxOption<TData>[][] = [];
+    const testGroupedOptions3: string[] = [];
+    let currentTotalCount = 0;
+
+    for (const groupKey in tempGroupedOptions) {
+      indexOffsets.push(currentTotalCount);
+      testGroupedOptions2.push(tempGroupedOptions[groupKey]);
+      testGroupedOptions3.push(groupKey);
+
+      currentTotalCount += tempGroupedOptions[groupKey].length;
+    }
+
+    setTotalOptionsCount(currentTotalCount);
+    setGroupedOptions(testGroupedOptions2);
+    setIndexOffsets(indexOffsets);
+    setGroupedOptionKeys(testGroupedOptions3);
+  });
+
   return (
-    <div data-id="combobox" {...restOfProps} class={classnames(styles.combobox, props.class)}>
+    <div data-id="combobox" {...restOfProps} class={classnames(styles.combobox, props.class)} {...dynamicProps}>
       <div>
         <Input
           {...comboboxStore.getInputProps()}
@@ -117,7 +169,7 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
         />
       </div>
       <List
-        data-id="options"
+        data-id="selectable-options"
         class={classnames(styles.list, {
           [styles.openedList]: comboboxStore.store.isOpen,
         })}
@@ -138,27 +190,31 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
           </List.Item>
         </Show>
         <Show when={comboboxStore.store.isOpen && comboboxStore.showOptions()}>
-          <For
-            each={comboboxStore.store.displayOptions}
+          <Show
+            when={totalOptionsCount() > 0}
             fallback={
               <Show when={!comboboxStore.asyncOptionsAreLoading()}>
-                <List.Item data-id="option no-options-found" class={styles.listOption}>
-                  No Options Found"
+                <List.Item data-id="no-options-found" class={styles.listOption}>
+                  No Options Found
                 </List.Item>
               </Show>
             }
           >
-            {(option, optionIndex) => {
-              return (
-                <Dynamic
-                  component={props.selectableComponent}
-                  {...comboboxStore.getSelectionOptionProps()}
-                  option={option}
-                  optionIndex={optionIndex()}
-                />
-              );
-            }}
-          </For>
+            <For each={groupedOptions()}>
+              {(options, index) => {
+                return (
+                  <Options
+                    options={options}
+                    groupLabel={groupedOptionKeys()[index()]}
+                    selectableComponent={props.selectableComponent}
+                    asyncOptionsAreLoading={comboboxStore.asyncOptionsAreLoading}
+                    getSelectionOptionProps={comboboxStore.getSelectionOptionProps}
+                    indexOffset={indexOffsets()[index()]}
+                  />
+                );
+              }}
+            </For>
+          </Show>
         </Show>
       </List>
     </div>

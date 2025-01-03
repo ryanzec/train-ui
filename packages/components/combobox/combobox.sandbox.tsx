@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { For, Show, createSignal } from 'solid-js';
+import { For, Show, createEffect, createSignal } from 'solid-js';
 import * as zod from 'zod';
 
 import Button from '$/components/button';
@@ -64,11 +64,27 @@ const getSelectedComponent = (selectedComponent?: ComboboxProps<CustomExtraData>
   return selectedComponent === null ? undefined : selectedComponent;
 };
 
-const baseOptions = [
+const baseOptions: ComboboxOption<CustomExtraData>[] = [
   { display: 'test1', value: 11, meta: { extra: 'test' } },
   { display: 'test2', value: 22 },
   { display: 'tes3', value: 33 },
   { display: 'tes4', value: 44 },
+];
+
+const baseLargeOptions: ComboboxOption[] = [];
+
+for (let i = 0; i < 1000; i++) {
+  baseLargeOptions.push({ display: `test${i}`, value: i });
+}
+
+const baseGroupedOptions: ComboboxOption<CustomExtraData>[] = [
+  { display: 'test1', value: 11, groupKey: 'group1', meta: { extra: 'test' } },
+  { display: 'tes5', value: 55, groupKey: 'group1' },
+  { display: 'test2', value: 22, groupKey: 'group2' },
+  { display: 'tes4', value: 44, groupKey: 'group3' },
+  { display: 'tes7', value: 77 },
+  { display: 'tes3', value: 33, groupKey: 'group1' },
+  { display: 'tes6', value: 66, groupKey: 'group2' },
 ];
 
 const BasicExample = (props: ExampleProps) => {
@@ -251,6 +267,14 @@ export const Single = () => {
 
 export const Multi = () => {
   return <MultiSelectExample />;
+};
+
+export const SingleGrouped = () => {
+  return <BasicExample options={baseGroupedOptions} />;
+};
+
+export const MultiGrouped = () => {
+  return <MultiSelectExample options={baseGroupedOptions} />;
 };
 
 export const SingleWithMissingData = () => {
@@ -512,5 +536,39 @@ export const MultiInFormAutoShowOptions = () => {
       />
       <button type="submit">Submit</button>
     </form>
+  );
+};
+
+export const SingleLarge = () => {
+  return <BasicExample options={baseLargeOptions} autoShowOptions />;
+};
+
+export const SingleChangeLocalOptions = () => {
+  const [options, setOptions] = createSignal<ComboboxOption<CustomExtraData>[]>(baseOptions);
+  const comboboxStore = comboboxUtils.createComboboxValue();
+
+  const handleChangeOptions = () => {
+    setOptions(options().length > 5 ? baseOptions : baseLargeOptions);
+  };
+
+  return (
+    <>
+      <FormField>
+        <Label>Label</Label>
+        <Combobox
+          autoShowOptions
+          options={options()}
+          filterOptions={comboboxUtils.excludeSelectedFilter}
+          setSelected={comboboxStore.setSelected}
+          selected={comboboxStore.selected()}
+          name="combobox"
+          selectedComponent={Combobox.SelectedOption}
+          selectableComponent={Combobox.SelectableOption}
+        />
+      </FormField>
+      <Button data-id="handle-change-options-button" onClick={handleChangeOptions}>
+        change options
+      </Button>
+    </>
   );
 };
