@@ -28,7 +28,7 @@ const FormattedSelectableOption = <TData extends ComboboxExtraData>(props: Combo
           <Icon class={classnames(styles.addIcon, iconStyles.spacingRight)} icon="add" />
         </Match>
       </Switch>
-      {props.option.display}
+      {props.option.label}
     </List.Item>
   );
 };

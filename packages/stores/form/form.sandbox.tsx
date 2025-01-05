@@ -1341,10 +1341,10 @@ export const DynamicFormElements = () => {
                       <Combobox
                         autoShowOptions
                         options={[
-                          { display: 'option 1', value: 11 },
-                          { display: 'option 2', value: 22 },
-                          { display: 'option 3', value: 33 },
-                          { display: 'option 4', value: 44 },
+                          { label: 'option 1', value: 11 },
+                          { label: 'option 2', value: 22 },
+                          { label: 'option 3', value: 33 },
+                          { label: 'option 4', value: 44 },
                         ]}
                         filterOptions={comboboxUtils.excludeSelectedFilter}
                         setSelected={(options: ComboboxOption[]) => {

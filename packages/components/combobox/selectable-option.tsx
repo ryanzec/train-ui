@@ -14,7 +14,7 @@ const SelectableOption = <TData extends ComboboxExtraData>(props: ComboboxSelect
       onMouseDown={() => props.onMouseDownOption(props.option)}
       tabIndex={-1}
     >
-      {props.option.display}
+      {props.option.label}
     </List.Item>
   );
 };

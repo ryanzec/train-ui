@@ -200,8 +200,8 @@ class ComboboxPage {
     await expect(this.comboboxHighlightedOption, errorMessage).toHaveCount(count);
   }
 
-  async expectHighlightedOptionDisplay(display: string, errorMessage: string) {
-    await expect(this.comboboxHighlightedOption, errorMessage).toHaveText(display);
+  async expectHighlightedOptionDisplay(text: string, errorMessage: string) {
+    await expect(this.comboboxHighlightedOption, errorMessage).toHaveText(text);
   }
 
   async expectOptionsNotToBeVisible(errorMessage: string) {

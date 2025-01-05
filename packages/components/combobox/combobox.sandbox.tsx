@@ -32,10 +32,10 @@ const getOptionsAsync = async (inputValue?: string): Promise<ComboboxOption<Cust
   await new Promise((resolve) => setTimeout(resolve, 1000));
 
   return [
-    { display: `${inputValue} 1`, value: 11 },
-    { display: `${inputValue} 2`, value: 22 },
-    { display: `${inputValue} 3`, value: 33 },
-    { display: `${inputValue} 4`, value: 44 },
+    { label: `${inputValue} 1`, value: 11 },
+    { label: `${inputValue} 2`, value: 22 },
+    { label: `${inputValue} 3`, value: 33 },
+    { label: `${inputValue} 4`, value: 44 },
   ];
 };
 
@@ -66,26 +66,26 @@ const getSelectedComponent = (selectedComponent?: ComboboxProps<CustomExtraData>
 };
 
 const baseOptions: ComboboxOption<CustomExtraData>[] = [
-  { display: 'test1', value: 11, meta: { extra: 'test' } },
-  { display: 'test2', value: 22 },
-  { display: 'tes3', value: 33 },
-  { display: 'tes4', value: 44 },
+  { label: 'test1', value: 11, meta: { extra: 'test' } },
+  { label: 'test2', value: 22 },
+  { label: 'tes3', value: 33 },
+  { label: 'tes4', value: 44 },
 ];
 
 const baseLargeOptions: ComboboxOption[] = [];
 
 for (let i = 0; i < 200; i++) {
-  baseLargeOptions.push({ display: `test${i}`, value: i });
+  baseLargeOptions.push({ label: `test${i}`, value: i });
 }
 
 const baseGroupedOptions: ComboboxOption<CustomExtraData>[] = [
-  { display: 'test1', value: 11, groupKey: 'Group 1', meta: { extra: 'test' } },
-  { display: 'tes5', value: 55, groupKey: 'Group 1' },
-  { display: 'test2', value: 22, groupKey: 'Group 2' },
-  { display: 'tes4', value: 44, groupKey: 'Group 3' },
-  { display: 'tes7', value: 77 },
-  { display: 'tes3', value: 33, groupKey: 'Group 1' },
-  { display: 'tes6', value: 66, groupKey: 'Group 2' },
+  { label: 'test1', value: 11, groupKey: 'Group 1', meta: { extra: 'test' } },
+  { label: 'tes5', value: 55, groupKey: 'Group 1' },
+  { label: 'test2', value: 22, groupKey: 'Group 2' },
+  { label: 'tes4', value: 44, groupKey: 'Group 3' },
+  { label: 'tes7', value: 77 },
+  { label: 'tes3', value: 33, groupKey: 'Group 1' },
+  { label: 'tes6', value: 66, groupKey: 'Group 2' },
 ];
 
 const BasicExample = (props: ExampleProps) => {
@@ -147,7 +147,7 @@ const BasicExample = (props: ExampleProps) => {
         manually set selected
       </Button>
       <Show when={comboboxStore.selected().length > 0}>
-        <div data-id="check-selected-combobox-value">selected item value: {comboboxStore.selected()[0].display}</div>
+        <div data-id="check-selected-combobox-value">selected item value: {comboboxStore.selected()[0].label}</div>
       </Show>
     </>
   );
@@ -224,7 +224,7 @@ const MultiSelectExample = (props: ExampleProps) => {
           {(selected) => {
             return (
               <div data-id="manual-selected-options">
-                {selected.display}({selected.value})
+                {selected.label}({selected.value})
               </div>
             );
           }}
@@ -237,7 +237,7 @@ const MultiSelectExample = (props: ExampleProps) => {
 const CustomSelectedOption = (props: ComboboxSelectedOptionProps<CustomExtraData>) => {
   return (
     <span data-id="selected-option" class={styles.selectedOption}>
-      {props.option.display}
+      {props.option.label}
       <Button
         data-id="delete-indicator"
         class={styles.removeSelectedOption}
@@ -260,7 +260,7 @@ const CustomSelectableOption = (props: ComboboxSelectableOptionProps<CustomExtra
       onMouseDown={() => props.onMouseDownOption(props.option)}
       tabIndex={-1}
     >
-      --{props.option.display}({props.option.meta?.extra})--
+      --{props.option.label}({props.option.meta?.extra})--
     </List.Item>
   );
 };
@@ -294,7 +294,7 @@ export const SingleWithMissingData = () => {
     <BasicExample
       autoShowOptions
       // @ts-expect-error using malformed data as it is the point of this example
-      options={[...baseOptions, { display: 'no value' }, { value: 'no display' }]}
+      options={[...baseOptions, { label: 'no value' }, { value: 'no display' }]}
     />
   );
 };
@@ -304,7 +304,7 @@ export const MultiWithMissingData = () => {
     <MultiSelectExample
       autoShowOptions
       // @ts-expect-error using malformed data as it is the point of this example
-      options={[...baseOptions, { display: 'no value' }, { value: 'no display' }]}
+      options={[...baseOptions, { label: 'no value' }, { value: 'no display' }]}
     />
   );
 };

@@ -12,7 +12,7 @@ const SelectedOption = <TData extends ComboboxExtraData>(props: ComboboxSelected
       variant={BadgeVariant.WEAK}
       color={BadgeColor.NEUTRAL}
     >
-      {props.option.display}
+      {props.option.label}
       <Button
         data-id="delete-indicator"
         class={styles.removeSelectedOption}

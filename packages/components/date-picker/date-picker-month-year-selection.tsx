@@ -19,53 +19,55 @@ type DatePickerMonthYearSelectionProps = {
   toggleDisplay?: () => void;
 };
 
-const months = [
+type Month = { label: string; value: number };
+
+const months: Month[] = [
   {
-    display: 'January',
+    label: 'January',
     value: 0,
   },
   {
-    display: 'February',
+    label: 'February',
     value: 1,
   },
   {
-    display: 'March',
+    label: 'March',
     value: 2,
   },
   {
-    display: 'April',
+    label: 'April',
     value: 3,
   },
   {
-    display: 'May',
+    label: 'May',
     value: 4,
   },
   {
-    display: 'June',
+    label: 'June',
     value: 5,
   },
   {
-    display: 'July',
+    label: 'July',
     value: 6,
   },
   {
-    display: 'August',
+    label: 'August',
     value: 7,
   },
   {
-    display: 'September',
+    label: 'September',
     value: 8,
   },
   {
-    display: 'October',
+    label: 'October',
     value: 9,
   },
   {
-    display: 'November',
+    label: 'November',
     value: 10,
   },
   {
-    display: 'December',
+    label: 'December',
     value: 11,
   },
 ];
@@ -79,7 +81,7 @@ const DatePickerMonthYearSelection = (passedProps: DatePickerMonthYearSelectionP
 
     while (currentYear <= props.endYear) {
       innerYears.push({
-        display: `${currentYear}`,
+        label: `${currentYear}`,
         value: currentYear,
       });
 

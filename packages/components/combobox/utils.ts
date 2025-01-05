@@ -1,5 +1,5 @@
 import { debounce } from '@solid-primitives/scheduled';
-import { type Accessor, type JSX, batch, createEffect, createSignal, onCleanup } from 'solid-js';
+import { type Accessor, type JSX, createEffect, createSignal, onCleanup } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
 
 import type { FormErrorsData, FormInputValidationState } from '$/stores/form/utils';
@@ -13,7 +13,7 @@ export const COMBOBOX_GROUPED_DATA_ATTRIBUTE = 'data-combobox-grouped';
 export type ComboboxOptionValue = string | number;
 
 export type FormComboboxComboboxItem = {
-  display: string;
+  label: string;
   value: string;
 };
 
@@ -25,7 +25,7 @@ export type ComboboxExtraData = {
 };
 
 export type ComboboxOption<TData = ComboboxExtraData> = {
-  display: string;
+  label: string;
   value: ComboboxOptionValue;
   groupKey?: string;
 } & TData;
@@ -158,7 +158,7 @@ export type ComboboxStore<TData extends ComboboxExtraData> = {
 const removeInvalidOptions = <TData>(options: ComboboxOption<TData>[]) => {
   return options.filter((option) => {
     // since value can be anything, 0 should be a valid value
-    return (option.value || option.value === 0) && option.display;
+    return (option.value || option.value === 0) && option.label;
   });
 };
 
@@ -222,7 +222,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     ...getComboboxStoreDefaults<TData>(),
     displayOptions: props.getOptionsAsync ? [] : validOptions,
     focusedOptionIndex,
-    inputValue: focusedOption?.display ?? '',
+    inputValue: focusedOption?.label ?? '',
   });
 
   const isGrouped = () => comboboxStore.displayOptions.findIndex((option) => !!option.groupKey) !== -1;
@@ -270,7 +270,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
         // we check this at the top as the selectValue() calls below if need will properly set the input value is
         // there is a selected
         if (props.forceSelection) {
-          store.inputValue = !props.isMulti && props.selected.length > 0 ? props.selected[0].display : '';
+          store.inputValue = !props.isMulti && props.selected.length > 0 ? props.selected[0].label : '';
         }
 
         store.isOpen = false;
@@ -294,7 +294,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
       ) {
         // since we are return a ComboboxOption we need to explicitly return it
         return {
-          display: comboboxStore.inputValue,
+          label: comboboxStore.inputValue,
           value: comboboxStore.inputValue,
         } as ComboboxOption<TData>;
       }
@@ -335,7 +335,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
 
     setComboboxStore(
       produce((store) => {
-        store.inputValue = props.isMulti ? '' : option.display;
+        store.inputValue = props.isMulti ? '' : option.label;
         store.focusedOptionIndex = undefined;
 
         if (props.isMulti) {
@@ -438,7 +438,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
         if ((props.isMulti || foundOptionIndex !== -1) && !props.getOptionsAsync && props.filterOptions) {
           store.displayOptions = props.filterOptions(
             removeInvalidOptions(props.options),
-            props.isMulti ? '' : comboboxStore.displayOptions[foundOptionIndex].display,
+            props.isMulti ? '' : comboboxStore.displayOptions[foundOptionIndex].label,
             getSelectedValues(true),
           );
         } else {
@@ -749,7 +749,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     }
 
     // there is no reason to request data if the input value is already the selected value
-    if (comboboxStore.inputValue === props.selected?.[0]?.display) {
+    if (comboboxStore.inputValue === props.selected?.[0]?.label) {
       return;
     }
 
@@ -776,7 +776,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
   createEffect(() => {
     setComboboxStore(
       produce((store) => {
-        store.inputValue = !props.isMulti && props.selected.length > 0 ? props.selected[0].display : '';
+        store.inputValue = !props.isMulti && props.selected.length > 0 ? props.selected[0].label : '';
       }),
     );
   });
@@ -874,7 +874,7 @@ const simpleFilter = <TData>(options: ComboboxOption<TData>[], inputValue = '') 
   }
 
   return options.filter((option) => {
-    return option.display.toLowerCase().includes(inputValue.toLowerCase());
+    return option.label.toLowerCase().includes(inputValue.toLowerCase());
   });
 };
 
@@ -888,7 +888,7 @@ const excludeSelectedFilter = <TData>(
   }
 
   return options.filter((option) => {
-    return !excludeValues.includes(option.value) && option.display.toLowerCase().includes(inputValue.toLowerCase());
+    return !excludeValues.includes(option.value) && option.label.toLowerCase().includes(inputValue.toLowerCase());
   });
 };
 
