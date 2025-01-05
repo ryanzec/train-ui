@@ -22,7 +22,7 @@
 %SIZE_VARIABLES%
 }
 
-.dark {
+[data-theme="dark"] {
 %DARK_COLOR_VARIABLES%
 }
 

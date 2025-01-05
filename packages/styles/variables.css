@@ -135,7 +135,7 @@
   --size-4xl: 4rem;
 }
 
-.dark {
+[data-theme="dark"] {
   --color-outline: #667072;
   --color-outline-active: #DEEBEE;
   --color-surface-pure: #000000;

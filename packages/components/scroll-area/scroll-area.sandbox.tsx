@@ -6,65 +6,67 @@ export default {
 
 export const Default = () => {
   return (
-    <ScrollArea style={{ height: '200px' }}>
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-      Testing
-      <br />
-    </ScrollArea>
+    <div style={{ height: '200px' }}>
+      <ScrollArea>
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+        Testing
+        <br />
+      </ScrollArea>
+    </div>
   );
 };

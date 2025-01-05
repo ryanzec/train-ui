@@ -1,6 +1,9 @@
 .combobox {
   /* this make the items element width to be constrained by the main auto complete element */
   position: relative;
+  display: inline-flex;
+  flex-direction: column;
+  width: 100%;
 
   /*
 	 * these nested styles are nested in order to make sure these style override other ones properly
@@ -32,7 +35,7 @@
   display: block;
   position: absolute;
   width: 100%;
-  overflow-y: scroll;
+  overflow-y: hidden;
   max-height: 250px;
   z-index: var(--z-index-combobox-options-opened);
 }

@@ -3,9 +3,10 @@ import 'overlayscrollbars/overlayscrollbars.css';
 import type { PartialOptions } from 'overlayscrollbars';
 
 import { OverlayScrollbarsComponent, type OverlayScrollbarsComponentProps } from 'overlayscrollbars-solid';
-import { splitProps } from 'solid-js';
+import { children, splitProps } from 'solid-js';
 
 import styles from '$/components/scroll-area/scroll-area.module.css';
+import classnames from 'classnames';
 
 const defaultScrollbarOptions: PartialOptions = {
   scrollbars: {
@@ -14,14 +15,18 @@ const defaultScrollbarOptions: PartialOptions = {
 };
 
 const ScrollArea = (passedProps: OverlayScrollbarsComponentProps) => {
-  const [props, restOfProps] = splitProps(passedProps, ['options']);
+  const [props] = splitProps(passedProps, ['options', 'class', 'children']);
   const options = props.options || {};
+
+  // @todo(refactor) this is to work around a bug in OverlayScrollbars that cause a double render of content
+  // @todo(refactor) depending if the top element wrapped uses a signal
+  // @todo(refactor) reference: https://github.com/KingSora/OverlayScrollbars/issues/700
+  const contentAsVariable = children(() => props.children);
 
   return (
     <OverlayScrollbarsComponent
       defer
-      {...restOfProps}
-      class={styles.scrollArea}
+      class={classnames(styles.scrollArea, props.class)}
       options={{
         ...props.options,
         scrollbars: {
@@ -29,7 +34,9 @@ const ScrollArea = (passedProps: OverlayScrollbarsComponentProps) => {
           ...defaultScrollbarOptions.scrollbars,
         },
       }}
-    />
+    >
+      {contentAsVariable()}
+    </OverlayScrollbarsComponent>
   );
 };
 
