@@ -1,4 +1,3 @@
-import styles from '$/components/combobox/combobox.module.css';
 import SelectableGroupHeader from '$/components/combobox/selectable-group-header';
 import type {
   ComboboxExtraData,
@@ -6,8 +5,7 @@ import type {
   ComboboxSelectableOptionProps,
   GetSelectableOptionPropsReturns,
 } from '$/components/combobox/utils';
-import List from '$/components/list';
-import { For, type JSX, Show, mergeProps } from 'solid-js';
+import { For, type JSX, Show } from 'solid-js';
 import { Dynamic } from 'solid-js/web';
 
 type OptionsProps<TData extends ComboboxExtraData> = {

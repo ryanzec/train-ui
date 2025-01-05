@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { For, Show, createEffect, createSignal } from 'solid-js';
+import { For, Show, createSignal } from 'solid-js';
 import * as zod from 'zod';
 
 import Button from '$/components/button';
@@ -54,6 +54,7 @@ type ExampleProps = {
   options?: ComboboxOption<CustomExtraData>[];
   supportingText?: string[];
   validationState?: FormInputValidationState;
+  groupOrder?: string[];
 };
 
 const getSelectedComponent = (selectedComponent?: ComboboxProps<CustomExtraData>['selectedComponent'] | null) => {
@@ -73,18 +74,18 @@ const baseOptions: ComboboxOption<CustomExtraData>[] = [
 
 const baseLargeOptions: ComboboxOption[] = [];
 
-for (let i = 0; i < 1000; i++) {
+for (let i = 0; i < 200; i++) {
   baseLargeOptions.push({ display: `test${i}`, value: i });
 }
 
 const baseGroupedOptions: ComboboxOption<CustomExtraData>[] = [
-  { display: 'test1', value: 11, groupKey: 'group1', meta: { extra: 'test' } },
-  { display: 'tes5', value: 55, groupKey: 'group1' },
-  { display: 'test2', value: 22, groupKey: 'group2' },
-  { display: 'tes4', value: 44, groupKey: 'group3' },
+  { display: 'test1', value: 11, groupKey: 'Group 1', meta: { extra: 'test' } },
+  { display: 'tes5', value: 55, groupKey: 'Group 1' },
+  { display: 'test2', value: 22, groupKey: 'Group 2' },
+  { display: 'tes4', value: 44, groupKey: 'Group 3' },
   { display: 'tes7', value: 77 },
-  { display: 'tes3', value: 33, groupKey: 'group1' },
-  { display: 'tes6', value: 66, groupKey: 'group2' },
+  { display: 'tes3', value: 33, groupKey: 'Group 1' },
+  { display: 'tes6', value: 66, groupKey: 'Group 2' },
 ];
 
 const BasicExample = (props: ExampleProps) => {
@@ -132,6 +133,7 @@ const BasicExample = (props: ExampleProps) => {
           removeOnDuplicateSingleSelect={!!props.removeOnDuplicateSingleSelect}
           disabled={!!props.disabled}
           validationState={props.validationState}
+          groupOrder={props.groupOrder}
         />
         <SupportingText
           supportingText={props.supportingText}
@@ -166,6 +168,7 @@ const MultiSelectExample = (props: ExampleProps) => {
   };
 
   const setSelected = (options: ComboboxOption<CustomExtraData>[]) => {
+    console.log(options);
     comboboxStore.setSelected(options);
 
     if (props.onSelected) {
@@ -202,6 +205,7 @@ const MultiSelectExample = (props: ExampleProps) => {
           removeOnDuplicateSingleSelect={!!props.removeOnDuplicateSingleSelect}
           disabled={!!props.disabled}
           validationState={props.validationState}
+          groupOrder={props.groupOrder}
         />
         <SupportingText
           supportingText={props.supportingText}
@@ -273,8 +277,16 @@ export const SingleGrouped = () => {
   return <BasicExample options={baseGroupedOptions} />;
 };
 
+export const SingleGroupedOrdered = () => {
+  return <BasicExample options={baseGroupedOptions} groupOrder={['Group 3', 'Group 2', 'Group 1']} />;
+};
+
 export const MultiGrouped = () => {
   return <MultiSelectExample options={baseGroupedOptions} />;
+};
+
+export const MultiGroupedOrdered = () => {
+  return <BasicExample options={baseGroupedOptions} groupOrder={['Group 3', 'Group 2', 'Group 1']} />;
 };
 
 export const SingleWithMissingData = () => {
