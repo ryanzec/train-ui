@@ -175,6 +175,16 @@ const getComboboxStoreDefaults = <TData extends ComboboxExtraData>() => {
   } as ComboboxStore<TData>;
 };
 
+type TriggerComboboxOptions = {
+  focusInput?: boolean;
+  openOptions?: boolean;
+};
+
+const defaultTriggerComboboxOptions: TriggerComboboxOptions = {
+  focusInput: true,
+  openOptions: false,
+};
+
 const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TData>) => {
   const orderDisplayOptions = (options: ComboboxOption<TData>[]) => {
     if (!props.isMulti) {
@@ -222,9 +232,6 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
   };
 
   const getValueIndex = (value: string): ComboboxOption<TData> | undefined => {
-    // console.log(value);
-    // console.log(comboboxStore.displayOptions);
-    // console.log(comboboxStore.displayOptions.find((displayOption) => displayOption.value.toString() === value));
     return comboboxStore.displayOptions.find((displayOption) => displayOption.value.toString() === value);
   };
 
@@ -245,36 +252,16 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     return !!props.autoShowOptions || !!props.getOptionsAsync;
   };
 
-  const openCombobox = () => {
-    if (!props.isMulti) {
-      const foundOptionIndex = getDisplayOptionIndex(props.selected[0]);
+  const triggerCombobox = (overrideOptions: TriggerComboboxOptions = {}) => {
+    const options = Object.assign({}, defaultTriggerComboboxOptions, overrideOptions);
 
-      if (getDefaultIsOpen() && foundOptionIndex !== -1) {
-        setFocusedOption(foundOptionIndex);
-      }
+    if (options.focusInput && comboboxStore.inputRef) {
+      comboboxStore.inputRef.focus();
     }
 
-    setComboboxStore(
-      produce((store) => {
-        store.isOpen = getDefaultIsOpen();
-
-        // if we are getting the options from an async source then we don't need to so this since that process
-        // happens own its own and ignores the statically passed in options
-        if ((props.isMulti || foundOptionIndex !== -1) && !props.getOptionsAsync && props.filterOptions) {
-          store.displayOptions = props.filterOptions(
-            removeInvalidOptions(props.options),
-            props.isMulti ? '' : comboboxStore.displayOptions[foundOptionIndex].display,
-            getSelectedValues(true),
-          );
-        } else {
-          // since the options could have changes since the component was first rendered, we need to make sure to
-          // set sync the display options to that
-          store.displayOptions = removeInvalidOptions(props.options);
-        }
-
-        store.displayOptions = orderDisplayOptions(store.displayOptions);
-      }),
-    );
+    if (options.openOptions) {
+      setComboboxStore('isOpen', true);
+    }
   };
 
   const closeCombobox = () => {
@@ -434,7 +421,35 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
   };
 
   const onFocusInput = () => {
-    openCombobox();
+    if (!props.isMulti) {
+      const foundOptionIndex = getDisplayOptionIndex(props.selected[0]);
+
+      if (getDefaultIsOpen() && foundOptionIndex !== -1) {
+        setFocusedOption(foundOptionIndex);
+      }
+    }
+
+    setComboboxStore(
+      produce((store) => {
+        store.isOpen = getDefaultIsOpen();
+
+        // if we are getting the options from an async source then we don't need to so this since that process
+        // happens own its own and ignores the statically passed in options
+        if ((props.isMulti || foundOptionIndex !== -1) && !props.getOptionsAsync && props.filterOptions) {
+          store.displayOptions = props.filterOptions(
+            removeInvalidOptions(props.options),
+            props.isMulti ? '' : comboboxStore.displayOptions[foundOptionIndex].display,
+            getSelectedValues(true),
+          );
+        } else {
+          // since the options could have changes since the component was first rendered, we need to make sure to
+          // set sync the display options to that
+          store.displayOptions = removeInvalidOptions(props.options);
+        }
+
+        store.displayOptions = orderDisplayOptions(store.displayOptions);
+      }),
+    );
   };
 
   const onBlurInput = () => {
@@ -708,12 +723,6 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     };
   };
 
-  const getOptionsContainerProps = (): GetOptionsContainerPropsReturns => {
-    return {
-      ref: optionsContainerRef,
-    };
-  };
-
   // handle making sure if the selected value is in the options list when opening, we scroll to it
   createEffect(() => {
     if (!comboboxStore.isOpen || !comboboxStore.optionsContainerRef || props.isMulti) {
@@ -810,7 +819,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     getSelectedOptionIndex,
     getSelectedValues,
     getDefaultIsOpen,
-    openCombobox,
+    triggerCombobox,
     closeCombobox,
     getHighlightedValue,
     selectValue,
@@ -834,8 +843,8 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     getInputProps,
     getSelectionOptionProps,
     getSelectedOptionProps,
-    getOptionsContainerProps,
     isGrouped,
+    optionsContainerRef,
   };
 };
 

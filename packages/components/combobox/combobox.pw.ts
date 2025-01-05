@@ -665,7 +665,7 @@ test.describe('combobox @combobox-component', () => {
       }
     });
 
-    test('highlight option and then clearing the input and blur should not select that last highlighted option @component @flaky', async ({
+    test('highlight option and then clearing the input and blur should not select that last highlighted option @component', async ({
       page,
     }) => {
       // multi select does not display anything in the input when something is selected
@@ -691,9 +691,9 @@ test.describe('combobox @combobox-component', () => {
       }
     });
 
-    test('input icon indicator work when there is no value @component @flaky', async ({ page }) => {
+    test('input icon indicator works @component', async ({ page }) => {
       // multi select does not display anything in the input when something is selected
-      const testUrls = [urls.singleNoForceSelection, urls.multiNoForceSelection];
+      const testUrls = [urls.single, urls.multi];
       const componentPage = new ComboboxPage(page);
 
       for (let i = 0; i < testUrls.length; i++) {
@@ -704,7 +704,8 @@ test.describe('combobox @combobox-component', () => {
 
         await componentPage.clickInputIconIndicator();
 
-        await componentPage.expectInputNotToBeFocused(loopErrorContext);
+        await componentPage.expectInputToBeFocused(loopErrorContext);
+        await componentPage.expectOptionsContainerToBeVisible(loopErrorContext);
       }
     });
 

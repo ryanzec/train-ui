@@ -14,9 +14,38 @@ import Icon from '$/components/icon';
 import iconStyles from '$/components/icon/icon.module.css';
 import Input from '$/components/input';
 import List from '$/components/list';
+import * as _ from 'lodash';
 
 import Options from '$/components/combobox/options';
+import ScrollArea from '$/components/scroll-area';
+import { createStore, produce, reconcile } from 'solid-js/store';
 import styles from './combobox.module.css';
+
+type ComboboxGroupedOptions<TData extends ComboboxExtraData> = {
+  options: Record<string, ComboboxOption<TData>[]>;
+  counts: Record<string, number>;
+};
+
+const orderGroupKeys = (allKeys: string[], orderedKeys: string[]) => {
+  if (orderedKeys.length === 0) {
+    return allKeys;
+  }
+
+  const returnValue = [...orderedKeys];
+
+  // we create a set for quicker lookup when all keys that are not in the ordered keys
+  const lookupSet = new Set(orderedKeys);
+
+  for (const key of allKeys) {
+    if (lookupSet.has(key)) {
+      continue;
+    }
+
+    returnValue.push(key);
+  }
+
+  return returnValue;
+};
 
 const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TData>) => {
   const [props, restOfProps] = splitProps(
@@ -31,6 +60,7 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
         disabled: false,
         showClearIcon: true,
         ungroupedKey: 'Ungrouped',
+        groupOrder: [],
       },
       passedProps,
     ),
@@ -54,6 +84,7 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
       'showClearIcon',
       'class',
       'ungroupedKey',
+      'groupOrder',
 
       // we move out the id in order to assign it to the input so things like label for works
       'id',
@@ -64,19 +95,43 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
 
   const comboboxStore = comboboxUtils.createCombobox(props);
 
-  const [groupedOptions, setGroupedOptions] = createSignal<ComboboxOption<TData>[][]>([]);
+  // since the order of the option change might be different than they appear in the options list so we store this
+  // separately
   const [groupedOptionKeys, setGroupedOptionKeys] = createSignal<string[]>([]);
-  const [indexOffsets, setIndexOffsets] = createSignal<number[]>([]);
-  const [totalOptionsCount, setTotalOptionsCount] = createSignal(0);
+  const [finalGroupedOptionsStore, setFinalGroupedOptionsStore] = createStore<ComboboxGroupedOptions<TData>>({
+    options: {},
+    counts: {},
+  });
 
-  const onClickClearTrigger = () => {
+  const totalOptionsCount = () => {
+    return _.sum(Object.values(finalGroupedOptionsStore.counts));
+  };
+
+  const handleClearValue = (event: Event) => {
+    event.stopPropagation();
+
     if (comboboxStore.inputHasClearableValue()) {
       comboboxStore.clearSelection(false);
     }
   };
 
-  const onClickDropDownIndicator = () => {
-    comboboxStore.store.inputRef?.focus();
+  const handleFocusInputAndOpen = (event: Event) => {
+    event.stopPropagation();
+
+    comboboxStore.triggerCombobox({ openOptions: true });
+  };
+
+  const handleFocusInput = () => {
+    comboboxStore.triggerCombobox();
+  };
+
+  const clearFinalGroupedOptionsStore = () => {
+    setFinalGroupedOptionsStore(
+      produce((currentStore: ComboboxGroupedOptions<TData>) => {
+        currentStore.options = {};
+        currentStore.counts = {};
+      }),
+    );
   };
 
   const dynamicProps = {
@@ -85,8 +140,17 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
 
   // maintained the list of displayed options in the grouped format
   createEffect(() => {
+    if (comboboxStore.store.isOpen === false) {
+      batch(() => {
+        clearFinalGroupedOptionsStore();
+        setGroupedOptionKeys([]);
+      });
+
+      return;
+    }
+
     const defaultGroupKey = comboboxStore.isGrouped() ? props.ungroupedKey : '';
-    const tempGroupedOptions = comboboxStore.store.displayOptions.reduce<Record<string, ComboboxOption<TData>[]>>(
+    const groupedDisplayOptions = comboboxStore.store.displayOptions.reduce<Record<string, ComboboxOption<TData>[]>>(
       (collector, displayOption) => {
         const groupKey = displayOption.groupKey ?? defaultGroupKey;
 
@@ -94,37 +158,54 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
           collector[groupKey] = [];
         }
 
-        collector[groupKey].push(displayOption);
+        collector[groupKey].push({ ...displayOption });
 
         return collector;
       },
       {},
     );
 
-    // @todo add ordering
+    const finalGroupedOptions: ComboboxGroupedOptions<TData> = { counts: {}, options: {} };
+    let newGroupedOptionKeys: string[] = [];
 
-    const indexOffsets: number[] = [];
-    const testGroupedOptions2: ComboboxOption<TData>[][] = [];
-    const testGroupedOptions3: string[] = [];
-    let currentTotalCount = 0;
-
-    for (const groupKey in tempGroupedOptions) {
-      indexOffsets.push(currentTotalCount);
-      testGroupedOptions2.push(tempGroupedOptions[groupKey]);
-      testGroupedOptions3.push(groupKey);
-
-      currentTotalCount += tempGroupedOptions[groupKey].length;
+    for (const groupKey in groupedDisplayOptions) {
+      newGroupedOptionKeys.push(groupKey);
+      finalGroupedOptions.options[groupKey] = groupedDisplayOptions[groupKey];
+      finalGroupedOptions.counts[groupKey] = groupedDisplayOptions[groupKey].length;
     }
 
-    setTotalOptionsCount(currentTotalCount);
-    setGroupedOptions(testGroupedOptions2);
-    setIndexOffsets(indexOffsets);
-    setGroupedOptionKeys(testGroupedOptions3);
+    newGroupedOptionKeys = orderGroupKeys(newGroupedOptionKeys, props.groupOrder);
+
+    batch(() => {
+      if (newGroupedOptionKeys.length === 0) {
+        clearFinalGroupedOptionsStore();
+
+        return;
+      }
+
+      for (let i = 0; i < newGroupedOptionKeys.length; i++) {
+        const groupKey = newGroupedOptionKeys[i];
+
+        if (!finalGroupedOptionsStore.options[groupKey]) {
+          setFinalGroupedOptionsStore('options', groupKey, finalGroupedOptions.options[groupKey]);
+          setFinalGroupedOptionsStore('counts', groupKey, finalGroupedOptions.counts[groupKey]);
+
+          continue;
+        }
+
+        setFinalGroupedOptionsStore('options', groupKey, reconcile(finalGroupedOptions.options[groupKey]));
+        setFinalGroupedOptionsStore('counts', groupKey, finalGroupedOptions.counts[groupKey]);
+      }
+
+      if (_.isEqual(groupedOptionKeys(), newGroupedOptionKeys) === false) {
+        setGroupedOptionKeys(newGroupedOptionKeys);
+      }
+    });
   });
 
   return (
     <div data-id="combobox" {...restOfProps} class={classnames(styles.combobox, props.class)} {...dynamicProps}>
-      <div>
+      <button type="button" onClick={handleFocusInput}>
         <Input
           {...comboboxStore.getInputProps()}
           inputContainerClass={comboboxStore.store.isOpen ? styles.inputContainer : undefined}
@@ -135,8 +216,6 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
           preItemIsInline
           inlineItem={
             <Show when={props.isMulti && props.selected.length > 0 && !!props.selectedComponent}>
-              {/*<div class={styles.selectedOptions}>*/}
-              {/*  <div data-id="selected-options">*/}
               <For each={props.selected}>
                 {(option: ComboboxOption<TData>, optionIndex: Accessor<number>) => {
                   return (
@@ -149,8 +228,6 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
                   );
                 }}
               </For>
-              {/*  </div>*/}
-              {/*</div>*/}
             </Show>
           }
           postItem={
@@ -159,64 +236,67 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
                 <Show
                   when={props.showClearIcon && !comboboxStore.store.isOpen && comboboxStore.inputHasClearableValue()}
                 >
-                  <Icon data-id="clear-icon-trigger" icon="close" onClick={onClickClearTrigger} />
+                  <Icon data-id="clear-icon-trigger" icon="close" onClick={handleClearValue} />
                 </Show>
-                <Icon data-id="input-icon-indicator" icon="arrow_drop_down" onClick={onClickDropDownIndicator} />
+                <Icon data-id="input-icon-indicator" icon="arrow_drop_down" onClick={handleFocusInputAndOpen} />
               </>
             )
           }
           postItemIsClickable
         />
-      </div>
-      <List
-        data-id="selectable-options"
-        class={classnames(styles.list, {
-          [styles.openedList]: comboboxStore.store.isOpen,
-        })}
-        {...comboboxStore.getOptionsContainerProps()}
-      >
-        <Show when={comboboxStore.store.isOpen && comboboxStore.asyncOptionsAreLoading()}>
-          <List.Item data-id="async-options-loading" class={styles.listOption}>
-            <Icon class={classnames(styles.loadingIndicator, iconStyles.spacingRight)} icon="refresh" /> Loading...
-          </List.Item>
-        </Show>
-        <Show
-          when={
-            comboboxStore.store.isOpen && comboboxStore.store.asyncOptionsState === AsyncOptionsState.BEFORE_THRESHOLD
-          }
-        >
-          <List.Item data-id="async-options-before-threshold" class={styles.listOption}>
-            Type {comboboxStore.store.asyncThreshold} characters for options...
-          </List.Item>
-        </Show>
-        <Show when={comboboxStore.store.isOpen && comboboxStore.showOptions()}>
-          <Show
-            when={totalOptionsCount() > 0}
-            fallback={
-              <Show when={!comboboxStore.asyncOptionsAreLoading()}>
-                <List.Item data-id="no-options-found" class={styles.listOption}>
-                  No Options Found
+      </button>
+      <Show when={comboboxStore.store.isOpen}>
+        <button type="button">
+          <List
+            data-id="selectable-options"
+            ref={comboboxStore.optionsContainerRef}
+            class={classnames(styles.list, {
+              [styles.openedList]: comboboxStore.store.isOpen,
+            })}
+          >
+            <ScrollArea>
+              <Show when={comboboxStore.asyncOptionsAreLoading()}>
+                <List.Item data-id="async-options-loading" class={styles.listOption}>
+                  <Icon class={classnames(styles.loadingIndicator, iconStyles.spacingRight)} icon="refresh" />{' '}
+                  Loading...
                 </List.Item>
               </Show>
-            }
-          >
-            <For each={groupedOptions()}>
-              {(options, index) => {
-                return (
-                  <Options
-                    options={options}
-                    groupLabel={groupedOptionKeys()[index()]}
-                    selectableComponent={props.selectableComponent}
-                    asyncOptionsAreLoading={comboboxStore.asyncOptionsAreLoading}
-                    getSelectionOptionProps={comboboxStore.getSelectionOptionProps}
-                    indexOffset={indexOffsets()[index()]}
-                  />
-                );
-              }}
-            </For>
-          </Show>
-        </Show>
-      </List>
+              <Show when={comboboxStore.store.asyncOptionsState === AsyncOptionsState.BEFORE_THRESHOLD}>
+                <List.Item data-id="async-options-before-threshold" class={styles.listOption}>
+                  Type {comboboxStore.store.asyncThreshold} characters for options...
+                </List.Item>
+              </Show>
+              <Show when={comboboxStore.showOptions()}>
+                <Show
+                  when={totalOptionsCount() > 0}
+                  fallback={
+                    <Show when={!comboboxStore.asyncOptionsAreLoading()}>
+                      <List.Item data-id="no-options-found" class={styles.listOption}>
+                        No Options Found
+                      </List.Item>
+                    </Show>
+                  }
+                >
+                  <For each={groupedOptionKeys()}>
+                    {(optionKey) => {
+                      return (
+                        <Options
+                          options={finalGroupedOptionsStore.options[optionKey]}
+                          groupLabel={optionKey}
+                          selectableComponent={props.selectableComponent}
+                          asyncOptionsAreLoading={comboboxStore.asyncOptionsAreLoading}
+                          getSelectionOptionProps={comboboxStore.getSelectionOptionProps}
+                          indexOffset={0}
+                        />
+                      );
+                    }}
+                  </For>
+                </Show>
+              </Show>
+            </ScrollArea>
+          </List>
+        </button>
+      </Show>
     </div>
   );
 };
