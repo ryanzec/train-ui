@@ -1,5 +1,5 @@
 import { debounce } from '@solid-primitives/scheduled';
-import { type Accessor, type JSX, createEffect, createSignal, onCleanup } from 'solid-js';
+import { type Accessor, type JSX, batch, createEffect, createSignal, onCleanup } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
 
 import type { FormErrorsData, FormInputValidationState } from '$/stores/form/utils';
@@ -95,6 +95,7 @@ export type ComboboxProps<TData extends ComboboxExtraData> = JSX.HTMLAttributes<
   validationState?: FormInputValidationState;
   showClearIcon?: boolean;
   ungroupedKey?: string;
+  groupOrder?: string[];
 };
 
 export type FormComboboxProps<TFormData> = {
@@ -221,6 +222,9 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
   };
 
   const getValueIndex = (value: string): ComboboxOption<TData> | undefined => {
+    // console.log(value);
+    // console.log(comboboxStore.displayOptions);
+    // console.log(comboboxStore.displayOptions.find((displayOption) => displayOption.value.toString() === value));
     return comboboxStore.displayOptions.find((displayOption) => displayOption.value.toString() === value);
   };
 
@@ -290,7 +294,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     comboboxStore.inputRef?.blur();
   };
 
-  const getSelectValue = (): ComboboxOption<TData> | undefined => {
+  const getHighlightedValue = (): ComboboxOption<TData> | undefined => {
     const elements = comboboxStore.optionsContainerRef?.querySelectorAll(
       `[${COMBOBOX_HIGHLIGHTED_OPTION_DATA_ATTRIBUTE}="true"]`,
     ) as NodeListOf<HTMLElement>;
@@ -415,14 +419,10 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
       newOptionIndex = 0;
     }
 
-    setComboboxStore(
-      produce((store) => {
-        // we need to make sure to show the option when we are selecting an index as if we don't, a selection could
-        // be made without the user knowing
-        store.isOpen = true;
-        store.focusedOptionIndex = newOptionIndex;
-      }),
-    );
+    // we split this update out because the change to is opened will cause the options to update in the dom which is
+    // required for the update to the focused option to work properly
+    setComboboxStore('isOpen', true);
+    setComboboxStore('focusedOptionIndex', newOptionIndex);
   };
 
   const clearFocusedOption = () => {
@@ -450,12 +450,12 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
       return;
     }
 
-    const selectedValue = getSelectValue();
+    const highlightedValue = getHighlightedValue();
 
-    if (selectedValue) {
+    if (highlightedValue) {
       // regardless of the props passed in for this functionality, we don't want to do this when blurring as
       // removal should be an explicit user interaction and not an implicit one
-      selectValue(selectedValue, { removeDuplicateSingle: false, triggeredByBlur: true });
+      selectValue(highlightedValue, { removeDuplicateSingle: false, triggeredByBlur: true });
     }
 
     closeCombobox();
@@ -508,16 +508,14 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
       }
 
       case Key.ENTER: {
-        const selectedValue = getSelectValue();
+        const highlightedValue = getHighlightedValue();
 
-        console.log(selectedValue);
-
-        if (selectedValue) {
+        if (highlightedValue) {
           // since there is a selected value, we should not do the default for these keys since we are selecting
           // the value instead
           event.preventDefault();
 
-          selectValue(selectedValue, {
+          selectValue(highlightedValue, {
             removeDuplicateSingle: props.removeOnDuplicateSingleSelect,
           });
         }
@@ -776,15 +774,19 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
 
   // manage the highlighted options dom state
   createEffect(() => {
-    // first remove the existing highlighted options
     const elements = comboboxStore.optionsContainerRef?.querySelectorAll(
       `[${COMBOBOX_HIGHLIGHTED_OPTION_DATA_ATTRIBUTE}="true"]`,
     ) as NodeListOf<HTMLElement>;
+
+    if (!elements) {
+      return;
+    }
 
     for (const element of elements) {
       element.setAttribute(COMBOBOX_HIGHLIGHTED_OPTION_DATA_ATTRIBUTE, 'false');
     }
 
+    // highlight the new highlighted option
     if (comboboxStore.focusedOptionIndex === undefined) {
       return;
     }
@@ -802,74 +804,6 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     highlightedElement.setAttribute(COMBOBOX_HIGHLIGHTED_OPTION_DATA_ATTRIBUTE, 'true');
   });
 
-  // type TestType<TData extends ComboboxExtraData> = {
-  //   store: ComboboxStore<TData>;
-  //   getDisplayOptionIndex: (option?: ComboboxOption<TData>) => number;
-  //   getSelectedOptionIndex:(option?: ComboboxOption<TData>) => number;
-  //   getSelectedValues: (forFiltering: boolean) => ComboboxOptionValue[];
-  //   getDefaultIsOpen: () => boolean;
-  //   openCombobox: () => void;
-  //   closeCombobox: () => void;
-  //   getSelectValue: () => ComboboxOption<TData> | undefined;
-  //   selectValue: (option: ComboboxOption<TData>, optionOverrides: SelectValueOptions) => void;
-  //   removeValue: (selectedIndex: number) => void;
-  //   clearSelection: () => void;
-  //   isFocusedOption: (index: number) => boolean;
-  //   isSelectedOption: (index: number) => boolean;
-  //   setFocusedOption: (index: number) => void;
-  //   clearFocusedOption: () => void;
-  //   onFocusInput;
-  //   onBlurInput;
-  //   onKeyDownInput;
-  //   onInputInput;
-  //   onMouseDownSelectableOption;
-  //   onMouseEnterSelectableOption;
-  //   onMouseLeaveSelectableOption;
-  //   inputRef;
-  //   asyncOptionsAreLoading;
-  //   showOptions;
-  //   inputHasClearableValue;
-  //   getInputProps;
-  //   getSelectionOptionProps;
-  //   getSelectedOptionProps;
-  //   getOptionsContainerProps;
-  //   isGrouped: () => boolean;
-  // };
-  //
-  // const test: TestType<TData> = {
-  //   store: comboboxStore,
-  //   getDisplayOptionIndex,
-  //   getSelectedOptionIndex,
-  //   getSelectedValues,
-  //   getDefaultIsOpen,
-  //   openCombobox,
-  //   closeCombobox,
-  //   getSelectValue,
-  //   selectValue,
-  //   removeValue,
-  //   clearSelection,
-  //   isFocusedOption,
-  //   isSelectedOption,
-  //   setFocusedOption,
-  //   clearFocusedOption,
-  //   onFocusInput,
-  //   onBlurInput,
-  //   onKeyDownInput,
-  //   onInputInput,
-  //   onMouseDownSelectableOption,
-  //   onMouseEnterSelectableOption,
-  //   onMouseLeaveSelectableOption,
-  //   inputRef,
-  //   asyncOptionsAreLoading,
-  //   showOptions,
-  //   inputHasClearableValue,
-  //   getInputProps,
-  //   getSelectionOptionProps,
-  //   getSelectedOptionProps,
-  //   getOptionsContainerProps,
-  //   isGrouped,
-  // };
-
   return {
     store: comboboxStore,
     getDisplayOptionIndex,
@@ -878,7 +812,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     getDefaultIsOpen,
     openCombobox,
     closeCombobox,
-    getSelectValue,
+    getHighlightedValue,
     selectValue,
     removeValue,
     clearSelection,
