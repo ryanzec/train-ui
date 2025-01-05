@@ -13,20 +13,14 @@ There are going to be cases where we need to do something outside of our standar
 This is a living documenting and updates will need to be made as we run into more use cases. Ideally, any changes to the style guide should first be discussed outside of Notion (probably in slack) and once a decision has been made, this document can be updated.
 
 # Tooling
+- node - runtime for both tooling and production code. All of our node based applications manage their version of node is through the `.nvmrc` file in the repository (it is highly suggested you use `nvm` to make managing `node` as easy as possible)
+- pnpm - managing dependencies (with `pnpm-lock.yaml` lock file)
+- vite - build tool
+- css modules - styling components
+- vitest - unit testing
+- playwright - component / integration / end to end testing
 
-## Node
-
-We use node for our build pipelines and for production use in some cases (our new web application is served through NextJS). All of our node based applications manage their version of node is through the `.nvmrc` file in the repository (it is highly suggested you use `nvm` to make managing `node` as easy as possible).
-
-## Dependency management
-
-We use `npm` for managing our dependencies.
-
-### Lock files
-
-We should be versioning our `package.lock` file in source control to help ensure that no matter where we installing packages, everyone is using the same versions.
-
-### Versioning format
+## Dependency Versioning Format
 
 Over the years there have been incidents of npm package being hack or even the maintainers themselves adding malicious code:
 
@@ -36,77 +30,51 @@ Over the years there have been incidents of npm package being hack or even the m
 
 There are also times when a non-breaking version bump does actually break code (no one is perfect) and having that auto update without knowing can make what caused that breaking issue very hard to determine.
 
-For those reasons, locking down packages in `package.json` to an exact version (not using `~`, `^`, etc.) helps prevent these kinds of issues (along with the `package-lock.json` file).
-
-## ViteJS
-
-Our build process utilizes ViteJS.
-
-## Custom Sandbox
-
-Since storybook does not have an easy way to work with SolidJS (or at least the implementations that I tried), there is a very simplified implementation of a sandbox solution to isolated development / testing using Vite.
-
-## CSS Modules
-
-We use CSS Modules for styling out components.
-
-## Vitest
-
-Vitest is used for running unit level testing.
-
-## Playwright
-
-Playwright is used for component and integration level testing.
+For those reasons, locking down packages in `package.json` to an exact version (not using `~`, `^`, etc.) helps prevent these kinds of issues (along with the `pnpm-lock.yaml` file).
 
 # Repository / Coding Structure
 
-## Monorepo
-
-Most of our frontend code in being storing in a single mono-like repository which allows us to share code between applications (like between the web application and browser extension).
-
-### Common code
+## Common Code
 
 All common code should live within the `./packages` directory which includes sub-directories for the following:
 
-- `packages/apis/*` - Each directory under this should store apis that are related to a specific resource (i.e. `packages/apis/users`, `packages/apis/roles`, etc.)
-- `pacakges/assets/*` - This should store static assets (.e. images, json, etc.)
-- `packages/components/*` - Smaller scale components such as a button, form input, etc. and medium scale components such as forms, dialog, etc. (each component or collection of related components needs to be in their own sub-directory)
-- `packages/data-models` - Utility files that are specific to data models (workflow, user, incident, etc.) that contain utility functions for either request that data or working with that data
+- `packages/apis/*` - Each directory under this should store apis that are related to a specific resource (i.e. `packages/apis/users`, `packages/apis/projects`, etc.)
+- `packages/assets/*` - This should store static assets (.e. images, json, etc.)
+- `packages/components/*` - Components
+- `packages/data-models` - File with utils / types for dealing with specific data models (users, projects, etc.)
 - `packages/directives/*` - SolidJS directives
 - `packages/locale/*` - Top level language files for i18n (these files should only include other localization files that are stored closer to the code that uses it)
-- `packages/stores/*` - Any general SolidJS custom store
-- `packages/styles/*` - Any styling related code
-- `packages/types/*` - These should be used for global types, any types that fit into the scope of a utility file should be place in that utility file
-- `packages/utils/*` - Utility methods and constants, each file should be grouped by logic functionality (`string.ts` for `stringUtils`, `user.ts` for `userUtils`, etc.), this should also include types, constants, and api calls that directly relate to the utility domain
-- `applications/**/packages/views/*` - Each directory under this should store larges views (like pages, dialog, etc.)
+- `packages/stores/*` - Any general custom store
+- `packages/styles/*` - Any general styling related code
+- `packages/types/*` - These should be used for global types
+- `packages/utils/*` - General utility functionality for specific contexts (`string.ts`, `array.ts`, etc.)
+
+This structure can also live in applications though those files should be specific to the application it lives it.
+
+## Application Code
+
+Each application (a web application, an backend api, a browser extension, etc) should live in its own directory under `./applications` and can include the same structure as the common code above but also include a directory of `packages/view` for page level components.
 
 ## Tests
 
-### Functional unit tests
+test should live in the same directory as the code it is testing with the following format:
 
-Vitest level unit testing files should be included in a folder called `tests` that is in the same directory as the code it is testing and end with `.spec.tx`. These types of unit tests should be written for all code that does not return JSX.
+- `*.spec.ts(x)` - unit level tests
+- `*.pw.ts(X)` - component / integration level tests
+- `*.e2e.ts` - end to end tests
 
-```
-packages/utils/tests/authentication.spec.ts
-packages/utils/authentication.ts
-```
+### Component Testing
 
-### Component unit tests
+Component testing should be done with Playwright instead of vitest as playwrioght test are much closer to the real things and component level testing with tools like vitest in my opinion are not as easy to maintain, debug, and flaky.
 
-Component level unit testing should be included in a folder called `tests` that is in the same directory as the code it is testing and end with `.pw.tx`. These types of "unit" tests should be written for all code that returns JSX.
-
-```
-src/components/button/tests/button.cy.tsx
-src/components/button/button.tsx
-```
 
 ## Apis
 
-Apis should have a directory for each “resource” (i.e. users, roles, etc.).
+Apis should have a directory for each “resource” (i.e. users, roles, etc.).
 
-Inside those directories there should be a file per api request which should be exported as a named export. These files should include the raw request. This prevent files from becoming too big when there are many api requests for a certain resource.
+Inside those directories there should be a file per api request which should be exported as a named export. These files should include the raw request. This prevents files from becoming too big when there are many api requests for a certain resource.
 
-There should be an `index.ts` file that should export all of the raw api requests as a named export named in a `[RESOURCE_NAME]Api` format (i.e. `usersApi`, `rolesApi`, etc.). All usage of the raw api requests outside of the resource api directory should be from the `index.ts` file.
+There should be an `index.ts` file that should export all of the raw api requests as a named export named in a `[RESOURCE_NAME]Api` format (i.e. `usersApi`, `rolesApi`, etc.). All usage of the raw api requests outside of the resource api directory should be from the `index.ts` file.
 
 ```
 packages/apis/users/index.ts
@@ -145,13 +113,15 @@ This is done as it makes it easier to mock these methods and keeps the general p
 
 Each file should be group by a specific purpose (e.x. `src/utils/form.ts`, `src/utils/authentication.ts` , etc.) or my data model (e.x. `src/utils/data-models/integrations.ts`, `src/utils/data-models/incidents.ts`, etc.). There is no need for an `index.ts` file since methods are already export as an object.
 
+These files should also export type as needed.
+
 # Language Localization
 
-Each language for i18n has an index file in the top folder for that locale (`packages/locale/en/index.ts`). Each of these files should only be importinh other i18n files that live with the code that they related to.
+Each language for i18n has an index file in the top folder for that locale (`packages/locale/en/index.ts`). Each of these files should only be importing other i18n files that live with the code that they related to.
 
 ## Key Formatting
 
-The key formatting for i18n should follow the diretory structure of where it related to using `.` instead of `/` (`components.applicationFrame.buttons.logout`).
+The key formatting for i18n should follow the directory structure of where it related to using `.` instead of `/` (`components.applicationFrame.buttons.logout`).
 
 # Naming
 
@@ -185,31 +155,12 @@ When in doubt, use `camelCase`.
 
 Some specific files have unique naming patterns to better help with tooling and identifying:
 
-- playwright component tests - `.pw.tsx`
 - sandbox - `.sandbox.tsx`
-- css moduels - `.module.css`
-- vitest unit tests - `.spec.ts`
+- css modules - `.module.css`
 
 ## Prefixing / Suffixing certain data types
 
 There are a few cases where we want to prefix or suffix certain data to help with naming conflicts / keep naming consistent:
-
-### Function parameters
-
-`[FunctionName]Params`
-
-```tsx
-type BuildProviderParams<T>  = {
-  context: React.Context<T>;
-  getState: () => T;
-}
-
-const buildProvider =
-  <T,>({ context, getState }: BuildProviderParams<T>) =>
-  ({ children }: GenericComponentProps) => {
-    // ...
-  };
-```
 
 ### Function return value
 
@@ -315,7 +266,7 @@ There are a number of patterns that are not listed here however are enforced by 
 
 ## Object.assign()
 
-When using Object.assign(), outside of component default exports, we should be wrapping that in `structuredClone()`, this help avoid shallow copying something by msitake that can result in unexpected behavior that can be hard to debug.
+When using Object.assign(), outside of component default exports, we should be wrapping that in `structuredClone()`, this help avoid shallow copying something by mistake that can result in unexpected behavior that can be hard to debug.
 
 ## No magic strings
 
@@ -335,7 +286,7 @@ if (user.role === Role.ADMIN) {
 }
 ```
 
-## Store common use data / functionality in a `utils.ts` for each directory
+## Store common use data / types / functionality in a `utils.ts` for each directory
 
 Whenever we have code that is being used in multiple files that might have an interdependency with each other (like multiple components within the same component directory), we should store this data in a `utils.ts(x)` file. This provides 2 benefits:
 
@@ -349,7 +300,7 @@ While there are a number of smaller reasons, the biggest reason for this is to e
 
 ### Components exception
 
-Components have the default export as it is a requirement oflazy loading them so we want to make sure our component are compatible with that if needed.
+Components have the default export as this is a near defacto standard pattern for component in library like React.
 
 ## Functional and immutable patterns over OOP
 
@@ -407,7 +358,7 @@ While is in common to use `data-testid` for creating general use selector for un
 
 ## `data-id` values should be generic and nested selector used to drill deep.
 
-We should be using nesting for `data-id` attributes (do `[data-id="frame"] [data-id="navigation]` instead of `[data-id="frame-navigation"]`). This allows these value to be generic and not too wordy.
+We should be using nesting for `data-id` attributes (do `[data-id="application-frame"] [data-id="navigation]` instead of `[data-id="application-frame-navigation"]`). This allows these value to be generic and not too wordy.
 
 ## Don’t create a sandbox file for every single component
 
@@ -442,7 +393,7 @@ export const formUtils = {
 };
 
 // good
-export const validate => //...
+const validate => //...
 
 export const formUtils = {
   validate,
@@ -451,7 +402,7 @@ export const formUtils = {
 
 ## Return early when possible
 
-It is perferred to return early in code when possible. This helps reduce the amount of code that is intended and can be arguability easier to read.
+It is preferred to return early in code when possible. This helps reduce the amount of code that is intended and can be arguably easier to read.
 
 ```tsx
 // bad
@@ -478,7 +429,7 @@ When naming something that is not exported directly, naming can be shorter as lo
 ```tsx
 // FILE: src/utils/logger.ts
 
-// good
+// acceptable
 const CLIENT_ID = //...
 ```
 
@@ -507,15 +458,15 @@ When naming variables, we should using uncommon abbreviations or abbreviations f
 
 Single character variable names should only be used when it makes logic sense (like using `x` and `y` for a coordinate).
 
-You can use abbreviations when they are extremely common for a relatively longer word (i.e. `id` instead of `indentifier`, `utils` instead of `utilities`, etc.)
+You can use abbreviations when they are extremely common for a relatively longer word (i.e. `id` instead of `indentifier`, `utils` instead of `utilities`, etc.)
 
 ## One component per file
 
 When creating components, a file should only have a single component. While this might seems weird for very small components, this will just help with keeping code maintainable and easier to parallelize work in certain cases.
 
-## Only destructure when it is know to be safe
+## Only destructure when it is know to be safe and needed
 
-Because SolidJS relies on a signals pattern, destructure can often break SolidJS's reactivity so is it best to avoid destructuring except in cases when we know it is safe and provides benifits to the readability of the code.
+Because SolidJS relies on the signals pattern, destructure can often break SolidJS's reactivity so is it best to avoid destructuring except in cases when we know it is safe and provides benefits to the readability of the code.
 
 ## Always name variable in the positive
 
@@ -531,7 +482,7 @@ const enableCombobox = true;
 
 ## Only reference other types when they are tightly coupled
 
-When referencing other data types, it should only be done when there is a true direct coupling. For exmaple if the is a `UserListItem` component that has a `UserListItemProps['user']` property, that should be referenced in the `UserList['users']` item.
+When referencing other data types, it should only be done when there is a true direct coupling. For example, if the is a `UserListItem` component that has a `UserListItemProps['user']` property, that should be referenced in the `UserList['users']` item.
 
 ```tsx
 import { UserListItemsProps } from "$/components/user-list/user-list-item";
@@ -546,10 +497,19 @@ We should not be referencing other types if there is just a loose coupling.
 ```tsx
 import { GetAllUserReturns } from "$/apis/users";
 
+// bad
 type UserListProps  = {
   // while this component might use the results of that api, this component might use mutliple data sources and
   // the api might be used for multiple components
   users: GetAllUserReturns["users"];
+}
+
+// good
+import { User } from "$/data-models/user";
+
+type UserListProps  = {
+    // this is better as not this component will accept and api resource that has the require fields
+    users: Pick<User, 'id' | 'firstName' | 'lastName' | 'email'>
 }
 ```
 
@@ -589,17 +549,7 @@ You may use nested `describe()` functions if you think that will help the organi
 
 There are some philosophies around unit testing that they should be pure. They should only run the code that is intended for the test to check and everything else should be mocked. While this does have some benefits, it also has costs.
 
-If something does not need to be mocked in order to test something, then it generally should not be mocked. Mocking has overhead in setting them up, maintaining them as code changes, extra complexity in understand the test itself, etc. so the less we mock, the less we have on these costs. For example, a lot of the methods in libraries like lodash don't need to be mock as they already have testing from the library itself and they can run fine as normally during a test (if they are pure).
-
-```tsx
-const getStub = cy.stub(axios, "get").returns({ data: { some: "value" } });
-```
-
-The general rule is that mocking should be done for each test and each test should only mock the minimum needed to perform that test reliably. Generally, this means you only need to mock the data to test the desired logic and any method that has side effects. If there is a pure method within another method that is being tested, that typically would not require mocking as it would either be our own code (which means it should already have a test) or it is third-party code (which we should not be testing). The more mocking that is done, the harder it is to maintain those tests and more likely things become out of sync required a high maintenance cost without an equal level in the reliability of those tests.
-
-### Apis
-
-When api requests are needed, we should use `msw` whenever possible for mocking those.
+If something does not need to be mocked in order to test something, then it generally should not be mocked. Mocking has overhead in setting them up, maintaining them as code changes, extra complexity in understand the test itself, etc. so the less we mock, the less we have on these costs. For example, a lot of the methods in libraries like lodash don't need to be mock as they already have testing from the library itself.
 
 ## Element Selection
 
@@ -627,7 +577,7 @@ With this pattern you only mock what needs to be mocked for the test and even if
 
 ## Only assert what the test is about
 
-When writing a test, we should only assert the functionality specific to that test and not assert absolutely everything that the function does even if it is irrelevant tot he test itself. This should help limit the amount of refactoring required when code changes happen.
+When writing a test, we should only assert the functionality specific to that test and not assert absolutely everything that the function does even if it is irrelevant to the test itself. This should help limit the amount of refactoring required when code changes happen.
 
 ## Use immer for testing changes in objects
 
@@ -674,6 +624,10 @@ const Component = (passedProps: ComponentProps) => {
     // ....
 }
 ```
+
+## Use reconcile() for large data updates if performance is bad
+
+When updating large data sets, update say a large array of data that is used to render can sometimes cause performance issues as even if only 1 things changed, all eleement will be rerendered. Using a store and `reconcile()` will allow SolidJS to know what items in that array have actually update an limit the rendering to element that have actually changed.
 
 # Styling / CSS coding guide
 
@@ -777,7 +731,7 @@ This might always be practical (method with really complex interfaces / types) o
 
 ## JavaScript
 
-TBD
+Nothing yet.
 
 ## TypeScript
 
@@ -817,4 +771,4 @@ This is based on limited testing so something else might be the underlying issue
 
 # Articles / Links
 
-STUBBED OUT UNTIL FIRST ENTRY
+Nothing yet.

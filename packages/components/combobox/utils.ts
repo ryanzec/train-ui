@@ -319,8 +319,8 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     const options = structuredClone(Object.assign({}, defaultSelectValueOptions, optionOverrides));
 
     // if the user is able to click on a selectable option that is already selected, we assume this value should
-    // be unselected regardless if in multi mode since this library is opinionated in that you should not be able
-    // to select the same thing multiple times
+    // be unselected regardless if in multi-select mode since this library is opinionated in that you should not be
+    // able to select the same thing multiple times
     if (props.isMulti && isSelectedOption(option.value)) {
       removeValue(getSelectedOptionIndex(option));
     } else {
