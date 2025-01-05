@@ -25,6 +25,7 @@
   background-color: var(--color-brand);
   padding: var(--space-xs);
   color: var(--color-on-brand);
+  fill: var(--color-on-brand);
   width: 100%;
 
   &[data-is-dragging="true"],

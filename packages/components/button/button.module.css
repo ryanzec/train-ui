@@ -46,6 +46,7 @@
 /* neutral */
 .neutral {
   color: var(--color-neutral-bold);
+  fill: var(--color-neutral-bold);
 }
 
 .neutral.outlined {
@@ -55,6 +56,7 @@
 .neutral.filled {
   background-color: var(--color-neutral);
   color: var(--color-neutral-subtle);
+  fill: var(--color-neutral-subtle);
 }
 
 .neutral.filled:hover {
@@ -85,6 +87,7 @@
 /* brand */
 .brand {
   color: var(--color-brand-bold);
+  fill: var(--color-brand-bold);
 }
 
 .brand.outlined {
@@ -94,6 +97,7 @@
 .brand.filled {
   background-color: var(--color-brand);
   color: var(--color-brand-subtle);
+  fill: var(--color-brand-subtle);
 }
 
 .brand.filled:hover {
@@ -124,6 +128,7 @@
 /* success */
 .success {
   color: var(--color-success-bold);
+  fill: var(--color-success-bold);
 }
 
 .success.outlined {
@@ -133,6 +138,7 @@
 .success.filled {
   background-color: var(--color-success);
   color: var(--color-success-subtle);
+  fill: var(--color-success-subtle);
 }
 
 .success.filled:hover {
@@ -163,6 +169,7 @@
 /* info */
 .info {
   color: var(--color-info-bold);
+  fill: var(--color-info-bold);
 }
 
 .info.outlined {
@@ -172,6 +179,7 @@
 .info.filled {
   background-color: var(--color-info);
   color: var(--color-info-subtle);
+  fill: var(--color-info-subtle);
 }
 
 .info.filled:hover {
@@ -202,6 +210,7 @@
 /* warning */
 .warning {
   color: var(--color-warning-bold);
+  fill: var(--color-warning-bold);
 }
 
 .warning.outlined {
@@ -211,6 +220,7 @@
 .warning.filled {
   background-color: var(--color-warning);
   color: var(--color-warning-subtle);
+  fill: var(--color-warning-subtle);
 }
 
 .warning.filled:hover {
@@ -241,6 +251,7 @@
 /* danger */
 .danger {
   color: var(--color-danger-bold);
+  fill: var(--color-danger-bold);
 }
 
 .danger.outlined {
@@ -250,6 +261,7 @@
 .danger.filled {
   background-color: var(--color-danger);
   color: var(--color-danger-subtle);
+  fill: var(--color-danger-subtle);
 }
 
 .danger.filled:hover {

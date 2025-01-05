@@ -75,7 +75,7 @@ export const Button = (passedProps: ButtonProps) => {
           <ButtonPrePostItem
             class={styles.preIcon}
             position={ButtonItemPosition.PRE}
-            item={<Icon icon="refresh" class={styles.iconIsLoading} />}
+            item={<Icon icon="loader" class={styles.iconIsLoading} />}
           />
         )}
         {!isLoading() && hasPreItem() && (

@@ -3,6 +3,7 @@ import { type JSX, Show, createSignal, splitProps } from 'solid-js';
 
 import styles from '$/components/checkbox/checkbox.module.css';
 import Icon from '$/components/icon';
+import type { IconName } from '$/components/icon/utils';
 import type { FormInputValidationState } from '$/stores/form/utils';
 
 export type CheckboxProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
@@ -17,16 +18,16 @@ enum CheckedState {
   INDETERMINATE = 'indeterminate',
 }
 
-const getCheckedStateIcon = (state: CheckedState) => {
+const getCheckedStateIcon = (state: CheckedState): IconName => {
   if (state === CheckedState.UNCHECKED) {
-    return 'check_box_outline_blank';
+    return 'square';
   }
 
   if (state === CheckedState.CHECKED) {
-    return 'check_box';
+    return 'square-check';
   }
 
-  return 'indeterminate_check_box';
+  return 'square-minus';
 };
 
 // we exposed a plain input in the off chance we need an input not hooked up to react-hook-form directly (like the

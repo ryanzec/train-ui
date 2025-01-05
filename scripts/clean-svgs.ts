@@ -1,13 +1,19 @@
 import { promises as fs } from 'node:fs';
 import path from 'node:path';
-// optimize-svgs.ts
+
 import { type Config, optimize } from 'svgo';
 
-const SVG_DIRECTORY = 'src/lib/components/core/icons/icons';
+const SVG_DIRECTORY = 'packages/components/icon/icons';
 
 const config: Config = {
   multipass: true,
-  plugins: ['preset-default'],
+  plugins: [
+    'preset-default',
+    {
+      name: 'removeDimensions',
+      active: true,
+    },
+  ],
 };
 
 const optimizeSvgs = async (): Promise<void> => {

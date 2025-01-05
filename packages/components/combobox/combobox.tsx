@@ -17,6 +17,7 @@ import List from '$/components/list';
 import * as _ from 'lodash';
 
 import Options from '$/components/combobox/options';
+import SelectableOption from '$/components/combobox/selectable-option';
 import ScrollArea from '$/components/scroll-area';
 import { createStore, produce, reconcile } from 'solid-js/store';
 import styles from './combobox.module.css';
@@ -61,6 +62,7 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
         showClearIcon: true,
         ungroupedKey: 'Ungrouped',
         groupOrder: [],
+        selectableComponent: SelectableOption,
       },
       passedProps,
     ),
@@ -232,14 +234,14 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
           }
           postItem={
             props.disabled ? null : (
-              <>
+              <div class={styles.inputActions}>
                 <Show
                   when={props.showClearIcon && !comboboxStore.store.isOpen && comboboxStore.inputHasClearableValue()}
                 >
-                  <Icon data-id="clear-icon-trigger" icon="close" onClick={handleClearValue} />
+                  <Icon data-id="clear-icon-trigger" icon="x" onClick={handleClearValue} />
                 </Show>
-                <Icon data-id="input-icon-indicator" icon="arrow_drop_down" onClick={handleFocusInputAndOpen} />
-              </>
+                <Icon data-id="input-icon-indicator" icon="chevron-down" onClick={handleFocusInputAndOpen} />
+              </div>
             )
           }
           postItemIsClickable
@@ -257,8 +259,7 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
             <ScrollArea>
               <Show when={comboboxStore.asyncOptionsAreLoading()}>
                 <List.Item data-id="async-options-loading" class={styles.listOption}>
-                  <Icon class={classnames(styles.loadingIndicator, iconStyles.spacingRight)} icon="refresh" />{' '}
-                  Loading...
+                  <Icon class={classnames(styles.loadingIndicator, iconStyles.spacingRight)} icon="loader" /> Loading...
                 </List.Item>
               </Show>
               <Show when={comboboxStore.store.asyncOptionsState === AsyncOptionsState.BEFORE_THRESHOLD}>

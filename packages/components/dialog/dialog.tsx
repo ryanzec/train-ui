@@ -67,7 +67,7 @@ const Dialog = (passedProps: DialogProps) => {
               onclick={() => props.closeDialog()}
               shape={ButtonShape.CIRCLE}
             >
-              <Icon icon="close" />
+              <Icon icon="x" />
             </Button>
           </div>
           <div class={styles.dialogContent}>{props.children}</div>

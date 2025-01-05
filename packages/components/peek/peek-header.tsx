@@ -24,7 +24,7 @@ const PeekHeader = (passedProps: PeekHeaderProps) => {
         data-peek-close="true"
         shape={ButtonShape.CIRCLE}
       >
-        <Icon icon="close" />
+        <Icon icon="x" />
       </Button>
     </h2>
   );

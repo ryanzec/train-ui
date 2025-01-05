@@ -197,11 +197,11 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
   return (
     <div data-id="date-picker" {...restOfProps} class={classnames(styles.datePicker, props.class)}>
       <div class={styles.header}>
-        <Icon class={styles.previousMonthTrigger} icon="chevron_left" onClick={moveToPreviousMonth} />
+        <Icon class={styles.previousMonthTrigger} icon="chevron-left" onClick={moveToPreviousMonth} />
         <button type="button" class={styles.headerText} onClick={handleToggleMonthYearSelection}>
           {headerText()}
         </button>
-        <Icon class={styles.nextMonthTrigger} icon="chevron_right" onClick={moveToNextMonth} />
+        <Icon class={styles.nextMonthTrigger} icon="chevron-right" onClick={moveToNextMonth} />
       </div>
       <div class={styles.calendar}>
         <div>

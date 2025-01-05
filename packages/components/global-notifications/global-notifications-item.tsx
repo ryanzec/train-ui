@@ -52,7 +52,7 @@ const GlobalNotificationsItem = (passedProps: GlobalNotificationsListItemProps) 
           globalNotificationsStore.removeNotification(props.notification.id);
         }}
       >
-        <Icon icon="close" />
+        <Icon icon="x" />
       </Button>
     </Callout>
   );

@@ -51,7 +51,7 @@ const Radio = (passedProps: RadioProps) => {
           class={classnames(styles.icon, {
             [styles.iconIsChecked]: isChecked(),
           })}
-          icon={isChecked() ? 'radio_button_checked' : 'radio_button_unchecked'}
+          icon={isChecked() ? 'circle-check' : 'circle'}
         />
         <span class={styles.label}>{props.labelElement}</span>
       </label>

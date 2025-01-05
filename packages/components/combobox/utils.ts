@@ -12,11 +12,6 @@ export const COMBOBOX_GROUPED_DATA_ATTRIBUTE = 'data-combobox-grouped';
 
 export type ComboboxOptionValue = string | number;
 
-export type FormComboboxComboboxItem = {
-  label: string;
-  value: string;
-};
-
 // we use the as the default for extending the auto complete option to allow any data
 export type ComboboxExtraData = {
   // biome-ignore lint/suspicious/noExplicitAny: to make this be easier to be used as a generic type, we need to
@@ -86,7 +81,7 @@ export type ComboboxProps<TData extends ComboboxExtraData> = JSX.HTMLAttributes<
   getOptionsAsync?: (inputValue?: string) => Promise<ComboboxOption<TData>[]>;
   asyncDelay?: number;
   selectedComponent?: (props: ComboboxSelectedOptionProps<TData>) => JSX.Element;
-  selectableComponent: (props: ComboboxSelectableOptionProps<TData>) => JSX.Element;
+  selectableComponent?: (props: ComboboxSelectableOptionProps<TData>) => JSX.Element;
   onDeleteOption?: (deletedOption: ComboboxOption<TData>) => void;
   asyncThreshold?: number;
   name: string;
@@ -98,18 +93,14 @@ export type ComboboxProps<TData extends ComboboxExtraData> = JSX.HTMLAttributes<
   groupOrder?: string[];
 };
 
-export type FormComboboxProps<TFormData> = {
+export type FormComboboxProps<TFormData, TData extends ComboboxExtraData> = Omit<
+  ComboboxProps<TData>,
+  'validationState'
+> & {
   errors?: Accessor<FormErrorsData<TFormData>>;
   label?: string;
-  class?: string;
-  setSelected: (comboboxOptions: ComboboxOption[]) => void;
-  selected: ComboboxOption[];
-  options: FormComboboxComboboxItem[];
   name: keyof TFormData;
-  placeholder?: string;
-  disabledPlaceholder?: string;
   isLoading?: boolean;
-  isMulti?: boolean;
 };
 
 export type GetSelectableOptionPropsReturns<TData extends ComboboxExtraData> = {

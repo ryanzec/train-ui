@@ -20,6 +20,11 @@
   }
 }
 
+.input-actions {
+  display: flex;
+  gap: var(--space-xs);
+}
+
 .list {
   display: none;
   z-index: var(--z-index-combobox-options);
@@ -80,11 +85,11 @@
 }
 
 .add-icon {
-  color: var(--color-success);
+  fill: var(--color-success);
 }
 
 .remove-icon {
-  color: var(--color-danger);
+  fill: var(--color-danger);
 }
 
 .invisible {

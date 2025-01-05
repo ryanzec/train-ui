@@ -4,6 +4,7 @@ import path from 'node:path';
 import url from 'node:url';
 
 import solidPlugin from 'vite-plugin-solid';
+import svgLoader from 'vite-svg-loader';
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -21,7 +22,7 @@ const baseConfiguration = {
       localsConvention: 'camelCase' as CSSModulesOptions['localsConvention'],
     },
   },
-  plugins: [solidPlugin()],
+  plugins: [svgLoader(), solidPlugin()],
 };
 
 export const viteUtils = {

@@ -2,11 +2,10 @@ import classnames from 'classnames';
 import { type JSX, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/icon/icon.module.css';
-import { IconColor, IconSize, IconVariant } from '$/components/icon/utils';
+import { IconColor, type IconName, IconSize, iconComponents } from '$/components/icon/utils';
 
 export type IconProps = JSX.HTMLAttributes<HTMLSpanElement> & {
-  icon: string;
-  variant?: IconVariant;
+  icon: IconName;
   size?: IconSize;
   color?: IconColor;
 };
@@ -15,22 +14,20 @@ const Icon = (passedProps: IconProps) => {
   const [props, restOfProps] = splitProps(
     mergeProps(
       {
-        variant: IconVariant.OUTLINED,
-        size: IconSize,
-        color: IconColor.NONE,
+        size: IconSize.BASE,
+        color: IconColor.INHERIT,
       },
       passedProps,
     ),
-    ['class', 'icon', 'variant', 'size', 'color'],
+    ['class', 'icon', 'size', 'color'],
   );
 
   return (
     <span
       data-id="icon"
       {...restOfProps}
+      innerHTML={iconComponents[props.icon]}
       class={classnames(styles.icon, props.class, {
-        'material-icons': props.variant === IconVariant.FILLED,
-        [`material-icons-${props.variant}`]: props.variant !== IconVariant.FILLED,
         [styles.extra_small]: props.size === IconSize.EXTRA_SMALL,
         [styles.small]: props.size === IconSize.SMALL,
         [styles.large]: props.size === IconSize.LARGE,
@@ -44,9 +41,7 @@ const Icon = (passedProps: IconProps) => {
         [styles.danger]: props.color === IconColor.DANGER,
         [styles.inherit]: props.color === IconColor.INHERIT,
       })}
-    >
-      {props.icon}
-    </span>
+    />
   );
 };
 

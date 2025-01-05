@@ -4,14 +4,15 @@ import { type JSX, mergeProps, splitProps } from 'solid-js';
 import styles from '$/components/badge/badge.module.css';
 import { BadgeColor, BadgeShape, BadgeSize, BadgeVariant } from '$/components/badge/utils';
 import Icon from '$/components/icon';
+import type { IconName } from '$/components/icon/utils';
 
 export type BadgeProps = JSX.HTMLAttributes<HTMLDivElement> & {
   color?: BadgeColor;
   variant?: BadgeVariant;
   shape?: BadgeShape;
   size?: BadgeSize;
-  preIcon?: string;
-  postIcon?: string;
+  preIcon?: IconName;
+  postIcon?: IconName;
 };
 
 const Badge = (passedProps: BadgeProps) => {

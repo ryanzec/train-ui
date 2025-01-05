@@ -348,7 +348,7 @@ export const DraggableHandle = () => {
               <Icon
                 class={styles.listItemDragHandle}
                 data-drag-handle="true"
-                icon="drag_indicator"
+                icon="grip-vertical"
                 size={IconSize.BASE}
               />
               {item.item.display}

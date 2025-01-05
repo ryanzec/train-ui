@@ -22,7 +22,7 @@ const SelectedOption = <TData extends ComboboxExtraData>(props: ComboboxSelected
         variant={ButtonVariant.TEXT}
         color={ButtonColor.NEUTRAL}
       >
-        <Icon icon="close" />
+        <Icon icon="x" />
       </Button>
     </Badge>
   );

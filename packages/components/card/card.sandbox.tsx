@@ -14,20 +14,24 @@ export const Default = () => {
       <Card class={styles.card} headerText="Header">
         content
       </Card>
-      <Card class={styles.card} headerText="Header" headerPreItem={<Icon icon="home" size={IconSize.EXTRA_LARGE} />}>
+      <Card
+        class={styles.card}
+        headerText="Header"
+        headerPreItem={<Icon icon="question" size={IconSize.EXTRA_LARGE} />}
+      >
         content
       </Card>
       <Card
         class={styles.card}
         headerText="Header"
-        headerPreItem={<Icon icon="home" size={IconSize.EXTRA_LARGE} />}
+        headerPreItem={<Icon icon="question" size={IconSize.EXTRA_LARGE} />}
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}
             color={ButtonColor.NEUTRAL}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
-            preItem={<Icon icon="close" />}
+            preItem={<Icon icon="x" />}
           />
         }
       >
@@ -36,14 +40,14 @@ export const Default = () => {
       <Card
         class={styles.card}
         headerText="Header"
-        headerPreItem={<Icon icon="home" size={IconSize.EXTRA_LARGE} />}
+        headerPreItem={<Icon icon="question" size={IconSize.EXTRA_LARGE} />}
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}
             color={ButtonColor.NEUTRAL}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
-            preItem={<Icon icon="close" />}
+            preItem={<Icon icon="x" />}
           />
         }
         footerElement={
@@ -60,14 +64,14 @@ export const Default = () => {
       <Card
         class={styles.card}
         headerText="Header"
-        headerPreItem={<Icon icon="home" size={IconSize.EXTRA_LARGE} />}
+        headerPreItem={<Icon icon="question" size={IconSize.EXTRA_LARGE} />}
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}
             color={ButtonColor.NEUTRAL}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
-            preItem={<Icon icon="close" />}
+            preItem={<Icon icon="x" />}
           />
         }
         footerAlignment={CardFooterAlignment.LEFT}
@@ -85,14 +89,14 @@ export const Default = () => {
       <Card
         class={styles.card}
         headerText="No content"
-        headerPreItem={<Icon icon="home" size={IconSize.EXTRA_LARGE} />}
+        headerPreItem={<Icon icon="question" size={IconSize.EXTRA_LARGE} />}
         headerPostItem={
           <Button
             variant={ButtonVariant.TEXT}
             color={ButtonColor.NEUTRAL}
             class={styles.closeHeaderTrigger}
             onclick={() => console.log('post item clicked')}
-            preItem={<Icon icon="close" />}
+            preItem={<Icon icon="x" />}
           />
         }
       />

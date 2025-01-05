@@ -12,11 +12,11 @@ export const Variant = () => {
     <div>
       <h2>Weak</h2>
       <SandboxExamplesContainer>
-        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.NEUTRAL}>
-          Primary
-        </Callout>
         <Callout variant={CalloutVariant.WEAK} color={CalloutColor.BRAND}>
           Primary
+        </Callout>
+        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.NEUTRAL}>
+          Neutral
         </Callout>
         <Callout variant={CalloutVariant.WEAK} color={CalloutColor.SUCCESS}>
           Success
@@ -33,11 +33,11 @@ export const Variant = () => {
       </SandboxExamplesContainer>
       <h2>Strong</h2>
       <SandboxExamplesContainer>
-        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.NEUTRAL}>
-          Primary
-        </Callout>
         <Callout variant={CalloutVariant.STRONG} color={CalloutColor.BRAND}>
           Primary
+        </Callout>
+        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.NEUTRAL}>
+          Neutral
         </Callout>
         <Callout variant={CalloutVariant.STRONG} color={CalloutColor.SUCCESS}>
           Success
@@ -61,11 +61,11 @@ export const PrePostItems = () => {
     <div>
       <h2>Pre</h2>
       <SandboxExamplesContainer>
-        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.NEUTRAL} preItem={<Icon icon="check" />}>
-          Primary
-        </Callout>
         <Callout variant={CalloutVariant.WEAK} color={CalloutColor.BRAND} preItem={<Button>Button</Button>}>
           Primary
+        </Callout>
+        <Callout variant={CalloutVariant.WEAK} color={CalloutColor.NEUTRAL} preItem={<Icon icon="check" />}>
+          Neutral
         </Callout>
         <Callout variant={CalloutVariant.WEAK} color={CalloutColor.SUCCESS} preItem={<Icon icon="check" />}>
           Success
@@ -82,11 +82,11 @@ export const PrePostItems = () => {
       </SandboxExamplesContainer>
       <h2>Post</h2>
       <SandboxExamplesContainer>
-        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.NEUTRAL} postItem={<Icon icon="check" />}>
-          Primary
-        </Callout>
         <Callout variant={CalloutVariant.STRONG} color={CalloutColor.BRAND} postItem={<Button>Button</Button>}>
           Primary
+        </Callout>
+        <Callout variant={CalloutVariant.STRONG} color={CalloutColor.NEUTRAL} postItem={<Icon icon="check" />}>
+          Neutral
         </Callout>
         <Callout variant={CalloutVariant.STRONG} color={CalloutColor.SUCCESS} postItem={<Icon icon="check" />}>
           Success
@@ -105,19 +105,19 @@ export const PrePostItems = () => {
       <SandboxExamplesContainer>
         <Callout
           variant={CalloutVariant.STRONG}
-          color={CalloutColor.NEUTRAL}
-          preItem={<Icon icon="check" />}
-          postItem={<Icon icon="check" />}
-        >
-          Primary
-        </Callout>
-        <Callout
-          variant={CalloutVariant.STRONG}
           color={CalloutColor.BRAND}
           preItem={<Button>Button</Button>}
           postItem={<Button>Button</Button>}
         >
           Primary
+        </Callout>
+        <Callout
+          variant={CalloutVariant.STRONG}
+          color={CalloutColor.NEUTRAL}
+          preItem={<Icon icon="check" />}
+          postItem={<Icon icon="check" />}
+        >
+          Neutral
         </Callout>
         <Callout
           variant={CalloutVariant.STRONG}

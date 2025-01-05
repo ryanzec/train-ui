@@ -5,7 +5,6 @@ import SelectableOption from '$/components/combobox/selectable-option';
 import SelectedOption from '$/components/combobox/selected-option';
 
 export type {
-  FormComboboxComboboxItem,
   ComboboxOptionValue,
   ComboboxExtraData,
   ComboboxOption,
