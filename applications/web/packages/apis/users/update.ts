@@ -5,7 +5,7 @@ import { HttpMethod, httpUtils } from '$/utils/http';
 import { type CreateMutationOptions, queryUtils } from '$/utils/query';
 import { GlobalVariable, QueryKey, applicationUtils } from '$web/utils/application';
 
-export const mutate = async ({ id, ...payload }: PatchUserRequest): Promise<PatchUserResponse> => {
+const mutate = async ({ id, ...payload }: PatchUserRequest): Promise<PatchUserResponse> => {
   if (!id) {
     throw new Error('id is required for updating a user');
   }
@@ -16,7 +16,7 @@ export const mutate = async ({ id, ...payload }: PatchUserRequest): Promise<Patc
   });
 };
 
-export const onSuccess = (mutationResponse: PatchUserResponse) => {
+const onSuccess = (mutationResponse: PatchUserResponse) => {
   queryUtils.triggerMutator<GetUsersResponse>(
     () => [QueryKey.GET_USERS_LIST],
     (oldValue) => {

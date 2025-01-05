@@ -133,11 +133,11 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
     setDisplayDate(dayjs(displayDate()).year(year).toDate());
   };
 
-  const onToggleMonthYearSelection = () => {
+  const handleToggleMonthYearSelection = () => {
     setShowMonthYearSelection(!showMonthYearSelection());
   };
 
-  const onTimeChange = (event: Event) => {
+  const handleTimeChange = (event: Event) => {
     const target = event.target as HTMLInputElement;
 
     setTimeInputValue(target.value);
@@ -198,7 +198,7 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
     <div data-id="date-picker" {...restOfProps} class={classnames(styles.datePicker, props.class)}>
       <div class={styles.header}>
         <Icon class={styles.previousMonthTrigger} icon="chevron_left" onClick={moveToPreviousMonth} />
-        <button type="button" class={styles.headerText} onClick={onToggleMonthYearSelection}>
+        <button type="button" class={styles.headerText} onClick={handleToggleMonthYearSelection}>
           {headerText()}
         </button>
         <Icon class={styles.nextMonthTrigger} icon="chevron_right" onClick={moveToNextMonth} />
@@ -245,7 +245,7 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
         <div class={styles.timeContainer}>
           <TimeInput
             data-uncontrolled-value="true"
-            onInput={onTimeChange}
+            onInput={handleTimeChange}
             placeholder="Time"
             value={timeInputValue()}
             validationState={timeInputValidationState()}
@@ -270,7 +270,7 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
           defaultYear={currentYear()}
           onSelectMonth={setMonth}
           onSelectYear={setYear}
-          toggleDisplay={onToggleMonthYearSelection}
+          toggleDisplay={handleToggleMonthYearSelection}
         />
       </Show>
     </div>

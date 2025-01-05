@@ -5,13 +5,13 @@ import { HttpMethod, httpUtils } from '$/utils/http';
 import { type CreateMutationOptions, queryUtils } from '$/utils/query';
 import { GlobalVariable, QueryKey, applicationUtils } from '$web/utils/application';
 
-export const mutate = async (input: DeleteUserRequest): Promise<DeleteUserResponse> => {
+const mutate = async (input: DeleteUserRequest): Promise<DeleteUserResponse> => {
   return await httpUtils.http(`${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/users/${input.id}`, {
     method: HttpMethod.DELETE,
   });
 };
 
-export const onSuccess = (mutationResponse: DeleteUserResponse) => {
+const onSuccess = (mutationResponse: DeleteUserResponse) => {
   queryUtils.triggerMutator<GetUsersResponse>(
     () => [QueryKey.GET_USERS_LIST],
     (oldValue) => {

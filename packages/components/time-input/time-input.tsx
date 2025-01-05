@@ -55,7 +55,7 @@ const TimeInput = (passedProps: TimeInputProps) => {
     );
   };
 
-  const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = () => {
+  const handleFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = () => {
     if (!inputRef) {
       return;
     }
@@ -72,7 +72,7 @@ const TimeInput = (passedProps: TimeInputProps) => {
     }
   };
 
-  const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = () => {
+  const handleBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = () => {
     if (!inputRef) {
       return;
     }
@@ -84,7 +84,7 @@ const TimeInput = (passedProps: TimeInputProps) => {
     }
   };
 
-  const onMouseUp: JSX.EventHandlerUnion<HTMLInputElement, MouseEvent> = () => {
+  const handleMouseUp: JSX.EventHandlerUnion<HTMLInputElement, MouseEvent> = () => {
     if (!inputRef) {
       return;
     }
@@ -92,7 +92,7 @@ const TimeInput = (passedProps: TimeInputProps) => {
     updateActiveEditItemBySelection();
   };
 
-  const onKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent> = (event) => {
+  const handleKeyDown: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent> = (event) => {
     if (!inputRef) {
       return;
     }
@@ -253,10 +253,10 @@ const TimeInput = (passedProps: TimeInputProps) => {
       data-id="time-input"
       {...restOfProps}
       type="type"
-      onFocus={onFocus}
-      onBlur={onBlur}
-      onMouseUp={onMouseUp}
-      onKeyDown={onKeyDown}
+      onFocus={handleFocus}
+      onBlur={handleBlur}
+      onMouseUp={handleMouseUp}
+      onKeyDown={handleKeyDown}
     />
   );
 };

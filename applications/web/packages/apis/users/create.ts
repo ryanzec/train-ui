@@ -5,7 +5,7 @@ import { HttpMethod, httpUtils } from '$/utils/http';
 import { type CreateMutationOptions, queryUtils } from '$/utils/query';
 import { GlobalVariable, QueryKey, applicationUtils } from '$web/utils/application';
 
-export const mutate = async (input: PostUserRequest): Promise<PostUserResponse> => {
+const mutate = async (input: PostUserRequest): Promise<PostUserResponse> => {
   return await httpUtils.http(`${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/users`, {
     method: HttpMethod.POST,
     payload: {
@@ -17,7 +17,7 @@ export const mutate = async (input: PostUserRequest): Promise<PostUserResponse> 
   });
 };
 
-export const onSuccess = (mutationResponse: PostUserResponse) => {
+const onSuccess = (mutationResponse: PostUserResponse) => {
   queryUtils.triggerMutator<GetUsersResponse>(
     () => [QueryKey.GET_USERS_LIST],
     (oldValue) => {

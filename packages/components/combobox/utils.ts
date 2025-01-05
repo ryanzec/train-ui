@@ -420,7 +420,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     );
   };
 
-  const onFocusInput = () => {
+  const handleFocusInput = () => {
     if (!props.isMulti) {
       const foundOptionIndex = getDisplayOptionIndex(props.selected[0]);
 
@@ -452,7 +452,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     );
   };
 
-  const onBlurInput = () => {
+  const handleBlurInput = () => {
     if (comboboxStore.keepFocusOnBlur) {
       comboboxStore.inputRef?.focus();
 
@@ -476,7 +476,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     closeCombobox();
   };
 
-  const onKeyDownInput: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent> = (event) => {
+  const handleKeyDownInput: JSX.EventHandlerUnion<HTMLInputElement, KeyboardEvent> = (event) => {
     switch (event.key) {
       case Key.ESCAPE: {
         const hasValue = !!event.currentTarget.value;
@@ -552,7 +552,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     }
   };
 
-  const onInputInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (event) => {
+  const handleInputInput: JSX.EventHandlerUnion<HTMLInputElement, InputEvent> = (event) => {
     if (event.currentTarget.value === comboboxStore.inputValue) {
       return;
     }
@@ -581,7 +581,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     );
   };
 
-  const onMouseDownSelectableOption = (option: ComboboxOption<TData>) => {
+  const handleMouseDownSelectableOption = (option: ComboboxOption<TData>) => {
     selectValue(option, {
       removeDuplicateSingle: props.removeOnDuplicateSingleSelect,
     });
@@ -599,11 +599,11 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     }
   };
 
-  const onMouseEnterSelectableOption = (optionIndex: number) => {
+  const handleMouseEnterSelectableOption = (optionIndex: number) => {
     setFocusedOption(optionIndex);
   };
 
-  const onMouseLeaveSelectableOption = () => {
+  const handleMouseLeaveSelectableOption = () => {
     clearFocusedOption();
   };
 
@@ -697,10 +697,10 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
       ref: inputRef,
       disabled: comboboxStore.disabled,
       value: comboboxStore.inputValue,
-      onFocus: onFocusInput,
-      onBlur: onBlurInput,
-      onKeyDown: onKeyDownInput,
-      onInput: onInputInput,
+      onFocus: handleFocusInput,
+      onBlur: handleBlurInput,
+      onKeyDown: handleKeyDownInput,
+      onInput: handleInputInput,
       placeholder: props.placeholder,
       id: props.id,
       name: props.name,
@@ -711,9 +711,9 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     return {
       isFocusedOption,
       isSelectedOption,
-      onMouseEnterOption: onMouseEnterSelectableOption,
-      onMouseLeaveOption: onMouseLeaveSelectableOption,
-      onMouseDownOption: onMouseDownSelectableOption,
+      onMouseEnterOption: handleMouseEnterSelectableOption,
+      onMouseLeaveOption: handleMouseLeaveSelectableOption,
+      onMouseDownOption: handleMouseDownSelectableOption,
     };
   };
 
@@ -829,13 +829,6 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
     isSelectedOption,
     setFocusedOption,
     clearFocusedOption,
-    onFocusInput,
-    onBlurInput,
-    onKeyDownInput,
-    onInputInput,
-    onMouseDownSelectableOption,
-    onMouseEnterSelectableOption,
-    onMouseLeaveSelectableOption,
     inputRef,
     asyncOptionsAreLoading,
     showOptions,

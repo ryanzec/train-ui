@@ -11,7 +11,7 @@ export default function clickOutsideDirective(element: HTMLElement, callbackAcce
     return;
   }
 
-  const onClick = (event: MouseEvent) => {
+  const handleClick = (event: MouseEvent) => {
     if (element.contains(event.target as Node)) {
       return;
     }
@@ -19,7 +19,7 @@ export default function clickOutsideDirective(element: HTMLElement, callbackAcce
     callback();
   };
 
-  document.body.addEventListener('click', onClick);
+  document.body.addEventListener('click', handleClick);
 
-  onCleanup(() => document.body.removeEventListener('click', onClick));
+  onCleanup(() => document.body.removeEventListener('click', handleClick));
 }

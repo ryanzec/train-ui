@@ -26,7 +26,7 @@ const Radio = (passedProps: RadioProps) => {
   // reacts when the checked state of the input changes
   const [isChecked, setIsChecked] = createSignal(restOfProps.checked);
 
-  const onSelect: JSX.EventHandlerUnion<HTMLInputElement, Event> = (event) => {
+  const handleSelect: JSX.EventHandlerUnion<HTMLInputElement, Event> = (event) => {
     const target = event.target as HTMLInputElement;
     const checked = target.checked;
 
@@ -46,7 +46,7 @@ const Radio = (passedProps: RadioProps) => {
       })}
     >
       <label>
-        <input data-id="radio" {...restOfProps} type="radio" onChange={onSelect} />
+        <input data-id="radio" {...restOfProps} type="radio" onChange={handleSelect} />
         <Icon
           class={classnames(styles.icon, {
             [styles.iconIsChecked]: isChecked(),

@@ -26,7 +26,7 @@ const CheckboxToggle = (passedProps: CheckboxToggleProps) => {
   const [isChecked, setIsChecked] = createSignal(restOfProps.checked);
   let inputRef: HTMLInputElement | undefined;
 
-  const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = (event) => {
+  const handleChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = (event) => {
     const target = event.target as HTMLInputElement;
     const checked = target.checked;
 
@@ -42,7 +42,7 @@ const CheckboxToggle = (passedProps: CheckboxToggleProps) => {
   return (
     <span class={classnames(styles.checkbox, styles.checkboxToggle, props.class)}>
       <label>
-        <input ref={inputRef} data-id="checkbox-toggle" {...restOfProps} type="checkbox" onChange={onChange} />
+        <input ref={inputRef} data-id="checkbox-toggle" {...restOfProps} type="checkbox" onChange={handleChange} />
         <div
           class={classnames(styles.checkboxToggleSlider, {
             [styles.checkboxToggleOn]: isChecked(),

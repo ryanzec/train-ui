@@ -20,14 +20,14 @@ type ApplicationFrameNavigationProps = JSX.HTMLAttributes<HTMLDivElement> &
 const ApplicationFrameNavigation = (passedProps: ApplicationFrameNavigationProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['routes', 'class']);
 
-  const onToggleTheme = () => {
+  const handleToggleTheme = () => {
     applicationStore.setTheme(applicationStore.theme() === ThemeName.LIGHT ? ThemeName.DARK : ThemeName.LIGHT);
   };
 
   return (
     <div data-id="navigation" class={classnames(styles.navigation, props.class)} {...restOfProps}>
       {/*<ScrollArea>*/}
-      <Button onClick={onToggleTheme} class={styles.toggleThemeTrigger}>
+      <Button onClick={handleToggleTheme} class={styles.toggleThemeTrigger}>
         Toggle Theme
       </Button>
       <ApplicationFrameSubNavigation routes={props.routes} />

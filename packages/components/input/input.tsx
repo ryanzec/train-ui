@@ -37,7 +37,7 @@ const Input = (passedProps: InputProps) => {
 
   const [isInputFocused, setIsInputFocused] = createSignal(false);
 
-  const onFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (event) => {
+  const handleFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (event) => {
     setIsInputFocused(true);
 
     if (props.onFocus) {
@@ -47,7 +47,7 @@ const Input = (passedProps: InputProps) => {
     }
   };
 
-  const onBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (event) => {
+  const handleBlur: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (event) => {
     setIsInputFocused(false);
 
     if (props.onBlur) {
@@ -91,8 +91,8 @@ const Input = (passedProps: InputProps) => {
             })}
             disabled={props.disabled}
             readonly={props.readonly}
-            onFocus={onFocus}
-            onBlur={onBlur}
+            onFocus={handleFocus}
+            onBlur={handleBlur}
             autocomplete="off"
           />
         </div>

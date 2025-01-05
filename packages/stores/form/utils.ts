@@ -303,7 +303,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     return true;
   };
 
-  const onInput = (event: Event) => {
+  const handleInput = (event: Event) => {
     // see comment at top of file as to why explicit casting is happening
     const target = event.target as HTMLInputElement;
     const name = target.name;
@@ -328,7 +328,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     });
   };
 
-  const onBlur = (event: Event) => {
+  const handleBlur = (event: Event) => {
     // see comment at top of file as to why explicit casting is happening
     const target = event.target as HTMLInputElement;
     const name = target.name;
@@ -344,7 +344,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     triggerValueChanged(name, currentValue, currentValue, { isTouched: true });
   };
 
-  const onTextChange = (event: Event) => {
+  const handleTextChange = (event: Event) => {
     // see comment at top of file as to why explicit casting is happening
     const target = event.target as HTMLInputElement;
     const name = target.name;
@@ -355,7 +355,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     triggerValueChanged(name, currentValue, currentValue, { isTouched: true });
   };
 
-  const onCheckboxChange = (event: Event) => {
+  const handleCheckboxChange = (event: Event) => {
     // see comment at top of file as to why explicit casting is happening
     const target = event.target as HTMLInputElement;
     const name = target.name;
@@ -392,7 +392,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     });
   };
 
-  const onRadioChange = (event: Event) => {
+  const handleRadioChange = (event: Event) => {
     // see comment at top of file as to why explicit casting is happening
     const target = event.target as HTMLInputElement;
     const name = target.name;
@@ -429,7 +429,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     });
   };
 
-  const onSelectChange = (event: Event) => {
+  const handleSelectChange = (event: Event) => {
     // see comment at top of file as to why explicit casting is happening
     const target = event.target as HTMLSelectElement;
     const name = target.name;
@@ -447,7 +447,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     });
   };
 
-  const onSubmitForm = (event: Event) => {
+  const handleSubmitForm = (event: Event) => {
     event.preventDefault();
     event.stopPropagation();
 
@@ -464,26 +464,26 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     const inputType = domUtils.getInputType(element);
 
     if (inputType === InputType.CHECKBOX) {
-      element.addEventListener('change', onCheckboxChange);
+      element.addEventListener('change', handleCheckboxChange);
 
       return;
     }
 
     if (inputType === InputType.RADIO) {
-      element.addEventListener('change', onRadioChange);
+      element.addEventListener('change', handleRadioChange);
 
       return;
     }
 
     if (inputType === InputType.SELECT) {
-      element.addEventListener('change', onSelectChange);
+      element.addEventListener('change', handleSelectChange);
 
       return;
     }
 
-    element.addEventListener('input', onInput);
-    element.addEventListener('change', onTextChange);
-    element.addEventListener('blur', onBlur);
+    element.addEventListener('input', handleInput);
+    element.addEventListener('change', handleTextChange);
+    element.addEventListener('blur', handleBlur);
   };
 
   const applyValueFromStore = (element: Element) => {
@@ -568,7 +568,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
 
     setFormElement(element);
 
-    element.addEventListener('submit', onSubmitForm);
+    element.addEventListener('submit', handleSubmitForm);
 
     const domObserver = new MutationObserver(domMutationHandler);
 

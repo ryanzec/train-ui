@@ -110,7 +110,7 @@ const DatePickerInput = (passedProps: DatePickerInputProps) => {
     setIsDatePickerVisible(false);
   };
 
-  const onSelectDate = (selectedDate?: Date, which?: WhichDate) => {
+  const handleSelectDate = (selectedDate?: Date, which?: WhichDate) => {
     const currentInputElement = inputElement();
 
     if (!currentInputElement) {
@@ -126,12 +126,12 @@ const DatePickerInput = (passedProps: DatePickerInputProps) => {
     props.onSelectDate?.(selectedDate, which);
   };
 
-  const onSelectStartDate = (date?: Date) => {
-    onSelectDate(date, WhichDate.FIRST);
+  const handleSelectStartDate = (date?: Date) => {
+    handleSelectDate(date, WhichDate.FIRST);
   };
 
-  const onSelectEndDate = (date?: Date) => {
-    onSelectDate(date, WhichDate.SECOND);
+  const handleSelectEndDate = (date?: Date) => {
+    handleSelectDate(date, WhichDate.SECOND);
   };
 
   // handle updating the input
@@ -228,7 +228,7 @@ const DatePickerInput = (passedProps: DatePickerInputProps) => {
             defaultDisplayDate={startDate.date() ?? props.defaultStartDisplayDate}
             defaultSelectedDate={startDate.date() ?? props.defaultStartSelectedDate}
             disableAfter={endDate.date()}
-            onSelectDate={onSelectStartDate}
+            onSelectDate={handleSelectStartDate}
             includeFooter
             onDone={hideDatePicker}
           />
@@ -238,7 +238,7 @@ const DatePickerInput = (passedProps: DatePickerInputProps) => {
               defaultDisplayDate={endDate.date() ?? props.defaultEndDisplayDate}
               defaultSelectedDate={endDate.date() ?? props.defaultEndSelectedDate}
               disableBefore={startDate.date()}
-              onSelectDate={onSelectEndDate}
+              onSelectDate={handleSelectEndDate}
               includeFooter
               onDone={hideDatePicker}
             />

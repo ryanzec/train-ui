@@ -44,7 +44,7 @@ const Checkbox = (passedProps: CheckboxProps) => {
   // reacts when the checked state of the input changes
   const [checkedState, setCheckedState] = createSignal<CheckedState>(CheckedState.UNCHECKED);
 
-  const onChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = (event) => {
+  const handleChange: JSX.EventHandlerUnion<HTMLInputElement, Event> = (event) => {
     const target = event.target as HTMLInputElement;
     const checked = target.checked;
     const checkedState = checked ? CheckedState.CHECKED : CheckedState.UNCHECKED;
@@ -65,7 +65,7 @@ const Checkbox = (passedProps: CheckboxProps) => {
       })}
     >
       <label>
-        <input data-id="checkbox" {...restOfProps} type="checkbox" onChange={onChange} />
+        <input data-id="checkbox" {...restOfProps} type="checkbox" onChange={handleChange} />
         <Icon class={classnames(styles.icon)} icon={getCheckedStateIcon(checkedState())} />
         <Show when={props.labelElement}>
           <span class={styles.label}>{props.labelElement}</span>
