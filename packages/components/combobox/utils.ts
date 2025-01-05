@@ -253,7 +253,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
   };
 
   const triggerCombobox = (overrideOptions: TriggerComboboxOptions = {}) => {
-    const options = Object.assign({}, defaultTriggerComboboxOptions, overrideOptions);
+    const options = structuredClone(Object.assign({}, defaultTriggerComboboxOptions, overrideOptions));
 
     if (options.focusInput && comboboxStore.inputRef) {
       comboboxStore.inputRef.focus();
@@ -316,7 +316,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
   };
 
   const selectValue = (option: ComboboxOption<TData>, optionOverrides: SelectValueOptions = {}) => {
-    const options = Object.assign({}, defaultSelectValueOptions, optionOverrides);
+    const options = structuredClone(Object.assign({}, defaultSelectValueOptions, optionOverrides));
 
     // if the user is able to click on a selectable option that is already selected, we assume this value should
     // be unselected regardless if in multi mode since this library is opinionated in that you should not be able

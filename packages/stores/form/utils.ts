@@ -99,6 +99,7 @@ export type WatchReturns = {
 const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawShape>(
   passedOptions: CreateFormOptions<TFormData, TSchemaObject>,
 ): CreateFormReturn<TFormData, TSchemaObject> => {
+  // @todo(investigate) unfortunately the onSubmit causes a weird issue with structuredClone so not using that here
   const options = Object.assign({}, defaultCreateFormOptions, passedOptions);
   const [errors, setErrors] = createSignal<FormErrorsData<TFormData>>({});
   const [data, setData] = createSignal<Partial<TFormData>>(options.initialValues ?? {});

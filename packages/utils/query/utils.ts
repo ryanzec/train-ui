@@ -346,7 +346,7 @@ export const createTrackedQuery = <TResource>(
   // @todo(feature?) should we error if the passed in primary key is already being used since we really should not
   // @todo(feature?) have multiple ones active at the same time
   const [primaryKey, secondaryKey] = queryKey();
-  const options = Object.assign({}, createTrackedQueryOptionDefaults, overrideOptions);
+  const options = structuredClone(Object.assign({}, createTrackedQueryOptionDefaults, overrideOptions));
   const cachedData = getCachedData(queryData, primaryKey);
   // we don't use the setter as if we have cached data, we never need to do the initial request
   // const [shouldFetch, setShouldFetch] = createSignal(!cachedData?.data && options.doInitialFetch);

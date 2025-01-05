@@ -289,11 +289,33 @@ export const applicationFrameTranslations = {
 };
 ```
 
+### Event Handlers (native of other wise)
+When as a property of a component, they should be prefixed `on*` but when defined as a standalone variable / method, they should be named `handle*`.
+
+```tsx
+const handleClick = () => {
+  // ...
+}
+
+const handleDateSelected = () => {
+  // ...
+}
+
+<div>
+    <Button onClick={handleClick}>Click</Button>
+    <DatePicker onDateSelected={handleDateSelected} />
+</div>
+````
+
 # General coding guide
 
 ## Auto formatting
 
 There are a number of patterns that are not listed here however are enforced by the auto code formatting so adhering to them manually is not necessary.
+
+## Object.assign()
+
+When using Object.assign(), outside of component default exports, we should be wrapping that in `structuredClone()`, this help avoid shallow copying something by msitake that can result in unexpected behavior that can be hard to debug.
 
 ## No magic strings
 

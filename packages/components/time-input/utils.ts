@@ -16,7 +16,7 @@ type GetNewEditItemIndexOptions = {
 };
 
 const getNewEditItemIndex = (currentIndex: number, move: number, optionOverrides: GetNewEditItemIndexOptions = {}) => {
-  const options = Object.assign({ allowWrapping: false }, optionOverrides);
+  const options = structuredClone(Object.assign({ allowWrapping: false }, optionOverrides));
   let newIndex = editItemsOrder.findIndex((item) => item === currentIndex);
 
   if (newIndex === -1) {

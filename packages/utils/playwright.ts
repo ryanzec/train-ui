@@ -62,7 +62,7 @@ const defaultBuildUrlOptions = {
 };
 
 const buildUrl = (baseUrl: string, optionOverrides: BuildUrlOptions = {}) => {
-  const options = Object.assign({}, defaultBuildUrlOptions, optionOverrides);
+  const options = structuredClone(Object.assign({}, defaultBuildUrlOptions, optionOverrides));
   const url = baseUrl;
   const searchParams = new URLSearchParams();
 
