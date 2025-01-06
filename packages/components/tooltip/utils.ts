@@ -1,4 +1,5 @@
 import { type Accessor, createSignal } from 'solid-js';
+import * as uuid from 'uuid';
 
 export enum TooltipTriggerEvent {
   CLICK = 'click',
@@ -8,19 +9,23 @@ export enum TooltipTriggerEvent {
 
 type CreateStoreParams = {
   defaultIsEnabled?: boolean;
+  id?: string;
 };
 
 export type TooltipStore = {
+  id: Accessor<string>;
   isEnabled: Accessor<boolean>;
   toggle: (overrideIsEnabled?: boolean) => void;
 };
 
 const createStore = (params: CreateStoreParams = {}): TooltipStore => {
   const [isEnabled, setIsEnabled] = createSignal(params.defaultIsEnabled ?? false);
+  const [id] = createSignal<string>(params.id || uuid.v4());
 
   const toggle = (overrideIsEnabled?: boolean) => {
     if (overrideIsEnabled === true || overrideIsEnabled === false) {
       setIsEnabled(overrideIsEnabled);
+
       return;
     }
 
@@ -30,6 +35,7 @@ const createStore = (params: CreateStoreParams = {}): TooltipStore => {
   return {
     isEnabled,
     toggle,
+    id,
   };
 };
 

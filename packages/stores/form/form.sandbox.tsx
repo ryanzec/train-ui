@@ -1,5 +1,5 @@
-import { nanoid } from 'nanoid';
 import { For, Index, Match, Show, Switch, createEffect, createSignal, untrack } from 'solid-js';
+import * as uuid from 'uuid';
 import * as zod from 'zod';
 import type { ZodType } from 'zod';
 
@@ -121,7 +121,7 @@ export const UsingEffects = () => {
           <Button data-id="submit-button" type="submit">
             Submit
           </Button>
-          <Button data-id="reset-value-button" onClick={() => setRandomValue(nanoid(15))}>
+          <Button data-id="reset-value-button" onClick={() => setRandomValue(uuid.v4())}>
             update random value
           </Button>
         </div>

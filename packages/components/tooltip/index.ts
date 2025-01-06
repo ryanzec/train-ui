@@ -1,8 +1,10 @@
 import Tooltip, { type TooltipProps } from '$/components/tooltip/tooltip';
+import Content, { type TooltipContentProps } from '$/components/tooltip/tooltip-content';
+import Handle, { type TooltipHandleProps } from '$/components/tooltip/tooltip-handle';
 
 export { TooltipTriggerEvent, tooltipUtils } from '$/components/tooltip/utils';
 export type { TooltipStore } from '$/components/tooltip/utils';
 
-export type { TooltipProps };
+export type { TooltipProps, TooltipHandleProps, TooltipContentProps };
 
-export default Tooltip;
+export default Object.assign(Tooltip, { Handle, Content });

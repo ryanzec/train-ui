@@ -1,12 +1,17 @@
 import { type Placement, autoUpdate, computePosition, flip, offset, shift } from '@floating-ui/dom';
-import { type JSX, createEffect, createSignal, mergeProps, onCleanup, splitProps } from 'solid-js';
+import { type JSX, createContext, createEffect, createSignal, mergeProps, onCleanup, splitProps } from 'solid-js';
 
+import styles from '$/components/tooltip/tooltip.module.css';
 import { type TooltipStore, TooltipTriggerEvent } from '$/components/tooltip/utils';
 import { clickOutsideDirective } from '$/directives/click-outside-directive';
 import type { CommonDataAttributes } from '$/types/generic';
+import { loggerUtils } from '$/utils/logger';
+import classnames from 'classnames';
 
 // this is needed to avoid this code being stripped in compilation because of the way directive work in SolidJS
 clickOutsideDirective;
+
+export const TooltipContext = createContext<TooltipStore | undefined>(undefined);
 
 export type TooltipProps = JSX.HTMLAttributes<HTMLDivElement> &
   CommonDataAttributes & {
@@ -16,7 +21,7 @@ export type TooltipProps = JSX.HTMLAttributes<HTMLDivElement> &
   };
 
 const defaultProps: Omit<TooltipProps, 'store'> = {
-  placement: 'bottom-end',
+  placement: 'bottom-start',
   triggerEvent: TooltipTriggerEvent.HOVER,
 };
 
@@ -26,6 +31,7 @@ const Tooltip = (passedProps: TooltipProps) => {
     'triggerEvent',
     'store',
     'children',
+    'class',
   ]);
 
   const [containerElement, setContainerElement] = createSignal<HTMLDivElement>();
@@ -50,16 +56,13 @@ const Tooltip = (passedProps: TooltipProps) => {
       return;
     }
 
-    // we need to use :scope so that the selector only look at direct children
-    const handleElement = currentContainerElement.querySelector(':scope > :nth-child(1)');
-    const contentElement = currentContainerElement.querySelector(':scope > :nth-child(2)') as HTMLElement;
+    const id = props.store.id();
+    const handleElement = document.body.querySelector(`[data-tooltip-handle="${id}"]`) as HTMLElement;
+    const contentElement = document.body.querySelector(`[data-tooltip-content="${id}"]`) as HTMLElement;
 
     if (!handleElement || !contentElement) {
-      if (import.meta.env.MODE !== 'production') {
-        console.error('tooltip component must have 2 children to function properly');
-      } else {
-        // @todo(logging) add logging once we have a solution for that for frontend code
-      }
+      loggerUtils.error('tooltip component must have 2 children to function properly', handleElement, contentElement);
+      // @todo(log) add logging once we have a solution for that for frontend code
 
       return;
     }
@@ -114,14 +117,19 @@ const Tooltip = (passedProps: TooltipProps) => {
   };
 
   return (
-    <div
-      ref={containerRef}
-      data-id="tooltip"
-      {...restOfProps}
-      use:clickOutsideDirective={props.triggerEvent === TooltipTriggerEvent.CLICK ? disableToolTip : undefined}
-    >
-      {props.children}
-    </div>
+    <TooltipContext.Provider value={props.store}>
+      <div
+        use:clickOutsideDirective={{
+          callback: props.triggerEvent === TooltipTriggerEvent.CLICK ? disableToolTip : undefined,
+        }}
+        ref={containerRef}
+        data-id="tooltip"
+        class={classnames(styles.tooltip, props.class)}
+        {...restOfProps}
+      >
+        {props.children}
+      </div>
+    </TooltipContext.Provider>
   );
 };
 

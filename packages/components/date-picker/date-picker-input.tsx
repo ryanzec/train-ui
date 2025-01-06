@@ -210,7 +210,7 @@ const DatePickerInput = (passedProps: DatePickerInputProps) => {
       data-id="date-picker-input"
       ref={containerRef}
       class={classnames(styles.datePickerInput, props.class)}
-      use:clickOutsideDirective={hideDatePicker}
+      use:clickOutsideDirective={{ callback: hideDatePicker }}
     >
       <Input
         ref={inputRef}

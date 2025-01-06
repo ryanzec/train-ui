@@ -1,0 +1,25 @@
+.tooltip {
+  display: inline-flex;
+}
+
+.handle {
+  display: inline-block;
+}
+
+.content {
+  display: none;
+  border: 1px solid var(--color-outline-active);
+  padding: var(--space-xs);
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: var(--color-surface);
+  width: max-content;
+  z-index: var(--z-index-tooltip);
+  border-radius: var(--border-radius-sm);
+  color: var(--color-on-surface);
+}
+
+.content-is-enabled {
+  display: inline-flex;
+}

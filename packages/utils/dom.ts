@@ -135,6 +135,14 @@ const scrollToElement = (elementToScrollTo: HTMLElement) => {
   scrollParentElement.scrollTo({ top, behavior: 'auto' });
 };
 
+const isElementChildOf = (child: HTMLElement, parent: HTMLElement) => {
+  if (!child || !parent) {
+    return false;
+  }
+
+  return parent.contains(child);
+};
+
 export const domUtils = {
   isFormInputElement,
   isElement,
@@ -142,4 +150,5 @@ export const domUtils = {
   getFormInputElementsRecursive,
   elementInView,
   scrollToElement,
+  isElementChildOf,
 };

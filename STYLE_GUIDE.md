@@ -268,7 +268,7 @@ There are a number of patterns that are not listed here however are enforced by 
 
 When using Object.assign(), outside of component default exports, we should be wrapping that in `structuredClone()`, this help avoid shallow copying something by mistake that can result in unexpected behavior that can be hard to debug.
 
-## No magic strings
+## No magic values (string, numbers, etc.)
 
 Anywhere we have string identifiers, instead of using the string value in-place, we should be using a constants:
 
@@ -285,6 +285,10 @@ if (user.role === Role.ADMIN) {
   // ...
 }
 ```
+
+### Exception
+
+If something is typed to only allow certain string / number / etc. values (like for `HTMLElement.removeEventListener()` event parameter), then inlining a string is fine since type checking will error if an invalid value is used (which is the primary reason to avoid magic values)
 
 ## Store common use data / types / functionality in a `utils.ts` for each directory
 

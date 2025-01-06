@@ -118,7 +118,7 @@ const DatePickerMonthYearSelection = (passedProps: DatePickerMonthYearSelectionP
   };
 
   return (
-    <div class={styles.monthYearSelection} use:clickOutsideDirective={props.toggleDisplay}>
+    <div class={styles.monthYearSelection} use:clickOutsideDirective={{ callback: props.toggleDisplay }}>
       <div class={styles.monthYearInputs}>
         <Combobox
           showClearIcon={false}

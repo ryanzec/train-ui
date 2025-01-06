@@ -1,8 +1,8 @@
 import type { CalloutColor } from '$/components/callout';
 import { produce } from 'immer';
 import pullAt from 'lodash/pullAt';
-import { nanoid } from 'nanoid';
 import { type JSX, createRoot, createSignal } from 'solid-js';
+import * as uuid from 'uuid';
 
 export type GlobalNotification = {
   id: string;
@@ -23,7 +23,7 @@ const createGlobalNotificationsStore = () => {
 
   const addNotification = (notification: Omit<GlobalNotification, 'id'>) => {
     const newNotification = {
-      id: nanoid(),
+      id: uuid.v4(),
       ...notification,
       autoClose: notification.autoClose ?? DEFAULT_AUTO_CLOSE,
       removeAnimationDuration: notification.removeAnimationDuration ?? REMOVE_ANIMATION_DURATION,

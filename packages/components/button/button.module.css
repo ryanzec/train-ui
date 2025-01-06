@@ -355,26 +355,3 @@
     border-radius: 0;
   }
 }
-
-/* drop down */
-.drop-down {
-  display: inline-flex;
-}
-
-.drop-down-content {
-  display: none;
-  border: 1px solid var(--color-outline-active);
-  padding: var(--space-xs);
-  position: absolute;
-  top: 0;
-  left: 0;
-  background-color: var(--color-surface);
-  width: max-content;
-  z-index: var(--z-index-tooltip);
-  border-radius: var(--border-radius-sm);
-  color: var(--color-on-surface);
-}
-
-.drop-down-content-is-enabled {
-  display: block;
-}

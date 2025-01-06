@@ -5,6 +5,7 @@ import styles from '$/components/icon/icon.sandbox.module.css';
 import { type IconName, iconComponents } from '$/components/icon/utils';
 import Input from '$/components/input';
 import Label from '$/components/label';
+import Tooltip, { tooltipUtils, TooltipTriggerEvent } from '$/components/tooltip';
 import { clipboardUtils } from '$/utils/clipboard';
 import { For, createEffect, createSignal } from 'solid-js';
 
@@ -143,17 +144,26 @@ export const AllIcons = () => {
       />
       <div class={styles.iconsContainer}>
         <For each={shownIconNames()}>
-          {(iconName) => (
-            <div class={styles.iconContainer}>
-              <button type="button" class={styles.icon} onClick={() => clipboardUtils.copyToClipboard(iconName)}>
-                <Icon
-                  icon={iconName}
-                  color={colorComboboxStore.selected()[0]?.meta?.iconColor || IconColor.INHERIT}
-                  size={sizeComboboxStore.selected()[0]?.meta?.iconSize || IconSize.BASE}
-                />
-              </button>
-            </div>
-          )}
+          {(iconName) => {
+            const tooltipStore = tooltipUtils.createStore();
+
+            return (
+              <div class={styles.iconContainer}>
+                <Tooltip store={tooltipStore} triggerEvent={TooltipTriggerEvent.HOVER}>
+                  <Tooltip.Handle>
+                    <button type="button" class={styles.icon} onClick={() => clipboardUtils.copyToClipboard(iconName)}>
+                      <Icon
+                        icon={iconName}
+                        color={colorComboboxStore.selected()[0]?.meta?.iconColor || IconColor.INHERIT}
+                        size={sizeComboboxStore.selected()[0]?.meta?.iconSize || IconSize.BASE}
+                      />
+                    </button>
+                  </Tooltip.Handle>
+                  <Tooltip.Content>{iconName}</Tooltip.Content>
+                </Tooltip>
+              </div>
+            );
+          }}
         </For>
       </div>
     </div>

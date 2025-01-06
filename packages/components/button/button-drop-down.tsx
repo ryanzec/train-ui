@@ -40,7 +40,6 @@ export const ButtonDropDown = (passedProps: ButtonDropDownProps) => {
 
   return (
     <Tooltip
-      class={styles.dropDown}
       store={props.tooltipStore}
       placement={props.placement}
       triggerEvent={props.triggerEvent ?? getDefaultTriggerEvent()}
@@ -50,21 +49,12 @@ export const ButtonDropDown = (passedProps: ButtonDropDownProps) => {
        * button in a span so that the span gets the tooltip handle events attached instead of the button so the tooltip
        * does work when the button is disabled
        */}
-      <span>
+      <Tooltip.Handle>
         <Button data-id="button-drop-down-trigger" {...restOfProps} class={props.class}>
           {props.label}
         </Button>
-      </span>
-      <ButtonDropDownContent
-        classList={{
-          [props.contentClass ?? '']: !!props.contentClass,
-          [styles.dropDownContentIsEnabled]: props.tooltipStore.isEnabled(),
-        }}
-      >
-        <Show when={props.tooltipStore.isEnabled()}>
-          <div>{props.children}</div>
-        </Show>
-      </ButtonDropDownContent>
+      </Tooltip.Handle>
+      <Tooltip.Content>{props.children}</Tooltip.Content>
     </Tooltip>
   );
 };
