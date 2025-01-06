@@ -24,6 +24,8 @@ export enum IconSize {
   LARGE = 'large',
   EXTRA_LARGE = 'extra-large',
   EXTRA_LARGE2 = 'extra-large2',
+  EXTRA_LARGE3 = 'extra-large4',
+  EXTRA_LARGE4 = 'extra-large4',
 }
 
 export enum IconColor {

@@ -1,32 +1,42 @@
 .icon {
   display: inline-block;
-  height: var(--font-size-base);
-  width: var(--font-size-base);
+  height: var(--size-base);
+  width: var(--size-base);
 }
 
 .extra_small {
-  height: var(--font-size-xs);
-  width: var(--font-size-xs);
+  height: var(--size-xs);
+  width: var(--size-xs);
 }
 
 .small {
-  height: var(--font-size-sm);
-  width: var(--font-size-sm);
+  height: var(--size-sm);
+  width: var(--size-sm);
 }
 
 .large {
-  height: var(--font-size-lg);
-  width: var(--font-size-lg);
+  height: var(--size-lg);
+  width: var(--size-lg);
 }
 
 .extra_large {
-  height: var(--font-size-xl);
-  width: var(--font-size-xl);
+  height: var(--size-xl);
+  width: var(--size-xl);
 }
 
 .extra_large2 {
-  height: var(--font-size-2xl);
-  width: var(--font-size-2xl);
+  height: var(--size-2xl);
+  width: var(--size-2xl);
+}
+
+.extra_large3 {
+  height: var(--size-3xl);
+  width: var(--size-3xl);
+}
+
+.extra_large4 {
+  height: var(--size-4xl);
+  width: var(--size-4xl);
 }
 
 .spacing-left {

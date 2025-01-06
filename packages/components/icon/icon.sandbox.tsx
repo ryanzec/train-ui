@@ -12,70 +12,7 @@ export default {
   title: 'Components/Icon',
 };
 
-export const Colors = () => {
-  return (
-    <>
-      <div>
-        <Icon icon="loader" color={IconColor.NEUTRAL} />
-      </div>
-      <div>
-        <Icon icon="loader" color={IconColor.BRAND} />
-      </div>
-      <div>
-        <Icon icon="loader" color={IconColor.SUCCESS} />
-      </div>
-      <div>
-        <Icon icon="loader" color={IconColor.INFO} />
-      </div>
-      <div>
-        <Icon icon="loader" color={IconColor.WARNING} />
-      </div>
-      <div>
-        <Icon icon="loader" color={IconColor.DANGER} />
-      </div>
-    </>
-  );
-};
-
-export const Sizes = () => {
-  return (
-    <>
-      <div>
-        <Icon icon="loader" color={IconColor.NEUTRAL} size={IconSize.EXTRA_SMALL} />
-      </div>
-      <div>
-        <Icon icon="loader" color={IconColor.BRAND} size={IconSize.SMALL} />
-      </div>
-      <div>
-        <Icon icon="loader" color={IconColor.SUCCESS} size={IconSize.BASE} />
-      </div>
-      <div>
-        <Icon icon="loader" color={IconColor.INFO} size={IconSize.LARGE} />
-      </div>
-      <div>
-        <Icon icon="loader" color={IconColor.WARNING} size={IconSize.EXTRA_LARGE} />
-      </div>
-      <div>
-        <Icon icon="loader" color={IconColor.DANGER} size={IconSize.EXTRA_LARGE2} />
-      </div>
-    </>
-  );
-};
-
 export const AllIcons = () => {
-  type ColorMetaData = { meta: { iconColor: IconColor } };
-  type SizeMetaData = { meta: { iconSize: IconSize } };
-  const allIconNames: IconName[] = Object.keys(iconComponents) as IconName[];
-  const colorComboboxStore = comboboxUtils.createComboboxValue<ColorMetaData>({
-    defaultValue: [],
-  });
-  const sizeComboboxStore = comboboxUtils.createComboboxValue<SizeMetaData>({
-    defaultValue: [],
-  });
-  const [filter, setFilter] = createSignal<string>('');
-  const [shownIconNames, setShownIconNames] = createSignal<IconName[]>(allIconNames);
-  // let iconNames: IconName[] = $state(allIconNames);
-  // const filter = $state('');
   const colorOptions: ComboboxOption<ColorMetaData>[] = [
     {
       label: 'Inherit (Default)',
@@ -144,7 +81,28 @@ export const AllIcons = () => {
       value: IconSize.EXTRA_LARGE2,
       meta: { iconSize: IconSize.EXTRA_LARGE2 },
     },
+    {
+      label: 'Extra Large 3',
+      value: IconSize.EXTRA_LARGE3,
+      meta: { iconSize: IconSize.EXTRA_LARGE3 },
+    },
+    {
+      label: 'Extra Large 4',
+      value: IconSize.EXTRA_LARGE4,
+      meta: { iconSize: IconSize.EXTRA_LARGE4 },
+    },
   ];
+  type ColorMetaData = { meta: { iconColor: IconColor } };
+  type SizeMetaData = { meta: { iconSize: IconSize } };
+  const allIconNames: IconName[] = Object.keys(iconComponents) as IconName[];
+  const colorComboboxStore = comboboxUtils.createComboboxValue<ColorMetaData>({
+    defaultValue: [colorOptions[0]],
+  });
+  const sizeComboboxStore = comboboxUtils.createComboboxValue<SizeMetaData>({
+    defaultValue: [sizeOptions[2]],
+  });
+  const [filter, setFilter] = createSignal<string>('');
+  const [shownIconNames, setShownIconNames] = createSignal<IconName[]>(allIconNames);
 
   createEffect(() => {
     setShownIconNames(allIconNames.filter((iconName) => iconName.toLowerCase().includes(filter().toLowerCase())));

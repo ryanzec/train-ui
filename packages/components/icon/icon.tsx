@@ -33,6 +33,8 @@ const Icon = (passedProps: IconProps) => {
         [styles.large]: props.size === IconSize.LARGE,
         [styles.extra_large]: props.size === IconSize.EXTRA_LARGE,
         [styles.extra_large2]: props.size === IconSize.EXTRA_LARGE2,
+        [styles.extra_large3]: props.size === IconSize.EXTRA_LARGE3,
+        [styles.extra_large4]: props.size === IconSize.EXTRA_LARGE4,
         [styles.neutral]: props.color === IconColor.NEUTRAL,
         [styles.brand]: props.color === IconColor.BRAND,
         [styles.success]: props.color === IconColor.SUCCESS,
