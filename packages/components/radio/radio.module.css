@@ -12,7 +12,6 @@
 .radio .icon {
   margin-right: var(--space-2xs);
   font-size: var(--font-size-xl);
-  color: var(--color-neutral);
 }
 
 .radio .icon-is-checked {
