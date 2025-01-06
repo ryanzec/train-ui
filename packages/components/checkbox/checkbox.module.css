@@ -16,7 +16,7 @@
 
 .checkbox input:checked + .icon,
 .checkbox input:indeterminate + .icon {
-  color: var(--color-brand);
+  fill: var(--color-brand);
 }
 
 .align-end {
