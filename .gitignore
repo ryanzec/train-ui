@@ -11,6 +11,7 @@ mocha-coverage
 .env
 .env.local
 applications/api/lowdb/*
+*.pem
 
 # artifacts
 .idea

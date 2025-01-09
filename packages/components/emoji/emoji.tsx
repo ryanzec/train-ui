@@ -75,6 +75,7 @@ const Emoji = (passedProps: EmojiProps) => {
       {...restOfProps}
       class={classnames(props.class, {
         [styles.extra_small]: props.size === IconSize.EXTRA_SMALL,
+        [styles.extra_small2]: props.size === IconSize.EXTRA_SMALL2,
         [styles.small]: props.size === IconSize.SMALL,
         [styles.base]: props.size === IconSize.BASE,
         [styles.large]: props.size === IconSize.LARGE,

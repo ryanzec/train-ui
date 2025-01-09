@@ -20,11 +20,12 @@ import XIcon from '$/components/icon/icons/x.svg?raw';
 export enum IconSize {
   BASE = 'base',
   EXTRA_SMALL = 'extra-small',
+  EXTRA_SMALL2 = 'extra-small2',
   SMALL = 'small',
   LARGE = 'large',
   EXTRA_LARGE = 'extra-large',
   EXTRA_LARGE2 = 'extra-large2',
-  EXTRA_LARGE3 = 'extra-large4',
+  EXTRA_LARGE3 = 'extra-large3',
   EXTRA_LARGE4 = 'extra-large4',
 }
 

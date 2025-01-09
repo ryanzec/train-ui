@@ -12,7 +12,7 @@ import '$/styles/normalize.css';
 import '$/styles/base.css';
 import { render } from 'solid-js/web';
 
-import Application from '$sandbox/components/application';
+import Application from '$web/components/application';
 
 const start = async () => {
   render(() => <Application.Router />, document.getElementById('application-mount') as HTMLElement);

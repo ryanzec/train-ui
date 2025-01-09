@@ -1,3 +1,5 @@
+import { FastifyRequest } from 'fastify';
+
 export type AuthenticationToken = {
   authenticationToken: string;
 };
@@ -10,7 +12,18 @@ export type User = {
   password: string;
 };
 
-export type Database = {
-  authenticationTokens: AuthenticationToken[];
-  users: User[];
-};
+declare module '@fastify/session' {
+  interface FastifySessionObject {
+    views: number;
+    stytchSessionToken: string;
+  }
+}
+
+export interface ApplicationConfiguration {
+  STYTCH_PROJECT_ID: string;
+  STYTCH_SECRET: string;
+  FRONTEND_URL: string;
+  BACKEND_URL: string;
+  NODE_ENV: 'development' | 'production';
+  PORT: number;
+}

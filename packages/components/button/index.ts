@@ -3,7 +3,7 @@ import DropDown, { type ButtonDropDownProps } from '$/components/button/button-d
 import Group, { type ButtonGroupProps } from '$/components/button/button-group';
 import Toggle, { type ButtonToggleProps } from '$/components/button/toggle-button';
 
-export { ButtonVariant, ButtonColor, ButtonShape } from '$/components/button/utils';
+export { ButtonVariant, ButtonColor, ButtonShape, ButtonSize } from '$/components/button/utils';
 
 export type { ButtonGroupProps, ButtonDropDownProps, ButtonProps, ButtonToggleProps };
 

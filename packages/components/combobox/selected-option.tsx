@@ -1,8 +1,7 @@
 import Badge, { BadgeColor, BadgeVariant } from '$/components/badge';
-import Button, { ButtonColor, ButtonShape, ButtonVariant } from '$/components/button';
+import Button, { ButtonColor, ButtonSize, ButtonVariant } from '$/components/button';
 import styles from '$/components/combobox/combobox.module.css';
 import type { ComboboxExtraData, ComboboxSelectedOptionProps } from '$/components/combobox/utils';
-import Icon from '$/components/icon';
 
 const SelectedOption = <TData extends ComboboxExtraData>(props: ComboboxSelectedOptionProps<TData>) => {
   return (
@@ -19,11 +18,11 @@ const SelectedOption = <TData extends ComboboxExtraData>(props: ComboboxSelected
         onClick={() => {
           props.removeValue(props.optionIndex);
         }}
-        variant={ButtonVariant.TEXT}
+        variant={ButtonVariant.GHOST}
         color={ButtonColor.NEUTRAL}
-      >
-        <Icon icon="x" />
-      </Button>
+        size={ButtonSize.SMALL}
+        icon="x"
+      />
     </Badge>
   );
 };

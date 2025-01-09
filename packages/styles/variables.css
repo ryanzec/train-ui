@@ -125,7 +125,8 @@
   --opacity-overlay-strong: 0.7;
   --opacity-full: 1;
 
-  --size-xs: 0.5rem;
+  --size-2xs: 0.5rem;
+  --size-xs: 0.625rem;
   --size-sm: 0.75rem;
   --size-base: 0.875rem;
   --size-lg: 1.125rem;

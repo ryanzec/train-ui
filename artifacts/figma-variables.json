@@ -1156,10 +1156,16 @@
           "name": "Mode 1",
           "variables": [
             {
-              "name": "xs",
+              "name": "2xs",
               "type": "number",
               "isAlias": false,
               "value": 8
+            },
+            {
+              "name": "xs",
+              "type": "number",
+              "isAlias": false,
+              "value": 10
             },
             {
               "name": "sm",
@@ -1219,7 +1225,7 @@
               "isAlias": false,
               "value": {
                 "fontSize": 32,
-                "fontFamily": "Roboto",
+                "fontFamily": "Open Sans",
                 "fontWeight": "SemiBold",
                 "lineHeight": 40,
                 "lineHeightUnit": "PIXELS",
@@ -1235,7 +1241,7 @@
               "isAlias": false,
               "value": {
                 "fontSize": 32,
-                "fontFamily": "Roboto",
+                "fontFamily": "Open Sans",
                 "fontWeight": "Regular",
                 "lineHeight": 40,
                 "lineHeightUnit": "PIXELS",
@@ -1251,7 +1257,7 @@
               "isAlias": false,
               "value": {
                 "fontSize": 24,
-                "fontFamily": "Roboto",
+                "fontFamily": "Open Sans",
                 "fontWeight": "SemiBold",
                 "lineHeight": 30,
                 "lineHeightUnit": "PIXELS",
@@ -1267,7 +1273,7 @@
               "isAlias": false,
               "value": {
                 "fontSize": 24,
-                "fontFamily": "Roboto",
+                "fontFamily": "Open Sans",
                 "fontWeight": "Regular",
                 "lineHeight": 30,
                 "lineHeightUnit": "PIXELS",
@@ -1283,7 +1289,7 @@
               "isAlias": false,
               "value": {
                 "fontSize": 20,
-                "fontFamily": "Roboto",
+                "fontFamily": "Open Sans",
                 "fontWeight": "SemiBold",
                 "lineHeight": 24,
                 "lineHeightUnit": "PIXELS",
@@ -1299,7 +1305,7 @@
               "isAlias": false,
               "value": {
                 "fontSize": 20,
-                "fontFamily": "Roboto",
+                "fontFamily": "Open Sans",
                 "fontWeight": "Regular",
                 "lineHeight": 24,
                 "lineHeightUnit": "PIXELS",
@@ -1315,7 +1321,7 @@
               "isAlias": false,
               "value": {
                 "fontSize": 14,
-                "fontFamily": "Roboto",
+                "fontFamily": "Open Sans",
                 "fontWeight": "SemiBold",
                 "lineHeight": 20,
                 "lineHeightUnit": "PIXELS",
@@ -1331,7 +1337,7 @@
               "isAlias": false,
               "value": {
                 "fontSize": 14,
-                "fontFamily": "Roboto",
+                "fontFamily": "Open Sans",
                 "fontWeight": "SemiBold",
                 "lineHeight": 20,
                 "lineHeightUnit": "PIXELS",
@@ -1347,7 +1353,7 @@
               "isAlias": false,
               "value": {
                 "fontSize": 14,
-                "fontFamily": "Roboto",
+                "fontFamily": "Open Sans",
                 "fontWeight": "Regular",
                 "lineHeight": 20,
                 "lineHeightUnit": "PIXELS",
@@ -1363,7 +1369,7 @@
               "isAlias": false,
               "value": {
                 "fontSize": 12,
-                "fontFamily": "Inter",
+                "fontFamily": "Open Sans",
                 "fontWeight": "Semi Bold",
                 "lineHeight": 15,
                 "lineHeightUnit": "PIXELS",
@@ -1379,7 +1385,7 @@
               "isAlias": false,
               "value": {
                 "fontSize": 12,
-                "fontFamily": "Roboto",
+                "fontFamily": "Open Sans",
                 "fontWeight": "Regular",
                 "lineHeight": 15,
                 "lineHeightUnit": "PIXELS",
@@ -1395,7 +1401,7 @@
               "isAlias": false,
               "value": {
                 "fontSize": 10,
-                "fontFamily": "Inter",
+                "fontFamily": "Open Sans",
                 "fontWeight": "Semi Bold",
                 "lineHeight": 13,
                 "lineHeightUnit": "PIXELS",
@@ -1411,7 +1417,7 @@
               "isAlias": false,
               "value": {
                 "fontSize": 10,
-                "fontFamily": "Inter",
+                "fontFamily": "Open Sans",
                 "fontWeight": "Regular",
                 "lineHeight": 13,
                 "lineHeightUnit": "PIXELS",

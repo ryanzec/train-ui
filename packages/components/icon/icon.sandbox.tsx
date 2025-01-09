@@ -53,6 +53,11 @@ export const AllIcons = () => {
   ];
   const sizeOptions: ComboboxOption<SizeMetaData>[] = [
     {
+      label: 'Extra Small 2',
+      value: IconSize.EXTRA_SMALL2,
+      meta: { iconSize: IconSize.EXTRA_SMALL2 },
+    },
+    {
       label: 'Extra Small',
       value: IconSize.EXTRA_SMALL,
       meta: { iconSize: IconSize.EXTRA_SMALL },

@@ -29,6 +29,7 @@ const Icon = (passedProps: IconProps) => {
       innerHTML={iconComponents[props.icon]}
       class={classnames(styles.icon, props.class, {
         [styles.extra_small]: props.size === IconSize.EXTRA_SMALL,
+        [styles.extra_small2]: props.size === IconSize.EXTRA_SMALL2,
         [styles.small]: props.size === IconSize.SMALL,
         [styles.large]: props.size === IconSize.LARGE,
         [styles.extra_large]: props.size === IconSize.EXTRA_LARGE,

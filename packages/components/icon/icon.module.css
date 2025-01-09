@@ -4,6 +4,11 @@
   width: var(--size-base);
 }
 
+.extra_small2 {
+  height: var(--size-2xs);
+  width: var(--size-2xs);
+}
+
 .extra_small {
   height: var(--size-xs);
   width: var(--size-xs);

@@ -1,6 +1,6 @@
-import Button, { ButtonVariant, ButtonColor, ButtonShape } from '$/components/button';
+import Button, { ButtonColor, ButtonShape, ButtonSize, ButtonVariant } from '$/components/button';
 import { ButtonState } from '$/components/button/utils';
-import Icon from '$/components/icon';
+import Icon, { IconSize } from '$/components/icon';
 import { tooltipUtils } from '$/components/tooltip';
 import SandboxExamplesContainer from '$sandbox/components/sandbox-examples-container/sandbox-examples-container';
 
@@ -784,5 +784,50 @@ export const DropDown = () => {
       <br />
       test
     </>
+  );
+};
+
+export const Sizes = () => {
+  return (
+    <SandboxExamplesContainer>
+      <SandboxExamplesContainer>
+        <div>Base</div>
+        <Button.Group>
+          <Button size={ButtonSize.BASE} variant={ButtonVariant.FILLED}>
+            Base
+          </Button>
+          <Button size={ButtonSize.BASE} variant={ButtonVariant.FILLED} preItem={<Icon icon="plus" />}>
+            Base
+          </Button>
+          <Button size={ButtonSize.BASE} variant={ButtonVariant.FILLED} postItem={<Icon icon="plus" />}>
+            Base
+          </Button>
+          <Button size={ButtonSize.BASE} variant={ButtonVariant.FILLED} shape={ButtonShape.CIRCLE} icon="x" />
+          <Button size={ButtonSize.BASE} variant={ButtonVariant.FILLED} shape={ButtonShape.CIRCLE} icon="plus" />
+          <Button size={ButtonSize.BASE} variant={ButtonVariant.FILLED} disabled>
+            Base (Disabled)
+          </Button>
+        </Button.Group>
+      </SandboxExamplesContainer>
+      <SandboxExamplesContainer>
+        <div>Small</div>
+        <Button.Group>
+          <Button size={ButtonSize.SMALL} variant={ButtonVariant.FILLED}>
+            Base
+          </Button>
+          <Button size={ButtonSize.SMALL} variant={ButtonVariant.FILLED} preItem={<Icon icon="plus" />}>
+            Base
+          </Button>
+          <Button size={ButtonSize.SMALL} variant={ButtonVariant.FILLED} postItem={<Icon icon="plus" />}>
+            Base
+          </Button>
+          <Button size={ButtonSize.SMALL} variant={ButtonVariant.FILLED} shape={ButtonShape.CIRCLE} icon="x" />
+          <Button size={ButtonSize.SMALL} variant={ButtonVariant.FILLED} shape={ButtonShape.CIRCLE} icon="plus" />
+          <Button size={ButtonSize.SMALL} variant={ButtonVariant.FILLED} disabled>
+            Base (Disabled)
+          </Button>
+        </Button.Group>
+      </SandboxExamplesContainer>
+    </SandboxExamplesContainer>
   );
 };

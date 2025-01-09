@@ -1,10 +1,18 @@
 import classnames from 'classnames';
-import { type JSX, mergeProps, splitProps } from 'solid-js';
+import { type JSX, Show, mergeProps, splitProps } from 'solid-js';
 
 import ButtonPrePostItem from '$/components/button/button-pre-post-item';
 import styles from '$/components/button/button.module.css';
-import { ButtonColor, ButtonItemPosition, ButtonShape, ButtonState, ButtonVariant } from '$/components/button/utils';
-import Icon from '$/components/icon';
+import {
+  ButtonColor,
+  ButtonItemPosition,
+  ButtonShape,
+  ButtonSize,
+  ButtonState,
+  ButtonVariant,
+} from '$/components/button/utils';
+import Icon, { IconSize } from '$/components/icon';
+import type { IconName } from '$/components/icon/utils';
 import type { CommonDataAttributes } from '$/types/generic';
 
 export type ButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> &
@@ -16,6 +24,8 @@ export type ButtonProps = JSX.ButtonHTMLAttributes<HTMLButtonElement> &
     preItem?: JSX.Element;
     postItem?: JSX.Element;
     loadingIconPosition?: ButtonItemPosition;
+    size?: ButtonSize;
+    icon?: IconName;
   };
 
 export const Button = (passedProps: ButtonProps) => {
@@ -27,6 +37,7 @@ export const Button = (passedProps: ButtonProps) => {
         state: ButtonState.DEFAULT,
         shape: ButtonShape.ROUNDED,
         loadingIconPosition: ButtonItemPosition.PRE,
+        size: ButtonSize.BASE,
       },
       passedProps,
     ),
@@ -41,12 +52,15 @@ export const Button = (passedProps: ButtonProps) => {
       'state',
       'color',
       'shape',
+      'size',
+      'icon',
     ],
   );
 
   const isLoading = () => props.state === ButtonState.IS_LOADING;
   const hasPreItem = () => props.preItem || (isLoading() && props.loadingIconPosition === ButtonItemPosition.PRE);
   const hasPostItem = () => props.postItem || (isLoading() && props.loadingIconPosition === ButtonItemPosition.POST);
+  const getIconSize = () => (props.size === ButtonSize.SMALL ? IconSize.EXTRA_SMALL2 : undefined);
 
   return (
     <button
@@ -67,6 +81,7 @@ export const Button = (passedProps: ButtonProps) => {
         [styles.danger]: props.color === ButtonColor.DANGER,
         [styles.isLoading]: isLoading(),
         [styles.circle]: props.shape === ButtonShape.CIRCLE,
+        [styles.small]: props.size === ButtonSize.SMALL,
       })}
       disabled={props.disabled || isLoading()}
     >
@@ -75,13 +90,17 @@ export const Button = (passedProps: ButtonProps) => {
           <ButtonPrePostItem
             class={styles.preIcon}
             position={ButtonItemPosition.PRE}
-            item={<Icon icon="loader" class={styles.iconIsLoading} />}
+            item={<Icon icon="loader" class={styles.iconIsLoading} size={getIconSize()} />}
           />
         )}
         {!isLoading() && hasPreItem() && (
           <ButtonPrePostItem class={styles.preIcon} position={ButtonItemPosition.PRE} item={props.preItem} />
         )}
-        <span class={styles.buttonMainContent}>{props.children}</span>
+        <span class={styles.buttonMainContent}>
+          <Show when={!props.icon} fallback={<Icon icon={props.icon!} size={getIconSize()} />}>
+            {props.children}
+          </Show>
+        </span>
         {!isLoading() && hasPostItem() && (
           <ButtonPrePostItem class={styles.preIcon} position={ButtonItemPosition.POST} item={props.postItem} />
         )}

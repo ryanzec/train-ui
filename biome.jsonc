@@ -24,6 +24,11 @@
       "recommended": true,
       "suspicious": {
         "noConfusingVoidType": "off"
+      },
+      "style": {
+        // there are certain features of SolidJS that require this to avoid typescript issue (or different
+        // workarounds that are much more verbose)
+        "noNonNullAssertion": "off"
       }
     },
     "ignore": ["**/node_modules"]

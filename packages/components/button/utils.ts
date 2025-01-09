@@ -33,3 +33,8 @@ export enum ButtonShape {
   ROUNDED = 'rounded',
   CIRCLE = 'circle',
 }
+
+export enum ButtonSize {
+  SMALL = 'small',
+  BASE = 'base',
+}

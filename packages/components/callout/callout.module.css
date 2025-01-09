@@ -3,7 +3,7 @@
   align-items: center;
   padding: var(--space-xs) var(--space-sm);
   border: 1px solid transparent;
-  border-left: var(--size-xs) solid transparent;
+  border-left: var(--size-2xs) solid transparent;
   border-radius: var(--border-radius-sm);
 }
 
