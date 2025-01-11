@@ -1,5 +1,6 @@
 import Combobox, { type ComboboxOption, comboboxUtils } from '$/components/combobox';
 import FormField from '$/components/form-field';
+import FormFields from '$/components/form-fields/form-fields';
 import Icon, { IconColor, IconSize } from '$/components/icon';
 import styles from '$/components/icon/icon.sandbox.module.css';
 import { type IconName, iconComponents } from '$/components/icon/utils';
@@ -116,37 +117,39 @@ export const AllIcons = () => {
 
   return (
     <div>
-      <FormField>
-        <Label>Search</Label>
-        <Input
-          name="filter"
-          value={filter()}
-          placeholder="Search by name..."
-          onInput={(event) => setFilter(event.currentTarget.value)}
+      <FormFields>
+        <FormField>
+          <Label>Search</Label>
+          <Input
+            name="filter"
+            value={filter()}
+            placeholder="Search by name..."
+            onInput={(event) => setFilter(event.currentTarget.value)}
+          />
+        </FormField>
+        <Combobox.Form
+          forceSelection
+          autoShowOptions
+          options={colorOptions}
+          // filterOptions={props.filterOptions ?? comboboxUtils.excludeSelectedFilter}
+          setSelected={colorComboboxStore.setSelected}
+          selected={colorComboboxStore.selected()}
+          placeholder="Select color..."
+          name="color"
+          label="Color"
         />
-      </FormField>
-      <Combobox.Form
-        forceSelection
-        autoShowOptions
-        options={colorOptions}
-        // filterOptions={props.filterOptions ?? comboboxUtils.excludeSelectedFilter}
-        setSelected={colorComboboxStore.setSelected}
-        selected={colorComboboxStore.selected()}
-        placeholder="Select color..."
-        name="color"
-        label="Color"
-      />
-      <Combobox.Form
-        forceSelection
-        autoShowOptions
-        options={sizeOptions}
-        // filterOptions={props.filterOptions ?? comboboxUtils.excludeSelectedFilter}
-        setSelected={sizeComboboxStore.setSelected}
-        selected={sizeComboboxStore.selected()}
-        placeholder="Select size..."
-        name="size"
-        label="Size"
-      />
+        <Combobox.Form
+          forceSelection
+          autoShowOptions
+          options={sizeOptions}
+          // filterOptions={props.filterOptions ?? comboboxUtils.excludeSelectedFilter}
+          setSelected={sizeComboboxStore.setSelected}
+          selected={sizeComboboxStore.selected()}
+          placeholder="Select size..."
+          name="size"
+          label="Size"
+        />
+      </FormFields>
       <div class={styles.iconsContainer}>
         <For each={shownIconNames()}>
           {(iconName) => {

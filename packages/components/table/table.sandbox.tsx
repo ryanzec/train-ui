@@ -46,8 +46,8 @@ export const Square = () => {
           shape={TableShape.SQUARE}
           tableHead={
             <Table.Row>
-              <Table.Header class="w-[200px]">Name</Table.Header>
-              <Table.Header class="text-right">Email</Table.Header>
+              <Table.Header class={styles.nameCell}>Name</Table.Header>
+              <Table.Header class={styles.emailCell}>Email</Table.Header>
               <Table.Header>Role</Table.Header>
             </Table.Row>
           }
@@ -57,8 +57,8 @@ export const Square = () => {
             {(row) => {
               return (
                 <Table.Row>
-                  <Table.Data>{row.name}</Table.Data>
-                  <Table.Data class="text-right">{row.email}</Table.Data>
+                  <Table.Data class={styles.nameCell}>{row.name}</Table.Data>
+                  <Table.Data class={styles.emailCell}>{row.email}</Table.Data>
                   <Table.Data>{row.role}</Table.Data>
                 </Table.Row>
               );
@@ -73,8 +73,8 @@ export const Square = () => {
             {(row) => {
               return (
                 <Table.Row>
-                  <Table.Data>{row.name}</Table.Data>
-                  <Table.Data class="text-right">{row.email}</Table.Data>
+                  <Table.Data class={styles.nameCell}>{row.name}</Table.Data>
+                  <Table.Data class={styles.emailCell}>{row.email}</Table.Data>
                   <Table.Data>{row.role}</Table.Data>
                 </Table.Row>
               );
@@ -88,8 +88,8 @@ export const Square = () => {
           shape={TableShape.SQUARE}
           tableHead={
             <Table.Row>
-              <Table.Header class="w-[200px]">Name</Table.Header>
-              <Table.Header class="text-right">Email</Table.Header>
+              <Table.Header class={styles.nameCell}>Name</Table.Header>
+              <Table.Header class={styles.emailCell}>Email</Table.Header>
               <Table.Header>Role</Table.Header>
             </Table.Row>
           }
@@ -98,8 +98,8 @@ export const Square = () => {
             {(row) => {
               return (
                 <Table.Row>
-                  <Table.Data>{row.name}</Table.Data>
-                  <Table.Data class="text-right">{row.email}</Table.Data>
+                  <Table.Data class={styles.nameCell}>{row.name}</Table.Data>
+                  <Table.Data class={styles.emailCell}>{row.email}</Table.Data>
                   <Table.Data>{row.role}</Table.Data>
                 </Table.Row>
               );
@@ -114,8 +114,8 @@ export const Square = () => {
             {(row) => {
               return (
                 <Table.Row>
-                  <Table.Data>{row.name}</Table.Data>
-                  <Table.Data class="text-right">{row.email}</Table.Data>
+                  <Table.Data class={styles.nameCell}>{row.name}</Table.Data>
+                  <Table.Data class={styles.emailCell}>{row.email}</Table.Data>
                   <Table.Data>{row.role}</Table.Data>
                 </Table.Row>
               );
@@ -136,8 +136,8 @@ export const Rounded = () => {
           shape={TableShape.ROUNDED}
           tableHead={
             <Table.Row>
-              <Table.Header class="w-[200px]">Name</Table.Header>
-              <Table.Header class="text-right">Email</Table.Header>
+              <Table.Header class={styles.nameCell}>Name</Table.Header>
+              <Table.Header class={styles.emailCell}>Email</Table.Header>
               <Table.Header>Role</Table.Header>
             </Table.Row>
           }
@@ -147,8 +147,8 @@ export const Rounded = () => {
             {(row) => {
               return (
                 <Table.Row>
-                  <Table.Data>{row.name}</Table.Data>
-                  <Table.Data class="text-right">{row.email}</Table.Data>
+                  <Table.Data class={styles.nameCell}>{row.name}</Table.Data>
+                  <Table.Data class={styles.emailCell}>{row.email}</Table.Data>
                   <Table.Data>{row.role}</Table.Data>
                 </Table.Row>
               );
@@ -163,8 +163,8 @@ export const Rounded = () => {
             {(row) => {
               return (
                 <Table.Row>
-                  <Table.Data>{row.name}</Table.Data>
-                  <Table.Data class="text-right">{row.email}</Table.Data>
+                  <Table.Data class={styles.nameCell}>{row.name}</Table.Data>
+                  <Table.Data class={styles.emailCell}>{row.email}</Table.Data>
                   <Table.Data>{row.role}</Table.Data>
                 </Table.Row>
               );
@@ -178,8 +178,8 @@ export const Rounded = () => {
           shape={TableShape.ROUNDED}
           tableHead={
             <Table.Row>
-              <Table.Header class="w-[200px]">Name</Table.Header>
-              <Table.Header class="text-right">Email</Table.Header>
+              <Table.Header class={styles.nameCell}>Name</Table.Header>
+              <Table.Header class={styles.emailCell}>Email</Table.Header>
               <Table.Header>Role</Table.Header>
             </Table.Row>
           }
@@ -188,8 +188,8 @@ export const Rounded = () => {
             {(row) => {
               return (
                 <Table.Row>
-                  <Table.Data>{row.name}</Table.Data>
-                  <Table.Data class="text-right">{row.email}</Table.Data>
+                  <Table.Data class={styles.nameCell}>{row.name}</Table.Data>
+                  <Table.Data class={styles.emailCell}>{row.email}</Table.Data>
                   <Table.Data>{row.role}</Table.Data>
                 </Table.Row>
               );
@@ -204,8 +204,8 @@ export const Rounded = () => {
             {(row) => {
               return (
                 <Table.Row>
-                  <Table.Data>{row.name}</Table.Data>
-                  <Table.Data class="text-right">{row.email}</Table.Data>
+                  <Table.Data class={styles.nameCell}>{row.name}</Table.Data>
+                  <Table.Data class={styles.emailCell}>{row.email}</Table.Data>
                   <Table.Data>{row.role}</Table.Data>
                 </Table.Row>
               );
@@ -224,8 +224,8 @@ export const LargeData = () => {
         shape={TableShape.SQUARE}
         tableHead={
           <Table.Row>
-            <Table.Header class="w-[200px]">Name</Table.Header>
-            <Table.Header class="text-right">Email</Table.Header>
+            <Table.Header class={styles.nameCell}>Name</Table.Header>
+            <Table.Header class={styles.emailCell}>Email</Table.Header>
             <Table.Header>Role</Table.Header>
           </Table.Row>
         }
@@ -235,8 +235,8 @@ export const LargeData = () => {
           {(row) => {
             return (
               <Table.Row>
-                <Table.Data>{row.name}</Table.Data>
-                <Table.Data class="text-right">{row.email}</Table.Data>
+                <Table.Data class={styles.nameCell}>{row.name}</Table.Data>
+                <Table.Data class={styles.emailCell}>{row.email}</Table.Data>
                 <Table.Data>{row.role}</Table.Data>
               </Table.Row>
             );
@@ -255,8 +255,8 @@ export const Scrollable = () => {
           shape={TableShape.SQUARE}
           tableHead={
             <Table.Row>
-              <Table.Header class="w-[200px]">Name</Table.Header>
-              <Table.Header class="text-right">Email</Table.Header>
+              <Table.Header class={styles.nameCell}>Name</Table.Header>
+              <Table.Header class={styles.emailCell}>Email</Table.Header>
               <Table.Header>Role</Table.Header>
             </Table.Row>
           }
@@ -266,8 +266,8 @@ export const Scrollable = () => {
             {(row) => {
               return (
                 <Table.Row>
-                  <Table.Data>{row.name}</Table.Data>
-                  <Table.Data class="text-right">{row.email}</Table.Data>
+                  <Table.Data class={styles.nameCell}>{row.name}</Table.Data>
+                  <Table.Data class={styles.emailCell}>{row.email}</Table.Data>
                   <Table.Data>{row.role}</Table.Data>
                 </Table.Row>
               );
@@ -288,8 +288,8 @@ export const FixedHeader = () => {
           shape={TableShape.SQUARE}
           tableHead={
             <Table.Row>
-              <Table.Header class="w-[200px]">Name</Table.Header>
-              <Table.Header class="text-right">Email</Table.Header>
+              <Table.Header class={styles.nameCell}>Name</Table.Header>
+              <Table.Header class={styles.emailCell}>Email</Table.Header>
               <Table.Header>Role</Table.Header>
             </Table.Row>
           }
@@ -299,8 +299,8 @@ export const FixedHeader = () => {
             {(row) => {
               return (
                 <Table.Row>
-                  <Table.Data>{row.name}</Table.Data>
-                  <Table.Data class="text-right">{row.email}</Table.Data>
+                  <Table.Data class={styles.nameCell}>{row.name}</Table.Data>
+                  <Table.Data class={styles.emailCell}>{row.email}</Table.Data>
                   <Table.Data>{row.role}</Table.Data>
                 </Table.Row>
               );
@@ -336,8 +336,8 @@ export const Selectable = () => {
         tableHead={
           <Table.Row>
             <Table.Header />
-            <Table.Header class="w-[200px]">Name</Table.Header>
-            <Table.Header class="text-right">Email</Table.Header>
+            <Table.Header class={styles.nameCell}>Name</Table.Header>
+            <Table.Header class={styles.emailCell}>Email</Table.Header>
             <Table.Header>Role</Table.Header>
           </Table.Row>
         }
@@ -347,8 +347,8 @@ export const Selectable = () => {
           {(row) => {
             return (
               <Table.Row isSelectable isSelected={false} onSelected={handleSelected} id={row.id}>
-                <Table.Data>{row.name}</Table.Data>
-                <Table.Data class="text-right">{row.email}</Table.Data>
+                <Table.Data class={styles.nameCell}>{row.name}</Table.Data>
+                <Table.Data class={styles.emailCell}>{row.email}</Table.Data>
                 <Table.Data>{row.role}</Table.Data>
               </Table.Row>
             );

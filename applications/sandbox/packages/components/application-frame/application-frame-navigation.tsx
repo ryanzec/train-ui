@@ -5,7 +5,7 @@ import type { CommonDataAttributes } from '$/types/generic';
 import styles from '$sandbox/components/application-frame/application-frame.module.css';
 import type { DynamicRouteNavigation } from '$sandbox/stores/dynamic-routes';
 
-import Button from '$/components/button';
+import Button, { ButtonShape } from '$/components/button';
 import { ThemeName } from '$/utils/styles';
 import { applicationStore } from '$sandbox/stores/application-store';
 
@@ -27,9 +27,12 @@ const ApplicationFrameNavigation = (passedProps: ApplicationFrameNavigationProps
   return (
     <div data-id="navigation" class={classnames(styles.navigation, props.class)} {...restOfProps}>
       {/*<ScrollArea>*/}
-      <Button onClick={handleToggleTheme} class={styles.toggleThemeTrigger}>
-        Toggle Theme
-      </Button>
+      <Button
+        shape={ButtonShape.CIRCLE}
+        onClick={handleToggleTheme}
+        class={styles.toggleThemeTrigger}
+        icon={applicationStore.theme() === ThemeName.LIGHT ? 'moon' : 'sun'}
+      />
       <ApplicationFrameSubNavigation routes={props.routes} />
       {/*</ScrollArea>*/}
     </div>

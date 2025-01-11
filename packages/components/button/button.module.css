@@ -59,8 +59,8 @@
 
 .neutral.filled {
   background-color: var(--color-neutral);
-  color: var(--color-neutral-subtle);
-  fill: var(--color-neutral-subtle);
+  color: var(--color-on-neutral);
+  fill: var(--color-on-neutral);
 }
 
 .neutral.filled:hover {
@@ -100,8 +100,8 @@
 
 .brand.filled {
   background-color: var(--color-brand);
-  color: var(--color-brand-subtle);
-  fill: var(--color-brand-subtle);
+  color: var(--color-on-brand);
+  fill: var(--color-on-brand);
 }
 
 .brand.filled:hover {
@@ -141,8 +141,8 @@
 
 .success.filled {
   background-color: var(--color-success);
-  color: var(--color-success-subtle);
-  fill: var(--color-success-subtle);
+  color: var(--color-on-success);
+  fill: var(--color-on-success);
 }
 
 .success.filled:hover {
@@ -182,8 +182,8 @@
 
 .info.filled {
   background-color: var(--color-info);
-  color: var(--color-info-subtle);
-  fill: var(--color-info-subtle);
+  color: var(--color-on-info);
+  fill: var(--color-on-info);
 }
 
 .info.filled:hover {
@@ -223,8 +223,8 @@
 
 .warning.filled {
   background-color: var(--color-warning);
-  color: var(--color-warning-subtle);
-  fill: var(--color-warning-subtle);
+  color: var(--color-on-warning);
+  fill: var(--color-on-warning);
 }
 
 .warning.filled:hover {
@@ -264,8 +264,8 @@
 
 .danger.filled {
   background-color: var(--color-danger);
-  color: var(--color-danger-subtle);
-  fill: var(--color-danger-subtle);
+  color: var(--color-on-danger);
+  fill: var(--color-on-danger);
 }
 
 .danger.filled:hover {

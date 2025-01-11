@@ -4,6 +4,7 @@ import styles from '$sandbox/components/application-frame/application-frame.modu
 
 import type { DynamicRouteNavigation } from '$sandbox/stores/dynamic-routes';
 
+import { stringUtils } from '$/utils/string';
 import ApplicationFrameExpandableItem from '$sandbox/components/application-frame/application-frame-expandable-item';
 import ApplicationFrameNavigationItem from '$sandbox/components/application-frame/application-frame-navigation-item';
 
@@ -25,7 +26,7 @@ const ApplicationFrameSubNavigation = (props: ApplicationFrameSubNavigationProps
               <Match when={isEndRoute()}>
                 {/* since this is an end route, we are casting to string to avoid typescript error */}
                 <ApplicationFrameNavigationItem path={props.routes[routeKey] as string}>
-                  {routeKey}
+                  {stringUtils.pascalToWords(routeKey)}
                 </ApplicationFrameNavigationItem>
               </Match>
               <Match when={isEndRoute() === false}>

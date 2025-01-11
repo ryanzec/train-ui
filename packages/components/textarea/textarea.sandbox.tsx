@@ -1,4 +1,5 @@
 import FormField from '$/components/form-field';
+import FormFields from '$/components/form-fields/form-fields';
 import Label from '$/components/label';
 import SupportingText, { SupportingTextColor } from '$/components/supporting-text';
 import Textarea from '$/components/textarea';
@@ -9,7 +10,7 @@ export default {
 
 export const Default = () => {
   return (
-    <>
+    <FormFields>
       <FormField>
         <Label for="test1">Placeholder</Label>
         <Textarea id="test1" placeholder="Placeholder value" />
@@ -35,6 +36,6 @@ export const Default = () => {
           Readonly value
         </Textarea>
       </FormField>
-    </>
+    </FormFields>
   );
 };

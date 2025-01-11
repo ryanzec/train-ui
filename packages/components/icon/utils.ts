@@ -9,12 +9,15 @@ import CircleDotIcon from '$/components/icon/icons/circle-dot.svg?raw';
 import CircleIcon from '$/components/icon/icons/circle.svg?raw';
 import GripVerticalIcon from '$/components/icon/icons/grip-vertical.svg?raw';
 import LoaderIcon from '$/components/icon/icons/loader.svg?raw';
+import MoonIcon from '$/components/icon/icons/moon.svg?raw';
 import PlusIcon from '$/components/icon/icons/plus.svg?raw';
 import QuestionIcon from '$/components/icon/icons/question.svg?raw';
 import SelectorIcon from '$/components/icon/icons/selector.svg?raw';
 import SquareCheckIcon from '$/components/icon/icons/square-check.svg?raw';
+import SquareFilledIcon from '$/components/icon/icons/square-filled.svg?raw';
 import SquareMinusIcon from '$/components/icon/icons/square-minus.svg?raw';
 import SquareIcon from '$/components/icon/icons/square.svg?raw';
+import SunIcon from '$/components/icon/icons/sun.svg?raw';
 import XIcon from '$/components/icon/icons/x.svg?raw';
 
 export enum IconSize {
@@ -55,11 +58,14 @@ const internalIconComponents = {
   circle: CircleIcon,
   'grip-vertical': GripVerticalIcon,
   loader: LoaderIcon,
+  moon: MoonIcon,
   plus: PlusIcon,
   question: QuestionIcon,
   'square-check': SquareCheckIcon,
   square: SquareIcon,
+  'square-filled': SquareFilledIcon,
   'square-minus': SquareMinusIcon,
+  sun: SunIcon,
   x: XIcon,
 };
 

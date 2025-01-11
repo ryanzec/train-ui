@@ -1,4 +1,5 @@
 import FormField from '$/components/form-field';
+import FormFields from '$/components/form-fields/form-fields';
 import Icon from '$/components/icon';
 import Input from '$/components/input';
 import Label from '$/components/label';
@@ -11,7 +12,7 @@ export default {
 
 export const Default = () => {
   return (
-    <>
+    <FormFields>
       <FormField>
         <Label for="test1">Label</Label>
         <Input id="test1" />
@@ -92,6 +93,6 @@ export const Default = () => {
           includeReadonlyStyles={false}
         />
       </FormField>
-    </>
+    </FormFields>
   );
 };

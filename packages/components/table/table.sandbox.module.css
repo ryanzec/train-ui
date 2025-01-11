@@ -5,3 +5,11 @@
   flex-direction: column;
   gap: var(--space-sm);
 }
+
+.name-cell {
+  width: 200px;
+}
+
+.email-cell {
+  text-align: right;
+}

@@ -8,6 +8,7 @@ import type { CommonDataAttributes } from '$/types/generic';
 import type { DynamicRouteNavigation } from '$sandbox/stores/dynamic-routes';
 
 import { toggleStoreUtils } from '$/stores/toggle';
+import { stringUtils } from '$/utils/string';
 import ApplicationFrameSubNavigation from '$sandbox/components/application-frame/application-frame-sub-navigation';
 import { useLocation } from '@solidjs/router';
 
@@ -53,7 +54,7 @@ const ApplicationFrameExpandableItem = (passedProps: ApplicationFrameExpandableI
       <Show when={hasSubNavigation()}>
         <div class={styles.navigationGroupHeader}>
           <button type="button" onClick={() => setIsExpanded(!isExpanded())}>
-            {props.routeKey}
+            {stringUtils.pascalToWords(props.routeKey)}
           </button>
         </div>
         <Show when={isExpanded()}>
@@ -65,7 +66,7 @@ const ApplicationFrameExpandableItem = (passedProps: ApplicationFrameExpandableI
           class={classnames(styles.navigationSubSection, {
             [styles.navigationSection]: hasSubNavigation(),
           })}
-          headerItem={props.routeKey}
+          headerItem={stringUtils.pascalToWords(props.routeKey)}
           toggleStore={toggleStore}
         >
           <ApplicationFrameSubNavigation routes={props.routes} />
