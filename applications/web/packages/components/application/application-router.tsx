@@ -1,11 +1,11 @@
 import { Router } from '@solidjs/router';
 
-import ApplicationWrapper from '$web/components/application/application-wrapper';
+import ApplicationContainer from '$web/components/application/application-container';
 import Routes from '$web/components/routing';
 
 const ApplicationRouter = () => {
   return (
-    <Router root={ApplicationWrapper}>
+    <Router root={ApplicationContainer}>
       <Routes />
     </Router>
   );

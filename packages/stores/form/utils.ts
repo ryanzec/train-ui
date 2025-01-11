@@ -48,6 +48,7 @@ export type FormSetValue<TFormData> = (name: keyof TFormData, value: unknown) =>
 export type FormData<TFormData> = Accessor<Partial<TFormData>>;
 
 type CreateFormOptions<TFormData extends object, TSchemaObject extends zod.ZodRawShape> = {
+  // this is partial as without validation (which is not required), the data could be missing data
   onSubmit: (data: Partial<TFormData>) => void;
   onClear?: () => void;
   onReset?: () => void;

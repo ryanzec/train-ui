@@ -1,7 +1,7 @@
 import { createSignal } from 'solid-js';
 
 type CreateToggleProps = {
-  isToggled?: boolean;
+  defaultIsToggled?: boolean;
 };
 
 export type ToggleStoreInstance = {
@@ -11,7 +11,7 @@ export type ToggleStoreInstance = {
 };
 
 const createToggle = (options: CreateToggleProps = {}): ToggleStoreInstance => {
-  const [isToggled, setIsToggled] = createSignal<boolean>(options.isToggled ?? false);
+  const [isToggled, setIsToggled] = createSignal<boolean>(options.defaultIsToggled ?? false);
 
   const toggle = () => {
     setIsToggled(!isToggled());

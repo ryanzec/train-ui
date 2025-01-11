@@ -9,7 +9,7 @@
 .content {
   display: none;
   border: 1px solid var(--color-outline-active);
-  padding: var(--space-xs);
+  padding: var(--space-3xs) var(--space-xs);
   position: absolute;
   top: 0;
   left: 0;

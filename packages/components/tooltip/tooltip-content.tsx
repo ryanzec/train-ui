@@ -13,7 +13,7 @@ const TooltipContent = (passedProps: TooltipContentProps) => {
   const context = useContext(TooltipContext);
 
   if (!context) {
-    loggerUtils.error('tooltip content must be wrapper is a tooltip context');
+    loggerUtils.error('tooltip content must be contained in a tooltip context');
     // @todo(log) log error to backend?
 
     return;

@@ -6,11 +6,11 @@ import styles from '$web/components/application/application.module.css';
 import { authenticationStore } from '$web/stores/authentication.store';
 import { themeManagerStore } from '$web/stores/theme-manager.store';
 
-const ApplicationWrapper = (props: JSX.HTMLAttributes<HTMLDivElement>) => {
+const ApplicationContainer = (props: JSX.HTMLAttributes<HTMLDivElement>) => {
   authenticationStore.initialize();
 
   return (
-    <div data-theme={themeManagerStore.theme()} class={styles.applicationWrapper}>
+    <div data-theme={themeManagerStore.theme()} class={styles.applicationContainer}>
       <Show when={authenticationStore.isInitializing() === false} fallback={<Loading />}>
         <Show when={authenticationStore.isAuthenticated()}>
           <A href="/home">Home</A>
@@ -22,4 +22,4 @@ const ApplicationWrapper = (props: JSX.HTMLAttributes<HTMLDivElement>) => {
   );
 };
 
-export default ApplicationWrapper;
+export default ApplicationContainer;

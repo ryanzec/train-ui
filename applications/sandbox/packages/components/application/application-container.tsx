@@ -7,7 +7,7 @@ import { globalNotificationsStore } from '$/stores/global-notifications';
 import ApplicationFrame from '$sandbox/components/application-frame';
 import { dynamicRoutesStore } from '$sandbox/stores/dynamic-routes';
 
-const ApplicationWrapper = (props: JSX.ButtonHTMLAttributes<HTMLElement>) => {
+const ApplicationContainer = (props: JSX.ButtonHTMLAttributes<HTMLElement>) => {
   return (
     <>
       <ScrollArea>
@@ -20,4 +20,4 @@ const ApplicationWrapper = (props: JSX.ButtonHTMLAttributes<HTMLElement>) => {
   );
 };
 
-export default ApplicationWrapper;
+export default ApplicationContainer;

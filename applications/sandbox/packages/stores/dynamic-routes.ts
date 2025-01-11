@@ -56,7 +56,7 @@ const createDynamicRoutesStore = (): DynamicRouteStore => {
   const [navigation, setNavigation] = createSignal<DynamicRouteNavigation>({});
 
   const load = async () => {
-    const modules = import.meta.glob('$/**/*.sandbox.tsx');
+    const modules = import.meta.glob(['$/**/*.sandbox.tsx', '$web/**/*.sandbox.tsx']);
     const routes: DynamicRoute[] = [];
     let navigation: DynamicRouteNavigation = {};
 

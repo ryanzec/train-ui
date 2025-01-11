@@ -26,7 +26,8 @@
     "sandbox:preview": "vite --config ./applications/sandbox/vite.config.ts preview",
     "prepare": "husky",
     "upgrade-interactive": "npm-check -u -E",
-    "svg:clean": "tsx scripts/clean-svgs.ts"
+    "svg:clean": "tsx scripts/clean-svgs.ts",
+    "pnpm:setup": "pnpm add -g pnpm@9.15.3"
   },
   "dependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "1.4.0",

@@ -1,7 +1,7 @@
 import { Navigate, Route, Router } from '@solidjs/router';
 import { For, createEffect } from 'solid-js';
 
-import ApplicationWrapper from '$sandbox/components/application/application-wrapper';
+import ApplicationContainer from '$sandbox/components/application/application-container';
 import { applicationStore } from '$sandbox/stores/application-store';
 import { dynamicRoutesStore } from '$sandbox/stores/dynamic-routes';
 import HomeView from '$sandbox/views/home-view';
@@ -18,7 +18,7 @@ const ApplicationRouter = () => {
   });
 
   return (
-    <Router root={ApplicationWrapper}>
+    <Router root={ApplicationContainer}>
       {/* these are the dynamic routes that are based on the files dynamically loaded with sandbox components */}
       <For each={dynamicRoutesStore.routes()}>
         {(route) => {

@@ -7,7 +7,7 @@ export default {
 };
 
 export const Expanded = () => {
-  const toggleStore = toggleStoreUtils.createToggle({ isToggled: true });
+  const toggleStore = toggleStoreUtils.createToggle({ defaultIsToggled: true });
 
   return (
     <div>
