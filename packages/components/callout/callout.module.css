@@ -13,7 +13,7 @@
 }
 
 .pre-item {
-  margin-right: var(--space-2xs);
+  margin-right: var(--space-xs);
   display: inline-flex;
 }
 

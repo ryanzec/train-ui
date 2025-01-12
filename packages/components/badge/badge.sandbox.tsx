@@ -57,16 +57,49 @@ export const Variant = () => {
 
 export const Icons = () => {
   return (
-    <SandboxExamplesContainer asRow>
-      <Badge variant={BadgeVariant.STRONG} color={BadgeColor.BRAND} preIcon="check">
-        Brand
-      </Badge>
-      <Badge variant={BadgeVariant.STRONG} color={BadgeColor.SUCCESS} postIcon="check">
-        Success
-      </Badge>
-      <Badge variant={BadgeVariant.STRONG} color={BadgeColor.INFO} preIcon="check" postIcon="check">
-        Info
-      </Badge>
+    <SandboxExamplesContainer>
+      <h2>Weak</h2>
+      <SandboxExamplesContainer asRow>
+        <Badge variant={BadgeVariant.WEAK} color={BadgeColor.NEUTRAL} preIcon="check">
+          Neutral
+        </Badge>
+        <Badge variant={BadgeVariant.WEAK} color={BadgeColor.BRAND} postIcon="check">
+          Brand
+        </Badge>
+        <Badge variant={BadgeVariant.WEAK} color={BadgeColor.SUCCESS} preIcon="check" postIcon="check">
+          Success
+        </Badge>
+        <Badge variant={BadgeVariant.WEAK} color={BadgeColor.INFO} preIcon="check">
+          Info
+        </Badge>
+        <Badge variant={BadgeVariant.WEAK} color={BadgeColor.WARNING} postIcon="check">
+          Warning
+        </Badge>
+        <Badge variant={BadgeVariant.WEAK} color={BadgeColor.DANGER} preIcon="check" postIcon="check">
+          Danger
+        </Badge>
+      </SandboxExamplesContainer>
+      <h2>Strong</h2>
+      <SandboxExamplesContainer asRow>
+        <Badge variant={BadgeVariant.STRONG} color={BadgeColor.NEUTRAL} preIcon="check">
+          Neutral
+        </Badge>
+        <Badge variant={BadgeVariant.STRONG} color={BadgeColor.BRAND} postIcon="check">
+          Brand
+        </Badge>
+        <Badge variant={BadgeVariant.STRONG} color={BadgeColor.SUCCESS} preIcon="check" postIcon="check">
+          Success
+        </Badge>
+        <Badge variant={BadgeVariant.STRONG} color={BadgeColor.INFO} preIcon="check">
+          Info
+        </Badge>
+        <Badge variant={BadgeVariant.STRONG} color={BadgeColor.WARNING} postIcon="check">
+          Warning
+        </Badge>
+        <Badge variant={BadgeVariant.STRONG} color={BadgeColor.DANGER} preIcon="check" postIcon="check">
+          Danger
+        </Badge>
+      </SandboxExamplesContainer>
     </SandboxExamplesContainer>
   );
 };

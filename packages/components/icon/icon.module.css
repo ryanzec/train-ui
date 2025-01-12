@@ -75,3 +75,7 @@
 .danger {
   fill: var(--color-danger);
 }
+
+.inherit {
+  fill: inherit;
+}

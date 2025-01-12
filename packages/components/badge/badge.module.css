@@ -109,16 +109,12 @@
   letter-spacing: var(--letter-spacing-sm);
 }
 
-.icon-small {
-  font-size: var(--font-size-lg);
-}
-
 .pre-icon {
   display: inline-flex;
-  padding-right: var(--space-2xs);
+  margin-right: var(--space-xs);
 }
 
 .post-icon {
   display: inline-flex;
-  padding-left: var(--space-2xs);
+  margin-left: var(--space-xs);
 }

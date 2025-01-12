@@ -3,7 +3,7 @@ import { type JSX, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/badge/badge.module.css';
 import { BadgeColor, BadgeShape, BadgeSize, BadgeVariant } from '$/components/badge/utils';
-import Icon from '$/components/icon';
+import Icon, { IconSize } from '$/components/icon';
 import type { IconName } from '$/components/icon/utils';
 
 export type BadgeProps = JSX.HTMLAttributes<HTMLDivElement> & {
@@ -54,9 +54,8 @@ const Badge = (passedProps: BadgeProps) => {
       {props.preIcon && (
         <Icon
           icon={props.preIcon}
-          class={classnames(styles.icon, styles.preIcon, {
-            [styles.iconSmall]: props.size === BadgeSize.SMALL,
-          })}
+          class={classnames(styles.icon, styles.preIcon)}
+          size={props.size === BadgeSize.SMALL ? IconSize.SMALL : IconSize.BASE}
         >
           {props.preIcon}
         </Icon>
@@ -65,9 +64,8 @@ const Badge = (passedProps: BadgeProps) => {
       {props.postIcon && (
         <Icon
           icon={props.postIcon}
-          class={classnames(styles.icon, styles.postIcon, {
-            [styles.iconSmall]: props.size === BadgeSize.SMALL,
-          })}
+          class={classnames(styles.icon, styles.postIcon)}
+          size={props.size === BadgeSize.SMALL ? IconSize.SMALL : IconSize.BASE}
         >
           {props.postIcon}
         </Icon>
