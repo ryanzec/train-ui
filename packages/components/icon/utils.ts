@@ -8,8 +8,10 @@ import CircleCheckIcon from '$/components/icon/icons/circle-check.svg?raw';
 import CircleDotIcon from '$/components/icon/icons/circle-dot.svg?raw';
 import CircleIcon from '$/components/icon/icons/circle.svg?raw';
 import GripVerticalIcon from '$/components/icon/icons/grip-vertical.svg?raw';
+import HomeIcon from '$/components/icon/icons/home.svg?raw';
 import LoaderIcon from '$/components/icon/icons/loader.svg?raw';
 import MoonIcon from '$/components/icon/icons/moon.svg?raw';
+import PlugIcon from '$/components/icon/icons/plug.svg?raw';
 import PlusIcon from '$/components/icon/icons/plus.svg?raw';
 import QuestionIcon from '$/components/icon/icons/question.svg?raw';
 import SelectorIcon from '$/components/icon/icons/selector.svg?raw';
@@ -57,8 +59,10 @@ const internalIconComponents = {
   'circle-dot': CircleDotIcon,
   circle: CircleIcon,
   'grip-vertical': GripVerticalIcon,
+  home: HomeIcon,
   loader: LoaderIcon,
   moon: MoonIcon,
+  plug: PlugIcon,
   plus: PlusIcon,
   question: QuestionIcon,
   'square-check': SquareCheckIcon,
