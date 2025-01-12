@@ -4,7 +4,7 @@
   align-items: center;
   border: 0;
   outline: 0;
-  padding: var(--space-xs) var(--space-base);
+  padding: var(--space-2xs) var(--space-sm);
   border-radius: var(--border-radius-lg);
   cursor: pointer;
   background-color: transparent;
