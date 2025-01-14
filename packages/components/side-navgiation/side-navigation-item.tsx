@@ -89,7 +89,7 @@ const SideNavigationItem = (passedProps: SideNavigationItemProps) => {
         <Icon
           class={styles.headerIndicatorIcon}
           icon={props.iconName}
-          size={IconSize.SMALL}
+          size={IconSize.LARGE}
           color={props.toggleStore?.isToggled() || props.isActive ? IconColor.BRAND : IconColor.NEUTRAL}
         />
         {props.headerItem}
