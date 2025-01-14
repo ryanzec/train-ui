@@ -1,9 +1,9 @@
-import { useLocation, useNavigate } from '@solidjs/router';
+import { useLocation } from '@solidjs/router';
 import { type JSX, splitProps } from 'solid-js';
 
 import SideNavigation from '$/components/side-navgiation';
 
-import type { CommonDataAttributes } from '../../../../../packages/types/generic';
+import type { CommonDataAttributes } from '$/types/generic';
 
 type ApplicationFrameNavigationItemProps = JSX.HTMLAttributes<HTMLDivElement> &
   CommonDataAttributes & {
@@ -11,15 +11,14 @@ type ApplicationFrameNavigationItemProps = JSX.HTMLAttributes<HTMLDivElement> &
   };
 
 const ApplicationFrameNavigationItem = (passedProps: ApplicationFrameNavigationItemProps) => {
-  const [props, restOfProps] = splitProps(passedProps, ['path', 'class', 'children']);
-  const navigate = useNavigate();
+  const [props] = splitProps(passedProps, ['path', 'class', 'children']);
   const location = useLocation();
   const isActiveRoute = () => props.path === location.pathname;
 
   return (
-    <SideNavigation.Item {...restOfProps} isActive={isActiveRoute()} onClick={() => navigate(props.path)}>
+    <SideNavigation.SubItem isActive={isActiveRoute()} href={props.path}>
       {props.children}
-    </SideNavigation.Item>
+    </SideNavigation.SubItem>
   );
 };
 

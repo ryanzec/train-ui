@@ -12,14 +12,13 @@ import { stringUtils } from '$/utils/string';
 import ApplicationFrameSubNavigation from '$sandbox/components/application-frame/application-frame-sub-navigation';
 import { useLocation } from '@solidjs/router';
 
-type ApplicationFrameExpandableItemProps = JSX.HTMLAttributes<HTMLDivElement> &
-  CommonDataAttributes & {
-    routes: DynamicRouteNavigation;
-    routeKey: string;
-  };
+type ApplicationFrameExpandableItemProps = {
+  routes: DynamicRouteNavigation;
+  routeKey: string;
+};
 
 const ApplicationFrameExpandableItem = (passedProps: ApplicationFrameExpandableItemProps) => {
-  const [props, restOfProps] = splitProps(passedProps, ['routes', 'class', 'routeKey']);
+  const [props, restOfProps] = splitProps(passedProps, ['routes', 'routeKey']);
   const [isExpanded, setIsExpanded] = createSignal<boolean>(true);
   const location = useLocation();
 
@@ -50,7 +49,7 @@ const ApplicationFrameExpandableItem = (passedProps: ApplicationFrameExpandableI
   });
 
   return (
-    <div {...restOfProps}>
+    <>
       <Show when={hasSubNavigation()}>
         <div class={styles.navigationGroupHeader}>
           <button type="button" onClick={() => setIsExpanded(!isExpanded())}>
@@ -62,7 +61,7 @@ const ApplicationFrameExpandableItem = (passedProps: ApplicationFrameExpandableI
         </Show>
       </Show>
       <Show when={!hasSubNavigation()}>
-        <SideNavigation
+        <SideNavigation.Item
           class={classnames(styles.navigationSubSection, {
             [styles.navigationSection]: hasSubNavigation(),
           })}
@@ -70,9 +69,9 @@ const ApplicationFrameExpandableItem = (passedProps: ApplicationFrameExpandableI
           toggleStore={toggleStore}
         >
           <ApplicationFrameSubNavigation routes={props.routes} />
-        </SideNavigation>
+        </SideNavigation.Item>
       </Show>
-    </div>
+    </>
   );
 };
 
