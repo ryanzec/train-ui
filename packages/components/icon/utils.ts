@@ -11,6 +11,7 @@ import GripVerticalIcon from '$/components/icon/icons/grip-vertical.svg?raw';
 import HomeIcon from '$/components/icon/icons/home.svg?raw';
 import LoaderIcon from '$/components/icon/icons/loader.svg?raw';
 import MoonIcon from '$/components/icon/icons/moon.svg?raw';
+import PencilIcon from '$/components/icon/icons/pencil.svg?raw';
 import PlugIcon from '$/components/icon/icons/plug.svg?raw';
 import PlusIcon from '$/components/icon/icons/plus.svg?raw';
 import QuestionIcon from '$/components/icon/icons/question.svg?raw';
@@ -62,6 +63,7 @@ const internalIconComponents = {
   home: HomeIcon,
   loader: LoaderIcon,
   moon: MoonIcon,
+  pencil: PencilIcon,
   plug: PlugIcon,
   plus: PlusIcon,
   question: QuestionIcon,
