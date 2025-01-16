@@ -4,7 +4,7 @@ import { Show, createEffect, createSignal, mergeProps, onCleanup, splitProps } f
 
 import DatePicker, { type DatePickerProps } from '$/components/date-picker/date-picker';
 import styles from '$/components/date-picker/date-picker.module.css';
-import { datePickerUtils } from '$/components/date-picker/utils';
+import { datePickerComponentUtils } from '$/components/date-picker/utils';
 import Input, { type InputProps } from '$/components/input';
 import { clickOutsideDirective } from '$/directives/click-outside-directive';
 import type { CommonDataAttributes } from '$/types/generic';
@@ -64,11 +64,11 @@ const DatePickerInput = (passedProps: DatePickerInputProps) => {
   const [containerElement, setContainerElement] = createSignal<HTMLDivElement>();
   const [inputElement, setInputElement] = createSignal<HTMLInputElement>();
   const [isDatePickerVisible, setIsDatePickerVisible] = createSignal(false);
-  const startDate = datePickerUtils.createDatePickerInputDate({
+  const startDate = datePickerComponentUtils.createInputDateStore({
     includeTime: datePickerProps.includeTime,
     defaultDate: props.defaultStartSelectedDate,
   });
-  const endDate = datePickerUtils.createDatePickerInputDate({
+  const endDate = datePickerComponentUtils.createInputDateStore({
     includeTime: datePickerProps.includeTime,
     defaultDate: props.defaultEndSelectedDate,
   });
@@ -209,7 +209,7 @@ const DatePickerInput = (passedProps: DatePickerInputProps) => {
     <div
       data-id="date-picker-input"
       ref={containerRef}
-      class={classnames(styles.datePickerInput, props.class)}
+      class={classnames(styles.inputContainer, props.class)}
       use:clickOutsideDirective={{ callback: hideDatePicker }}
     >
       <Input
@@ -220,6 +220,7 @@ const DatePickerInput = (passedProps: DatePickerInputProps) => {
         readonly
         includeReadonlyStyles={false}
         data-uncontrolled-value="true"
+        class={styles.input}
       />
       <div class={styles.datePickerInputPickerContainer}>
         <Show when={isDatePickerVisible()}>

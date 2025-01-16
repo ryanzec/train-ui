@@ -1,5 +1,11 @@
-import FormField, { type FormFieldProps } from '$/components/form-field/form-field';
+import FormField, {
+  type FormFieldProps,
+  type FormFieldContextData,
+  FormFieldContext,
+} from '$/components/form-field/form-field';
 
-export type { FormFieldProps };
+export type { FormFieldProps, FormFieldContextData };
+
+export { FormFieldContext };
 
 export default FormField;

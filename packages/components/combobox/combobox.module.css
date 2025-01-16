@@ -20,6 +20,10 @@
   }
 }
 
+.input {
+  flex: 1;
+}
+
 .input-actions {
   display: flex;
   gap: var(--space-xs);

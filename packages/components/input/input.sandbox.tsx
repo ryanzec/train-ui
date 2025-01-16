@@ -51,9 +51,9 @@ export const Default = () => {
           preItem={<Icon icon="plus" />}
         />
       </FormField>
-      <FormField>
+      <FormField errors={['this is an error']}>
         <Label for="test8">Invalid</Label>
-        <Input id="test8" placeholder="Just a placeholder" validationState={FormInputValidationState.INVALID} />
+        <Input id="test8" placeholder="Just a placeholder" />
       </FormField>
       <FormField>
         <Label for="test9">Disabled</Label>
@@ -64,10 +64,10 @@ export const Default = () => {
         <Input id="test10" placeholder="Just a placeholder" />
         <SupportingText supportingText={['supporting text']} />
       </FormField>
-      <FormField>
+      <FormField errors={['this is an error']}>
         <Label for="test11">Invalid</Label>
-        <Input id="test11" placeholder="Just a placeholder" validationState={FormInputValidationState.INVALID} />
-        <SupportingText supportingText={['supporting text']} color={SupportingTextColor.DANGER} />
+        <Input id="test11" placeholder="Just a placeholder" />
+        <SupportingText supportingText={['supporting text']} color={SupportingTextColor.NEUTRAL} />
       </FormField>
       <FormField>
         <Label for="test12">Disabled</Label>

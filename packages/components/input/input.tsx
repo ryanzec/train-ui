@@ -1,18 +1,19 @@
 import classnames from 'classnames';
-import { type JSX, Show, createSignal, mergeProps, splitProps } from 'solid-js';
+import { type JSX, Show, createSignal, mergeProps, splitProps, useContext } from 'solid-js';
 
+import { FormFieldContext } from '$/components/form-field';
 import styles from '$/components/input/input.module.css';
 import { FormInputValidationState } from '$/stores/form/utils';
+import { loggerUtils } from '$/utils/logger';
 
 export type InputProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
-  validationState?: FormInputValidationState;
   preItem?: JSX.Element;
   preItemIsInline?: boolean;
   postItem?: JSX.Element;
   inlineItem?: JSX.Element;
   postItemIsClickable?: boolean;
   inputContainerClass?: string;
-  includeReadonlyStyles?: false;
+  includeReadonlyStyles?: boolean;
 };
 
 const Input = (passedProps: InputProps) => {
@@ -20,7 +21,6 @@ const Input = (passedProps: InputProps) => {
     mergeProps({ preItemIsInline: false, includeReadonlyStyles: true }, passedProps),
     [
       'class',
-      'validationState',
       'onFocus',
       'onBlur',
       'disabled',
@@ -34,6 +34,14 @@ const Input = (passedProps: InputProps) => {
       'includeReadonlyStyles',
     ],
   );
+
+  const formFieldContext = useContext(FormFieldContext);
+
+  if (!formFieldContext) {
+    loggerUtils.error('Input must be contained in a FormField component');
+
+    return;
+  }
 
   const [isInputFocused, setIsInputFocused] = createSignal(false);
 
@@ -65,7 +73,7 @@ const Input = (passedProps: InputProps) => {
         [styles.containerDisabled]: props.disabled,
         [styles.containerReadonly]: props.readonly && props.includeReadonlyStyles,
         [styles.containerFocus]: isFocused(),
-        [styles.containerInvalid]: props.validationState === FormInputValidationState.INVALID,
+        [styles.containerInvalid]: formFieldContext.validationState() === FormInputValidationState.INVALID,
         [styles.containerWithPreItem]: !!props.preItem,
         [styles.containerWithInlinePreItem]: props.preItemIsInline,
         [styles.containerWithPostItem]: !!props.postItem,
@@ -87,7 +95,7 @@ const Input = (passedProps: InputProps) => {
             data-id="input"
             {...restOfProps}
             class={classnames(styles.input, props.class, {
-              [styles.errorState]: props.validationState === FormInputValidationState.INVALID,
+              [styles.errorState]: formFieldContext.validationState() === FormInputValidationState.INVALID,
             })}
             disabled={props.disabled}
             readonly={props.readonly}

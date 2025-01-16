@@ -1,6 +1,7 @@
-body {
+[data-theme] {
   font-size: var(--font-size-base);
   font-family: Open Sans, Helvetica, Arial, sans-serif;
   color: var(--color-on-surface);
+  fill: var(--color-on-surface);
   background-color: var(--color-surface);
 }

@@ -2,6 +2,7 @@ import dayjs from 'dayjs';
 import { Show, createSignal } from 'solid-js';
 
 import DatePicker, { type WhichDate } from '$/components/date-picker';
+import FormField from '$/components/form-field';
 import { dateTimeFormat } from '$/utils/date';
 
 export default {
@@ -89,27 +90,27 @@ export const Input = () => {
 
   return (
     <>
-      <div>
+      <FormField>
         <div>default</div>
         <DatePicker.Input />
-      </div>
-      <div>
+      </FormField>
+      <FormField>
         <div>include time</div>
         <DatePicker.Input includeTime />
-      </div>
-      <div>
+      </FormField>
+      <FormField>
         <div>range</div>
         <DatePicker.Input includeTime isRange />
-      </div>
-      <div>
+      </FormField>
+      <FormField>
         <div>with default display date</div>
         <DatePicker.Input includeTime defaultStartDisplayDate={new Date('Nov 1 2022')} />
-      </div>
-      <div>
+      </FormField>
+      <FormField>
         <div>with default selected date</div>
         <DatePicker.Input includeTime defaultStartSelectedDate={new Date('Nov 1 2022 12:23 pm')} />
-      </div>
-      <div>
+      </FormField>
+      <FormField>
         <div>range with default display dates</div>
         <DatePicker.Input
           includeTime
@@ -117,8 +118,8 @@ export const Input = () => {
           defaultStartDisplayDate={new Date('Nov 1 2022')}
           defaultEndDisplayDate={new Date('Dec 1 2022')}
         />
-      </div>
-      <div>
+      </FormField>
+      <FormField>
         <div>range with default selected dates</div>
         <DatePicker.Input
           includeTime
@@ -126,8 +127,8 @@ export const Input = () => {
           defaultStartSelectedDate={new Date('Nov 1 2022 12:23 pm')}
           defaultEndSelectedDate={new Date('Dec 11 2022 4:34 pm')}
         />
-      </div>
-      <div>
+      </FormField>
+      <FormField>
         <div>disabled</div>
         <DatePicker.Input
           includeTime
@@ -136,7 +137,7 @@ export const Input = () => {
           defaultStartSelectedDate={new Date('Nov 1 2022 12:23 pm')}
           defaultEndSelectedDate={new Date('Dec 11 2022 4:34 pm')}
         />
-      </div>
+      </FormField>
     </>
   );
 };

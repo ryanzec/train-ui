@@ -1,13 +1,13 @@
 import Button, { ButtonVariant, ButtonColor } from '$/components/button';
 import Dialog from '$/components/dialog/dialog';
-import { dialogUtils } from '$/components/dialog/utils';
+import { dialogComponentUtils } from '$/components/dialog/utils';
 
 export default {
   title: 'Components/Dialog',
 };
 
 export const Default = () => {
-  const dialogStore = dialogUtils.createDialog();
+  const dialogStore = dialogComponentUtils.createStore();
 
   return (
     <div>
@@ -34,7 +34,7 @@ export const Default = () => {
 };
 
 export const CloseOnClickOverlay = () => {
-  const dialogStore = dialogUtils.createDialog();
+  const dialogStore = dialogComponentUtils.createStore();
 
   return (
     <div>

@@ -10,9 +10,9 @@ const TableHeader = (passedProps: TableHeaderProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['children', 'class']);
 
   return (
-    <td data-id="header" {...restOfProps} class={classnames(styles.tableHeader, props.class)}>
+    <th data-id="header" {...restOfProps} class={classnames(styles.tableHeader, props.class)}>
       {props.children}
-    </td>
+    </th>
   );
 };
 

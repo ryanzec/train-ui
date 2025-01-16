@@ -2,16 +2,13 @@ import classnames from 'classnames';
 import { type JSX, splitProps } from 'solid-js';
 
 import styles from '$/components/checkbox/checkbox.module.css';
-import type { FormInputValidationState } from '$/stores/form/utils';
 
-export type CheckboxGroupProps = JSX.HTMLAttributes<HTMLDivElement> & {
-  validationState?: FormInputValidationState;
-};
+export type CheckboxGroupProps = JSX.HTMLAttributes<HTMLDivElement>;
 
 // we exposed a plain input in the off chance we need an input not hooked up to react-hook-form directly (like the
 // auto complete component)
 const CheckboxGroup = (passedProps: CheckboxGroupProps) => {
-  const [props, restOfProps] = splitProps(passedProps, ['class', 'children', 'validationState']);
+  const [props, restOfProps] = splitProps(passedProps, ['class', 'children']);
 
   return (
     <div data-id="checkbox-group" {...restOfProps} class={classnames(styles.group, props.class)}>

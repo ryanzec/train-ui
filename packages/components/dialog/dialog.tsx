@@ -16,11 +16,21 @@ export type DialogProps = JSX.HTMLAttributes<HTMLDivElement> & {
   footerElement?: JSX.Element;
   footerAlignment?: DialogFooterAlignment;
   closeOnClickOverlay?: boolean;
+  closeOnEscape?: boolean;
+  closeEnabled?: boolean;
 };
 
 const Dialog = (passedProps: DialogProps) => {
   const [props, restOfProps] = splitProps(
-    mergeProps({ footerAlignment: DialogFooterAlignment.RIGHT, closeOnClickOverlay: false }, passedProps),
+    mergeProps(
+      {
+        footerAlignment: DialogFooterAlignment.RIGHT,
+        closeOnClickOverlay: false,
+        closeOnEscape: true,
+        closeEnabled: true,
+      },
+      passedProps,
+    ),
     [
       'children',
       'class',
@@ -30,13 +40,17 @@ const Dialog = (passedProps: DialogProps) => {
       'footerElement',
       'footerAlignment',
       'closeOnClickOverlay',
+      'closeOnEscape',
+      'closeEnabled',
     ],
   );
   const dialogRef = () => {
     const keyDownListener = (event: KeyboardEvent) => {
-      if (event.key === Key.ESCAPE) {
-        props.closeDialog();
+      if (props.closeEnabled === false || props.closeOnEscape === false || event.key === Key.ESCAPE) {
+        return;
       }
+
+      props.closeDialog();
     };
 
     document.addEventListener('keydown', keyDownListener);
@@ -47,7 +61,15 @@ const Dialog = (passedProps: DialogProps) => {
   };
 
   const handleClickOverlay = () => {
-    if (props.closeOnClickOverlay === false) {
+    if (props.closeEnabled === false || props.closeOnClickOverlay === false) {
+      return;
+    }
+
+    props.closeDialog();
+  };
+
+  const handleCloseDialog = () => {
+    if (props.closeEnabled === false) {
       return;
     }
 
@@ -64,7 +86,7 @@ const Dialog = (passedProps: DialogProps) => {
               variant={ButtonVariant.GHOST}
               color={ButtonColor.NEUTRAL}
               class={styles.closeHeaderTrigger}
-              onclick={() => props.closeDialog()}
+              onclick={handleCloseDialog}
               shape={ButtonShape.CIRCLE}
             >
               <Icon icon="x" />

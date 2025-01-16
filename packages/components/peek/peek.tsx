@@ -12,13 +12,27 @@ export type PeekProps = JSX.HTMLAttributes<HTMLDivElement> &
     peekStore: PeekStore;
     hasOverlay?: boolean;
     closeOnClickOverlay?: boolean;
+    closeOnEscape?: boolean;
+    closeEnabled?: boolean;
     isResizable?: boolean;
   };
 
 const Peek = (passedProps: PeekProps) => {
   const [props, restOfProps] = splitProps(
-    mergeProps({ hasOverlay: true, closeOnClickOverlay: false, isResizable: false }, passedProps),
-    ['children', 'class', 'hasOverlay', 'closeOnClickOverlay', 'peekStore', 'isResizable'],
+    mergeProps(
+      { hasOverlay: true, closeOnClickOverlay: false, closeOnEscape: true, isResizable: false, closeEnabled: true },
+      passedProps,
+    ),
+    [
+      'children',
+      'class',
+      'hasOverlay',
+      'closeOnClickOverlay',
+      'peekStore',
+      'isResizable',
+      'closeOnEscape',
+      'closeEnabled',
+    ],
   );
 
   let peekElement: HTMLElement | undefined;
@@ -28,7 +42,7 @@ const Peek = (passedProps: PeekProps) => {
   let dragWidthStart = 0;
 
   const handleClickOverlay = () => {
-    if (props.closeOnClickOverlay === false) {
+    if (props.closeEnabled === false || props.closeOnClickOverlay === false) {
       return;
     }
 
@@ -36,7 +50,7 @@ const Peek = (passedProps: PeekProps) => {
   };
 
   const handleKeyUp = (event: KeyboardEvent) => {
-    if (event.key !== 'Escape') {
+    if (props.closeEnabled === false || props.closeOnEscape === false || event.key !== 'Escape') {
       return;
     }
 
@@ -103,11 +117,19 @@ const Peek = (passedProps: PeekProps) => {
     document.body.style.cursor = 'ew-resize';
   };
 
+  const handlePeekClosers = () => {
+    if (props.closeEnabled === false) {
+      return;
+    }
+
+    props.peekStore.setIsOpened(false);
+  };
+
   const setupCloseEvents = (element: HTMLElement) => {
     const closeElements = element.querySelectorAll('[data-peek-close="true"]');
 
     for (const closeElement of closeElements) {
-      closeElement.addEventListener('click', () => props.peekStore.setIsOpened(false));
+      closeElement.addEventListener('click', handlePeekClosers);
     }
   };
 

@@ -4,7 +4,6 @@ import Combobox from '$/components/combobox/combobox';
 import type { ComboboxExtraData, FormComboboxProps } from '$/components/combobox/utils';
 import FormField from '$/components/form-field';
 import Label from '$/components/label';
-import { FormInputValidationState } from '$/stores/form/utils';
 
 const FormCombobox = <TFormData, TComboboxExtraData extends ComboboxExtraData>(
   passedProps: FormComboboxProps<TFormData, TComboboxExtraData>,
@@ -26,14 +25,9 @@ const FormCombobox = <TFormData, TComboboxExtraData extends ComboboxExtraData>(
   const errors = () => props.errors?.()[name() as keyof TFormData]?.errors;
 
   return (
-    <FormField>
+    <FormField errors={errors()}>
       <Label for={name()}>{props.label}</Label>
-      <Combobox
-        id={name()}
-        name={name()}
-        {...restOfProps}
-        validationState={errors() ? FormInputValidationState.INVALID : FormInputValidationState.VALID}
-      />
+      <Combobox id={name()} name={name()} {...restOfProps} />
     </FormField>
   );
 };

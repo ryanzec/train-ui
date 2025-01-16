@@ -40,10 +40,16 @@ export type FormErrorsData<TFormData> = {
 
 export type FormErrors<TFormData> = Accessor<FormErrorsData<TFormData>>;
 
+type SetValueOptions = {
+  markAsTouched?: boolean;
+};
+
 // using unknown here allows for outside code to not have to cast to prevent typescript errors and would rather
 // localize casting in this one file than having to have everything that calls this methods have to case since
 // casting really does not provide any benefit as best as I can tell
-export type FormSetValue<TFormData> = (name: keyof TFormData, value: unknown) => void;
+export type FormSetValue<TFormData> = (name: keyof TFormData, value: unknown, options?: SetValueOptions) => void;
+
+export type FormSetValues<TFormData> = (values?: Partial<TFormData>, options?: SetValueOptions) => void;
 
 export type FormData<TFormData> = Accessor<Partial<TFormData>>;
 
@@ -75,7 +81,8 @@ export type CreateFormReturn<TFormData extends object, TSchemaObject extends zod
   // @todo(refactor) would prefer a type that matched the string to what is can be based on the TFormData but not
   // @todo(refactor) sure if that is possible
   removeArrayField: (name: string, removeIndex: number) => void;
-  setValue: (name: keyof TFormData, value: unknown, options?: SetValueOption) => void;
+  setValue: FormSetValue<TFormData>;
+  setValues: FormSetValues<TFormData>;
   errors: Accessor<FormErrorsData<TFormData>>;
   clear: () => void;
   reset: () => void;
@@ -89,6 +96,9 @@ export type CreateFormReturn<TFormData extends object, TSchemaObject extends zod
 
   // since this is a generic system, we need to allow any
   setSchema: Setter<zod.ZodObject<TSchemaObject> | undefined>;
+
+  // make it easier to submit the form when the button can't be in the <form> element
+  submitForm: () => void;
 };
 
 export type FormWatcher<TFormData extends object> = (name: keyof TFormData, data: Partial<TFormData>) => void;
@@ -660,6 +670,18 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     }
   };
 
+  const setValues: FormSetValues<TFormData> = (values?: Partial<TFormData>, options?: SetValueOption) => {
+    if (!values) {
+      return;
+    }
+
+    // @todo(performance) if this becomes a bottleneck, refactor to make this do all value update first and the
+    // @todo(performance) secondary stuff (trigger change, update validation, etc.)
+    for (const key of Object.keys(values)) {
+      setValue(key as keyof TFormData, values[key as keyof TFormData], options);
+    }
+  };
+
   const resetHtmlElements = () => {
     const currentFormElement = formElement();
 
@@ -721,12 +743,23 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     };
   };
 
+  const submitForm = () => {
+    const currentFormElement = formElement();
+
+    if (!currentFormElement) {
+      return;
+    }
+
+    currentFormElement.dispatchEvent(new Event('submit'));
+  };
+
   return {
     formDirective,
     data,
     addArrayField,
     removeArrayField,
     setValue,
+    setValues,
     errors,
     clear,
     reset,
@@ -738,6 +771,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     updateValidationErrors,
     isValid,
     watch,
+    submitForm,
   };
 };
 

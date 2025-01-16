@@ -1,4 +1,4 @@
-import Input from '$/components/input';
+import FormField from '$/components/form-field';
 import TimeInput from '$/components/time-input';
 
 export default {
@@ -8,7 +8,9 @@ export default {
 export const Default = () => {
   return (
     <>
-      <TimeInput />
+      <FormField>
+        <TimeInput />
+      </FormField>
     </>
   );
 };

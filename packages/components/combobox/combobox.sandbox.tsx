@@ -8,7 +8,7 @@ import Combobox, {
   type ComboboxProps,
   type ComboboxSelectableOptionProps,
   type ComboboxSelectedOptionProps,
-  comboboxUtils,
+  comboboxComponentUtils,
 } from '$/components/combobox';
 import styles from '$/components/combobox/combobox.module.css';
 import FormField from '$/components/form-field';
@@ -16,6 +16,7 @@ import Label from '$/components/label';
 import List from '$/components/list';
 import SupportingText, { SupportingTextColor } from '$/components/supporting-text';
 import { FormInputValidationState, formStoreUtils } from '$/stores/form';
+import { ValidationMessageType, validationUtils } from '$/utils/validation';
 import { zodUtils } from '$/utils/zod';
 
 export default {
@@ -52,8 +53,6 @@ type ExampleProps = {
   removeOnDuplicateSingleSelect?: boolean;
   disabled?: boolean;
   options?: ComboboxOption<CustomExtraData>[];
-  supportingText?: string[];
-  validationState?: FormInputValidationState;
   groupOrder?: string[];
 };
 
@@ -91,7 +90,7 @@ const baseGroupedOptions: ComboboxOption<CustomExtraData>[] = [
 const BasicExample = (props: ExampleProps) => {
   const defaultOptions = props.options ?? baseOptions;
   const [options] = createSignal<ComboboxOption<CustomExtraData>[]>(props.useAsync ? [] : defaultOptions);
-  const comboboxStore = comboboxUtils.createComboboxValue({
+  const comboboxStore = comboboxComponentUtils.createValueStore({
     defaultValue:
       props.selectedOptionIndex !== undefined && props.selectedOptionIndex >= 0
         ? [options()[props.selectedOptionIndex]]
@@ -122,7 +121,7 @@ const BasicExample = (props: ExampleProps) => {
           forceSelection={props.forceSelection}
           autoShowOptions={props.autoShowOptions}
           options={options()}
-          filterOptions={props.filterOptions ?? comboboxUtils.excludeSelectedFilter}
+          filterOptions={props.filterOptions ?? comboboxComponentUtils.excludeSelectedFilter}
           setSelected={setSelected}
           selected={comboboxStore.selected()}
           placeholder={props.disabled ? 'disabled' : props.placeholder}
@@ -132,12 +131,7 @@ const BasicExample = (props: ExampleProps) => {
           selectableComponent={props.selectableComponent ?? Combobox.SelectableOption}
           removeOnDuplicateSingleSelect={!!props.removeOnDuplicateSingleSelect}
           disabled={!!props.disabled}
-          validationState={props.validationState}
           groupOrder={props.groupOrder}
-        />
-        <SupportingText
-          supportingText={props.supportingText}
-          color={props.validationState === FormInputValidationState.INVALID ? SupportingTextColor.DANGER : undefined}
         />
       </FormField>
       <Button data-id="reset-selected-button" onClick={onResetSelected}>
@@ -156,7 +150,7 @@ const BasicExample = (props: ExampleProps) => {
 const MultiSelectExample = (props: ExampleProps) => {
   const defaultOptions = props.options ?? baseOptions;
   const [options] = createSignal<ComboboxOption<CustomExtraData>[]>(props.useAsync ? [] : defaultOptions);
-  const comboboxStore = comboboxUtils.createComboboxValue({
+  const comboboxStore = comboboxComponentUtils.createValueStore({
     defaultValue:
       props.selectedOptionIndex !== undefined && props.selectedOptionIndex >= 0
         ? [options()[props.selectedOptionIndex]]
@@ -192,7 +186,7 @@ const MultiSelectExample = (props: ExampleProps) => {
           forceSelection={props.forceSelection}
           autoShowOptions={props.autoShowOptions}
           options={options()}
-          filterOptions={props.filterOptions ?? comboboxUtils.excludeSelectedFilter}
+          filterOptions={props.filterOptions ?? comboboxComponentUtils.excludeSelectedFilter}
           setSelected={setSelected}
           selected={comboboxStore.selected()}
           onDeleteOption={onDeleteOption}
@@ -204,12 +198,7 @@ const MultiSelectExample = (props: ExampleProps) => {
           selectableComponent={props.selectableComponent ?? Combobox.SelectableOption}
           removeOnDuplicateSingleSelect={!!props.removeOnDuplicateSingleSelect}
           disabled={!!props.disabled}
-          validationState={props.validationState}
           groupOrder={props.groupOrder}
-        />
-        <SupportingText
-          supportingText={props.supportingText}
-          color={props.validationState === FormInputValidationState.INVALID ? SupportingTextColor.DANGER : undefined}
         />
       </FormField>
       <Button data-id="reset-selected-button" onClick={onResetSelected}>
@@ -313,7 +302,7 @@ export const SingleFormattedSelectables = () => {
   return (
     <BasicExample
       selectableComponent={Combobox.FormattedSelectableOption}
-      filterOptions={comboboxUtils.simpleFilter}
+      filterOptions={comboboxComponentUtils.simpleFilter}
       selectedComponent={null}
     />
   );
@@ -323,7 +312,7 @@ export const MultiFormattedSelectables = () => {
   return (
     <MultiSelectExample
       selectableComponent={Combobox.FormattedSelectableOption}
-      filterOptions={comboboxUtils.simpleFilter}
+      filterOptions={comboboxComponentUtils.simpleFilter}
       selectedComponent={null}
     />
   );
@@ -333,7 +322,7 @@ export const MultiFormattedSelectablesAutoShow = () => {
   return (
     <MultiSelectExample
       selectableComponent={Combobox.FormattedSelectableOption}
-      filterOptions={comboboxUtils.simpleFilter}
+      filterOptions={comboboxComponentUtils.simpleFilter}
       selectedComponent={null}
       autoShowOptions
     />
@@ -344,7 +333,7 @@ export const SingleFormattedSelectablesRemoveDuplicateSelect = () => {
   return (
     <BasicExample
       selectableComponent={Combobox.FormattedSelectableOption}
-      filterOptions={comboboxUtils.simpleFilter}
+      filterOptions={comboboxComponentUtils.simpleFilter}
       selectedComponent={null}
       removeOnDuplicateSingleSelect
     />
@@ -364,7 +353,7 @@ export const MultiPreselectedFormattedAutoShow = () => {
     <MultiSelectExample
       selectedOptionIndex={2}
       selectableComponent={Combobox.FormattedSelectableOption}
-      filterOptions={comboboxUtils.simpleFilter}
+      filterOptions={comboboxComponentUtils.simpleFilter}
       selectedComponent={null}
       autoShowOptions
     />
@@ -417,7 +406,10 @@ type FormData = {
 
 const formDataSchema = zodUtils.schemaForType<FormData>()(
   zod.object({
-    combobox: zod.number().array().min(1, 'must select at least 1 value'),
+    combobox: zod
+      .number()
+      .array()
+      .min(1, validationUtils.getMessage(ValidationMessageType.MIN_COUNT, ['1'])),
   }),
 );
 
@@ -441,13 +433,9 @@ export const SingleInForm = () => {
 
   return (
     <form use:formDirective>
-      <BasicExample
-        onSelected={onSelected}
-        validationState={
-          errors().combobox?.errors ? FormInputValidationState.INVALID : FormInputValidationState.NEUTRAL
-        }
-        supportingText={errors().combobox?.errors}
-      />
+      <FormField errors={errors().combobox?.errors}>
+        <BasicExample onSelected={onSelected} />
+      </FormField>
       <button type="submit">Submit</button>
     </form>
   );
@@ -473,13 +461,9 @@ export const MultiInForm = () => {
 
   return (
     <form use:formDirective>
-      <MultiSelectExample
-        onSelected={onSelected}
-        supportingText={errors().combobox?.errors}
-        validationState={
-          errors().combobox?.errors ? FormInputValidationState.INVALID : FormInputValidationState.NEUTRAL
-        }
-      />
+      <FormField errors={errors().combobox?.errors}>
+        <MultiSelectExample onSelected={onSelected} />
+      </FormField>
       <button type="submit">Submit</button>
     </form>
   );
@@ -505,14 +489,9 @@ export const SingleInFormAutoShowOptions = () => {
 
   return (
     <form use:formDirective>
-      <BasicExample
-        onSelected={onSelected}
-        autoShowOptions
-        supportingText={errors().combobox?.errors}
-        validationState={
-          errors().combobox?.errors ? FormInputValidationState.INVALID : FormInputValidationState.NEUTRAL
-        }
-      />
+      <FormField errors={errors().combobox?.errors}>
+        <BasicExample onSelected={onSelected} autoShowOptions />
+      </FormField>
       <button type="submit">Submit</button>
     </form>
   );
@@ -538,14 +517,9 @@ export const MultiInFormAutoShowOptions = () => {
 
   return (
     <form use:formDirective>
-      <MultiSelectExample
-        onSelected={onSelected}
-        autoShowOptions
-        supportingText={errors().combobox?.errors}
-        validationState={
-          errors().combobox?.errors ? FormInputValidationState.INVALID : FormInputValidationState.NEUTRAL
-        }
-      />
+      <FormField errors={errors().combobox?.errors}>
+        <MultiSelectExample onSelected={onSelected} autoShowOptions />
+      </FormField>
       <button type="submit">Submit</button>
     </form>
   );
@@ -557,7 +531,7 @@ export const SingleLarge = () => {
 
 export const SingleChangeLocalOptions = () => {
   const [options, setOptions] = createSignal<ComboboxOption<CustomExtraData>[]>(baseOptions);
-  const comboboxStore = comboboxUtils.createComboboxValue();
+  const comboboxStore = comboboxComponentUtils.createValueStore();
 
   const handleChangeOptions = () => {
     setOptions(options().length > 5 ? baseOptions : baseLargeOptions);
@@ -570,7 +544,7 @@ export const SingleChangeLocalOptions = () => {
         <Combobox
           autoShowOptions
           options={options()}
-          filterOptions={comboboxUtils.excludeSelectedFilter}
+          filterOptions={comboboxComponentUtils.excludeSelectedFilter}
           setSelected={comboboxStore.setSelected}
           selected={comboboxStore.selected()}
           name="combobox"

@@ -108,7 +108,7 @@ const isValidTime = (value: string) => {
   return false;
 };
 
-export const timeInputUtils = {
+export const timeInputComponentUtils = {
   isValidTime,
   getNewEditItemIndex,
   getEditItemStringLocations,

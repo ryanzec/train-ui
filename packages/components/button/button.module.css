@@ -8,7 +8,9 @@
   border-radius: var(--border-radius-lg);
   cursor: pointer;
   background-color: transparent;
-  font: inherit;
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-base);
+  letter-spacing: var(--letter-spacing-base);
 
   /* when there is a pre icon, that change the buttons baseline so using top to make sure buttons always align */
   vertical-align: top;

@@ -2,7 +2,9 @@ import { onMount } from 'solid-js';
 import * as zod from 'zod';
 
 import Checkbox from '$/components/checkbox/index';
+import FormField from '$/components/form-field';
 import { formStoreUtils } from '$/stores/form';
+import { ValidationMessageType, validationUtils } from '$/utils/validation';
 import { zodUtils } from '$/utils/zod';
 
 export default {
@@ -34,7 +36,7 @@ export const CheckedByDefault = () => {
   };
   const formSchema = zodUtils.schemaForType<FormData>()(
     zod.object({
-      checkbox: zod.string().array().min(1, 'Required'),
+      checkbox: zod.string().array().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
     }),
   );
 
@@ -52,12 +54,9 @@ export const CheckedByDefault = () => {
 
   return (
     <form use:formDirective>
-      <Checkbox
-        labelElement="checkbox"
-        name="checkbox"
-        value="1"
-        validationState={formStoreUtils.getValidationState(formStore.errors().checkbox?.errors)}
-      />
+      <FormField errors={formStore.errors().checkbox?.errors}>
+        <Checkbox labelElement="checkbox" name="checkbox" value="1" />
+      </FormField>
     </form>
   );
 };

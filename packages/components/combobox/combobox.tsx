@@ -8,7 +8,7 @@ import {
   type ComboboxExtraData,
   type ComboboxOption,
   type ComboboxProps,
-  comboboxUtils,
+  comboboxComponentUtils,
 } from '$/components/combobox/utils';
 import Icon from '$/components/icon';
 import iconStyles from '$/components/icon/icon.module.css';
@@ -82,7 +82,6 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
       'onDeleteOption',
       'asyncThreshold',
       'removeOnDuplicateSingleSelect',
-      'validationState',
       'showClearIcon',
       'class',
       'ungroupedKey',
@@ -95,7 +94,7 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
     ],
   );
 
-  const comboboxStore = comboboxUtils.createCombobox(props);
+  const comboboxStore = comboboxComponentUtils.createStore(props);
 
   // since the order of the option change might be different than they appear in the options list so we store this
   // separately
@@ -210,11 +209,13 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
       <button type="button" onClick={handleFocusInput}>
         <Input
           {...comboboxStore.getInputProps()}
-          inputContainerClass={comboboxStore.store.isOpen ? styles.inputContainer : undefined}
+          readonly={!props.filterOptions}
+          includeReadonlyStyles={false}
+          inputContainerClass={classnames({ [styles.inputContainer]: comboboxStore.store.isOpen })}
+          class={styles.input}
           type="text"
           data-uncontrolled-value="true"
           disabled={props.disabled}
-          validationState={props.validationState}
           preItemIsInline
           inlineItem={
             <Show when={props.isMulti && props.selected.length > 0 && !!props.selectedComponent}>

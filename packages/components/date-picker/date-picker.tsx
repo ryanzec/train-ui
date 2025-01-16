@@ -5,6 +5,7 @@ import { Index, type JSX, Show, createMemo, createSignal, mergeProps, splitProps
 import Button, { ButtonColor, ButtonVariant } from '$/components/button';
 import DatePickerMonthYearSelection from '$/components/date-picker/date-picker-month-year-selection';
 import styles from '$/components/date-picker/date-picker.module.css';
+import FormField from '$/components/form-field';
 import Icon from '$/components/icon';
 import TimeInput from '$/components/time-input';
 import { FormInputValidationState } from '$/stores/form';
@@ -58,9 +59,7 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
   const [displayDate, setDisplayDate] = createSignal<Date>(props.defaultDisplayDate);
   const [selectedDate, setSelectedDate] = createSignal<Date | undefined>(props.defaultSelectedDate);
   const [showMonthYearSelection, setShowMonthYearSelection] = createSignal(false);
-  const [timeInputValidationState, setTimeInputValidationState] = createSignal<FormInputValidationState>(
-    FormInputValidationState.VALID,
-  );
+  const [timeInputErrors, setTimeInputErrors] = createSignal<string[]>([]);
   const [timeInputValue, setTimeInputValue] = createSignal<string>(
     props.defaultSelectedDate ? dayjs(props.defaultSelectedDate).format(dateTimeFormat.TIME_INPUT_TIME) : '12:00 am',
   );
@@ -151,12 +150,12 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
     const date = dayjs(target.value, dateTimeFormat.TIME_INPUT_TIME);
 
     if (!dayjs(date).isValid()) {
-      setTimeInputValidationState(FormInputValidationState.INVALID);
+      setTimeInputErrors(['Invalid time']);
 
       return;
     }
 
-    setTimeInputValidationState(FormInputValidationState.VALID);
+    setTimeInputErrors([]);
 
     setSelectedDate(date.toDate());
     props.onSelectDate?.(date.toDate());
@@ -243,13 +242,14 @@ const DatePicker = (passedProps: DatePickerProps & JSX.HTMLAttributes<HTMLDivEle
       </div>
       <Show when={props.includeTime}>
         <div class={styles.timeContainer}>
-          <TimeInput
-            data-uncontrolled-value="true"
-            onInput={handleTimeChange}
-            placeholder="Time"
-            value={timeInputValue()}
-            validationState={timeInputValidationState()}
-          />
+          <FormField errors={timeInputErrors()} showErrors={false}>
+            <TimeInput
+              data-uncontrolled-value="true"
+              onInput={handleTimeChange}
+              placeholder="Time"
+              value={timeInputValue()}
+            />
+          </FormField>
         </div>
       </Show>
       <Show when={props.includeFooter}>

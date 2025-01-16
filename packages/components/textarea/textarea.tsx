@@ -2,14 +2,11 @@ import classnames from 'classnames';
 import { type JSX, splitProps } from 'solid-js';
 
 import styles from '$/components/textarea/textarea.module.css';
-import type { FormInputValidationState } from '$/stores/form/utils';
 
-export type TextareaProps = JSX.TextareaHTMLAttributes<HTMLTextAreaElement> & {
-  validationState?: FormInputValidationState;
-};
+export type TextareaProps = JSX.TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 const Textarea = (passedProps: TextareaProps) => {
-  const [props, restOfProps] = splitProps(passedProps, ['class', 'validationState']);
+  const [props, restOfProps] = splitProps(passedProps, ['class']);
 
   return <textarea data-id="textarea" {...restOfProps} class={classnames(styles.textarea, props.class)} />;
 };

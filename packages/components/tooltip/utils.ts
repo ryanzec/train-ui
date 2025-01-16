@@ -39,6 +39,6 @@ const createStore = (params: CreateStoreParams = {}): TooltipStore => {
   };
 };
 
-export const tooltipUtils = {
+export const tooltipComponentUtils = {
   createStore,
 };

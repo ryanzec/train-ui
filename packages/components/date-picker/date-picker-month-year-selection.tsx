@@ -2,7 +2,7 @@ import { merge } from 'lodash';
 import { createMemo } from 'solid-js';
 
 import Button, { ButtonColor } from '$/components/button';
-import Combobox, { type ComboboxExtraData, type ComboboxOption, comboboxUtils } from '$/components/combobox';
+import Combobox, { type ComboboxExtraData, type ComboboxOption, comboboxComponentUtils } from '$/components/combobox';
 import styles from '$/components/date-picker/date-picker.module.css';
 import { clickOutsideDirective } from '$/directives/click-outside-directive';
 
@@ -94,10 +94,10 @@ const DatePickerMonthYearSelection = (passedProps: DatePickerMonthYearSelectionP
   const defaultMonth = months.find((month) => month.value === props.defaultMonth);
   const defaultYear = years().find((year) => year.value === props.defaultYear);
 
-  const monthComboboxStore = comboboxUtils.createComboboxValue<ComboboxExtraData>({
+  const monthComboboxStore = comboboxComponentUtils.createValueStore<ComboboxExtraData>({
     defaultValue: defaultMonth ? [defaultMonth] : [],
   });
-  const yearComboboxStore = comboboxUtils.createComboboxValue<ComboboxExtraData>({
+  const yearComboboxStore = comboboxComponentUtils.createValueStore<ComboboxExtraData>({
     defaultValue: defaultYear ? [defaultYear] : [],
   });
 

@@ -5,7 +5,7 @@ export enum DialogFooterAlignment {
   RIGHT = 'right',
 }
 
-const createDialog = () => {
+const createStore = () => {
   const [isOpen, setIsOpen] = createSignal<boolean>(false);
 
   const openDialog = () => {
@@ -28,6 +28,6 @@ const createDialog = () => {
   };
 };
 
-export const dialogUtils = {
-  createDialog,
+export const dialogComponentUtils = {
+  createStore,
 };

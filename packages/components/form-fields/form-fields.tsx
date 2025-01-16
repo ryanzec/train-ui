@@ -3,9 +3,9 @@ import { type JSX, splitProps } from 'solid-js';
 
 import styles from '$/components/form-fields/form-fields.module.css';
 
-export type FormFieldProps = JSX.HTMLAttributes<HTMLDivElement>;
+export type FormFieldsProps = JSX.HTMLAttributes<HTMLDivElement>;
 
-const FormField = (passedProps: FormFieldProps) => {
+const FormFields = (passedProps: FormFieldsProps) => {
   const [props, restOfProps] = splitProps(passedProps, ['class', 'children']);
 
   return (
@@ -15,4 +15,4 @@ const FormField = (passedProps: FormFieldProps) => {
   );
 };
 
-export default FormField;
+export default FormFields;

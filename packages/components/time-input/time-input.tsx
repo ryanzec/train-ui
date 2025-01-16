@@ -1,7 +1,7 @@
 import { type JSX, createReaction, createSignal, mergeProps, splitProps } from 'solid-js';
 
 import Input, { type InputProps } from '$/components/input';
-import { DEFAULT_VALUE, EditItem, editItemsOrder, timeInputUtils } from '$/components/time-input/utils';
+import { DEFAULT_VALUE, EditItem, editItemsOrder, timeInputComponentUtils } from '$/components/time-input/utils';
 import { Key } from '$/types/generic';
 
 export type TimeInputProps = InputProps & {
@@ -103,7 +103,7 @@ const TimeInput = (passedProps: TimeInputProps) => {
       return;
     }
 
-    const selectionRange = timeInputUtils.getEditItemStringLocations(currentActiveEditItem);
+    const selectionRange = timeInputComponentUtils.getEditItemStringLocations(currentActiveEditItem);
 
     if (!selectionRange) {
       return;
@@ -116,7 +116,7 @@ const TimeInput = (passedProps: TimeInputProps) => {
     switch (event.key) {
       case Key.ARROW_LEFT:
       case Key.ARROW_RIGHT: {
-        const newEditItemIndex = timeInputUtils.getNewEditItemIndex(
+        const newEditItemIndex = timeInputComponentUtils.getNewEditItemIndex(
           currentActiveEditItem,
           event.key === Key.ARROW_LEFT ? -1 : 1,
           {
@@ -141,7 +141,7 @@ const TimeInput = (passedProps: TimeInputProps) => {
 
         const isUp = event.key === Key.ARROW_UP;
         const currentEditItemValue = inputRef.value.substring(inputRef.selectionStart || 0, inputRef.selectionEnd || 0);
-        const newEditItemValue = timeInputUtils.getNewSteppedEditItemValue(
+        const newEditItemValue = timeInputComponentUtils.getNewSteppedEditItemValue(
           currentActiveEditItem,
           currentEditItemValue,
           isUp,
@@ -203,7 +203,7 @@ const TimeInput = (passedProps: TimeInputProps) => {
           return;
         }
 
-        const newEditItemIndex = timeInputUtils.getNewEditItemIndex(currentActiveEditItem, 1);
+        const newEditItemIndex = timeInputComponentUtils.getNewEditItemIndex(currentActiveEditItem, 1);
 
         if (newEditItemIndex === -1) {
           return;
@@ -234,7 +234,7 @@ const TimeInput = (passedProps: TimeInputProps) => {
       return;
     }
 
-    const newSelectionRange = timeInputUtils.getEditItemStringLocations(currentActiveEditItem);
+    const newSelectionRange = timeInputComponentUtils.getEditItemStringLocations(currentActiveEditItem);
 
     if (!newSelectionRange) {
       return;

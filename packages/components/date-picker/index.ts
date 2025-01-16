@@ -3,7 +3,7 @@ import Input, { type DatePickerInputProps, type WhichDate } from '$/components/d
 
 export type { DatePickerProps, DatePickerInputProps, WhichDate };
 
-export { datePickerUtils } from '$/components/date-picker/utils';
+export { datePickerComponentUtils } from '$/components/date-picker/utils';
 export type {
   DatePickerInputValueStore,
   DatePickerInputDateStore,

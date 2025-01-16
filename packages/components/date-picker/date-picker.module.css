@@ -102,8 +102,12 @@
   flex: 0 0 90px;
 }
 
-/* biome-ignore lint/suspicious/noEmptyBlock: just a placeholder */
-.date-picker-input {
+.input-container {
+  /* placeholder */
+}
+
+.input {
+  flex: 1;
 }
 
 .date-picker-input-picker-container {

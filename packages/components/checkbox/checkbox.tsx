@@ -9,7 +9,6 @@ import type { FormInputValidationState } from '$/stores/form/utils';
 export type CheckboxProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
   labelElement?: JSX.Element;
   alignEnd?: boolean;
-  validationState?: FormInputValidationState;
 };
 
 enum CheckedState {
@@ -33,13 +32,7 @@ const getCheckedStateIcon = (state: CheckedState): IconName => {
 // we exposed a plain input in the off chance we need an input not hooked up to react-hook-form directly (like the
 // auto complete component)
 const Checkbox = (passedProps: CheckboxProps) => {
-  const [props, restOfProps] = splitProps(passedProps, [
-    'class',
-    'labelElement',
-    'alignEnd',
-    'validationState',
-    'onChange',
-  ]);
+  const [props, restOfProps] = splitProps(passedProps, ['class', 'labelElement', 'alignEnd', 'onChange']);
 
   // we need to manually track the checked state of the input in order to make sure the toggle slider properly
   // reacts when the checked state of the input changes

@@ -2,6 +2,7 @@ import { type JSX, createSignal } from 'solid-js';
 
 import Button from '$/components/button';
 import { CalloutColor } from '$/components/callout';
+import FormField from '$/components/form-field';
 import Input from '$/components/input';
 import { globalNotificationsStore } from '$/stores/global-notifications';
 
@@ -18,7 +19,9 @@ export const Default = () => {
 
   return (
     <>
-      <Input type="text" onChange={onClick} value={test()} />
+      <FormField>
+        <Input type="text" onChange={onClick} value={test()} />
+      </FormField>
       <Button
         onClick={() => {
           // this needs to happen in order to make sure solidjs reactive system properly disposes of the computation

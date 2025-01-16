@@ -20,7 +20,7 @@ export type {
 } from '$/components/combobox/utils';
 
 export {
-  comboboxUtils,
+  comboboxComponentUtils,
   AsyncOptionsState,
 } from '$/components/combobox/utils';
 

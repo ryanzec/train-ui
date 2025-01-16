@@ -1,15 +1,15 @@
 import { For, Index, Match, Show, Switch, createEffect, createSignal, untrack } from 'solid-js';
 import * as uuid from 'uuid';
-import * as zod from 'zod';
 import type { ZodType } from 'zod';
+import * as zod from 'zod';
 
 import Button from '$/components/button';
 import Checkbox from '$/components/checkbox';
-import Combobox, { type ComboboxOption, comboboxUtils, type ComboboxValueStore } from '$/components/combobox';
+import Combobox, { type ComboboxOption, comboboxComponentUtils, type ComboboxValueStore } from '$/components/combobox';
 import DatePicker, {
   type DateFormValue,
   type DatePickerInputValueStore,
-  datePickerUtils,
+  datePickerComponentUtils,
   type WhichDate,
 } from '$/components/date-picker';
 import FormField from '$/components/form-field';
@@ -17,13 +17,11 @@ import FormFields from '$/components/form-fields/form-fields';
 import Input from '$/components/input';
 import Label from '$/components/label';
 import Radio from '$/components/radio';
-import SupportingText, { SupportingTextColor } from '$/components/supporting-text';
 import Textarea from '$/components/textarea';
-import TimeInput, { timeInputUtils } from '$/components/time-input';
+import TimeInput, { timeInputComponentUtils } from '$/components/time-input';
 import { formStoreUtils } from '$/stores/form';
-import { FormInputValidationState } from '$/stores/form/utils';
 import type { CommonDataType } from '$/types/generic';
-import { dynamicDataId } from '$/utils/component';
+import { ValidationMessageType, validationUtils } from '$/utils/validation';
 import { zodUtils } from '$/utils/zod';
 import ExpandableCode from '$sandbox/components/expandable-code';
 
@@ -63,7 +61,7 @@ type SimpleFormData = {
 
 const simpleFormDataSchema = zodUtils.schemaForType<SimpleFormData>()(
   zod.object({
-    title: zod.string().min(1, 'Required'),
+    title: zod.string().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
   }),
 );
 
@@ -84,6 +82,35 @@ export const SetValue = () => {
             Submit
           </Button>
           <Button data-id="set-value-button" onClick={() => setValue('title', 'test')}>
+            Set Value
+          </Button>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export const SetValues = () => {
+  const { formDirective, setValues } = formStoreUtils.createForm<SimpleFormData, zod.ZodRawShape>({
+    onSubmit: () => {},
+  });
+
+  return (
+    <div data-id="container">
+      <form use:formDirective>
+        <FormField>
+          <Label>Title</Label>
+          <Input type="text" name="title" />
+        </FormField>
+        <FormField>
+          <Label>Title2</Label>
+          <Input type="text" name="title2" />
+        </FormField>
+        <div>
+          <Button data-id="submit-button" type="submit">
+            Submit
+          </Button>
+          <Button data-id="set-value-button" onClick={() => setValues({ title: 'test', title2: 'test2' })}>
             Set Value
           </Button>
         </div>
@@ -364,20 +391,9 @@ export const Events = () => {
   return (
     <div data-id="container">
       <form use:formDirective>
-        <FormField>
+        <FormField errors={errors().title?.errors}>
           <Label>Title</Label>
-          <Input
-            type="text"
-            name="title"
-            validationState={errors().title?.errors ? FormInputValidationState.INVALID : FormInputValidationState.VALID}
-          />
-          <Show when={!!errors().title?.errors}>
-            <SupportingText
-              data-id={dynamicDataId.VALIDATION_MESSAGE}
-              supportingText={errors().title?.errors}
-              color={SupportingTextColor.DANGER}
-            />
-          </Show>
+          <Input type="text" name="title" />
         </FormField>
         <div>
           <Button data-id="submit-button" type="submit">
@@ -423,20 +439,9 @@ export const ValidateOnChange = () => {
   return (
     <div data-id="container">
       <form use:formDirective>
-        <FormField>
+        <FormField errors={errors().title?.errors}>
           <Label>Title</Label>
-          <Input
-            type="text"
-            name="title"
-            validationState={errors().title?.errors ? FormInputValidationState.INVALID : FormInputValidationState.VALID}
-          />
-          <Show when={!!errors().title?.errors}>
-            <SupportingText
-              data-id={dynamicDataId.VALIDATION_MESSAGE}
-              supportingText={errors().title?.errors}
-              color={SupportingTextColor.DANGER}
-            />
-          </Show>
+          <Input type="text" name="title" />
         </FormField>
         <div>
           <Button data-id="submit-button" type="submit">
@@ -454,6 +459,39 @@ export const ValidateOnChange = () => {
   );
 };
 
+export const ManualSubmit = () => {
+  const { formDirective, reset, clear, errors, submitForm } = formStoreUtils.createForm<
+    SimpleFormData,
+    typeof simpleFormDataSchema.shape
+  >({
+    schema: simpleFormDataSchema,
+    onSubmit: () => {},
+  });
+
+  return (
+    <div data-id="container">
+      <form use:formDirective>
+        <FormField errors={errors().title?.errors}>
+          <Label>Title</Label>
+          <Input type="text" name="title" />
+        </FormField>
+      </form>
+      <div>
+        <div>There buttons are outside of the form element</div>
+        <Button data-id="submit-button" onClick={() => submitForm()}>
+          Submit
+        </Button>
+        <Button data-id="reset-button" onClick={() => reset()}>
+          Reset
+        </Button>
+        <Button data-id="clear-button" onClick={() => clear()}>
+          Clear
+        </Button>
+      </div>
+    </div>
+  );
+};
+
 export const NoValidateOnChange = () => {
   const { formDirective, reset, clear, errors } = formStoreUtils.createForm<
     SimpleFormData,
@@ -467,20 +505,9 @@ export const NoValidateOnChange = () => {
   return (
     <div data-id="container">
       <form use:formDirective>
-        <FormField>
+        <FormField errors={errors().title?.errors}>
           <Label>Title</Label>
-          <Input
-            type="text"
-            name="title"
-            validationState={errors().title?.errors ? FormInputValidationState.INVALID : FormInputValidationState.VALID}
-          />
-          <Show when={!!errors().title?.errors}>
-            <SupportingText
-              data-id={dynamicDataId.VALIDATION_MESSAGE}
-              supportingText={errors().title?.errors}
-              color={SupportingTextColor.DANGER}
-            />
-          </Show>
+          <Input type="text" name="title" />
         </FormField>
         <div>
           <Button data-id="submit-button" type="submit">
@@ -506,7 +533,7 @@ const simpleArrayFormDataSchema = zodUtils.schemaForType<SimpleArrayFormData>()(
   zod.object({
     array: zod
       .object({
-        partA: zod.string().min(1, 'Required'),
+        partA: zod.string().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
         partB: zod.string().optional(),
       })
       .array()
@@ -533,68 +560,35 @@ export const ArrayFields = () => {
         + Add Array Field
       </Button>
       <form use:formDirective>
-        <FormFields>
-          <Index each={data().array}>
-            {(arrayField, index) => {
-              const getArrayFieldError = () => errors().array?.[index] ?? {};
+        <FormField errors={errors().array?.errors}>
+          <FormFields>
+            <Index each={data().array}>
+              {(arrayField, index) => {
+                const getArrayFieldError = () => errors().array?.[index] ?? {};
 
-              return (
-                <div data-id="array-field-element">
-                  <FormField>
-                    <Label>Part A</Label>
-                    <Input
-                      type="text"
-                      name={`array.${index}.partA`}
-                      validationState={
-                        getArrayFieldError().partA?.errors
-                          ? FormInputValidationState.INVALID
-                          : FormInputValidationState.VALID
-                      }
-                    />
-                    <Show when={!!getArrayFieldError().partA?.errors}>
-                      <SupportingText
-                        data-id={dynamicDataId.VALIDATION_MESSAGE}
-                        supportingText={getArrayFieldError().partA?.errors}
-                        color={SupportingTextColor.DANGER}
-                      />
-                    </Show>
-                  </FormField>
-                  <FormField>
-                    <Label>Part B</Label>
-                    <Input
-                      type="text"
-                      name={`array.${index}.partB`}
-                      validationState={
-                        getArrayFieldError().partB?.errors
-                          ? FormInputValidationState.INVALID
-                          : FormInputValidationState.VALID
-                      }
-                    />
-                    <Show when={!!getArrayFieldError().partB?.errors}>
-                      <SupportingText
-                        data-id={dynamicDataId.VALIDATION_MESSAGE}
-                        supportingText={getArrayFieldError().partB?.errors}
-                        color={SupportingTextColor.DANGER}
-                      />
-                    </Show>
-                  </FormField>
-                  <Button
-                    // @todo(!!!) make danger when implemented
-                    data-id="remove-array-field-button"
-                    onclick={() => removeArrayField('array', index)}
-                  >
-                    REMOVE
-                  </Button>
-                </div>
-              );
-            }}
-          </Index>
-        </FormFields>
-        <SupportingText
-          data-id={dynamicDataId.VALIDATION_MESSAGE}
-          supportingText={errors().array?.errors}
-          color={errors().array?.errors ? SupportingTextColor.DANGER : undefined}
-        />
+                return (
+                  <div data-id="array-field-element">
+                    <FormField errors={getArrayFieldError().partA?.errors}>
+                      <Label>Part A</Label>
+                      <Input type="text" name={`array.${index}.partA`} />
+                    </FormField>
+                    <FormField errors={getArrayFieldError().partB?.errors}>
+                      <Label>Part B</Label>
+                      <Input type="text" name={`array.${index}.partB`} />
+                    </FormField>
+                    <Button
+                      // @todo(!!!) make danger when implemented
+                      data-id="remove-array-field-button"
+                      onclick={() => removeArrayField('array', index)}
+                    >
+                      REMOVE
+                    </Button>
+                  </div>
+                );
+              }}
+            </Index>
+          </FormFields>
+        </FormField>
         <div>
           <Button data-id="submit-button" type="submit">
             Submit
@@ -620,20 +614,20 @@ const nestedArrayFormDataSchema = zodUtils.schemaForType<NestedArrayFormData>()(
   zod.object({
     array: zod
       .object({
-        partA: zod.string().min(1, 'Required'),
+        partA: zod.string().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
         partB: zod.string().optional(),
         nested: zod
           .object({
-            partA: zod.string().min(1, 'Required'),
+            partA: zod.string().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
             partB: zod.string().optional(),
           })
           .array()
-          .min(1, '1 Required'),
+          .min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
       })
       .array()
-      .min(2, '2 Required'),
+      .min(2, validationUtils.getMessage(ValidationMessageType.MIN_COUNT, ['2'])),
     object: zod.object({
-      test: zod.string().min(3, '3 Required'),
+      test: zod.string().min(3, validationUtils.getMessage(ValidationMessageType.MIN_COUNT, ['3'])),
     }),
   }),
 );
@@ -656,290 +650,107 @@ export const NestedArrayFields = () => {
         + Add Array Field
       </Button>
       <form use:formDirective>
-        <FormFields>
-          <Index each={data().array}>
-            {(arrayField, index) => {
-              console.log('should only happen once');
-              const getArrayFieldError = () => errors().array?.[index] ?? {};
+        <FormField errors={errors().array?.errors}>
+          <FormFields>
+            <Index each={data().array}>
+              {(arrayField, index) => {
+                console.log('should only happen once');
+                const getArrayFieldError = () => errors().array?.[index] ?? {};
 
-              return (
-                <div data-id="array-field-element">
-                  <FormField>
-                    <Label>Part A</Label>
-                    <Input
-                      type="text"
-                      name={`array.${index}.partA`}
-                      validationState={
-                        getArrayFieldError().partA?.errors
-                          ? FormInputValidationState.INVALID
-                          : FormInputValidationState.VALID
-                      }
-                    />
-                    <Show when={!!getArrayFieldError().partA?.errors}>
-                      <SupportingText
-                        data-id={dynamicDataId.VALIDATION_MESSAGE}
-                        supportingText={getArrayFieldError().partA?.errors}
-                        color={SupportingTextColor.DANGER}
-                      />
-                    </Show>
-                  </FormField>
-                  <FormField>
-                    <Label>Part B</Label>
-                    <Input
-                      type="text"
-                      name={`array.${index}.partB`}
-                      validationState={
-                        getArrayFieldError().partB?.errors
-                          ? FormInputValidationState.INVALID
-                          : FormInputValidationState.VALID
-                      }
-                    />
-                    <Show when={!!getArrayFieldError().partB?.errors}>
-                      <SupportingText
-                        data-id={dynamicDataId.VALIDATION_MESSAGE}
-                        supportingText={getArrayFieldError().partB?.errors}
-                        color={SupportingTextColor.DANGER}
-                      />
-                    </Show>
-                  </FormField>
-                  <FormField>
-                    <Label>Nested</Label>
+                return (
+                  <div data-id="array-field-element">
+                    <FormField errors={getArrayFieldError().partA?.errors}>
+                      <Label>Part A</Label>
+                      <Input type="text" name={`array.${index}.partA`} />
+                    </FormField>
+                    <FormField errors={getArrayFieldError().partB?.errors}>
+                      <Label>Part B</Label>
+                      <Input type="text" name={`array.${index}.partB`} />
+                    </FormField>
+                    <FormField>
+                      <Label>Nested</Label>
+                      <Button
+                        data-id="add-array-field-button"
+                        type="button"
+                        onclick={() => {
+                          for (let i = 0; i < 50; i++) {
+                            addArrayField(`array.${index}.nested`, {});
+                          }
+                        }}
+                      >
+                        + Add Array Field
+                      </Button>
+                      <Index each={arrayField().nested}>
+                        {(arrayField2, index2) => {
+                          const getArrayFieldError2 = () => errors().array?.[index]?.nested?.[index2] ?? {};
+
+                          return (
+                            <div data-id="array-field-element">
+                              <FormField errors={getArrayFieldError2().partA?.errors}>
+                                <Label>Part A</Label>
+                                <Input type="text" name={`array.${index}.nested.${index2}.partA`} />
+                              </FormField>
+                              <FormField errors={getArrayFieldError2().partB?.errors}>
+                                <Label>Part B</Label>
+                                <Input type="text" name={`array.${index}.nested.${index2}.partB`} />
+                              </FormField>
+                              <FormField errors={getArrayFieldError2().partC?.errors}>
+                                <Label>Part C</Label>
+                                <Input type="text" name={`array.${index}.nested.${index2}.partC`} />
+                              </FormField>
+                              <FormField errors={getArrayFieldError2().partD?.errors}>
+                                <Label>Part D</Label>
+                                <Input type="text" name={`array.${index}.nested.${index2}.partD`} />
+                              </FormField>
+                              <FormField errors={getArrayFieldError2().partE?.errors}>
+                                <Label>Part E</Label>
+                                <Input type="text" name={`array.${index}.nested.${index2}.partE`} />
+                              </FormField>
+                              <FormField errors={getArrayFieldError2().partF?.errors}>
+                                <Label>Part F</Label>
+                                <Input type="text" name={`array.${index}.nested.${index2}.partF`} />
+                              </FormField>
+                              <FormField errors={getArrayFieldError2().partG?.errors}>
+                                <Label>Part G</Label>
+                                <Input type="text" name={`array.${index}.nested.${index2}.partG`} />
+                              </FormField>
+                              <FormField errors={getArrayFieldError2().partH?.errors}>
+                                <Label>Part H</Label>
+                                <Input type="text" name={`array.${index}.nested.${index2}.partH`} />
+                              </FormField>
+                              <FormField errors={getArrayFieldError2().partI?.errors}>
+                                <Label>Part I</Label>
+                                <Input type="text" name={`array.${index}.nested.${index2}.partI`} />
+                              </FormField>
+                              <FormField errors={getArrayFieldError2().partJ?.errors}>
+                                <Label>Part J</Label>
+                                <Input type="text" name={`array.${index}.nested.${index2}.partJ`} />
+                              </FormField>
+                              <Button
+                                // @todo(!!!) make danger when implemented
+                                data-id="remove-array-field-button"
+                                onclick={() => removeArrayField(`array.${index}.nested`, index2)}
+                              >
+                                REMOVE
+                              </Button>
+                            </div>
+                          );
+                        }}
+                      </Index>
+                    </FormField>
                     <Button
-                      data-id="add-array-field-button"
-                      type="button"
-                      onclick={() => {
-                        for (let i = 0; i < 50; i++) {
-                          addArrayField(`array.${index}.nested`, {});
-                        }
-                      }}
+                      // @todo(!!!) make danger when implemented
+                      data-id="remove-array-field-button"
+                      onclick={() => removeArrayField('array', index)}
                     >
-                      + Add Array Field
+                      REMOVE
                     </Button>
-                    <Index each={arrayField().nested}>
-                      {(arrayField2, index2) => {
-                        const getArrayFieldError2 = () => errors().array?.[index]?.nested?.[index2] ?? {};
-
-                        return (
-                          <div data-id="array-field-element">
-                            <FormField>
-                              <Label>Part A</Label>
-                              <Input
-                                type="text"
-                                name={`array.${index}.nested.${index2}.partA`}
-                                validationState={
-                                  getArrayFieldError2().partA?.errors
-                                    ? FormInputValidationState.INVALID
-                                    : FormInputValidationState.VALID
-                                }
-                              />
-                              <Show when={!!getArrayFieldError2().partA?.errors}>
-                                <SupportingText
-                                  data-id={dynamicDataId.VALIDATION_MESSAGE}
-                                  supportingText={getArrayFieldError2().partA?.errors}
-                                  color={SupportingTextColor.DANGER}
-                                />
-                              </Show>
-                            </FormField>
-                            <FormField>
-                              <Label>Part B</Label>
-                              <Input
-                                type="text"
-                                name={`array.${index}.nested.${index2}.partB`}
-                                validationState={
-                                  getArrayFieldError2().partB?.errors
-                                    ? FormInputValidationState.INVALID
-                                    : FormInputValidationState.VALID
-                                }
-                              />
-                              <Show when={!!getArrayFieldError2().partB?.errors}>
-                                <SupportingText
-                                  data-id={dynamicDataId.VALIDATION_MESSAGE}
-                                  supportingText={getArrayFieldError2().partB?.errors}
-                                  color={SupportingTextColor.DANGER}
-                                />
-                              </Show>
-                            </FormField>
-                            <FormField>
-                              <Label>Part A</Label>
-                              <Input
-                                type="text"
-                                name={`array.${index}.nested.${index2}.partC`}
-                                validationState={
-                                  getArrayFieldError2().partC?.errors
-                                    ? FormInputValidationState.INVALID
-                                    : FormInputValidationState.VALID
-                                }
-                              />
-                              <Show when={!!getArrayFieldError2().partC?.errors}>
-                                <SupportingText
-                                  data-id={dynamicDataId.VALIDATION_MESSAGE}
-                                  supportingText={getArrayFieldError2().partC?.errors}
-                                  color={SupportingTextColor.DANGER}
-                                />
-                              </Show>
-                            </FormField>
-                            <FormField>
-                              <Label>Part A</Label>
-                              <Input
-                                type="text"
-                                name={`array.${index}.nested.${index2}.partD`}
-                                validationState={
-                                  getArrayFieldError2().partD?.errors
-                                    ? FormInputValidationState.INVALID
-                                    : FormInputValidationState.VALID
-                                }
-                              />
-                              <Show when={!!getArrayFieldError2().partD?.errors}>
-                                <SupportingText
-                                  data-id={dynamicDataId.VALIDATION_MESSAGE}
-                                  supportingText={getArrayFieldError2().partD?.errors}
-                                  color={SupportingTextColor.DANGER}
-                                />
-                              </Show>
-                            </FormField>
-                            <FormField>
-                              <Label>Part A</Label>
-                              <Input
-                                type="text"
-                                name={`array.${index}.nested.${index2}.partE`}
-                                validationState={
-                                  getArrayFieldError2().partE?.errors
-                                    ? FormInputValidationState.INVALID
-                                    : FormInputValidationState.VALID
-                                }
-                              />
-                              <Show when={!!getArrayFieldError2().partE?.errors}>
-                                <SupportingText
-                                  data-id={dynamicDataId.VALIDATION_MESSAGE}
-                                  supportingText={getArrayFieldError2().partE?.errors}
-                                  color={SupportingTextColor.DANGER}
-                                />
-                              </Show>
-                            </FormField>
-                            <FormField>
-                              <Label>Part A</Label>
-                              <Input
-                                type="text"
-                                name={`array.${index}.nested.${index2}.partF`}
-                                validationState={
-                                  getArrayFieldError2().partF?.errors
-                                    ? FormInputValidationState.INVALID
-                                    : FormInputValidationState.VALID
-                                }
-                              />
-                              <Show when={!!getArrayFieldError2().partF?.errors}>
-                                <SupportingText
-                                  data-id={dynamicDataId.VALIDATION_MESSAGE}
-                                  supportingText={getArrayFieldError2().partF?.errors}
-                                  color={SupportingTextColor.DANGER}
-                                />
-                              </Show>
-                            </FormField>
-                            <FormField>
-                              <Label>Part A</Label>
-                              <Input
-                                type="text"
-                                name={`array.${index}.nested.${index2}.partG`}
-                                validationState={
-                                  getArrayFieldError2().partG?.errors
-                                    ? FormInputValidationState.INVALID
-                                    : FormInputValidationState.VALID
-                                }
-                              />
-                              <Show when={!!getArrayFieldError2().partG?.errors}>
-                                <SupportingText
-                                  data-id={dynamicDataId.VALIDATION_MESSAGE}
-                                  supportingText={getArrayFieldError2().partG?.errors}
-                                  color={SupportingTextColor.DANGER}
-                                />
-                              </Show>
-                            </FormField>
-                            <FormField>
-                              <Label>Part A</Label>
-                              <Input
-                                type="text"
-                                name={`array.${index}.nested.${index2}.partH`}
-                                validationState={
-                                  getArrayFieldError2().partH?.errors
-                                    ? FormInputValidationState.INVALID
-                                    : FormInputValidationState.VALID
-                                }
-                              />
-                              <Show when={!!getArrayFieldError2().partH?.errors}>
-                                <SupportingText
-                                  data-id={dynamicDataId.VALIDATION_MESSAGE}
-                                  supportingText={getArrayFieldError2().partH?.errors}
-                                  color={SupportingTextColor.DANGER}
-                                />
-                              </Show>
-                            </FormField>
-                            <FormField>
-                              <Label>Part A</Label>
-                              <Input
-                                type="text"
-                                name={`array.${index}.nested.${index2}.partI`}
-                                validationState={
-                                  getArrayFieldError2().partI?.errors
-                                    ? FormInputValidationState.INVALID
-                                    : FormInputValidationState.VALID
-                                }
-                              />
-                              <Show when={!!getArrayFieldError2().partI?.errors}>
-                                <SupportingText
-                                  data-id={dynamicDataId.VALIDATION_MESSAGE}
-                                  supportingText={getArrayFieldError2().partI?.errors}
-                                  color={SupportingTextColor.DANGER}
-                                />
-                              </Show>
-                            </FormField>
-                            <FormField>
-                              <Label>Part A</Label>
-                              <Input
-                                type="text"
-                                name={`array.${index}.nested.${index2}.partJ`}
-                                validationState={
-                                  getArrayFieldError2().partJ?.errors
-                                    ? FormInputValidationState.INVALID
-                                    : FormInputValidationState.VALID
-                                }
-                              />
-                              <Show when={!!getArrayFieldError2().partJ?.errors}>
-                                <SupportingText
-                                  data-id={dynamicDataId.VALIDATION_MESSAGE}
-                                  supportingText={getArrayFieldError2().partJ?.errors}
-                                  color={SupportingTextColor.DANGER}
-                                />
-                              </Show>
-                            </FormField>
-                            <Button
-                              // @todo(!!!) make danger when implemented
-                              data-id="remove-array-field-button"
-                              onclick={() => removeArrayField(`array.${index}.nested`, index2)}
-                            >
-                              REMOVE
-                            </Button>
-                          </div>
-                        );
-                      }}
-                    </Index>
-                  </FormField>
-                  <Button
-                    // @todo(!!!) make danger when implemented
-                    data-id="remove-array-field-button"
-                    onclick={() => removeArrayField('array', index)}
-                  >
-                    REMOVE
-                  </Button>
-                </div>
-              );
-            }}
-          </Index>
-        </FormFields>
-        <SupportingText
-          data-id={dynamicDataId.VALIDATION_MESSAGE}
-          supportingText={errors().array?.errors}
-          color={errors().array?.errors ? SupportingTextColor.DANGER : undefined}
-        />
+                  </div>
+                );
+              }}
+            </Index>
+          </FormFields>
+        </FormField>
         <div>
           <Button data-id="submit-button" type="submit">
             Submit
@@ -963,7 +774,7 @@ type DynamicFormData = {
 
 const dynamicFormDataSchema = zodUtils.schemaForType<DynamicFormData>()(
   zod.object({
-    title: zod.string().min(1, 'Required'),
+    title: zod.string().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
     addDefaultValue: zod.string().array().min(0),
   }),
 );
@@ -994,53 +805,53 @@ const possibleRandomFields: RandomFormField[] = [
   {
     name: 'string',
     type: RandomFormFieldType.STRING,
-    validation: zod.string().min(1, 'Required'),
+    validation: zod.string().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
   },
   {
     name: 'number',
     type: RandomFormFieldType.NUMBER,
-    validation: zod.coerce.number().min(10, 'Required'),
+    validation: zod.coerce.number().min(10, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
   },
   {
     name: 'checkbox',
     type: RandomFormFieldType.CHECKBOX,
-    validation: zod.string().array().min(1, 'Required'),
+    validation: zod.string().array().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
   },
   {
     name: 'single-checkbox',
     type: RandomFormFieldType.SINGLE_CHECKBOX,
-    validation: zod.string().array().min(1, 'Required'),
+    validation: zod.string().array().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
   },
   {
     name: 'checkbox-toggle',
     type: RandomFormFieldType.CHECKBOX_TOGGLE,
-    validation: zod.string().array().min(1, 'Required'),
+    validation: zod.string().array().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
   },
   {
     name: 'combobox',
     type: RandomFormFieldType.COMBOBOX,
-    validation: zod.number().array().min(1, 'must select at least 1 value'),
+    validation: zod.number().array().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
   },
   {
     name: 'radio',
     type: RandomFormFieldType.RADIO,
-    validation: zod.string().min(1, 'Required'),
+    validation: zod.string().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
   },
   {
     name: 'single-radio',
     type: RandomFormFieldType.SINGLE_RADIO,
-    validation: zod.string().min(1, 'Required'),
+    validation: zod.string().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
   },
   {
     name: 'textarea',
     type: RandomFormFieldType.TEXTAREA,
-    validation: zod.string().min(1, 'Required'),
+    validation: zod.string().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
   },
   {
     name: 'date',
     type: RandomFormFieldType.DATE,
     // @todo(!!!) date specific validation
-    validation: zod.custom((value) => datePickerUtils.isValidDate(value as DateFormValue), {
+    validation: zod.custom((value) => datePickerComponentUtils.isValidDate(value as DateFormValue), {
       message: 'must select a date',
     }),
   },
@@ -1048,7 +859,7 @@ const possibleRandomFields: RandomFormField[] = [
     name: 'date-range',
     type: RandomFormFieldType.DATE_RANGE,
     // @todo(!!!) date specific validation
-    validation: zod.custom((value) => datePickerUtils.isValidDateRange(value as DateFormValue), {
+    validation: zod.custom((value) => datePickerComponentUtils.isValidDateRange(value as DateFormValue), {
       message: 'must select a date',
     }),
   },
@@ -1056,7 +867,7 @@ const possibleRandomFields: RandomFormField[] = [
     name: 'time-input',
     type: RandomFormFieldType.TIME_INPUT,
     // @todo(!!!) date specific validation
-    validation: zod.custom((value) => timeInputUtils.isValidTime(value as string), {
+    validation: zod.custom((value) => timeInputComponentUtils.isValidTime(value as string), {
       message: 'must select a time',
     }),
   },
@@ -1065,7 +876,7 @@ const possibleRandomFields: RandomFormField[] = [
     type: RandomFormFieldType.ARRAY,
     validation: zod
       .object({
-        partA: zod.string().min(1, 'Required'),
+        partA: zod.string().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
         partB: zod.string().optional(),
       })
       .array()
@@ -1102,14 +913,14 @@ export const DynamicFormElements = () => {
     if (randomField.type === RandomFormFieldType.COMBOBOX) {
       setComboboxValues({
         ...comboboxValues(),
-        [randomFieldName]: comboboxUtils.createComboboxValue(),
+        [randomFieldName]: comboboxComponentUtils.createValueStore(),
       });
     }
 
     if (randomField.type === RandomFormFieldType.DATE || randomField.type === RandomFormFieldType.DATE_RANGE) {
       setDatePickerValues({
         ...datePickerValues(),
-        [randomFieldName]: datePickerUtils.createDatePickerInputValue(),
+        [randomFieldName]: datePickerComponentUtils.createInputValueStore(),
       });
     }
 
@@ -1168,97 +979,53 @@ export const DynamicFormElements = () => {
           <FormField>
             <Checkbox labelElement="add default value" name="addDefaultValue" value="yes" />
           </FormField>
-          <FormField>
+          <FormField errors={formStore.errors().title?.errors}>
             <Label>Title</Label>
-            <Input
-              type="text"
-              name="title"
-              validationState={
-                formStore.errors().title?.errors ? FormInputValidationState.INVALID : FormInputValidationState.VALID
-              }
-            />
-            <Show when={!!formStore.errors().title?.errors}>
-              <SupportingText
-                data-id={dynamicDataId.VALIDATION_MESSAGE}
-                supportingText={formStore.errors().title?.errors}
-                color={SupportingTextColor.DANGER}
-              />
-            </Show>
+            <Input type="text" name="title" />
           </FormField>
           <Show when={randomInputs().length > 0}>
             <For each={randomInputs()}>
               {(input) => {
-                const getValidationState = () =>
-                  formStore.errors()[input.name]?.errors
-                    ? FormInputValidationState.INVALID
-                    : FormInputValidationState.VALID;
-
                 return (
-                  <FormField data-id={input.type}>
+                  <FormField data-id={input.type} errors={formStore.errors()[input.name]?.errors}>
                     <Label>{input.name}</Label>
                     <Switch>
                       <Match when={input.type === RandomFormFieldType.STRING}>
-                        <Input
-                          type="text"
-                          name={input.name}
-                          validationState={getValidationState()}
-                          placeholder="placeholder"
-                        />
+                        <Input type="text" name={input.name} placeholder="placeholder" />
                       </Match>
                       <Match when={input.type === RandomFormFieldType.NUMBER}>
-                        <Input
-                          type="number"
-                          name={input.name}
-                          validationState={getValidationState()}
-                          placeholder="placeholder"
-                        />
+                        <Input type="number" name={input.name} placeholder="placeholder" />
                       </Match>
                       <Match when={input.type === RandomFormFieldType.CHECKBOX}>
-                        <Checkbox.Group validationState={getValidationState()}>
+                        <Checkbox.Group>
                           <Checkbox labelElement="checked 1" name={input.name} value={checkedValue1} />
                           <Checkbox labelElement="checked 2" name={input.name} value={checkedValue2} />
                           <Checkbox labelElement="checked 3" name={input.name} value={checkedValue3} />
                         </Checkbox.Group>
                       </Match>
                       <Match when={input.type === RandomFormFieldType.SINGLE_CHECKBOX}>
-                        <Checkbox
-                          labelElement="checked 1"
-                          name={input.name}
-                          value={checkedValue1}
-                          validationState={getValidationState()}
-                        />
+                        <Checkbox labelElement="checked 1" name={input.name} value={checkedValue1} />
                       </Match>
                       <Match when={input.type === RandomFormFieldType.CHECKBOX_TOGGLE}>
-                        <Checkbox.Toggle
-                          labelElement="yes"
-                          name={input.name}
-                          value={checkedValue1}
-                          validationState={getValidationState()}
-                        />
+                        <Checkbox.Toggle labelElement="yes" name={input.name} value={checkedValue1} />
                       </Match>
                       <Match when={input.type === RandomFormFieldType.RADIO}>
-                        <Radio.Group validationState={getValidationState()}>
+                        <Radio.Group>
                           <Radio labelElement="yes" name={input.name} value={radioValueYes} />
                           <Radio labelElement="no" name={input.name} value={radioValueNo} />
                           <Radio labelElement="maybe" name={input.name} value={radioValueMaybe} />
                         </Radio.Group>
                       </Match>
                       <Match when={input.type === RandomFormFieldType.SINGLE_RADIO}>
-                        <Radio
-                          labelElement="yes"
-                          name={input.name}
-                          value={radioValueYes}
-                          validationState={getValidationState()}
-                        />
+                        <Radio labelElement="yes" name={input.name} value={radioValueYes} />
                       </Match>
                       <Match when={input.type === RandomFormFieldType.TEXTAREA}>
-                        <Textarea name={input.name} validationState={getValidationState()} placeholder="placeholder" />
+                        <Textarea name={input.name} placeholder="placeholder" />
                       </Match>
                       <Match when={input.type === RandomFormFieldType.DATE}>
                         <DatePicker.Input
                           includeTime
                           name={input.name}
-                          validationState={getValidationState()}
                           placeholder="placeholder"
                           onSelectDate={(date?: Date, which?: WhichDate) => {
                             datePickerValues()?.[input.name]?.setDate(date, which);
@@ -1271,7 +1038,6 @@ export const DynamicFormElements = () => {
                         <DatePicker.Input
                           isRange
                           name={input.name}
-                          validationState={getValidationState()}
                           placeholder="placeholder"
                           onSelectDate={(date?: Date, which?: WhichDate) => {
                             datePickerValues()?.[input.name]?.setDate(date, which);
@@ -1285,7 +1051,7 @@ export const DynamicFormElements = () => {
                         />
                       </Match>
                       <Match when={input.type === RandomFormFieldType.TIME_INPUT}>
-                        <TimeInput name={input.name} validationState={getValidationState()} />
+                        <TimeInput name={input.name} />
                       </Match>
                       <Match when={input.type === RandomFormFieldType.ARRAY}>
                         <For each={formStore.data()[input.name] as NestStructure[]}>
@@ -1294,45 +1060,21 @@ export const DynamicFormElements = () => {
 
                             return (
                               <div data-id="array-field-element">
-                                <FormField>
+                                <FormField errors={getArrayFieldErrors().partA?.errors}>
                                   <Label>Part A</Label>
                                   <Input
                                     type="text"
                                     name={`${input.name}.${index()}.partA`}
                                     placeholder="placeholder"
-                                    validationState={
-                                      getArrayFieldErrors().partA?.errors
-                                        ? FormInputValidationState.INVALID
-                                        : FormInputValidationState.VALID
-                                    }
                                   />
-                                  <Show when={!!getArrayFieldErrors().partA?.errors}>
-                                    <SupportingText
-                                      data-id={dynamicDataId.VALIDATION_MESSAGE}
-                                      supportingText={getArrayFieldErrors().partA?.errors}
-                                      color={SupportingTextColor.DANGER}
-                                    />
-                                  </Show>
                                 </FormField>
-                                <FormField>
+                                <FormField errors={getArrayFieldErrors().partB?.errors}>
                                   <Label>Part B</Label>
                                   <Input
                                     type="text"
                                     name={`${input.name}.${index()}.partB`}
                                     placeholder="placeholder"
-                                    validationState={
-                                      getArrayFieldErrors().partB?.errors
-                                        ? FormInputValidationState.INVALID
-                                        : FormInputValidationState.VALID
-                                    }
                                   />
-                                  <Show when={!!getArrayFieldErrors().partB?.errors}>
-                                    <SupportingText
-                                      data-id={dynamicDataId.VALIDATION_MESSAGE}
-                                      supportingText={getArrayFieldErrors().partB?.errors}
-                                      color={SupportingTextColor.DANGER}
-                                    />
-                                  </Show>
                                 </FormField>
                                 <Button
                                   data-id="remove-array-field-button"
@@ -1362,7 +1104,7 @@ export const DynamicFormElements = () => {
                             { label: 'option 3', value: 33 },
                             { label: 'option 4', value: 44 },
                           ]}
-                          filterOptions={comboboxUtils.excludeSelectedFilter}
+                          filterOptions={comboboxComponentUtils.excludeSelectedFilter}
                           setSelected={(options: ComboboxOption[]) => {
                             // cast needed since auto complete values can be a number of types
                             const value = options.map((option) => option.value) as number[];
@@ -1374,16 +1116,10 @@ export const DynamicFormElements = () => {
                           name={input.name}
                           selectedComponent={Combobox.SelectedOption}
                           selectableComponent={Combobox.SelectableOption}
-                          validationState={getValidationState()}
                           placeholder="placeholder"
                         />
                       </Match>
                     </Switch>
-                    <SupportingText
-                      data-id={dynamicDataId.VALIDATION_MESSAGE}
-                      supportingText={formStore.errors()[input.name]?.errors}
-                      color={formStore.errors()[input.name]?.errors ? SupportingTextColor.DANGER : undefined}
-                    />
                   </FormField>
                 );
               }}

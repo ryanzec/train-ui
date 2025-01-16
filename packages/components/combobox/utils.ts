@@ -87,16 +87,12 @@ export type ComboboxProps<TData extends ComboboxExtraData> = JSX.HTMLAttributes<
   name: string;
   removeOnDuplicateSingleSelect?: boolean;
   disabled?: boolean;
-  validationState?: FormInputValidationState;
   showClearIcon?: boolean;
   ungroupedKey?: string;
   groupOrder?: string[];
 };
 
-export type FormComboboxProps<TFormData, TData extends ComboboxExtraData> = Omit<
-  ComboboxProps<TData>,
-  'validationState'
-> & {
+export type FormComboboxProps<TFormData, TData extends ComboboxExtraData> = ComboboxProps<TData> & {
   errors?: Accessor<FormErrorsData<TFormData>>;
   label?: string;
   name: keyof TFormData;
@@ -842,7 +838,7 @@ export type ComboboxValueStore<TData = ComboboxExtraData> = {
   setSelected: (selected: ComboboxOption<TData>[]) => void;
 };
 
-const createComboboxValue = <TData = ComboboxExtraData>(options?: CreateProps<TData>): ComboboxValueStore<TData> => {
+const createValueStore = <TData = ComboboxExtraData>(options?: CreateProps<TData>): ComboboxValueStore<TData> => {
   const [selected, internalSetSelected] = createSignal<ComboboxOption<TData>[]>(options?.defaultValue ?? []);
 
   const setSelected = (selected: ComboboxOption<TData>[]) => {
@@ -883,9 +879,9 @@ const excludeSelectedFilter = <TData>(
   });
 };
 
-export const comboboxUtils = {
-  createComboboxValue,
-  createCombobox,
+export const comboboxComponentUtils = {
+  createValueStore,
+  createStore: createCombobox,
   simpleFilter,
   excludeSelectedFilter,
 };

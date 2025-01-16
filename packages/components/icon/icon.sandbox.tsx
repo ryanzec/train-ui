@@ -1,4 +1,4 @@
-import Combobox, { type ComboboxOption, comboboxUtils } from '$/components/combobox';
+import Combobox, { type ComboboxOption, comboboxComponentUtils } from '$/components/combobox';
 import FormField from '$/components/form-field';
 import FormFields from '$/components/form-fields/form-fields';
 import Icon, { IconColor, IconSize } from '$/components/icon';
@@ -6,7 +6,7 @@ import styles from '$/components/icon/icon.sandbox.module.css';
 import { type IconName, iconComponents } from '$/components/icon/utils';
 import Input from '$/components/input';
 import Label from '$/components/label';
-import Tooltip, { tooltipUtils, TooltipTriggerEvent } from '$/components/tooltip';
+import Tooltip, { tooltipComponentUtils, TooltipTriggerEvent } from '$/components/tooltip';
 import { clipboardUtils } from '$/utils/clipboard';
 import { For, createEffect, createSignal } from 'solid-js';
 
@@ -102,10 +102,10 @@ export const AllIcons = () => {
   type ColorMetaData = { meta: { iconColor: IconColor } };
   type SizeMetaData = { meta: { iconSize: IconSize } };
   const allIconNames: IconName[] = Object.keys(iconComponents) as IconName[];
-  const colorComboboxStore = comboboxUtils.createComboboxValue<ColorMetaData>({
+  const colorComboboxStore = comboboxComponentUtils.createValueStore<ColorMetaData>({
     defaultValue: [colorOptions[0]],
   });
-  const sizeComboboxStore = comboboxUtils.createComboboxValue<SizeMetaData>({
+  const sizeComboboxStore = comboboxComponentUtils.createValueStore<SizeMetaData>({
     defaultValue: [sizeOptions[2]],
   });
   const [filter, setFilter] = createSignal<string>('');
@@ -153,7 +153,7 @@ export const AllIcons = () => {
       <div class={styles.iconsContainer}>
         <For each={shownIconNames()}>
           {(iconName) => {
-            const tooltipStore = tooltipUtils.createStore();
+            const tooltipStore = tooltipComponentUtils.createStore();
 
             return (
               <div class={styles.iconContainer}>
@@ -175,5 +175,15 @@ export const AllIcons = () => {
         </For>
       </div>
     </div>
+  );
+};
+
+export const Group = () => {
+  return (
+    <Icon.Group>
+      <Icon icon="x" />
+      <Icon icon="square" />
+      <Icon icon="align-justified" />
+    </Icon.Group>
   );
 };
