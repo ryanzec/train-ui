@@ -1,14 +1,18 @@
 import classnames from 'classnames';
-import { type JSX, Show, createSignal, splitProps } from 'solid-js';
+import { type Accessor, type JSX, Show, createSignal, splitProps } from 'solid-js';
 
 import styles from '$/components/checkbox/checkbox.module.css';
 import Icon from '$/components/icon';
 import type { IconName } from '$/components/icon/utils';
-import type { FormInputValidationState } from '$/stores/form/utils';
+import type { DefaultFormData, FormInputValidationState } from '$/stores/form/utils';
 
-export type CheckboxProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
+export type CheckboxProps<TFormData = DefaultFormData> = Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'name'> & {
   labelElement?: JSX.Element;
   alignEnd?: boolean;
+  name?: keyof TFormData;
+
+  // while not directly used, used to infer the type for name to give properly type checking on that property
+  formData?: Accessor<Partial<TFormData>>;
 };
 
 enum CheckedState {
@@ -31,8 +35,15 @@ const getCheckedStateIcon = (state: CheckedState): IconName => {
 
 // we exposed a plain input in the off chance we need an input not hooked up to react-hook-form directly (like the
 // auto complete component)
-const Checkbox = (passedProps: CheckboxProps) => {
-  const [props, restOfProps] = splitProps(passedProps, ['class', 'labelElement', 'alignEnd', 'onChange']);
+const Checkbox = <TFormData = DefaultFormData>(passedProps: CheckboxProps<TFormData>) => {
+  const [props, restOfProps] = splitProps(passedProps, [
+    'class',
+    'labelElement',
+    'alignEnd',
+    'onChange',
+    'name',
+    'formData',
+  ]);
 
   // we need to manually track the checked state of the input in order to make sure the toggle slider properly
   // reacts when the checked state of the input changes
@@ -59,7 +70,13 @@ const Checkbox = (passedProps: CheckboxProps) => {
       })}
     >
       <label>
-        <input data-id="checkbox" {...restOfProps} type="checkbox" onChange={handleChange} />
+        <input
+          data-id="checkbox"
+          {...restOfProps}
+          type="checkbox"
+          name={props.name as string}
+          onChange={handleChange}
+        />
         <Icon class={classnames(styles.icon)} icon={getCheckedStateIcon(checkedState())} />
         <Show when={props.labelElement}>
           <span class={styles.label}>{props.labelElement}</span>

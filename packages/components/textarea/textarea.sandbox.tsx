@@ -3,6 +3,7 @@ import FormFields from '$/components/form-fields/form-fields';
 import Label from '$/components/label';
 import SupportingText, { SupportingTextColor } from '$/components/supporting-text';
 import Textarea from '$/components/textarea';
+import { formStoreUtils } from '$/stores/form';
 
 export default {
   title: 'Components/Textarea',
@@ -37,5 +38,21 @@ export const Default = () => {
         </Textarea>
       </FormField>
     </FormFields>
+  );
+};
+
+// not exported as this is only for testing and would be caught in a `pnpm build:check`
+const NameTypingTest = () => {
+  const { data } = formStoreUtils.createForm<{ textarea: string[] }>({
+    onSubmit: async (values) => {
+      console.log(values);
+    },
+  });
+
+  return (
+    <FormField>
+      {/* @ts-expect-error should error since it is not part of the form data, intended to test this functionality */}
+      <Textarea name="textare" value="1" formData={data} />
+    </FormField>
   );
 };

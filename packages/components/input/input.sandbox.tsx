@@ -4,7 +4,7 @@ import Icon from '$/components/icon';
 import Input from '$/components/input';
 import Label from '$/components/label';
 import SupportingText, { SupportingTextColor } from '$/components/supporting-text';
-import { FormInputValidationState } from '$/stores/form';
+import { formStoreUtils } from '$/stores/form';
 
 export default {
   title: 'Components/Input',
@@ -94,5 +94,21 @@ export const Default = () => {
         />
       </FormField>
     </FormFields>
+  );
+};
+
+// not exported as this is only for testing and would be caught in a `pnpm build:check`
+const NameTypingTest = () => {
+  const { data } = formStoreUtils.createForm<{ input: string }>({
+    onSubmit: async (values) => {
+      console.log(values);
+    },
+  });
+
+  return (
+    <FormField>
+      {/* @ts-expect-error should error since it is not part of the form data, intended to test this functionality */}
+      <Input name="inpu" value="1" formData={data} />
+    </FormField>
   );
 };

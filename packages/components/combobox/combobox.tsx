@@ -19,6 +19,7 @@ import * as _ from 'lodash';
 import Options from '$/components/combobox/options';
 import SelectableOption from '$/components/combobox/selectable-option';
 import ScrollArea from '$/components/scroll-area';
+import type { DefaultFormData } from '$/stores/form/utils';
 import { createStore, produce, reconcile } from 'solid-js/store';
 import styles from './combobox.module.css';
 
@@ -48,7 +49,9 @@ const orderGroupKeys = (allKeys: string[], orderedKeys: string[]) => {
   return returnValue;
 };
 
-const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TData>) => {
+const Combobox = <TData extends ComboboxExtraData, TFormData = DefaultFormData>(
+  passedProps: ComboboxProps<TData, TFormData>,
+) => {
   const [props, restOfProps] = splitProps(
     mergeProps(
       {
@@ -86,6 +89,7 @@ const Combobox = <TData extends ComboboxExtraData>(passedProps: ComboboxProps<TD
       'class',
       'ungroupedKey',
       'groupOrder',
+      'formData',
 
       // we move out the id in order to assign it to the input so things like label for works
       'id',

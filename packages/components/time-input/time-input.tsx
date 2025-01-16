@@ -2,14 +2,15 @@ import { type JSX, createReaction, createSignal, mergeProps, splitProps } from '
 
 import Input, { type InputProps } from '$/components/input';
 import { DEFAULT_VALUE, EditItem, editItemsOrder, timeInputComponentUtils } from '$/components/time-input/utils';
+import type { DefaultFormData } from '$/stores/form/utils';
 import { Key } from '$/types/generic';
 
-export type TimeInputProps = InputProps & {
+export type TimeInputProps<TFormData = DefaultFormData> = InputProps<TFormData> & {
   // @todo(!!!) implement
   format?: string;
 };
 
-const TimeInput = (passedProps: TimeInputProps) => {
+const TimeInput = <TFormData = DefaultFormData>(passedProps: TimeInputProps<TFormData>) => {
   const [props, restOfProps] = splitProps(mergeProps({ placeholder: 'Time', format: '' }, passedProps), ['format']);
 
   let inputRef: HTMLInputElement | undefined;

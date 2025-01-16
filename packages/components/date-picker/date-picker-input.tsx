@@ -7,6 +7,7 @@ import styles from '$/components/date-picker/date-picker.module.css';
 import { datePickerComponentUtils } from '$/components/date-picker/utils';
 import Input, { type InputProps } from '$/components/input';
 import { clickOutsideDirective } from '$/directives/click-outside-directive';
+import type { DefaultFormData } from '$/stores/form/utils';
 import type { CommonDataAttributes } from '$/types/generic';
 
 // this is needed to avoid this code being stripped in compilation because of the way directive work in SolidJS
@@ -17,7 +18,7 @@ export enum WhichDate {
   SECOND = 'second',
 }
 
-export type DatePickerInputProps = InputProps &
+export type DatePickerInputProps<TFormData = DefaultFormData> = InputProps<TFormData> &
   Omit<DatePickerProps, 'onSelectDate' | 'defaultSelectedDate' | 'defaultDisplayDate'> &
   CommonDataAttributes & {
     isRange?: boolean;
@@ -28,7 +29,7 @@ export type DatePickerInputProps = InputProps &
     defaultEndSelectedDate?: Date;
   };
 
-const DatePickerInput = (passedProps: DatePickerInputProps) => {
+const DatePickerInput = <TFormData = DefaultFormData>(passedProps: DatePickerInputProps<TFormData>) => {
   const [customProps, restOfProps] = splitProps(
     mergeProps(
       {

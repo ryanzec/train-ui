@@ -2,7 +2,7 @@ import { debounce } from '@solid-primitives/scheduled';
 import { type Accessor, type JSX, createEffect, createSignal, onCleanup } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
 
-import type { FormErrorsData, FormInputValidationState } from '$/stores/form/utils';
+import { type DefaultFormData, FormErrorsData, FormInputValidationState } from '$/stores/form/utils';
 import { Key } from '$/types/generic';
 import { domUtils } from '$/utils/dom';
 
@@ -65,7 +65,10 @@ export type ComboboxSelectedOptionProps<TData extends ComboboxExtraData> = {
   removeValue: (optionIndex: number) => void;
 };
 
-export type ComboboxProps<TData extends ComboboxExtraData> = JSX.HTMLAttributes<HTMLDivElement> & {
+export type ComboboxProps<
+  TData extends ComboboxExtraData,
+  TFormData = DefaultFormData,
+> = JSX.HTMLAttributes<HTMLDivElement> & {
   selected: ComboboxOption<TData>[];
   setSelected: (option: ComboboxOption<TData>[]) => void;
   placeholder?: string;
@@ -84,12 +87,15 @@ export type ComboboxProps<TData extends ComboboxExtraData> = JSX.HTMLAttributes<
   selectableComponent?: (props: ComboboxSelectableOptionProps<TData>) => JSX.Element;
   onDeleteOption?: (deletedOption: ComboboxOption<TData>) => void;
   asyncThreshold?: number;
-  name: string;
   removeOnDuplicateSingleSelect?: boolean;
   disabled?: boolean;
   showClearIcon?: boolean;
   ungroupedKey?: string;
   groupOrder?: string[];
+  name?: keyof TFormData;
+
+  // while not directly used, used to infer the type for name to give properly type checking on that property
+  formData?: Accessor<Partial<TFormData>>;
 };
 
 export type GetSelectableOptionPropsReturns<TData extends ComboboxExtraData> = {
@@ -165,7 +171,9 @@ const defaultTriggerComboboxOptions: TriggerComboboxOptions = {
   openOptions: false,
 };
 
-const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TData>) => {
+const createCombobox = <TData extends ComboboxExtraData, TFormData = DefaultFormData>(
+  props: ComboboxProps<TData, TFormData>,
+) => {
   const orderDisplayOptions = (options: ComboboxOption<TData>[]) => {
     if (!props.isMulti) {
       return options;
@@ -683,7 +691,7 @@ const createCombobox = <TData extends ComboboxExtraData>(props: ComboboxProps<TD
       onInput: handleInputInput,
       placeholder: props.placeholder,
       id: props.id,
-      name: props.name,
+      name: props.name as string,
     };
   };
 

@@ -1,14 +1,30 @@
 import classnames from 'classnames';
-import { type JSX, splitProps } from 'solid-js';
+import { type Accessor, type JSX, splitProps } from 'solid-js';
 
 import styles from '$/components/textarea/textarea.module.css';
+import type { DefaultFormData } from '$/stores/form/utils';
 
-export type TextareaProps = JSX.TextareaHTMLAttributes<HTMLTextAreaElement>;
+export type TextareaProps<TFormData = DefaultFormData> = Omit<
+  JSX.TextareaHTMLAttributes<HTMLTextAreaElement>,
+  'name'
+> & {
+  name?: keyof TFormData;
 
-const Textarea = (passedProps: TextareaProps) => {
-  const [props, restOfProps] = splitProps(passedProps, ['class']);
+  // while not directly used, used to infer the type for name to give properly type checking on that property
+  formData?: Accessor<Partial<TFormData>>;
+};
 
-  return <textarea data-id="textarea" {...restOfProps} class={classnames(styles.textarea, props.class)} />;
+const Textarea = <TFormData = DefaultFormData>(passedProps: TextareaProps<TFormData>) => {
+  const [props, restOfProps] = splitProps(passedProps, ['class', 'name', 'formData']);
+
+  return (
+    <textarea
+      data-id="textarea"
+      {...restOfProps}
+      name={props.name as string}
+      class={classnames(styles.textarea, props.class)}
+    />
+  );
 };
 
 export default Textarea;

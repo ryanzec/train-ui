@@ -1,19 +1,30 @@
 import classnames from 'classnames';
-import { type JSX, createSignal, splitProps } from 'solid-js';
+import { type Accessor, type JSX, createSignal, splitProps } from 'solid-js';
 
 import Icon from '$/components/icon';
 import styles from '$/components/radio/radio.module.css';
-import type { FormInputValidationState } from '$/stores/form/utils';
+import type { DefaultFormData } from '$/stores/form/utils';
 
-export type RadioProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
+export type RadioProps<TFormData = DefaultFormData> = Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'name'> & {
   labelElement: JSX.Element;
   alignEnd?: boolean;
+  name?: keyof TFormData;
+
+  // while not directly used, used to infer the type for name to give properly type checking on that property
+  formData?: Accessor<Partial<TFormData>>;
 };
 
 // we exposed a plain input in the off chance we need an input not hooked up to react-hook-form directly (like the
 // auto complete component)
-const Radio = (passedProps: RadioProps) => {
-  const [props, restOfProps] = splitProps(passedProps, ['class', 'labelElement', 'alignEnd', 'onSelect']);
+const Radio = <TFormData = DefaultFormData>(passedProps: RadioProps<TFormData>) => {
+  const [props, restOfProps] = splitProps(passedProps, [
+    'class',
+    'labelElement',
+    'alignEnd',
+    'onSelect',
+    'name',
+    'formData',
+  ]);
 
   // we need to manually track the checked state of the input in order to make sure the toggle slider properly
   // reacts when the checked state of the input changes
@@ -39,7 +50,7 @@ const Radio = (passedProps: RadioProps) => {
       })}
     >
       <label>
-        <input data-id="radio" {...restOfProps} type="radio" onChange={handleSelect} />
+        <input data-id="radio" {...restOfProps} type="radio" name={props.name as string} onChange={handleSelect} />
         <Icon
           class={classnames(styles.icon, {
             [styles.iconIsChecked]: isChecked(),

@@ -15,6 +15,11 @@ import type * as zod from 'zod';
 import { InputType, domUtils } from '$/utils/dom';
 import { zodUtils } from '$/utils/zod';
 
+export type DefaultFormData = {
+  // biome-ignore lint/suspicious/noExplicitAny: this is used as a default so we have to let any data type
+  [key: string]: any;
+};
+
 export enum FormInputValidationState {
   NEUTRAL = 'neutral',
   VALID = 'valid',
@@ -107,7 +112,7 @@ export type WatchReturns = {
   unsubscribe: () => void;
 };
 
-const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawShape>(
+const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawShape = DefaultFormData>(
   passedOptions: CreateFormOptions<TFormData, TSchemaObject>,
 ): CreateFormReturn<TFormData, TSchemaObject> => {
   // @todo(investigate) unfortunately the onSubmit causes a weird issue with structuredClone so not using that here

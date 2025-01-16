@@ -1,12 +1,12 @@
 import classnames from 'classnames';
-import { type JSX, Show, createSignal, mergeProps, splitProps, useContext } from 'solid-js';
+import { type Accessor, type JSX, Show, createSignal, mergeProps, splitProps, useContext } from 'solid-js';
 
 import { FormFieldContext } from '$/components/form-field';
 import styles from '$/components/input/input.module.css';
-import { FormInputValidationState } from '$/stores/form/utils';
+import { type DefaultFormData, FormInputValidationState } from '$/stores/form/utils';
 import { loggerUtils } from '$/utils/logger';
 
-export type InputProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
+export type InputProps<TFormData = DefaultFormData> = Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'name'> & {
   preItem?: JSX.Element;
   preItemIsInline?: boolean;
   postItem?: JSX.Element;
@@ -14,11 +14,15 @@ export type InputProps = JSX.InputHTMLAttributes<HTMLInputElement> & {
   postItemIsClickable?: boolean;
   inputContainerClass?: string;
   includeReadonlyStyles?: boolean;
+  name?: keyof TFormData;
+
+  // while not directly used, used to infer the type for name to give properly type checking on that property
+  formData?: Accessor<Partial<TFormData>>;
 };
 
-const Input = (passedProps: InputProps) => {
+const Input = <TFormData = DefaultFormData>(passedProps: InputProps<TFormData>) => {
   const [props, restOfProps] = splitProps(
-    mergeProps({ preItemIsInline: false, includeReadonlyStyles: true }, passedProps),
+    mergeProps({ preItemIsInline: false, includeReadonlyStyles: true, type: 'text' }, passedProps),
     [
       'class',
       'onFocus',
@@ -32,6 +36,8 @@ const Input = (passedProps: InputProps) => {
       'postItemIsClickable',
       'inputContainerClass',
       'includeReadonlyStyles',
+      'formData',
+      'name',
     ],
   );
 
@@ -94,6 +100,7 @@ const Input = (passedProps: InputProps) => {
           <input
             data-id="input"
             {...restOfProps}
+            name={props.name as string}
             class={classnames(styles.input, props.class, {
               [styles.errorState]: formFieldContext.validationState() === FormInputValidationState.INVALID,
             })}

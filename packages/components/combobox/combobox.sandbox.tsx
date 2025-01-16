@@ -558,3 +558,28 @@ export const SingleChangeLocalOptions = () => {
     </>
   );
 };
+
+// not exported as this is only for testing and would be caught in a `pnpm build:check`
+const NameTypingTest = () => {
+  const { data } = formStoreUtils.createForm<{ combobox: number[] }>({
+    onSubmit: async (values) => {
+      console.log(values);
+    },
+  });
+  const [options] = createSignal<ComboboxOption<CustomExtraData>[]>(baseOptions);
+  const comboboxStore = comboboxComponentUtils.createValueStore();
+
+  return (
+    <FormField>
+      <Label>Label</Label>
+      <Combobox
+        options={options()}
+        setSelected={comboboxStore.setSelected}
+        selected={comboboxStore.selected()}
+        // @ts-expect-error should error since it is not part of the form data, intended to test this functionality
+        name="combobo"
+        formData={data}
+      />
+    </FormField>
+  );
+};
