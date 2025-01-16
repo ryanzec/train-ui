@@ -127,28 +127,32 @@ export const AllIcons = () => {
             onInput={(event) => setFilter(event.currentTarget.value)}
           />
         </FormField>
-        <Combobox.Form
-          forceSelection
-          autoShowOptions
-          options={colorOptions}
-          // filterOptions={props.filterOptions ?? comboboxUtils.excludeSelectedFilter}
-          setSelected={colorComboboxStore.setSelected}
-          selected={colorComboboxStore.selected()}
-          placeholder="Select color..."
-          name="color"
-          label="Color"
-        />
-        <Combobox.Form
-          forceSelection
-          autoShowOptions
-          options={sizeOptions}
-          // filterOptions={props.filterOptions ?? comboboxUtils.excludeSelectedFilter}
-          setSelected={sizeComboboxStore.setSelected}
-          selected={sizeComboboxStore.selected()}
-          placeholder="Select size..."
-          name="size"
-          label="Size"
-        />
+        <FormField>
+          <Label>Color</Label>
+          <Combobox
+            forceSelection
+            autoShowOptions
+            options={colorOptions}
+            // filterOptions={props.filterOptions ?? comboboxUtils.excludeSelectedFilter}
+            setSelected={colorComboboxStore.setSelected}
+            selected={colorComboboxStore.selected()}
+            placeholder="Select color..."
+            name="color"
+          />
+        </FormField>
+        <FormField>
+          <Label>Size</Label>
+          <Combobox
+            forceSelection
+            autoShowOptions
+            options={sizeOptions}
+            // filterOptions={props.filterOptions ?? comboboxUtils.excludeSelectedFilter}
+            setSelected={sizeComboboxStore.setSelected}
+            selected={sizeComboboxStore.selected()}
+            placeholder="Select size..."
+            name="size"
+          />
+        </FormField>
       </FormFields>
       <div class={styles.iconsContainer}>
         <For each={shownIconNames()}>

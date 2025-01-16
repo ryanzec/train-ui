@@ -38,7 +38,7 @@ const ApplicationFrameExpandableItem = (passedProps: ApplicationFrameExpandableI
     return currentRoutePrefix === sideNavigationGroupRoutePrefix;
   };
 
-  const toggleStore = toggleStoreUtils.createToggle();
+  const toggleStore = toggleStoreUtils.createStore();
 
   createEffect(() => {
     if (isCurrentSideNavigation(location.pathname) === false) {

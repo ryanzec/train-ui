@@ -10,7 +10,7 @@ export type ToggleStoreInstance = {
   toggle: () => void;
 };
 
-const createToggle = (options: CreateToggleProps = {}): ToggleStoreInstance => {
+const createStore = (options: CreateToggleProps = {}): ToggleStoreInstance => {
   const [isToggled, setIsToggled] = createSignal<boolean>(options.defaultIsToggled ?? false);
 
   const toggle = () => {
@@ -25,5 +25,5 @@ const createToggle = (options: CreateToggleProps = {}): ToggleStoreInstance => {
 };
 
 export const toggleStoreUtils = {
-  createToggle,
+  createStore,
 };

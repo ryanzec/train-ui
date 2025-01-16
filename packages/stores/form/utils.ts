@@ -777,7 +777,4 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
 
 export const formStoreUtils = {
   createForm,
-  getValidationState: (errors?: string[]) => {
-    return errors ? FormInputValidationState.INVALID : FormInputValidationState.VALID;
-  },
 };

@@ -40,7 +40,7 @@ const SideNavigationItem = (passedProps: SideNavigationItemProps) => {
     JSX.HTMLAttributes<HTMLAnchorElement> | JSX.HTMLAttributes<HTMLButtonElement>
   >({});
 
-  props.toggleStore = !props.toggleStore && !!solidChildren() ? toggleStoreUtils.createToggle() : props.toggleStore;
+  props.toggleStore = !props.toggleStore && !!solidChildren() ? toggleStoreUtils.createStore() : props.toggleStore;
 
   const handleClick = () => {
     if (!solidChildren()) {

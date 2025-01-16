@@ -7,7 +7,7 @@ export default {
 };
 
 export const Expanded = () => {
-  const toggleStore = toggleStoreUtils.createToggle({ defaultIsToggled: true });
+  const toggleStore = toggleStoreUtils.createStore({ defaultIsToggled: true });
 
   return (
     <div>
@@ -25,7 +25,7 @@ export const Expanded = () => {
 };
 
 export const Collapsed = () => {
-  const toggleStore = toggleStoreUtils.createToggle();
+  const toggleStore = toggleStoreUtils.createStore();
 
   return (
     <div>
@@ -43,7 +43,7 @@ export const Collapsed = () => {
 };
 
 export const CustomIcon = () => {
-  const toggleStore = toggleStoreUtils.createToggle();
+  const toggleStore = toggleStoreUtils.createStore();
 
   return (
     <div>
@@ -77,8 +77,8 @@ export const NoChildren = () => {
 };
 
 export const ListWithLinks = () => {
-  const toggleStore1 = toggleStoreUtils.createToggle();
-  const toggleStore2 = toggleStoreUtils.createToggle();
+  const toggleStore1 = toggleStoreUtils.createStore();
+  const toggleStore2 = toggleStoreUtils.createStore();
 
   return (
     <div>

@@ -92,7 +92,7 @@ export type ComboboxProps<TData extends ComboboxExtraData> = JSX.HTMLAttributes<
   groupOrder?: string[];
 };
 
-export type FormComboboxProps<TFormData, TData extends ComboboxExtraData> = ComboboxProps<TData> & {
+export type FormComboboxProps<TFormData, TData extends ComboboxExtraData> = Omit<ComboboxProps<TData>, 'name'> & {
   errors?: Accessor<FormErrorsData<TFormData>>;
   label?: string;
   name: keyof TFormData;
