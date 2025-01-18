@@ -61,6 +61,38 @@ export const CheckedByDefault = () => {
   );
 };
 
+export const Toggle = () => {
+  type FormData = {
+    checkbox: string[];
+  };
+  const formSchema = zodUtils.schemaForType<FormData>()(
+    zod.object({
+      checkbox: zod.string().array().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
+    }),
+  );
+
+  const formStore = formStoreUtils.createForm<FormData, typeof formSchema.shape>({
+    schema: formSchema,
+    initialValues: {
+      checkbox: ['1'],
+    },
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
+  const formDirective = formStore.formDirective;
+
+  return (
+    <form use:formDirective>
+      <input />
+      <FormField errors={formStore.errors().checkbox?.errors}>
+        <Checkbox.Toggle labelElement="checkbox" name="checkbox" value="1" />
+      </FormField>
+    </form>
+  );
+};
+
 // not exported as this is only for testing and would be caught in a `pnpm build:check`
 const NameTypingTest = () => {
   const { data } = formStoreUtils.createForm<{ checkbox: string[] }>({
