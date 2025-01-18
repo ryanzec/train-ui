@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { type Accessor, type JSX, splitProps } from 'solid-js';
+import { type Accessor, type JSX, createSignal, onMount, splitProps } from 'solid-js';
 
 import styles from '$/components/textarea/textarea.module.css';
 import type { DefaultFormData } from '$/stores/form/utils';
@@ -15,11 +15,26 @@ export type TextareaProps<TFormData = DefaultFormData> = Omit<
 };
 
 const Textarea = <TFormData = DefaultFormData>(passedProps: TextareaProps<TFormData>) => {
-  const [props, restOfProps] = splitProps(passedProps, ['class', 'name', 'formData']);
+  const [props, restOfProps] = splitProps(passedProps, ['class', 'name', 'formData', 'autofocus']);
+
+  const [textareaElement, setTextareaElement] = createSignal<HTMLTextAreaElement>();
+
+  const textareaRef = (element: HTMLTextAreaElement) => {
+    setTextareaElement(element);
+  };
+
+  onMount(() => {
+    if (props.autofocus === false) {
+      return;
+    }
+
+    textareaElement()?.focus();
+  });
 
   return (
     <textarea
       data-id="textarea"
+      ref={textareaRef}
       {...restOfProps}
       name={props.name as string}
       class={classnames(styles.textarea, props.class)}

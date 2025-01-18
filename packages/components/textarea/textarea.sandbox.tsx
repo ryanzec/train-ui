@@ -1,6 +1,9 @@
+import Button from '$/components/button';
 import FormField from '$/components/form-field';
 import FormFields from '$/components/form-fields/form-fields';
+import Input from '$/components/input';
 import Label from '$/components/label';
+import Peek, { peekComponentUtils } from '$/components/peek';
 import SupportingText, { SupportingTextColor } from '$/components/supporting-text';
 import Textarea from '$/components/textarea';
 import { formStoreUtils } from '$/stores/form';
@@ -38,6 +41,33 @@ export const Default = () => {
         </Textarea>
       </FormField>
     </FormFields>
+  );
+};
+
+export const AutoFocus = () => {
+  const peekStore = peekComponentUtils.createStore();
+
+  return (
+    <>
+      <FormField>
+        <Textarea autofocus />
+      </FormField>
+      <Button onClick={() => peekStore.setIsOpened(true)}>open peek</Button>
+      <Peek peekStore={peekStore}>
+        <Peek.Header title="Peek Header" />
+        <Peek.Content>
+          <FormField>
+            <Textarea autofocus />
+          </FormField>
+        </Peek.Content>
+        <Peek.Footer>
+          <Button.Group>
+            <Peek.CloseButton />
+            <Button>Process</Button>
+          </Button.Group>
+        </Peek.Footer>
+      </Peek>
+    </>
   );
 };
 

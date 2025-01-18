@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { For, Show, createSignal } from 'solid-js';
+import { For, Show, createSignal, mergeProps } from 'solid-js';
 import * as zod from 'zod';
 
 import Button from '$/components/button';
@@ -580,6 +580,17 @@ const NameTypingTest = () => {
         name="combobo"
         formData={data}
       />
+    </FormField>
+  );
+};
+
+export const NoFiltering = () => {
+  const [options] = createSignal<ComboboxOption<CustomExtraData>[]>(baseOptions);
+  const comboboxStore = comboboxComponentUtils.createValueStore();
+
+  return (
+    <FormField>
+      <Combobox options={options()} setSelected={comboboxStore.setSelected} selected={comboboxStore.selected()} />
     </FormField>
   );
 };

@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { type Accessor, type JSX, Show, createSignal, mergeProps, splitProps, useContext } from 'solid-js';
+import { type Accessor, type JSX, Show, createSignal, mergeProps, onMount, splitProps, useContext } from 'solid-js';
 
 import { FormFieldContext } from '$/components/form-field';
 import styles from '$/components/input/input.module.css';
@@ -38,6 +38,9 @@ const Input = <TFormData = DefaultFormData>(passedProps: InputProps<TFormData>) 
       'includeReadonlyStyles',
       'formData',
       'name',
+
+      //
+      'autofocus',
     ],
   );
 
@@ -49,7 +52,12 @@ const Input = <TFormData = DefaultFormData>(passedProps: InputProps<TFormData>) 
     return;
   }
 
+  const [inputElement, setInputElement] = createSignal<HTMLInputElement>();
   const [isInputFocused, setIsInputFocused] = createSignal(false);
+
+  const inputRef = (element: HTMLInputElement) => {
+    setInputElement(element);
+  };
 
   const handleFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (event) => {
     setIsInputFocused(true);
@@ -72,6 +80,14 @@ const Input = <TFormData = DefaultFormData>(passedProps: InputProps<TFormData>) 
   };
 
   const isFocused = () => isInputFocused() && !props.disabled;
+
+  onMount(() => {
+    if (props.autofocus === false) {
+      return;
+    }
+
+    inputElement()?.focus();
+  });
 
   return (
     <div
@@ -99,6 +115,7 @@ const Input = <TFormData = DefaultFormData>(passedProps: InputProps<TFormData>) 
           <Show when={!!props.inlineItem}>{props.inlineItem}</Show>
           <input
             data-id="input"
+            ref={inputRef}
             {...restOfProps}
             name={props.name as string}
             class={classnames(styles.input, props.class, {
