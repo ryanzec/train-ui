@@ -1,3 +1,10 @@
+/* allow smooth scrolling from html itself but respect the user preference for a11y */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 [data-theme] {
   font-size: var(--font-size-base);
   font-family: Open Sans, Helvetica, Arial, sans-serif;

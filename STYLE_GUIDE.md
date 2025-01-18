@@ -785,4 +785,4 @@ This is based on limited testing so something else might be the underlying issue
 
 # Articles / Links
 
-Nothing yet.
+https://www.youtube.com/watch?v=IP_rtWEMR0o - Has some good content related to utilizing css / html instead of javascript (hit and miss with this one depending on the functionality needed).

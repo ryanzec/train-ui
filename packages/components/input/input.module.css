@@ -28,7 +28,7 @@
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
   letter-spacing: var(--letter-spacing-base);
-  outline: 0;
+  outline-color: transparent;
   background: 0;
   border: 0;
 }
