@@ -1,7 +1,7 @@
 import path from 'node:path';
 import url from 'node:url';
+import type { ApplicationConfiguration } from '$api/types';
 import dotenv from 'dotenv';
-import type { ApplicationConfiguration } from './types';
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);

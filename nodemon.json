@@ -1,0 +1,5 @@
+{
+  "match": ["applications/api/src"],
+  "ext": "ts,js,json",
+  "exec": "tsx --require tsconfig-paths/register applications/api/src/server.ts"
+}

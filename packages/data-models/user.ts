@@ -8,6 +8,7 @@ export type User = {
   password: string;
   createdAt: string;
   updatedAt: string;
+  deletedAt?: string;
 };
 
 export type GetUsersResponse = ResponseStructure<User[]>;

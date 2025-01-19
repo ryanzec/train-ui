@@ -7,14 +7,15 @@ import cors from '@fastify/cors';
 import fastifySession from '@fastify/session';
 import fastify from 'fastify';
 
-import { registerAuthenticateApi } from './apis/authenticate';
-import { registerHealthApi } from './apis/health';
-import { registerQueryApi } from './apis/query';
-import { registerSessionApi } from './apis/session';
-import { registerUsersApi } from './apis/users';
-import { applicationConfiguration } from './load-config';
-import { delayerHook } from './middleware/delayer';
-import { mockerrorHook } from './middleware/mockerror';
+import { registerAuthenticateApi } from '$api/apis/authenticate';
+import { registerHealthApi } from '$api/apis/health';
+import { registerQueryApi } from '$api/apis/query';
+import { registerRedisApi } from '$api/apis/redis';
+import { registerSessionApi } from '$api/apis/session';
+import { registerUsersApi } from '$api/apis/users';
+import { applicationConfiguration } from '$api/load-config';
+import { delayerHook } from '$api/middleware/delayer';
+import { mockerrorHook } from '$api/middleware/mockerror';
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -22,8 +23,8 @@ const __dirname = path.dirname(__filename);
 // set up the api
 const api = fastify({
   https: {
-    key: fs.readFileSync(path.join(__dirname, 'key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, 'cert.pem')),
+    key: fs.readFileSync(path.join(__dirname, '..', '..', '..', 'ssl-key.pem')),
+    cert: fs.readFileSync(path.join(__dirname, '..', '..', '..', 'ssl-cert.pem')),
   },
 });
 
@@ -53,6 +54,7 @@ registerAuthenticateApi(api);
 registerUsersApi(api);
 registerQueryApi(api);
 registerSessionApi(api);
+registerRedisApi(api);
 
 // start the server
 const start = async () => {

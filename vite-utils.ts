@@ -15,6 +15,7 @@ const baseConfiguration = {
       $: path.join(__dirname, 'packages'),
       $sandbox: path.join(__dirname, 'applications', 'sandbox', 'packages'),
       $web: path.join(__dirname, 'applications', 'web', 'packages'),
+      $api: path.join(__dirname, 'applications', 'api', 'src'),
     },
   },
   css: {
@@ -23,6 +24,12 @@ const baseConfiguration = {
     },
   },
   plugins: [svgLoader(), solidPlugin()],
+  server: {
+    https: {
+      key: path.join(__dirname, 'ssl-key.pem'),
+      cert: path.join(__dirname, 'ssl-cert.pem'),
+    },
+  },
 };
 
 export const viteUtils = {

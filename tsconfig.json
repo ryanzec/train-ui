@@ -22,11 +22,11 @@
     "paths": {
       "$/*": ["./packages/*"],
       "$sandbox/*": ["./applications/sandbox/packages/*"],
-      "$web/*": ["./applications/web/packages/*"]
+      "$web/*": ["./applications/web/packages/*"],
+      "$api/*": ["./applications/api/src/*"]
     }
   },
   "include": [
-    "src",
     "./applications/web/packages",
     "./applications/sandbox/packages",
     "./applications/api/src",

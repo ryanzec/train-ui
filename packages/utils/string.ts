@@ -16,8 +16,13 @@ const pascalToWords = (value: string) => {
   return result.charAt(0).toUpperCase() + result.slice(1);
 };
 
+const snakeToCamel = (value: string) => {
+  return value.toLowerCase().replace(/_([a-z])/g, (_, letter) => letter.toUpperCase());
+};
+
 export const stringUtils = {
   pascalToKabob,
   isPascalCase,
   pascalToWords,
+  snakeToCamel,
 };

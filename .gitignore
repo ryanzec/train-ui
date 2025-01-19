@@ -10,6 +10,7 @@ mocha-coverage
 # development specific data
 .env
 .env.local
+docker.env
 applications/api/lowdb/*
 *.pem
 

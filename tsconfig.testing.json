@@ -22,16 +22,10 @@
     "paths": {
       "$/*": ["./packages/*"],
       "$sandbox/*": ["./applications/sandbox/packages/*"],
-      "$web/*": ["./applications/web/packages/*"]
+      "$web/*": ["./applications/web/packages/*"],
+      "$api/*": ["./applications/api/src/*"]
     }
   },
-  "include": [
-    "src",
-    "./applications/web/src",
-    "./applications/sandbox/src",
-    "./applications/api/src",
-    "./packages",
-
-  ],
-  "exclude": ["node_modules"],
+  "include": ["./applications/web/src", "./applications/sandbox/src", "./applications/api/src", "./packages"],
+  "exclude": ["node_modules"]
 }

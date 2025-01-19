@@ -1,13 +1,11 @@
+import { applicationConfiguration } from '$api/load-config';
 import type { FastifyInstance } from 'fastify';
 import * as stytch from 'stytch';
-import { applicationConfiguration } from '../load-config';
 
 const stytchClient = new stytch.B2BClient({
   project_id: applicationConfiguration.STYTCH_PROJECT_ID,
   secret: applicationConfiguration.STYTCH_SECRET,
 });
-
-const organizationId = 'organization-test-c5d10c7f-f738-41ce-ab0c-43a6ddc19e60';
 
 export const registerAuthenticateApi = (api: FastifyInstance) => {
   type PostLogin = {
