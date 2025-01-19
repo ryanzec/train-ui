@@ -24,7 +24,7 @@ const Textarea = <TFormData = DefaultFormData>(passedProps: TextareaProps<TFormD
   };
 
   onMount(() => {
-    if (props.autofocus === false) {
+    if (props.autofocus !== false) {
       return;
     }
 

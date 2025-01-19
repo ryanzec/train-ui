@@ -82,7 +82,7 @@ const Input = <TFormData = DefaultFormData>(passedProps: InputProps<TFormData>) 
   const isFocused = () => isInputFocused() && !props.disabled;
 
   onMount(() => {
-    if (props.autofocus === false) {
+    if (props.autofocus !== false) {
       return;
     }
 
