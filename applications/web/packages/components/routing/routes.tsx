@@ -6,7 +6,7 @@ import UnauthenticatedRoute from '$web/components/routing/unauthenticated-route'
 
 const HomeView = lazy(() => import('$web/views/home'));
 const LoginView = lazy(() => import('$web/views/login'));
-const LoginRedirectView = lazy(() => import('$web/views/login-redirect'));
+const AuthenticateView = lazy(() => import('$web/views/authenticate'));
 const AuthenticatedDataView = lazy(() => import('$web/views/authenticated-data'));
 
 const Routes = () => {
@@ -21,10 +21,10 @@ const Routes = () => {
         )}
       />
       <Route
-        path="/login/redirect"
+        path="/authenticate"
         component={() => (
           <UnauthenticatedRoute>
-            <LoginRedirectView />
+            <AuthenticateView />
           </UnauthenticatedRoute>
         )}
       />

@@ -9,7 +9,7 @@ import type {
 } from '$/data-models/user';
 import type { FastifyInstance } from 'fastify';
 
-import { mockServerUtils } from '$api/utils';
+import { apiUtils } from '$api/utils/api';
 import { postgresUtils } from '$api/utils/postgres';
 
 const API_PREFIX = '/api/users';
@@ -50,7 +50,7 @@ export const registerUsersApi = (api: FastifyInstance) => {
   api.get<GetUsers>(API_PREFIX, async (_request_, response) => {
     const results = await postgresUtils.executeQuery<User>('SELECT * FROM users ORDER BY created_at DESC LIMIT 10');
 
-    return response.code(200).send(mockServerUtils.withResponseWrapper(results.rows));
+    return response.code(200).send(apiUtils.respondWithData(results.rows));
   });
 
   type PostUser = {
@@ -63,7 +63,7 @@ export const registerUsersApi = (api: FastifyInstance) => {
       return response.code(400).send();
     }
 
-    return response.code(200).send(mockServerUtils.withResponseWrapper(users[0]));
+    return response.code(200).send(apiUtils.respondWithData(users[0]));
   });
 
   type PatchUser = {
@@ -83,7 +83,7 @@ export const registerUsersApi = (api: FastifyInstance) => {
       });
     }
 
-    response.code(200).send(mockServerUtils.withResponseWrapper(users[existingIndex]));
+    response.code(200).send(apiUtils.respondWithData(users[existingIndex]));
   });
 
   type DeleteUser = {
@@ -102,6 +102,6 @@ export const registerUsersApi = (api: FastifyInstance) => {
       });
     }
 
-    response.code(200).send(mockServerUtils.withResponseWrapper(users[existingIndex]));
+    response.code(200).send(apiUtils.respondWithData(users[existingIndex]));
   });
 };

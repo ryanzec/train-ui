@@ -1,102 +1,185 @@
+import type { ResponseStructure } from '$/apis/utils';
 import { applicationConfiguration } from '$api/load-config';
+import { apiRoutes } from '$api/types/api';
+import type {
+  AuthenticationAuthenticateRequest,
+  AuthenticationAuthenticateResponse,
+  AuthenticationCheckRequest,
+  AuthenticationCheckResponse,
+  AuthenticationLoginRequest,
+  AuthenticationLoginResponse,
+  AuthenticationLogoutRequest,
+  AuthenticationLogoutResponse,
+} from '$api/types/authentication';
+import { apiUtils } from '$api/utils/api';
 import type { FastifyInstance } from 'fastify';
 import * as stytch from 'stytch';
 
 const stytchClient = new stytch.B2BClient({
-  project_id: applicationConfiguration.STYTCH_PROJECT_ID,
-  secret: applicationConfiguration.STYTCH_SECRET,
+  project_id: applicationConfiguration.AUTH_PROJECT_ID || '',
+  secret: applicationConfiguration.AUTH_SECRET || '',
 });
 
 export const registerAuthenticateApi = (api: FastifyInstance) => {
   type PostLogin = {
-    Body: { email: string };
+    Body: AuthenticationLoginRequest;
+    Reply: AuthenticationLoginResponse;
   };
 
-  api.post<PostLogin>('/auth/login', async (request, response) => {
-    const email = request.body.email;
-
+  api.post<PostLogin>(apiRoutes.AUTHENTICATION_LOGIN, async (request, response) => {
     try {
-      const authResponse = await stytchClient.magicLinks.email.discovery.send({
-        email_address: email,
+      const sendEmailResponse = await stytchClient.magicLinks.email.discovery.send({
+        email_address: request.body.email,
       });
 
-      console.log(authResponse);
+      if (sendEmailResponse.status_code !== 200) {
+        const errorMessage = 'error sending login email';
 
-      response.send(200).send({});
-      // biome-ignore lint/suspicious/noExplicitAny: typescript seems to need any for errors
-    } catch (error: any) {
-      response.send(500).send({ error: error.toString() });
-    }
-  });
+        console.error(errorMessage);
 
-  type GetAuthenticate = {
-    Querystring: { token: string; stytch_token_type: string };
-  };
+        response.status(500).send(apiUtils.respondWithError(new Error('error sending login email')));
 
-  api.get<GetAuthenticate>('/auth/authenticate', async (request, response) => {
-    const token = request.query.token;
-    const tokenType = request.query.stytch_token_type;
-
-    // Handle Discovery authentication.
-    if (tokenType !== 'discovery') {
-      console.error(`Unrecognized token type: '${tokenType}'`);
-      response.status(400).send({});
-      return;
-    }
-
-    const authResp = await stytchClient.magicLinks.discovery.authenticate({
-      discovery_magic_links_token: token,
-    });
-    if (authResp.status_code !== 200) {
-      console.error('Authentication error');
-      response.status(500).send({});
-      return;
-    }
-
-    // Sign into existing Organization if already Member
-    const ist = authResp.intermediate_session_token;
-
-    if (authResp.discovered_organizations[0].organization?.organization_id) {
-      const exchangeResp = await stytchClient.discovery.intermediateSessions.exchange({
-        intermediate_session_token: ist,
-        organization_id: authResp.discovered_organizations[0].organization.organization_id,
-      });
-
-      if (exchangeResp.status_code !== 200) {
-        console.error(`Error exchanging IST into Organization: ${JSON.stringify(exchangeResp, null, 2)}`);
-        response.status(500).send({});
         return;
       }
 
-      // Store the returned session and return session member information
-      // Using express sessions with the const key of StytchSessionToken
-      request.session.stytchSessionToken = exchangeResp.session_token;
+      response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
+    } catch (error: unknown) {
+      response.status(500).send(apiUtils.respondWithError(error));
+    }
+  });
 
-      response.status(200).send({
-        message: `Hello, ${authResp.email_address}! You're logged into the ${authResp.discovered_organizations[0].organization?.organization_name} organization`,
-        stytchSessionToken: request.session.stytchSessionToken,
+  type PostLogout = {
+    Body: AuthenticationLogoutRequest;
+    Reply: AuthenticationLogoutResponse;
+  };
+
+  api.post<PostLogout>(apiRoutes.AUTHENTICATION_LOGOUT, async (request, response) => {
+    try {
+      // @todo killing the session is fine for now but we should probably revoke the token in stytch too
+      await request.session.destroy();
+
+      response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
+    } catch (error: unknown) {
+      response.status(500).send(apiUtils.respondWithError(error));
+    }
+  });
+
+  type PostAuthenticate = {
+    Body: AuthenticationAuthenticateRequest;
+    Reply: AuthenticationAuthenticateResponse;
+  };
+
+  api.post<PostAuthenticate>(apiRoutes.AUTHENTICATION_AUTHENTICATE, async (request, response) => {
+    const token = request.body.token;
+    const tokenType = request.body.tokenType;
+
+    if (tokenType !== 'discovery') {
+      const errorMessage = `unrecognized token type of '${tokenType}' give, only 'discovery' token is supported`;
+
+      console.error(errorMessage);
+
+      response.status(400).send(apiUtils.respondWithError(undefined, errorMessage));
+
+      return;
+    }
+
+    const authenticationResponse = await stytchClient.magicLinks.discovery.authenticate({
+      discovery_magic_links_token: token,
+    });
+
+    if (authenticationResponse.status_code !== 200) {
+      const errorMessage = 'unknown authentication error';
+
+      console.error(errorMessage);
+
+      response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
+
+      return;
+    }
+
+    const intermediateSessionToken = authenticationResponse.intermediate_session_token;
+    // @todo(multi-org) handle multiple organizations instead of logging into the first one
+    const organization = authenticationResponse.discovered_organizations[0].organization;
+
+    if (!organization?.organization_id) {
+      // @todo figure out organization creation
+      // If not eligible to log into an existing org, create new one
+      // const createResp = await stytchClient.discovery.organizations.create({
+      //   intermediate_session_token: intermediateSessionToken,
+      // });
+      //
+      // if (createResp.status_code !== 200) {
+      //   console.error(`Error creating Organization: '${JSON.stringify(createResp, null, 2)}'`);
+      //   response.status(500).send({});
+      //   return;
+      // }
+      // // Store the returned session and return session member information
+      // // req.session.StytchSessionToken = createResp.session_token;
+      // request.session.stytchSessionToken = createResp.session_token;
+      //
+      // response.status(200).send({
+      //   message: `Hello, ${createResp.member.email_address}! You're logged into the '${createResp.organization?.organization_name}' organization`,
+      //   stytchSessionToken: request.session.stytchSessionToken,
+      // });
+
+      const errorMessage = 'user not part of an organization';
+
+      console.error(errorMessage);
+
+      response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
+
+      return;
+    }
+
+    const exchangeResponse = await stytchClient.discovery.intermediateSessions.exchange({
+      intermediate_session_token: intermediateSessionToken,
+      organization_id: organization.organization_id,
+    });
+
+    if (exchangeResponse.status_code !== 200) {
+      const errorMessage = `error exchanging intermediate token into organization: ${JSON.stringify(exchangeResponse, null, 2)}`;
+
+      console.error(errorMessage);
+
+      response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
+
+      return;
+    }
+
+    request.session.authenticationToken = exchangeResponse.session_token;
+
+    response.status(200).send(
+      apiUtils.respondWithData({
+        email: authenticationResponse.email_address,
+        organization: organization,
+      }),
+    );
+  });
+
+  type GetCheck = {
+    Body: AuthenticationCheckRequest;
+    Reply: AuthenticationCheckResponse;
+  };
+
+  api.get<GetCheck>(apiRoutes.AUTHENTICATION_CHECK, async (request, response) => {
+    try {
+      const authenticateResponse = await stytchClient.sessions.authenticate({
+        session_token: request.session.authenticationToken,
       });
 
-      return;
+      if (authenticateResponse.status_code !== 200) {
+        const errorMessage = 'error validation current authentication token';
+
+        console.error(errorMessage);
+
+        response.status(500).send(apiUtils.respondWithError(new Error('error sending login email')));
+
+        return;
+      }
+
+      response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
+    } catch (error: unknown) {
+      response.status(500).send(apiUtils.respondWithError(error));
     }
-
-    // If not eligible to log into an existing org, create new one
-    const createResp = await stytchClient.discovery.organizations.create({
-      intermediate_session_token: ist,
-    });
-
-    if (createResp.status_code !== 200) {
-      console.error(`Error creating Organization: '${JSON.stringify(createResp, null, 2)}'`);
-      response.status(500).send({});
-      return;
-    }
-    // Store the returned session and return session member information
-    // req.session.StytchSessionToken = createResp.session_token;
-    request.session.stytchSessionToken = createResp.session_token;
-
-    response.status(200).send({
-      message: `Hello, ${createResp.member.email_address}! You're logged into the '${createResp.organization?.organization_name}' organization`,
-      stytchSessionToken: request.session.stytchSessionToken,
-    });
   });
 };

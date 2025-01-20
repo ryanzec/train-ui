@@ -290,11 +290,11 @@ if (user.role === Role.ADMIN) {
 
 If something is typed to only allow certain string / number / etc. values (like for `HTMLElement.removeEventListener()` event parameter), then inlining a string is fine since type checking will error if an invalid value is used (which is the primary reason to avoid magic values)
 
-## Store common use data / types / functionality in a `utils.ts` for each directory
+## Store common use data / types / functionality in a `api.ts` for each directory
 
-Whenever we have code that is being used in multiple files that might have an interdependency with each other (like multiple components within the same component directory), we should store this data in a `utils.ts(x)` file. This provides 2 benefits:
+Whenever we have code that is being used in multiple files that might have an interdependency with each other (like multiple components within the same component directory), we should store this data in a `api.ts(x)` file. This provides 2 benefits:
 
-This helps avoid circular dependency issues that can come up, especially in component directories. for example, when there are types that multiple sub-components need access to, having a `utils.ts(x)` file avoid that circular dependency issue.
+This helps avoid circular dependency issues that can come up, especially in component directories. for example, when there are types that multiple sub-components need access to, having a `api.ts(x)` file avoid that circular dependency issue.
 
 For components, by limiting the component to only having a default export and nothing else, we don’t run into this issue of hot reloading not working as expected.
 
