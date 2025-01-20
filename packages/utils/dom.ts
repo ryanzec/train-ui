@@ -2,14 +2,16 @@ import getScrollParent from 'scrollparent';
 
 const inputNodeNames = ['INPUT', 'SELECT', 'TEXTAREA'];
 
-export enum InputType {
-  NONE = 'none',
-  TEXT = 'text',
-  CHECKBOX = 'checkbox',
-  RADIO = 'radio',
-  SELECT = 'select',
-  TEXTAREA = 'textarea',
-}
+export const InputType = {
+  NONE: 'none',
+  TEXT: 'text',
+  CHECKBOX: 'checkbox',
+  RADIO: 'radio',
+  SELECT: 'select',
+  TEXTAREA: 'textarea',
+} as const;
+
+export type InputType = (typeof InputType)[keyof typeof InputType];
 
 const isFormInputElement = (element?: Element) => {
   if (!element) {
@@ -76,11 +78,13 @@ const getFormInputElementsRecursive = (element: Element) => {
   return formInputs;
 };
 
-export enum ViewCutoffLocation {
-  NONE = 'none',
-  TOP = 'top',
-  BOTTOM = 'bottom',
-}
+export const ViewCutoffLocation = {
+  NONE: 'none',
+  TOP: 'top',
+  BOTTOM: 'bottom',
+} as const;
+
+export type ViewCutoffLocation = (typeof ViewCutoffLocation)[keyof typeof ViewCutoffLocation];
 
 const elementInView = (parent: HTMLElement, element: HTMLElement, completelyViewable = true): ViewCutoffLocation => {
   const scrollAreaTop = parent.scrollTop;

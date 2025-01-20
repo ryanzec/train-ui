@@ -23,27 +23,31 @@ import SquareIcon from '$/components/icon/icons/square.svg?raw';
 import SunIcon from '$/components/icon/icons/sun.svg?raw';
 import XIcon from '$/components/icon/icons/x.svg?raw';
 
-export enum IconSize {
-  BASE = 'base',
-  EXTRA_SMALL = 'extra-small',
-  EXTRA_SMALL2 = 'extra-small2',
-  SMALL = 'small',
-  LARGE = 'large',
-  EXTRA_LARGE = 'extra-large',
-  EXTRA_LARGE2 = 'extra-large2',
-  EXTRA_LARGE3 = 'extra-large3',
-  EXTRA_LARGE4 = 'extra-large4',
-}
+export const IconSize = {
+  BASE: 'base',
+  EXTRA_SMALL: 'extra-small',
+  EXTRA_SMALL2: 'extra-small2',
+  SMALL: 'small',
+  LARGE: 'large',
+  EXTRA_LARGE: 'extra-large',
+  EXTRA_LARGE2: 'extra-large2',
+  EXTRA_LARGE3: 'extra-large3',
+  EXTRA_LARGE4: 'extra-large4',
+} as const;
 
-export enum IconColor {
-  INHERIT = 'inherit',
-  NEUTRAL = 'neutral',
-  BRAND = 'brand',
-  SUCCESS = 'success',
-  INFO = 'info',
-  WARNING = 'warning',
-  DANGER = 'danger',
-}
+export type IconSize = (typeof IconSize)[keyof typeof IconSize];
+
+export const IconColor = {
+  INHERIT: 'inherit',
+  NEUTRAL: 'neutral',
+  BRAND: 'brand',
+  SUCCESS: 'success',
+  INFO: 'info',
+  WARNING: 'warning',
+  DANGER: 'danger',
+} as const;
+
+export type IconColor = (typeof IconColor)[keyof typeof IconColor];
 
 // this is not typed as we want to have the types be dynamically generated so by doing this we can add to the object
 // and the IconName type will be updated automatically and also make sure the values passed in here are of type

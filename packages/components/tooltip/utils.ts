@@ -1,11 +1,13 @@
 import { type Accessor, createSignal } from 'solid-js';
 import * as uuid from 'uuid';
 
-export enum TooltipTriggerEvent {
-  CLICK = 'click',
-  HOVER = 'hover',
-  STRICT_HOVER = 'strict-hover',
-}
+export const TooltipTriggerEvent = {
+  CLICK: 'click',
+  HOVER: 'hover',
+  STRICT_HOVER: 'strict-hover',
+} as const;
+
+export type TooltipTriggerEvent = (typeof TooltipTriggerEvent)[keyof typeof TooltipTriggerEvent];
 
 type CreateStoreParams = {
   defaultIsEnabled?: boolean;

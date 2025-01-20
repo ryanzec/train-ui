@@ -2,7 +2,7 @@ import { debounce } from '@solid-primitives/scheduled';
 import { type Accessor, type JSX, createEffect, createSignal, onCleanup } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
 
-import { type DefaultFormData, FormErrorsData, FormInputValidationState } from '$/stores/form/utils';
+import type { DefaultFormData } from '$/stores/form/utils';
 import { Key } from '$/types/generic';
 import { domUtils } from '$/utils/dom';
 
@@ -25,25 +25,27 @@ export type ComboboxOption<TData = ComboboxExtraData> = {
   groupKey?: string;
 } & TData;
 
-export enum AsyncOptionsState {
+export const AsyncOptionsState = {
   // nothing is happening
-  NOT_APPLICABLE = 'not-applicable',
+  NOT_APPLICABLE: 'not-applicable',
 
   // wait for the debounced request to be executed
-  DEBOUNCED = 'debounced',
+  DEBOUNCED: 'debounced',
 
   // async request in progress
-  FETCHING = 'fetching',
+  FETCHING: 'fetching',
 
   // async request has successful completed
-  SUCCESSFUL = 'successful',
+  SUCCESSFUL: 'successful',
 
   // async request failed to load options
   // @todo handle this properly in the component
-  ERROR = 'error',
+  ERROR: 'error',
 
-  BEFORE_THRESHOLD = 'before-threshold',
-}
+  BEFORE_THRESHOLD: 'before-threshold',
+} as const;
+
+export type AsyncOptionsState = (typeof AsyncOptionsState)[keyof typeof AsyncOptionsState];
 
 export type ComboboxSelectableOptionProps<TData extends ComboboxExtraData> = {
   option: ComboboxOption<TData>;

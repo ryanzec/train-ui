@@ -13,10 +13,12 @@ import type { CommonDataAttributes } from '$/types/generic';
 // this is needed to avoid this code being stripped in compilation because of the way directive work in SolidJS
 clickOutsideDirective;
 
-export enum WhichDate {
-  FIRST = 'first',
-  SECOND = 'second',
-}
+export const WhichDate = {
+  FIRST: 'first',
+  SECOND: 'second',
+} as const;
+
+export type WhichDate = (typeof WhichDate)[keyof typeof WhichDate];
 
 export type DatePickerInputProps<TFormData = DefaultFormData> = InputProps<TFormData> &
   Omit<DatePickerProps, 'onSelectDate' | 'defaultSelectedDate' | 'defaultDisplayDate'> &

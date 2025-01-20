@@ -3,24 +3,32 @@ import * as fs from 'node:fs';
 const FIGMA_VARIABLES_JSON_PATH = './artifacts/figma-variables.json';
 const BASE_SIZE = 16;
 
-enum TemplatePath {
-  CSS = './scripts/templates/variables.css.template',
-}
-enum OutputPath {
-  CSS = './packages/styles/variables.css',
-}
-enum ReplaceKey {
-  LIGHT_CSS_VARIABLES = '%LIGHT_COLOR_VARIABLES%',
-  DARK_CSS_VARIABLES = '%DARK_COLOR_VARIABLES%',
-  SPACING_CSS_VARIABLES = '%SPACING_VARIABLES%',
-  BORDER_RADIUS_CSS_VARIABLES = '%BORDER_RADIUS_VARIABLES%',
-  FONT_SIZE_CSS_VARIABLES = '%FONT_SIZE_VARIABLES%',
-  LINE_HEIGHT_CSS_VARIABLES = '%LINE_HEIGHT_VARIABLES%',
-  LETTER_SPACING_CSS_VARIABLES = '%LETTER_SPACING_VARIABLES%',
-  Z_INDEX_CSS_VARIABLES = '%Z_INDEX_VARIABLES%',
-  OPACITY_CSS_VARIABLES = '%OPACITY_VARIABLES%',
-  SIZE_CSS_VARIABLES = '%SIZE_VARIABLES%',
-}
+const TemplatePath = {
+  CSS: './scripts/templates/variables.css.template',
+} as const;
+
+type TemplatePath = (typeof TemplatePath)[keyof typeof TemplatePath];
+
+const OutputPath = {
+  CSS: './packages/styles/variables.css',
+} as const;
+
+type OutputPath = (typeof OutputPath)[keyof typeof OutputPath];
+
+const ReplaceKey = {
+  LIGHT_CSS_VARIABLES: '%LIGHT_COLOR_VARIABLES%',
+  DARK_CSS_VARIABLES: '%DARK_COLOR_VARIABLES%',
+  SPACING_CSS_VARIABLES: '%SPACING_VARIABLES%',
+  BORDER_RADIUS_CSS_VARIABLES: '%BORDER_RADIUS_VARIABLES%',
+  FONT_SIZE_CSS_VARIABLES: '%FONT_SIZE_VARIABLES%',
+  LINE_HEIGHT_CSS_VARIABLES: '%LINE_HEIGHT_VARIABLES%',
+  LETTER_SPACING_CSS_VARIABLES: '%LETTER_SPACING_VARIABLES%',
+  Z_INDEX_CSS_VARIABLES: '%Z_INDEX_VARIABLES%',
+  OPACITY_CSS_VARIABLES: '%OPACITY_VARIABLES%',
+  SIZE_CSS_VARIABLES: '%SIZE_VARIABLES%',
+} as const;
+
+type ReplaceKey = (typeof ReplaceKey)[keyof typeof ReplaceKey];
 
 type AliasVariable = {
   collection: string;
@@ -60,17 +68,19 @@ type Collection = {
 
 type ConfigData = { collections: Collection[] };
 
-enum VariableCollection {
-  COLOR = 'color',
-  SPACE = 'space',
-  BORDER_RADIUS = 'border-radius',
-  FONT_SIZE = 'font-size',
-  LINE_HEIGHT = 'line-height',
-  LETTER_SPACING = 'letter-spacing',
-  Z_INDEX = 'z',
-  OPACITY = 'opacity',
-  SIZE = 'size',
-}
+const VariableCollection = {
+  COLOR: 'color',
+  SPACE: 'space',
+  BORDER_RADIUS: 'border-radius',
+  FONT_SIZE: 'font-size',
+  LINE_HEIGHT: 'line-height',
+  LETTER_SPACING: 'letter-spacing',
+  Z_INDEX: 'z',
+  OPACITY: 'opacity',
+  SIZE: 'size',
+};
+
+type VariableCollection = (typeof VariableCollection)[keyof typeof VariableCollection];
 
 const remSizeCollections: VariableCollection[] = [
   VariableCollection.SPACE,
@@ -215,5 +225,6 @@ try {
   console.log('design variables processed successfully!');
 } catch (error) {
   console.error('error:', error);
+
   process.exit(1);
 }

@@ -15,11 +15,13 @@ export type CheckboxProps<TFormData = DefaultFormData> = Omit<JSX.InputHTMLAttri
   formData?: Accessor<Partial<TFormData>>;
 };
 
-enum CheckedState {
-  UNCHECKED = 'unchecked',
-  CHECKED = 'checked',
-  INDETERMINATE = 'indeterminate',
-}
+const CheckedState = {
+  UNCHECKED: 'unchecked',
+  CHECKED: 'checked',
+  INDETERMINATE: 'indeterminate',
+} as const;
+
+type CheckedState = (typeof CheckedState)[keyof typeof CheckedState];
 
 const getCheckedStateIcon = (state: CheckedState): IconName => {
   if (state === CheckedState.UNCHECKED) {

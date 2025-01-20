@@ -20,11 +20,13 @@ export type DefaultFormData = {
   [key: string]: any;
 };
 
-export enum FormInputValidationState {
-  NEUTRAL = 'neutral',
-  VALID = 'valid',
-  INVALID = 'invalid',
-}
+export const FormInputValidationState = {
+  NEUTRAL: 'neutral',
+  VALID: 'valid',
+  INVALID: 'invalid',
+} as const;
+
+export type FormInputValidationState = (typeof FormInputValidationState)[keyof typeof FormInputValidationState];
 
 export type FormDirective = (element: HTMLFormElement) => void;
 

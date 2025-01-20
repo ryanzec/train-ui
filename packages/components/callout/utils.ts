@@ -1,13 +1,17 @@
-export enum CalloutColor {
-  NEUTRAL = 'neutral',
-  BRAND = 'brand',
-  SUCCESS = 'success',
-  INFO = 'info',
-  WARNING = 'warning',
-  DANGER = 'danger',
-}
+export const CalloutColor = {
+  NEUTRAL: 'neutral',
+  BRAND: 'brand',
+  SUCCESS: 'success',
+  INFO: 'info',
+  WARNING: 'warning',
+  DANGER: 'danger',
+} as const;
 
-export enum CalloutVariant {
-  WEAK = 'weak',
-  STRONG = 'strong',
-}
+export type CalloutColor = (typeof CalloutColor)[keyof typeof CalloutColor];
+
+export const CalloutVariant = {
+  WEAK: 'weak',
+  STRONG: 'strong',
+} as const;
+
+export type CalloutVariant = (typeof CalloutVariant)[keyof typeof CalloutVariant];

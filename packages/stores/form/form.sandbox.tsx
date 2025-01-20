@@ -779,21 +779,23 @@ const dynamicFormDataSchema = zodUtils.schemaForType<DynamicFormData>()(
   }),
 );
 
-enum RandomFormFieldType {
-  STRING = 'string',
-  NUMBER = 'number',
-  CHECKBOX = 'checkbox',
-  SINGLE_CHECKBOX = 'single-checkbox',
-  COMBOBOX = 'comboxbox',
-  RADIO = 'radio',
-  CHECKBOX_TOGGLE = 'checkbox-toggle',
-  SINGLE_RADIO = 'single-radio',
-  TEXTAREA = 'textarea',
-  DATE = 'date',
-  DATE_RANGE = 'date-range',
-  TIME_INPUT = 'time-input',
-  ARRAY = 'array',
-}
+const RandomFormFieldType = {
+  STRING: 'string',
+  NUMBER: 'number',
+  CHECKBOX: 'checkbox',
+  SINGLE_CHECKBOX: 'single-checkbox',
+  COMBOBOX: 'comboxbox',
+  RADIO: 'radio',
+  CHECKBOX_TOGGLE: 'checkbox-toggle',
+  SINGLE_RADIO: 'single-radio',
+  TEXTAREA: 'textarea',
+  DATE: 'date',
+  DATE_RANGE: 'date-range',
+  TIME_INPUT: 'time-input',
+  ARRAY: 'array',
+} as const;
+
+type RandomFormFieldType = (typeof RandomFormFieldType)[keyof typeof RandomFormFieldType];
 
 type RandomFormField = {
   name: string;

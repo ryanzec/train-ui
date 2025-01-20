@@ -1,5 +1,5 @@
 import type { User } from '$/data-models/user';
-import { apiRoutes } from '$api/types/api';
+import { ApiRoute } from '$api/types/api';
 import type {
   DeleteUserResponse,
   GetUserRequest,
@@ -17,7 +17,7 @@ import type { FastifyInstance } from 'fastify';
 export const registerUsersApi = (api: FastifyInstance) => {
   type GetUsers = { Reply: GetUsersResponse };
 
-  api.get<GetUsers>(apiRoutes.USERS, async (_request_, response) => {
+  api.get<GetUsers>(ApiRoute.USERS, async (_request_, response) => {
     const results = await postgresUtils.executeQuery<User>('SELECT * FROM users ORDER BY created_at DESC LIMIT 10');
 
     return response.code(200).send(apiUtils.respondWithData(results.rows));
@@ -28,7 +28,7 @@ export const registerUsersApi = (api: FastifyInstance) => {
     Reply: PostUserResponse;
   };
 
-  api.post<PostUser>(apiRoutes.USERS, async (request, response) => {
+  api.post<PostUser>(ApiRoute.USERS, async (request, response) => {
     if (!request.body.firstName || !request.body.lastName || !request.body.email || !request.body.password) {
       return response.code(400).send();
     }
@@ -46,7 +46,7 @@ export const registerUsersApi = (api: FastifyInstance) => {
     Reply: GetUserResponse;
   };
 
-  api.get<GetUser>(`${apiRoutes.USERS}/:id`, async (request, response) => {
+  api.get<GetUser>(`${ApiRoute.USERS}/:id`, async (request, response) => {
     const results = await postgresUtils.executeQuery<User>('SELECT * FROM users WHERE id = $1 LIMIT 1', [
       request.params.id,
     ]);
@@ -75,7 +75,7 @@ export const registerUsersApi = (api: FastifyInstance) => {
     password: 'password',
   };
 
-  api.patch<PatchUser>(`${apiRoutes.USERS}/:id`, async (request, response) => {
+  api.patch<PatchUser>(`${ApiRoute.USERS}/:id`, async (request, response) => {
     const { query, queryValues } = await postgresUtils.buildSetQuery(
       patchUpdatePropertyPostgresMap,
       request.body,
@@ -97,7 +97,7 @@ export const registerUsersApi = (api: FastifyInstance) => {
     Reply: DeleteUserResponse;
   };
 
-  api.delete<DeleteUser>(`${apiRoutes.USERS}/:id`, async (request, response) => {
+  api.delete<DeleteUser>(`${ApiRoute.USERS}/:id`, async (request, response) => {
     const results = await postgresUtils.executeQuery<User>('DELETE FROM users WHERE id = $1 RETURNING *', [
       request.params.id,
     ]);

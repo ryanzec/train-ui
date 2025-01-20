@@ -105,7 +105,7 @@ const processLogout = () => { \* ... *\ };
 
 export const authenticationUtils = {
     [processLogin](https://www.notion.so/Frontend-567ec6d9eacf482ebd7cd380ca804e56),
-    processLogout,
+                   processLogout,
 };
 ```
 
@@ -135,11 +135,10 @@ The casing rules are as follows:
 - files - `kebab-case`
 - string identifiers - `kebab-case` (or sync to whatever the backend does when required)
 - interfaces / types - `PascalCase`
-- enum names - `PascalCase`
 - components - `PascalCase`
 - classes - `PascalCase` (functional programming style should be used over classes / OOP whenever possible)
 - constants - `SCREAM_CASE`
-- enum values - `SCREAM_CASE`
+- as const object members: `SCREAM_CASE`
 - variables / properties - `camelCase`
 - functions / methods - `camelCase`
 - basically everything else - `camelCase`
@@ -264,6 +263,19 @@ const handleDateSelected = () => {
 
 There are a number of patterns that are not listed here however are enforced by the auto code formatting so adhering to them manually is not necessary.
 
+## Don't use enums
+
+It is generally consider bad to use enum as they can lead to large build size and unpredictable behavior at runtime so instead of enums, you should do something like this:
+```tsx
+export const QueryKey = {
+  GET_USERS_LIST: 'get-users-list',
+} as const;
+
+export type QueryKey = (typeof queryKey)[keyof typeof queryKey];
+```
+
+This gives the types safety of enum without the runtime side effects.
+
 ## Object.assign()
 
 When using Object.assign(), outside of component default exports, we should be wrapping that in `structuredClone()`, this help avoid shallow copying something by mistake that can result in unexpected behavior that can be hard to debug.
@@ -275,14 +287,14 @@ Anywhere we have string identifiers, instead of using the string value in-place,
 ```tsx
 // bad
 if (user.role === "admin") {
-  // ...
+    // ...
 }
 
 import { Role } from "$/utils/data-models/user";
 
 // good
 if (user.role === Role.ADMIN) {
-  // ...
+    // ...
 }
 ```
 
@@ -325,12 +337,12 @@ There is no real downside to using fat arrow functions and they provide the bene
 ```tsx
 // bad
 function someMethod() {
-  // ...
+    // ...
 }
 
 // good
 const someMethod = () => {
-  // ...
+    // ...
 };
 ```
 
@@ -400,7 +412,7 @@ export const formUtils = {
 const validate => //...
 
 export const formUtils = {
-  validate,
+    validate,
 };
 ```
 
@@ -411,18 +423,18 @@ It is preferred to return early in code when possible. This helps reduce the amo
 ```tsx
 // bad
 const doSomething = () => {
-  if (user.isAdmin) {
-    /* logic to perform */
-  }
+    if (user.isAdmin) {
+        /* logic to perform */
+    }
 };
 
 // good
 const doSomething = () => {
-  if (!user.isAdmin) {
-    return;
-  }
+    if (!user.isAdmin) {
+        return;
+    }
 
-  /* logic to perform */
+    /* logic to perform */
 };
 ```
 
@@ -492,7 +504,7 @@ When referencing other data types, it should only be done when there is a true d
 import { UserListItemsProps } from "$/components/user-list/user-list-item";
 
 type UserListProps  = {
-  users: Array<UserListItemsProps["user"]>;
+    users: Array<UserListItemsProps["user"]>;
 }
 ```
 
@@ -503,9 +515,9 @@ import { GetAllUserReturns } from "$/apis/users";
 
 // bad
 type UserListProps  = {
-  // while this component might use the results of that api, this component might use mutliple data sources and
-  // the api might be used for multiple components
-  users: GetAllUserReturns["users"];
+    // while this component might use the results of that api, this component might use mutliple data sources and
+    // the api might be used for multiple components
+    users: GetAllUserReturns["users"];
 }
 
 // good
@@ -522,7 +534,7 @@ type UserListProps  = {
 For consistency, prefer types to interfaces when possible, the reason for this is:
 - interfaces can only be used for objects and types can be used for anything
 - while interfaces can be used for tuples, types provide a much cleaner and simpler syntax
-- interfaces are opened so when you define an interface that already exist it just adds to it and while this might be needed (generally in context with 3rd party libraries), this pattern makes is hard to reason about what an interface includes and therefore should be avoid when possible 
+- interfaces are opened so when you define an interface that already exist it just adds to it and while this might be needed (generally in context with 3rd party libraries), this pattern makes is hard to reason about what an interface includes and therefore should be avoid when possible
 
 # Testing / Storybook coding guide
 
@@ -536,14 +548,14 @@ Unit tests should generally have a top level `describe()` block containing some 
 
 ```tsx
 describe("drag drop utils", () => {
-  test("should change position works properly when dragging down before half way", () => {
-    // mocked data...
-    // mock methods...
+    test("should change position works properly when dragging down before half way", () => {
+        // mocked data...
+        // mock methods...
 
-    const results = dragDropUtils.shouldChangePosition<any>(params);
+        const results = dragDropUtils.shouldChangePosition<any>(params);
 
-    // assertions...
-  });
+        // assertions...
+    });
 });
 ```
 
@@ -590,26 +602,26 @@ When you have changes to an object, using immer can make those testing those cha
 ```tsx
 // bad
 expect(subject.next.getCall(0).args).to.deep.equal([
-  {
-    ...startingState,
-    notifications: [
-      ...startingState.notifications,
-      {
-        id,
-        ...notification,
-      },
-    ],
-  },
+    {
+        ...startingState,
+        notifications: [
+            ...startingState.notifications,
+            {
+                id,
+                ...notification,
+            },
+        ],
+    },
 ]);
 
 // good
 expect(subject.next.getCall(0).args).to.deep.equal([
-  produce(startingState, (draft) => {
-    draft.notifications.push({
-      id,
-      ...notification,
-    });
-  }),
+    produce(startingState, (draft) => {
+        draft.notifications.push({
+            id,
+            ...notification,
+        });
+    }),
 ]);
 ```
 
@@ -624,7 +636,7 @@ const Component = (passedProps: ComponentProps) => {
     const props = mergeProps({position: DEFAULT_BUTTON_ICON_POSITION, isLoading: false}, passedProps);
     // or
     const [props, restOfProps] = splitProps(passedProps, ['droppableId', 'items', 'children']);
-    
+
     // ....
 }
 ```
@@ -649,15 +661,15 @@ When defining animation key frame, we should always defined them withing a `:glo
 
 ```css
 :global {
-  @keyframes fade-in {
-    0% {
-      opacity: 0.1;
-    }
+    @keyframes fade-in {
+        0% {
+            opacity: 0.1;
+        }
 
-    100% {
-      opacity: 1;
+        100% {
+            opacity: 1;
+        }
     }
-  }
 }
 ```
 
@@ -665,11 +677,11 @@ Then when using that key frame, that must also be in a `:global {}` block.
 
 ```css
 .notification {
-  &:not(.is-removing) {
-    :global {
-      animation: fade-in 0.5s ease;
+    &:not(.is-removing) {
+        :global {
+            animation: fade-in 0.5s ease;
+        }
     }
-  }
 }
 ```
 
@@ -702,13 +714,13 @@ There might be times when you might have something that will always be defined e
 ```tsx
 // bad
 export type IAuthenticationContext  = {
-  //...
-  login: ILogin | null;
+    //...
+    login: ILogin | null;
 }
 
 export const defaultAuthenticationContext: IAuthenticationContext = {
-  //...
-  login: null,
+    //...
+    login: null,
 };
 ```
 
@@ -723,13 +735,13 @@ In cases like these, whenever possible, we should be doing something like this:
 ```tsx
 // good
 export type IAuthenticationContext  = {
-  //...
-  login: ILogin;
+    //...
+    login: ILogin;
 }
 
 export const defaultAuthenticationContext: IAuthenticationContext = {
-  //...
-  login: () => {},
+    //...
+    login: () => {},
 };
 ```
 
@@ -757,9 +769,9 @@ When looping through an object in typescript and using the key can often result 
 let key: keyof UpdateRoleInput;
 
 for (key in input) {
-  if (!input[key]) {
-    delete input[key];
-  }
+    if (!input[key]) {
+        delete input[key];
+    }
 }
 ```
 

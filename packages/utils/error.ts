@@ -1,11 +1,13 @@
 export const DEFAULT_ERROR_MESSAGE = 'Something went wrong, please try again later.';
 
-export enum HttpStatusCode {
-  UNAUTHORIZED = 401,
-  RATE_LIMITED = 429,
-  INTERNAL_ERROR = 500,
-  FORBIDDEN = 403,
-}
+export const HttpStatusCode = {
+  UNAUTHORIZED: 401,
+  RATE_LIMITED: 429,
+  INTERNAL_ERROR: 500,
+  FORBIDDEN: 403,
+} as const;
+
+export type HttpStatusCode = (typeof HttpStatusCode)[keyof typeof HttpStatusCode];
 
 export const httpStatusCodeMessage: Record<HttpStatusCode, string> = {
   [HttpStatusCode.UNAUTHORIZED]: 'Unauthorized',

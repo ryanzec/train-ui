@@ -2,12 +2,14 @@ import dayjs from 'dayjs';
 
 import { dateTimeFormat } from '$/utils/date';
 
-export enum EditItem {
-  NONE = 0,
-  HOURS = 1,
-  MINUTES = 2,
-  MERIDIEM = 3,
-}
+export const EditItem = {
+  NONE: 0,
+  HOURS: 1,
+  MINUTES: 2,
+  MERIDIEM: 3,
+} as const;
+
+export type EditItem = (typeof EditItem)[keyof typeof EditItem];
 
 export const editItemsOrder = [EditItem.HOURS, EditItem.MINUTES, EditItem.MERIDIEM];
 

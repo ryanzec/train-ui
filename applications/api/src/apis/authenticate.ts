@@ -1,5 +1,5 @@
 import { applicationConfiguration } from '$api/load-config';
-import { apiRoutes } from '$api/types/api';
+import { ApiRoute } from '$api/types/api';
 import type {
   AuthenticationAuthenticateRequest,
   AuthenticationAuthenticateResponse,
@@ -25,7 +25,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
     Reply: AuthenticationLoginResponse;
   };
 
-  api.post<PostLogin>(apiRoutes.AUTHENTICATION_LOGIN, async (request, response) => {
+  api.post<PostLogin>(ApiRoute.AUTHENTICATION_LOGIN, async (request, response) => {
     try {
       const sendEmailResponse = await stytchClient.magicLinks.email.discovery.send({
         email_address: request.body.email,
@@ -52,7 +52,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
     Reply: AuthenticationLogoutResponse;
   };
 
-  api.delete<DeleteLogout>(apiRoutes.AUTHENTICATION_LOGOUT, async (request, response) => {
+  api.delete<DeleteLogout>(ApiRoute.AUTHENTICATION_LOGOUT, async (request, response) => {
     try {
       // @todo killing the session is fine for now but we should probably revoke the token in stytch too
       await request.session.destroy();
@@ -68,7 +68,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
     Reply: AuthenticationAuthenticateResponse;
   };
 
-  api.post<PostAuthenticate>(apiRoutes.AUTHENTICATION_AUTHENTICATE, async (request, response) => {
+  api.post<PostAuthenticate>(ApiRoute.AUTHENTICATION_AUTHENTICATE, async (request, response) => {
     const token = request.body.token;
     const tokenType = request.body.tokenType;
 
@@ -167,7 +167,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
     Reply: AuthenticationCheckResponse;
   };
 
-  api.get<GetCheck>(apiRoutes.AUTHENTICATION_CHECK, async (request, response) => {
+  api.get<GetCheck>(ApiRoute.AUTHENTICATION_CHECK, async (request, response) => {
     try {
       const authenticateResponse = await stytchClient.sessions.authenticate({
         session_token: request.session.authenticationToken,

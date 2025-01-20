@@ -1,9 +1,11 @@
 import { createSignal } from 'solid-js';
 
-export enum DialogFooterAlignment {
-  LEFT = 'left',
-  RIGHT = 'right',
-}
+export const DialogFooterAlignment = {
+  LEFT: 'left',
+  RIGHT: 'right',
+} as const;
+
+export type DialogFooterAlignment = (typeof DialogFooterAlignment)[keyof typeof DialogFooterAlignment];
 
 const createStore = () => {
   const [isOpen, setIsOpen] = createSignal<boolean>(false);

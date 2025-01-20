@@ -1,23 +1,31 @@
-export enum BadgeColor {
-  NEUTRAL = 'neutral',
-  BRAND = 'brand',
-  SUCCESS = 'success',
-  INFO = 'info',
-  WARNING = 'warning',
-  DANGER = 'danger',
-}
+export const BadgeColor = {
+  NEUTRAL: 'neutral',
+  BRAND: 'brand',
+  SUCCESS: 'success',
+  INFO: 'info',
+  WARNING: 'warning',
+  DANGER: 'danger',
+} as const;
 
-export enum BadgeVariant {
-  WEAK = 'weak',
-  STRONG = 'strong',
-}
+export type BadgeColor = (typeof BadgeColor)[keyof typeof BadgeColor];
 
-export enum BadgeSize {
-  SMALL = 'small',
-  MEDIUM = 'medium',
-}
+export const BadgeVariant = {
+  WEAK: 'weak',
+  STRONG: 'strong',
+} as const;
 
-export enum BadgeShape {
-  ROUNDED = 'rounded',
-  PILL = 'pill',
-}
+export type BadgeVariant = (typeof BadgeVariant)[keyof typeof BadgeVariant];
+
+export const BadgeSize = {
+  SMALL: 'small',
+  MEDIUM: 'medium',
+} as const;
+
+export type BadgeSize = (typeof BadgeSize)[keyof typeof BadgeSize];
+
+export const BadgeShape = {
+  ROUNDED: 'rounded',
+  PILL: 'pill',
+} as const;
+
+export type BadgeShape = (typeof BadgeShape)[keyof typeof BadgeShape];

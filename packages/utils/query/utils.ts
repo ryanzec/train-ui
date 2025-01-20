@@ -43,25 +43,29 @@ const _queryData: QueryData = {
   trackedShouldFetch: {},
 };
 
-export enum ResourceState {
-  UNRESOLVED = 'unresolved',
-  PENDING = 'pending',
-  READY = 'ready',
-  ERRORED = 'errored',
+export const ResourceState = {
+  UNRESOLVED: 'unresolved',
+  PENDING: 'pending',
+  READY: 'ready',
+  ERRORED: 'errored',
 
   // naming the const REFETCHING even though the state is refreshing as everything else but the state name refers
   // this action as refetching
-  REFETCHING = 'refreshing',
-}
+  REFETCHING: 'refreshing',
+} as const;
+
+export type ResourceState = (typeof ResourceState)[keyof typeof ResourceState];
+
+export const MutationState = {
+  IDLE: 'idle',
+  PROCESSING: 'processing',
+  SUCCESS: 'success',
+  ERROR: 'error',
+} as const;
+
+export type MutationState = (typeof MutationState)[keyof typeof MutationState];
 
 export type MutatorFunction<TMutateInput, TMutateReturn> = (info: TMutateInput) => Promise<TMutateReturn>;
-
-export enum MutationState {
-  IDLE = 'idle',
-  PROCESSING = 'processing',
-  SUCCESS = 'success',
-  ERROR = 'error',
-}
 
 export type CreateMutationReturns<TMutateInput, TMutateResult> = {
   mutate: (input: TMutateInput) => Promise<void>;

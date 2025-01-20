@@ -1,4 +1,4 @@
-import { HttpError } from '$/utils/error';
+import { HttpError, type HttpStatusCode } from '$/utils/error';
 
 export type HttpRequest<TResponse> = Omit<RequestInit, 'credentials'> & {
   withCredentials?: boolean;
@@ -20,21 +20,25 @@ export type GraphqlRequest<T, K = undefined> = Omit<RequestInit, 'credentials'> 
   onError?: (response: Response, responseJson: T) => Promise<boolean>;
 };
 
-export enum GraphqlErrorCode {
-  AUTH_NOT_AUTHORIZED = 'AUTH_NOT_AUTHORIZED',
-}
+export const GraphqlErrorCode = {
+  AUTH_NOT_AUTHORIZED: 'AUTH_NOT_AUTHORIZED',
+} as const;
 
-export enum HttpMethod {
-  CONNECT = 'CONNECT',
-  DELETE = 'DELETE',
-  GET = 'GET',
-  HEAD = 'HEAD',
-  OPTIONS = 'OPTIONS',
-  PATCH = 'PATCH',
-  POST = 'POST',
-  PUT = 'PUT',
-  TRACE = 'TRACE',
-}
+export type GraphqlErrorCode = (typeof GraphqlErrorCode)[keyof typeof GraphqlErrorCode];
+
+export const HttpMethod = {
+  CONNECT: 'CONNECT',
+  DELETE: 'DELETE',
+  GET: 'GET',
+  HEAD: 'HEAD',
+  OPTIONS: 'OPTIONS',
+  PATCH: 'PATCH',
+  POST: 'POST',
+  PUT: 'PUT',
+  TRACE: 'TRACE',
+} as const;
+
+export type HttpMethod = (typeof HttpMethod)[keyof typeof HttpMethod];
 
 // biome-ignore lint/suspicious/noExplicitAny: this handles generic requests so it needs to allow for any
 const httpRequestInterceptors: Array<(requestOptions: HttpRequest<any>) => HttpRequest<any>> = [];
@@ -132,7 +136,7 @@ const http = async <TResponse>(url: string, requestOptions: HttpRequest<TRespons
     }
 
     if (throwError) {
-      throw new HttpError(response.status, {
+      throw new HttpError(response.status as HttpStatusCode, {
         message: `http request failed with: ${response.status} ${response.statusText}`,
         context: {
           url,

@@ -1,7 +1,10 @@
-export enum ValidationMessageType {
-  REQUIRED = 'required',
-  MIN_COUNT = 'min-count',
-}
+export const ValidationMessageType = {
+  REQUIRED: 'required',
+  MIN_COUNT: 'min-count',
+} as const;
+
+export type ValidationMessageType = (typeof ValidationMessageType)[keyof typeof ValidationMessageType];
+
 const validationMessages: Record<ValidationMessageType, string> = {
   [ValidationMessageType.REQUIRED]: 'Required',
   [ValidationMessageType.MIN_COUNT]: 'Must select at least :0: value',
