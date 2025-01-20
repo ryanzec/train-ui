@@ -1,53 +1,23 @@
+import type { User } from '$/data-models/user';
+import { apiRoutes } from '$api/types/api';
 import type {
   DeleteUserResponse,
+  GetUserRequest,
+  GetUserResponse,
   GetUsersResponse,
   PatchUserRequest,
   PatchUserResponse,
   PostUserRequest,
   PostUserResponse,
-  User,
-} from '$/data-models/user';
-import type { FastifyInstance } from 'fastify';
-
+} from '$api/types/users';
 import { apiUtils } from '$api/utils/api';
 import { postgresUtils } from '$api/utils/postgres';
-
-const API_PREFIX = '/api/users';
-
-const users: User[] = [
-  {
-    id: 'ZV7ZeooFWQjwrexUsqWMI',
-    firstName: 'Test1',
-    lastName: 'User1',
-    email: 'test.user1@example.com',
-    password: 'password',
-    createdAt: '2021-01-01T00:00:00.000Z',
-    updatedAt: '2021-01-01T00:00:00.000Z',
-  },
-  {
-    id: 'N5wRPPg3FAFpch8Mp2C-i',
-    firstName: 'Test2',
-    lastName: 'User2',
-    email: 'test.user2@example.com',
-    password: 'password',
-    createdAt: '2021-01-01T00:00:00.000Z',
-    updatedAt: '2021-01-01T00:00:00.000Z',
-  },
-  {
-    id: 'rd4t5U7w5UUiAzCXgexWu',
-    firstName: 'Test3',
-    lastName: 'User3',
-    email: 'test.user3@example.com',
-    password: 'password',
-    createdAt: '2021-01-01T00:00:00.000Z',
-    updatedAt: '2021-01-01T00:00:00.000Z',
-  },
-];
+import type { FastifyInstance } from 'fastify';
 
 export const registerUsersApi = (api: FastifyInstance) => {
   type GetUsers = { Reply: GetUsersResponse };
 
-  api.get<GetUsers>(API_PREFIX, async (_request_, response) => {
+  api.get<GetUsers>(apiRoutes.USERS, async (_request_, response) => {
     const results = await postgresUtils.executeQuery<User>('SELECT * FROM users ORDER BY created_at DESC LIMIT 10');
 
     return response.code(200).send(apiUtils.respondWithData(results.rows));
@@ -58,24 +28,30 @@ export const registerUsersApi = (api: FastifyInstance) => {
     Reply: PostUserResponse;
   };
 
-  api.post<PostUser>(API_PREFIX, async (request, response) => {
+  api.post<PostUser>(apiRoutes.USERS, async (request, response) => {
     if (!request.body.firstName || !request.body.lastName || !request.body.email || !request.body.password) {
       return response.code(400).send();
     }
 
-    return response.code(200).send(apiUtils.respondWithData(users[0]));
+    const results = await postgresUtils.executeQuery<User>(
+      'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *',
+      [request.body.firstName, request.body.lastName, request.body.email, request.body.password],
+    );
+
+    return response.code(200).send(apiUtils.respondWithData(results.rows[0]));
   });
 
-  type PatchUser = {
-    Body: Omit<PatchUserRequest, 'id'>;
-    Params: Pick<User, 'id'>;
-    Reply: PatchUserResponse;
+  type GetUser = {
+    Params: GetUserRequest;
+    Reply: GetUserResponse;
   };
 
-  api.patch<PatchUser>(`${API_PREFIX}/:id`, async (request, response) => {
-    const existingIndex = users.findIndex((user) => user.id === request.params.id);
+  api.get<GetUser>(`${apiRoutes.USERS}/:id`, async (request, response) => {
+    const results = await postgresUtils.executeQuery<User>('SELECT * FROM users WHERE id = $1 LIMIT 1', [
+      request.params.id,
+    ]);
 
-    if (!existingIndex || existingIndex === -1) {
+    if (!results.rows.length) {
       response.code(404).send({
         error: {
           message: 'user not found',
@@ -83,7 +59,37 @@ export const registerUsersApi = (api: FastifyInstance) => {
       });
     }
 
-    response.code(200).send(apiUtils.respondWithData(users[existingIndex]));
+    return response.code(200).send(apiUtils.respondWithData(results.rows[0]));
+  });
+
+  type PatchUser = {
+    Body: Omit<PatchUserRequest, 'id'>;
+    Params: Pick<PatchUserRequest, 'id'>;
+    Reply: PatchUserResponse;
+  };
+
+  const patchUpdatePropertyPostgresMap = {
+    firstName: 'first_name',
+    lastName: 'last_name',
+    email: 'email',
+    password: 'password',
+  };
+
+  api.patch<PatchUser>(`${apiRoutes.USERS}/:id`, async (request, response) => {
+    const { query, queryValues } = await postgresUtils.buildSetQuery(
+      patchUpdatePropertyPostgresMap,
+      request.body,
+      'users',
+      request.params.id,
+    );
+
+    const results = await postgresUtils.executeQuery<User>(query, queryValues);
+
+    if (results.rowCount === 0) {
+      response.code(404).send(apiUtils.respondWithError(new Error('user not found to update')));
+    }
+
+    response.code(200).send(apiUtils.respondWithData(results.rows[0]));
   });
 
   type DeleteUser = {
@@ -91,17 +97,15 @@ export const registerUsersApi = (api: FastifyInstance) => {
     Reply: DeleteUserResponse;
   };
 
-  api.delete<DeleteUser>(`${API_PREFIX}/:id`, async (request, response) => {
-    const existingIndex = users.findIndex((user) => user.id === request.params.id);
+  api.delete<DeleteUser>(`${apiRoutes.USERS}/:id`, async (request, response) => {
+    const results = await postgresUtils.executeQuery<User>('DELETE FROM users WHERE id = $1 RETURNING *', [
+      request.params.id,
+    ]);
 
-    if (!existingIndex || existingIndex === -1) {
-      response.code(404).send({
-        error: {
-          message: 'user not found',
-        },
-      });
+    if (results.rowCount === 0) {
+      response.code(404).send(apiUtils.respondWithError(new Error('user not found to delete')));
     }
 
-    response.code(200).send(apiUtils.respondWithData(users[existingIndex]));
+    response.code(200).send(apiUtils.respondWithData(results.rows[0]));
   });
 };

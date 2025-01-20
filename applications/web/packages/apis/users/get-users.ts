@@ -1,6 +1,6 @@
-import type { GetUsersResponse } from '$/data-models/user';
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { type CreateTrackedQueryOptions, queryUtils } from '$/utils/query';
+import type { GetUsersResponse } from '$api/types/users';
 import { GlobalVariable, QueryKey, applicationUtils } from '$web/utils/application';
 
 const getUsersRaw = async (): Promise<GetUsersResponse> => {

@@ -4,4 +4,5 @@ export const apiRoutes = {
   AUTHENTICATION_LOGOUT: '/authentication/logout',
   AUTHENTICATION_AUTHENTICATE: '/authentication/authenticate',
   AUTHENTICATION_CHECK: '/authentication/check',
+  USERS: '/users',
 };

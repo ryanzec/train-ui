@@ -1,18 +1,18 @@
 import { produce } from 'immer';
 
-import type { GetUsersResponse, PostUserRequest, PostUserResponse } from '$/data-models/user';
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { type CreateMutationOptions, queryUtils } from '$/utils/query';
+import type { GetUsersResponse, PostUserRequest, PostUserResponse } from '$api/types/users';
 import { GlobalVariable, QueryKey, applicationUtils } from '$web/utils/application';
 
-const mutate = async (input: PostUserRequest): Promise<PostUserResponse> => {
+const mutate = async (request: PostUserRequest): Promise<PostUserResponse> => {
   return await httpUtils.http(`${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/users`, {
     method: HttpMethod.POST,
     payload: {
-      firstName: input.firstName,
-      lastName: input.lastName,
-      email: input.email,
-      password: input.password,
+      firstName: request.firstName,
+      lastName: request.lastName,
+      email: request.email,
+      password: request.password,
     },
   });
 };

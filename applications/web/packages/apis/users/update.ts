@@ -1,8 +1,8 @@
 import { produce } from 'immer';
 
-import type { GetUsersResponse, PatchUserRequest, PatchUserResponse } from '$/data-models/user';
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { type CreateMutationOptions, queryUtils } from '$/utils/query';
+import type { GetUsersResponse, PatchUserRequest, PatchUserResponse } from '$api/types/users';
 import { GlobalVariable, QueryKey, applicationUtils } from '$web/utils/application';
 
 const mutate = async ({ id, ...payload }: PatchUserRequest): Promise<PatchUserResponse> => {

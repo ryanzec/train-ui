@@ -1,4 +1,5 @@
 import { stringUtils } from '$/utils/string';
+import type { PostgresColumnValue } from '$api/types/postgres';
 import type { PoolConfig, QueryResult, QueryResultRow } from 'pg';
 import pg from 'pg';
 
@@ -100,6 +101,69 @@ const executeTransaction = async <T extends QueryResultRow>(
   }
 };
 
+type BuildSetQueryDataReturn = {
+  query: string;
+  queryValues: PostgresColumnValue[];
+};
+
+const buildSetQuery = async (
+  mapping: Record<string, string>,
+  data: { [key: string]: PostgresColumnValue },
+  tableName: string,
+  updateOnValue: PostgresColumnValue,
+  updateOnColumn = 'id',
+): Promise<BuildSetQueryDataReturn> => {
+  if (!pool) {
+    console.error('pool must being configure before building queries');
+
+    return {
+      query: '',
+      queryValues: [],
+    };
+  }
+
+  const { updateColumns, queryValues } = Object.entries(mapping).reduce(
+    (collector, [dataKey, columnName]) => {
+      if (data[dataKey] !== undefined) {
+        collector.updateColumns.push(columnName);
+        collector.queryValues.push(data[dataKey]);
+      }
+
+      return collector;
+    },
+    {
+      updateColumns: [] as string[],
+      queryValues: [] as PostgresColumnValue[],
+    },
+  );
+
+  const client = await pool.connect();
+  const safeTableName = client.escapeIdentifier(tableName);
+  const safeUpdateOnColumnName = client.escapeIdentifier(updateOnColumn);
+
+  client.release();
+
+  queryValues.push(updateOnValue);
+
+  // if there is only one column to update, postgres will error when using the multi-column update syntax
+  // so need to handle this separately
+  if (updateColumns.length === 1) {
+    return {
+      query: `UPDATE ${safeTableName} SET ${updateColumns[0]} = $1 WHERE ${safeUpdateOnColumnName} = $2 RETURNING *`,
+      queryValues,
+    };
+  }
+
+  const columnString = updateColumns.join(', ');
+  // offset the index by 1 because postgres starts at 1 not 0
+  const parametersString = updateColumns.map((value) => `$${updateColumns.indexOf(value) + 1}`).join(', ');
+
+  return {
+    query: `UPDATE ${safeTableName} SET (${columnString}) = (${parametersString}) WHERE ${safeUpdateOnColumnName} = $${queryValues.length} RETURNING *`,
+    queryValues,
+  };
+};
+
 // allow postgres to use the default naming convention but convert when pulled from the database for the ts convention
 const transformKeys = (data: object | object[]): object | object[] => {
   if (Array.isArray(data)) {
@@ -118,4 +182,5 @@ const transformKeys = (data: object | object[]): object | object[] => {
 export const postgresUtils = {
   executeQuery,
   executeTransaction,
+  buildSetQuery,
 };

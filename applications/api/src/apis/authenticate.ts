@@ -1,4 +1,3 @@
-import type { ResponseStructure } from '$/apis/utils';
 import { applicationConfiguration } from '$api/load-config';
 import { apiRoutes } from '$api/types/api';
 import type {

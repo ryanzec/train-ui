@@ -1,14 +1,17 @@
 import { produce } from 'immer';
 
-import type { DeleteUserRequest, DeleteUserResponse, GetUsersResponse } from '$/data-models/user';
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { type CreateMutationOptions, queryUtils } from '$/utils/query';
+import type { DeleteUserRequest, DeleteUserResponse, GetUsersResponse } from '$api/types/users';
 import { GlobalVariable, QueryKey, applicationUtils } from '$web/utils/application';
 
-const mutate = async (input: DeleteUserRequest): Promise<DeleteUserResponse> => {
-  return await httpUtils.http(`${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/users/${input.id}`, {
-    method: HttpMethod.DELETE,
-  });
+const mutate = async (request: DeleteUserRequest): Promise<DeleteUserResponse> => {
+  return await httpUtils.http(
+    `${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/users/${request.id}`,
+    {
+      method: HttpMethod.DELETE,
+    },
+  );
 };
 
 const onSuccess = (mutationResponse: DeleteUserResponse) => {
