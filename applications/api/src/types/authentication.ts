@@ -1,5 +1,5 @@
 import type { ResponseStructure } from '$/apis/utils';
-import type { Organization } from 'stytch';
+import type { Member, Organization } from 'stytch';
 
 export type AuthenticationLoginRequest = {
   email: string;
@@ -13,8 +13,8 @@ export type AuthenticationAuthenticateRequest = {
   tokenType: string;
 };
 export type AuthenticationAuthenticateResponse = ResponseStructure<{
-  email: string;
   organization: Organization;
+  member: Member;
 }>;
 
 export type AuthenticationCheckRequest = undefined;

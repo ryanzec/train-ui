@@ -39,7 +39,7 @@ const Input = <TFormData = DefaultFormData>(passedProps: InputProps<TFormData>) 
       'formData',
       'name',
 
-      //
+      // autofocus does not seem to work by default is some contexts (like is dialogs) so manually dealing with it
       'autofocus',
     ],
   );
@@ -82,7 +82,7 @@ const Input = <TFormData = DefaultFormData>(passedProps: InputProps<TFormData>) 
   const isFocused = () => isInputFocused() && !props.disabled;
 
   onMount(() => {
-    if (props.autofocus !== false) {
+    if (props.autofocus !== true) {
       return;
     }
 

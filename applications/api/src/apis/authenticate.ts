@@ -134,9 +134,16 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
       intermediate_session_token: intermediateSessionToken,
       organization_id: organization.organization_id,
     });
+    const memberResponse = await stytchClient.organizations.members.get({
+      organization_id: organization.organization_id,
+      email_address: authenticationResponse.email_address,
+    });
 
-    if (exchangeResponse.status_code !== 200) {
-      const errorMessage = `error exchanging intermediate token into organization: ${JSON.stringify(exchangeResponse, null, 2)}`;
+    if (exchangeResponse.status_code !== 200 || memberResponse.status_code !== 200) {
+      const errorMessage =
+        exchangeResponse.status_code !== 200
+          ? `error exchanging intermediate token into organization: ${JSON.stringify(exchangeResponse, null, 2)}`
+          : `error getting member: ${JSON.stringify(memberResponse, null, 2)}`;
 
       console.error(errorMessage);
 
@@ -149,8 +156,8 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
 
     response.status(200).send(
       apiUtils.respondWithData({
-        email: authenticationResponse.email_address,
         organization: organization,
+        member: memberResponse.member,
       }),
     );
   });

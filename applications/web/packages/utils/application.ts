@@ -4,7 +4,7 @@ export enum QueryKey {
 }
 
 export enum LocalStorageKey {
-  USER_SESSION = 'userSession',
+  SESSION_USER = 'sessionUser',
 }
 
 export enum GlobalVariable {

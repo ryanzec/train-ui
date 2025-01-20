@@ -18,12 +18,20 @@ const createApplicationStore = () => {
 
   const initialize = async () => {
     try {
-      const checkResponse = await authenticationApi.checkRaw();
+      const sessionUser = localStorageCacheUtils.get(LocalStorageKey.SESSION_USER);
+
+      if (!sessionUser) {
+        setIsInitializing(false);
+
+        return;
+      }
+
+      await authenticationApi.checkRaw();
 
       setIsAuthenticated(true);
     } catch (error: unknown) {
       // failure error is not an error, it just means we are not authenticated
-      localStorageCacheUtils.remove(LocalStorageKey.USER_SESSION);
+      localStorageCacheUtils.remove(LocalStorageKey.SESSION_USER);
       setIsAuthenticated(false);
     } finally {
       setIsInitializing(false);
@@ -32,11 +40,8 @@ const createApplicationStore = () => {
 
   const login = async (navigate: Navigator, formData: LoginFormData) => {
     const login = authenticationApi.login({
-      onSuccess: async (response) => {
-        localStorageCacheUtils.set(LocalStorageKey.USER_SESSION, { id: 'id' });
-        setIsAuthenticated(true);
-
-        // @todo when password login flow is implemented, we should redirect instead
+      onSuccess: async () => {
+        // @todo when password login flow is implemented, we should set and authenticated and redirect instead
         window.close();
       },
     });
@@ -51,32 +56,43 @@ const createApplicationStore = () => {
   const logout = async (navigate: Navigator) => {
     const logout = authenticationApi.logout({
       onSuccess: async (response) => {
-        localStorageCacheUtils.remove(LocalStorageKey.USER_SESSION);
+        localStorageCacheUtils.remove(LocalStorageKey.SESSION_USER);
         setIsAuthenticated(false);
         navigate(RoutePath.LOGIN);
       },
     });
 
-    setIsProcessingLogin(true);
+    setIsProcessingLogout(true);
 
-    // this is a little weird but a logout should be a delete since the request is actually deleting the session
+    // this is a little weird but a logout should be a DELETE since the request is actually deleting the session
     await logout.mutate(undefined);
 
-    setIsProcessingLogin(false);
+    setIsProcessingLogout(false);
   };
 
   const authenticate = async (navigate: Navigator, requestInput: AuthenticationAuthenticateRequest) => {
     try {
       setIsProcessingAuthentication(true);
 
-      await authenticationApi.authenticateRaw(requestInput);
+      const authenticateResponse = await authenticationApi.authenticateRaw(requestInput);
+      const member = authenticateResponse.data?.member;
+      const organization = authenticateResponse.data?.organization;
 
+      localStorageCacheUtils.set(LocalStorageKey.SESSION_USER, {
+        id: member?.member_id,
+        email: member?.email_address,
+        name: member?.name,
+        organization: {
+          id: organization?.organization_id,
+          name: organization?.organization_name,
+        },
+      });
       setIsAuthenticated(true);
       navigate(RoutePath.HOME);
     } catch (error: unknown) {
       // failure error is not an error, it just means we are not authenticated
       loggerUtils.error(`error authenticating: ${error}`);
-      localStorageCacheUtils.remove(LocalStorageKey.USER_SESSION);
+      localStorageCacheUtils.remove(LocalStorageKey.SESSION_USER);
       setIsAuthenticated(false);
     } finally {
       setIsProcessingAuthentication(false);

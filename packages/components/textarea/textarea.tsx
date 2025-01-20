@@ -15,7 +15,14 @@ export type TextareaProps<TFormData = DefaultFormData> = Omit<
 };
 
 const Textarea = <TFormData = DefaultFormData>(passedProps: TextareaProps<TFormData>) => {
-  const [props, restOfProps] = splitProps(passedProps, ['class', 'name', 'formData', 'autofocus']);
+  const [props, restOfProps] = splitProps(passedProps, [
+    'class',
+    'name',
+    'formData',
+
+    // autofocus does not seem to work by default is some contexts (like is dialogs) so manually dealing with it
+    'autofocus',
+  ]);
 
   const [textareaElement, setTextareaElement] = createSignal<HTMLTextAreaElement>();
 
@@ -24,7 +31,7 @@ const Textarea = <TFormData = DefaultFormData>(passedProps: TextareaProps<TFormD
   };
 
   onMount(() => {
-    if (props.autofocus !== false) {
+    if (props.autofocus !== true) {
       return;
     }
 

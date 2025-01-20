@@ -41,7 +41,7 @@ const LoginView = () => {
       <form use:formDirective>
         <FormField errors={formStore.errors().email?.errors}>
           <Label>Email</Label>
-          <Input type="text" formData={formStore.data} name="email" />
+          <Input type="text" formData={formStore.data} name="email" autofocus />
         </FormField>
         <Button type="submit">Login</Button>
       </form>
