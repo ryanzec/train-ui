@@ -1,4 +1,5 @@
 import { stringUtils } from '$/utils/string';
+import { applicationConfiguration } from '$api/load-config';
 import type { PostgresColumnValue } from '$api/types/postgres';
 import type { PoolConfig, QueryResult, QueryResultRow } from 'pg';
 import pg from 'pg';
@@ -7,15 +8,15 @@ import pg from 'pg';
 const { Pool } = pg;
 
 const config: PoolConfig = {
-  host: process.env.DATABASE_HOST || 'localhost',
-  port: Number.parseInt(process.env.DATABASE_PORT || '5432'),
-  database: process.env.DATABASE_NAME || 'postgres',
-  user: process.env.DATABASE_USER || '',
-  password: process.env.DATABASE_PASSWORD || '',
-  max: Number.parseInt(process.env.DATABASE_PORT || '20'),
-  idleTimeoutMillis: Number.parseInt(process.env.DATABASE_IDLE_TIMEOUT || '30000'),
-  connectionTimeoutMillis: Number.parseInt(process.env.DATABASE_CONNECTION_TIMEOUT || '2000'),
-  ssl: process.env.NODE_ENV === 'production',
+  host: applicationConfiguration.databaseHost,
+  port: applicationConfiguration.databasePort,
+  database: applicationConfiguration.databaseName,
+  user: applicationConfiguration.databaseUser,
+  password: applicationConfiguration.databasePassword,
+  max: applicationConfiguration.databasePoolMaximum,
+  idleTimeoutMillis: applicationConfiguration.databaseIdleTimeout,
+  connectionTimeoutMillis: applicationConfiguration.databaseConnectionTimeout,
+  ssl: applicationConfiguration.databaseSsl,
 };
 
 const createPool = (config: PoolConfig): pg.Pool => {
@@ -27,6 +28,7 @@ let pool: pg.Pool | null = createPool(config);
 
 pool.on('error', (err) => {
   console.error('Unexpected error on idle client', err);
+
   process.exit(-1);
 });
 

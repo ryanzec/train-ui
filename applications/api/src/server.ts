@@ -32,7 +32,7 @@ const api = fastify({
 
 const getRedisSessionClient = async () => {
   const client = createClient({
-    url: process.env.REDIS_URL || 'redis://localhost:6379',
+    url: applicationConfiguration.redisUrl,
     socket: {
       reconnectStrategy: (retries: number) => {
         return Math.min(retries * 50, 3000);
@@ -46,9 +46,9 @@ const getRedisSessionClient = async () => {
 };
 
 await api.register(cors, {
-  origin: true,
-  methods: 'GET,HEAD,OPTIONS,PUT,PATCH,POST,DELETE',
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  origin: applicationConfiguration.apiCorsOrigin,
+  methods: applicationConfiguration.apiCorsMethods,
+  allowedHeaders: applicationConfiguration.apiCoreAllowedHeaders,
   optionsSuccessStatus: 200,
   credentials: true,
 });
@@ -66,9 +66,9 @@ registerQueryApi(api);
 registerRedisApi(api);
 
 const sessionEncryptionOptions: EncryptionOptions = {
-  algorithm: process.env.SESSION_ENCRYPTION_ALGORITHM as string,
-  key: Buffer.from(process.env.SESSION_ENCRYPTION_KEY as string),
-  ivLength: Number(process.env.SESSION_ENCRYPTION_IV_LENGTH),
+  algorithm: applicationConfiguration.sessionEncryptionAlgorithm,
+  key: Buffer.from(applicationConfiguration.sessionEncryptionKey),
+  ivLength: Number(applicationConfiguration.sessionEncryptionIvLength),
 };
 
 // start the server
@@ -78,9 +78,9 @@ const start = async () => {
     const redisClient = await getRedisSessionClient();
 
     api.register(fastifySession, {
-      secret: 'a secret with minimum length of 32 characters',
+      secret: applicationConfiguration.sessionSecret,
       cookie: {
-        maxAge: 1000 * 60 * 60 * 24,
+        maxAge: applicationConfiguration.sessionMaximumAge,
         secure: true,
         sameSite: 'none',
       },
@@ -119,7 +119,7 @@ const start = async () => {
       }),
     });
 
-    api.listen({ port: 3000 });
+    api.listen({ port: applicationConfiguration.apiPort });
   } catch (err) {
     api.log.error(err);
     process.exit(1);

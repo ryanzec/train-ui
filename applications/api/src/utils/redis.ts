@@ -1,3 +1,4 @@
+import { applicationConfiguration } from '$api/load-config';
 import * as genericPool from 'generic-pool';
 import {
   type RedisClientType,
@@ -30,14 +31,14 @@ interface Config {
 
 const CONFIG: Config = {
   redis: {
-    url: process.env.REDIS_URL || 'redis://localhost:6379',
+    url: applicationConfiguration.redisUrl,
     retryStrategy: (retries: number) => {
       return Math.min(retries * 50, 3000);
     },
   },
   pool: {
-    min: 5,
-    max: 20,
+    min: applicationConfiguration.redisPoolMinimum,
+    max: applicationConfiguration.redisPoolMaximum,
     acquireTimeoutMillis: 5000,
     idleTimeoutMillis: 30000,
     evictionRunIntervalMillis: 1000,

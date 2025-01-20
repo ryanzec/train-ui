@@ -15,8 +15,8 @@ import type { FastifyInstance } from 'fastify';
 import * as stytch from 'stytch';
 
 const stytchClient = new stytch.B2BClient({
-  project_id: applicationConfiguration.AUTH_PROJECT_ID || '',
-  secret: applicationConfiguration.AUTH_SECRET || '',
+  project_id: applicationConfiguration.authenticationProjectId,
+  secret: applicationConfiguration.authenticationSecret,
 });
 
 export const registerAuthenticateApi = (api: FastifyInstance) => {
