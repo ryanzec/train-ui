@@ -1,6 +1,7 @@
 import path from 'node:path';
 import * as process from 'node:process';
 import url from 'node:url';
+import { loggerUtils } from '$api/utils/logger';
 import dotenv from 'dotenv';
 
 const __filename = url.fileURLToPath(import.meta.url);
@@ -33,6 +34,7 @@ const requiredEnvironmentVariables = [
   'SESSION_ENCRYPTION_IV_LENGTH',
   'SESSION_SECRET',
   'SESSION_MAX_AGE',
+  'LOG_LEVEL',
 ];
 
 for (const variable of requiredEnvironmentVariables) {
@@ -40,6 +42,7 @@ for (const variable of requiredEnvironmentVariables) {
     continue;
   }
 
+  // since this might happen before fastify can be created, we need to use javascript's native logger
   console.error(`missing required environment variable '${variable}' so can not start api server`);
 
   process.exit(1);
@@ -50,6 +53,7 @@ export interface ApplicationConfiguration {
   apiUrl: string;
   apiPort: number;
   nodeEnv: 'development' | 'production';
+  logLevel: string;
 
   // authentication
   authenticationProjectId: string;
@@ -89,6 +93,7 @@ export const applicationConfiguration: ApplicationConfiguration = {
   apiUrl: process.env.API_URL as string,
   nodeEnv: process.env.NODE_ENV === 'production' ? 'production' : 'development',
   apiPort: Number(process.env.API_PORT),
+  logLevel: process.env.LOG_LEVEL as string,
 
   // authentication
   authenticationProjectId: process.env.AUTHENTICATION_PROJECT_ID as string,

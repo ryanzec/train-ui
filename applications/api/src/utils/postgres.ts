@@ -1,6 +1,7 @@
 import { stringUtils } from '$/utils/string';
 import { applicationConfiguration } from '$api/load-config';
 import type { PostgresColumnValue } from '$api/types/postgres';
+import { loggerUtils } from '$api/utils/logger';
 import type { PoolConfig, QueryResult, QueryResultRow } from 'pg';
 import pg from 'pg';
 
@@ -27,6 +28,7 @@ const createPool = (config: PoolConfig): pg.Pool => {
 let pool: pg.Pool | null = createPool(config);
 
 pool.on('error', (err) => {
+  // since this might happen before fastify can be created, we need to use javascript's native logger
   console.error('Unexpected error on idle client', err);
 
   process.exit(-1);
@@ -116,7 +118,7 @@ const buildSetQuery = async (
   updateOnColumn = 'id',
 ): Promise<BuildSetQueryDataReturn> => {
   if (!pool) {
-    console.error('pool must being configure before building queries');
+    loggerUtils.getLogger().error('pool must being configure before building queries');
 
     return {
       query: '',

@@ -34,7 +34,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
       if (sendEmailResponse.status_code !== 200) {
         const errorMessage = 'error sending login email';
 
-        console.error(errorMessage);
+        api.log.error(errorMessage);
 
         response.status(500).send(apiUtils.respondWithError(new Error('error sending login email')));
 
@@ -75,7 +75,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
     if (tokenType !== 'discovery') {
       const errorMessage = `unrecognized token type of '${tokenType}' give, only 'discovery' token is supported`;
 
-      console.error(errorMessage);
+      api.log.error(errorMessage);
 
       response.status(400).send(apiUtils.respondWithError(undefined, errorMessage));
 
@@ -89,7 +89,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
     if (authenticationResponse.status_code !== 200) {
       const errorMessage = 'unknown authentication error';
 
-      console.error(errorMessage);
+      api.log.error(errorMessage);
 
       response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
 
@@ -108,7 +108,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
       // });
       //
       // if (createResp.status_code !== 200) {
-      //   console.error(`Error creating Organization: '${JSON.stringify(createResp, null, 2)}'`);
+      //   api.log.error(`Error creating Organization: '${JSON.stringify(createResp, null, 2)}'`);
       //   response.status(500).send({});
       //   return;
       // }
@@ -123,7 +123,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
 
       const errorMessage = 'user not part of an organization';
 
-      console.error(errorMessage);
+      api.log.error(errorMessage);
 
       response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
 
@@ -145,7 +145,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
           ? `error exchanging intermediate token into organization: ${JSON.stringify(exchangeResponse, null, 2)}`
           : `error getting member: ${JSON.stringify(memberResponse, null, 2)}`;
 
-      console.error(errorMessage);
+      api.log.error(errorMessage);
 
       response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
 
@@ -176,7 +176,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
       if (authenticateResponse.status_code !== 200) {
         const errorMessage = 'error validation current authentication token';
 
-        console.error(errorMessage);
+        api.log.error(errorMessage);
 
         response.status(500).send(apiUtils.respondWithError(new Error('error sending login email')));
 

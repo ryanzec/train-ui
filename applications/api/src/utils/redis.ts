@@ -55,6 +55,7 @@ const createRedisClient = async (): Promise<RedisClient> => {
   });
 
   client.on('error', (err: Error) => {
+    // since this might happen before fastify can be created, we need to use javascript's native logger
     console.error('Redis Client Error:', err);
   });
 

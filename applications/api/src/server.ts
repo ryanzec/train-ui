@@ -2,6 +2,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import url from 'node:url';
 
+import { loggerUtils } from '$api/utils/logger';
 import fastifyCookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import fastifySession from '@fastify/session';
@@ -23,7 +24,7 @@ const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const api = fastify({
-  logger: true,
+  logger: loggerUtils.loggerConfiguration,
   https: {
     key: fs.readFileSync(path.join(__dirname, '..', '..', '..', 'ssl-key.pem')),
     cert: fs.readFileSync(path.join(__dirname, '..', '..', '..', 'ssl-cert.pem')),
@@ -97,7 +98,7 @@ const start = async () => {
 
               return JSON.parse(decrypted);
             } catch (error: unknown) {
-              console.error(`Failed to parse JSON: ${error instanceof Error ? error.message : 'unknown error'}`);
+              api.log.error(`Failed to parse JSON: ${error instanceof Error ? error.message : 'unknown error'}`);
 
               return {};
             }
@@ -110,7 +111,7 @@ const start = async () => {
 
               return JSON.stringify(encryptionUtils.encrypt(jsonString, sessionEncryptionOptions));
             } catch (error: unknown) {
-              console.error(`Failed to stringify JSON: ${error instanceof Error ? error.message : 'unknown error'}`);
+              api.log.error(`Failed to stringify JSON: ${error instanceof Error ? error.message : 'unknown error'}`);
 
               return '';
             }
