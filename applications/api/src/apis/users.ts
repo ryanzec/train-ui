@@ -86,10 +86,10 @@ export const registerUsersApi = (api: FastifyInstance) => {
     const results = await postgresUtils.executeQuery<User>(query, queryValues);
 
     if (results.rowCount === 0) {
-      response.code(404).send(apiUtils.respondWithError(new Error('user not found to update')));
+      return response.code(404).send(apiUtils.respondWithError(new Error('user not found to update')));
     }
 
-    response.code(200).send(apiUtils.respondWithData(results.rows[0]));
+    return response.code(200).send(apiUtils.respondWithData(results.rows[0]));
   });
 
   type DeleteUser = {
@@ -103,9 +103,9 @@ export const registerUsersApi = (api: FastifyInstance) => {
     ]);
 
     if (results.rowCount === 0) {
-      response.code(404).send(apiUtils.respondWithError(new Error('user not found to delete')));
+      return response.code(404).send(apiUtils.respondWithError(new Error('user not found to delete')));
     }
 
-    response.code(200).send(apiUtils.respondWithData(results.rows[0]));
+    return response.code(200).send(apiUtils.respondWithData(results.rows[0]));
   });
 };

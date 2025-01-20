@@ -51,8 +51,11 @@ const createApplicationStore = () => {
   const login = async (navigate: Navigator, formData: LoginFormData) => {
     const login = authenticationApi.login({
       onSuccess: async () => {
-        // @todo when password login flow is implemented, we should set and authenticated and redirect instead
+        // @todo when password login flow is implemented, we should set as authenticated and redirect to home instead
         window.close();
+
+        // the window.close() above might not work and nothing we can do about it so redirecting as a fail-safe
+        navigate(RoutePath.LOGIN_COMPLETE);
       },
     });
 

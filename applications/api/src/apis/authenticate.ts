@@ -36,14 +36,12 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
 
         api.log.error(errorMessage);
 
-        response.status(500).send(apiUtils.respondWithError(new Error('error sending login email')));
-
-        return;
+        return response.status(500).send(apiUtils.respondWithError(new Error('error sending login email')));
       }
 
-      response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
+      return response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
     } catch (error: unknown) {
-      response.status(500).send(apiUtils.respondWithError(error));
+      return response.status(500).send(apiUtils.respondWithError(error));
     }
   });
 
@@ -57,9 +55,9 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
       // @todo killing the session is fine for now but we should probably revoke the token in stytch too
       await request.session.destroy();
 
-      response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
+      return response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
     } catch (error: unknown) {
-      response.status(500).send(apiUtils.respondWithError(error));
+      return response.status(500).send(apiUtils.respondWithError(error));
     }
   });
 
@@ -77,9 +75,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
 
       api.log.error(errorMessage);
 
-      response.status(400).send(apiUtils.respondWithError(undefined, errorMessage));
-
-      return;
+      return response.status(400).send(apiUtils.respondWithError(undefined, errorMessage));
     }
 
     const authenticationResponse = await stytchClient.magicLinks.discovery.authenticate({
@@ -91,9 +87,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
 
       api.log.error(errorMessage);
 
-      response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
-
-      return;
+      return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
     }
 
     const intermediateSessionToken = authenticationResponse.intermediate_session_token;
@@ -109,14 +103,14 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
       //
       // if (createResp.status_code !== 200) {
       //   api.log.error(`Error creating Organization: '${JSON.stringify(createResp, null, 2)}'`);
-      //   response.status(500).send({});
-      //   return;
+
+      //   return response.status(500).send({});
       // }
       // // Store the returned session and return session member information
       // // req.session.StytchSessionToken = createResp.session_token;
       // request.session.stytchSessionToken = createResp.session_token;
       //
-      // response.status(200).send({
+      // return response.status(200).send({
       //   message: `Hello, ${createResp.member.email_address}! You're logged into the '${createResp.organization?.organization_name}' organization`,
       //   stytchSessionToken: request.session.stytchSessionToken,
       // });
@@ -125,9 +119,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
 
       api.log.error(errorMessage);
 
-      response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
-
-      return;
+      return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
     }
 
     const exchangeResponse = await stytchClient.discovery.intermediateSessions.exchange({
@@ -147,14 +139,12 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
 
       api.log.error(errorMessage);
 
-      response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
-
-      return;
+      return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
     }
 
     request.session.authenticationToken = exchangeResponse.session_token;
 
-    response.status(200).send(
+    return response.status(200).send(
       apiUtils.respondWithData({
         organization: organization,
         member: memberResponse.member,
@@ -178,14 +168,12 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
 
         api.log.error(errorMessage);
 
-        response.status(500).send(apiUtils.respondWithError(new Error('error sending login email')));
-
-        return;
+        return response.status(500).send(apiUtils.respondWithError(new Error('error sending login email')));
       }
 
-      response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
+      return response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
     } catch (error: unknown) {
-      response.status(500).send(apiUtils.respondWithError(error));
+      return response.status(500).send(apiUtils.respondWithError(error));
     }
   });
 };
