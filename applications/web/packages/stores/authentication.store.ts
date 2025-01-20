@@ -8,6 +8,7 @@ import type { AuthenticationAuthenticateRequest } from '$api/types/authenticatio
 import { authenticationApi } from '$web/apis/authentication';
 import { LocalStorageKey, RoutePath } from '$web/utils/application';
 import type { LoginFormData } from '$web/views/login/login.view';
+import type { ResetPasswordFormData } from '$web/views/reset-password/reset-password';
 
 export type SessionUser = {
   id: string;
@@ -19,12 +20,21 @@ export type SessionUser = {
   };
 };
 
+export const LoginAction = {
+  NONE: 'none',
+  LOGIN: 'login',
+  LOGOUT: 'logout',
+  AUTHENTICATE: 'authenticate',
+  RESET_PASSWORD: 'reset-password',
+  SEND_RESET_PASSWORD: 'send-reset-password',
+} as const;
+
+export type LoginAction = (typeof LoginAction)[keyof typeof LoginAction];
+
 const createApplicationStore = () => {
   const [isInitializing, setIsInitializing] = createSignal<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = createSignal<boolean>(false);
-  const [isProcessingLogin, setIsProcessingLogin] = createSignal<boolean>(false);
-  const [isProcessingLogout, setIsProcessingLogout] = createSignal<boolean>(false);
-  const [isProcessingAuthentication, setIsProcessingAuthentication] = createSignal<boolean>(false);
+  const [currentLoginAction, setCurrentLoginAction] = createSignal<LoginAction>(LoginAction.NONE);
 
   const initialize = async () => {
     try {
@@ -59,11 +69,11 @@ const createApplicationStore = () => {
       },
     });
 
-    setIsProcessingLogin(true);
+    setCurrentLoginAction(LoginAction.LOGIN);
 
     await login.mutate(formData);
 
-    setIsProcessingLogin(false);
+    setCurrentLoginAction(LoginAction.NONE);
   };
 
   const logout = async (navigate: Navigator) => {
@@ -75,17 +85,51 @@ const createApplicationStore = () => {
       },
     });
 
-    setIsProcessingLogout(true);
+    setCurrentLoginAction(LoginAction.LOGOUT);
 
     // this is a little weird but a logout should be a DELETE since the request is actually deleting the session
     await logout.mutate(undefined);
 
-    setIsProcessingLogout(false);
+    setCurrentLoginAction(LoginAction.NONE);
+  };
+
+  const sendResetPassword = async (navigate: Navigator, formData: LoginFormData) => {
+    const sendResetPassword = authenticationApi.sendResetPassword({
+      onSuccess: async () => {
+        window.close();
+
+        // the window.close() above might not work and nothing we can do about it so redirecting as a fail-safe
+        navigate(RoutePath.LOGIN_COMPLETE);
+      },
+    });
+
+    setCurrentLoginAction(LoginAction.RESET_PASSWORD);
+
+    await sendResetPassword.mutate(formData);
+
+    setCurrentLoginAction(LoginAction.NONE);
+  };
+
+  const resetPassword = async (navigate: Navigator, formData: ResetPasswordFormData) => {
+    const sendResetPassword = authenticationApi.resetPassword({
+      onSuccess: async () => {
+        window.close();
+
+        // the window.close() above might not work and nothing we can do about it so redirecting as a fail-safe
+        navigate(RoutePath.LOGIN_COMPLETE);
+      },
+    });
+
+    setCurrentLoginAction(LoginAction.RESET_PASSWORD);
+
+    await sendResetPassword.mutate(formData);
+
+    setCurrentLoginAction(LoginAction.NONE);
   };
 
   const authenticate = async (navigate: Navigator, requestInput: AuthenticationAuthenticateRequest) => {
     try {
-      setIsProcessingAuthentication(true);
+      setCurrentLoginAction(LoginAction.AUTHENTICATE);
 
       const authenticateResponse = await authenticationApi.authenticateRaw(requestInput);
 
@@ -118,20 +162,25 @@ const createApplicationStore = () => {
       localStorageCacheUtils.remove(LocalStorageKey.SESSION_USER);
       setIsAuthenticated(false);
     } finally {
-      setIsProcessingAuthentication(false);
+      setCurrentLoginAction(LoginAction.NONE);
     }
+  };
+
+  const isProcessingLoginAction = () => {
+    return currentLoginAction() !== LoginAction.NONE;
   };
 
   return {
     isInitializing,
     isAuthenticated,
-    isProcessingLogin,
-    isProcessingLogout,
-    isProcessingAuthntication: isProcessingAuthentication,
+    currentLoginAction,
+    isProcessingLoginAction,
     login,
     logout,
     initialize,
     authenticate,
+    resetPassword,
+    sendResetPassword,
   };
 };
 

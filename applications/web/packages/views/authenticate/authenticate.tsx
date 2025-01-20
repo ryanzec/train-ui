@@ -4,12 +4,12 @@ import { onMount } from 'solid-js';
 
 const AuthenticateView = () => {
   const navigate = useNavigate();
-  const locaiton = useLocation();
+  const location = useLocation();
 
   onMount(() => {
     authenticationStore.authenticate(navigate, {
-      token: locaiton.query.token as string,
-      tokenType: locaiton.query.stytch_token_type as string,
+      token: location.query.token as string,
+      tokenType: location.query.stytch_token_type as string,
     });
   });
 

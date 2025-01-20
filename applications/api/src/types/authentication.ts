@@ -26,3 +26,20 @@ export type AuthenticationLogoutRequest = undefined;
 export type AuthenticationLogoutResponse = ResponseStructure<{
   status: string;
 }>;
+
+export type AuthenticationSendResetPasswordRequest = {
+  email: string;
+};
+export type AuthenticationSendResetPasswordResponse = ResponseStructure<{
+  status: string;
+}>;
+
+export type AuthenticationResetPasswordRequest = {
+  email: string;
+  password: string;
+  token: string;
+  tokenType: string;
+};
+export type AuthenticationResetPasswordResponse = ResponseStructure<{
+  status: string;
+}>;

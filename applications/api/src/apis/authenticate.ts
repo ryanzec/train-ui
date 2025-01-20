@@ -9,6 +9,10 @@ import type {
   AuthenticationLoginResponse,
   AuthenticationLogoutRequest,
   AuthenticationLogoutResponse,
+  AuthenticationResetPasswordRequest,
+  AuthenticationResetPasswordResponse,
+  AuthenticationSendResetPasswordRequest,
+  AuthenticationSendResetPasswordResponse,
 } from '$api/types/authentication';
 import { apiUtils } from '$api/utils/api';
 import type { FastifyInstance } from 'fastify';
@@ -36,7 +40,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
 
         api.log.error(errorMessage);
 
-        return response.status(500).send(apiUtils.respondWithError(new Error('error sending login email')));
+        return response.status(500).send(apiUtils.respondWithError(new Error(errorMessage)));
       }
 
       return response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
@@ -54,6 +58,74 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
     try {
       // @todo killing the session is fine for now but we should probably revoke the token in stytch too
       await request.session.destroy();
+
+      return response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
+    } catch (error: unknown) {
+      return response.status(500).send(apiUtils.respondWithError(error));
+    }
+  });
+
+  type PostSendResetPassword = {
+    Body: AuthenticationSendResetPasswordRequest;
+    Reply: AuthenticationSendResetPasswordResponse;
+  };
+
+  api.post<PostSendResetPassword>(ApiRoute.AUTHENTICATION_SEND_RESET_PASSWORD, async (request, response) => {
+    try {
+      const sendEmailResponse = await stytchClient.passwords.discovery.email.resetStart({
+        email_address: request.body.email,
+      });
+
+      if (sendEmailResponse.status_code !== 200) {
+        const errorMessage = 'error sending reset password email';
+
+        api.log.error(errorMessage);
+
+        return response.status(500).send(apiUtils.respondWithError(new Error(errorMessage)));
+      }
+
+      return response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
+    } catch (error: unknown) {
+      return response.status(500).send(apiUtils.respondWithError(error));
+    }
+  });
+
+  type PostResetPassword = {
+    Body: AuthenticationResetPasswordRequest;
+    Reply: AuthenticationResetPasswordResponse;
+  };
+
+  api.post<PostResetPassword>(ApiRoute.AUTHENTICATION_RESET_PASSWORD, async (request, response) => {
+    try {
+      const token = request.body.token;
+      const tokenType = request.body.tokenType;
+      const password = request.body.password;
+
+      if (tokenType !== 'discovery') {
+        const errorMessage = `unrecognized token type of '${tokenType}' give, only 'discovery' token is supported`;
+
+        api.log.error(errorMessage);
+
+        return response.status(400).send(apiUtils.respondWithError(undefined, errorMessage));
+      }
+
+      api.log.info({
+        password_reset_token: token,
+        password,
+      });
+
+      const resetPasswordResponse = await stytchClient.passwords.email.reset({
+        password_reset_token: token,
+        password,
+      });
+
+      if (resetPasswordResponse.status_code !== 200) {
+        const errorMessage = 'unknown error with resetting the password';
+
+        api.log.error(errorMessage);
+
+        return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
+      }
 
       return response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
     } catch (error: unknown) {
