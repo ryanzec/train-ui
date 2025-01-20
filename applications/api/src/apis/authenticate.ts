@@ -47,12 +47,12 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
     }
   });
 
-  type PostLogout = {
+  type DeleteLogout = {
     Body: AuthenticationLogoutRequest;
     Reply: AuthenticationLogoutResponse;
   };
 
-  api.post<PostLogout>(apiRoutes.AUTHENTICATION_LOGOUT, async (request, response) => {
+  api.delete<DeleteLogout>(apiRoutes.AUTHENTICATION_LOGOUT, async (request, response) => {
     try {
       // @todo killing the session is fine for now but we should probably revoke the token in stytch too
       await request.session.destroy();

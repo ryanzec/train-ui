@@ -9,7 +9,7 @@ const mutate = async (): Promise<AuthenticationLogoutResponse> => {
   return await httpUtils.http(
     `${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}${apiRoutes.AUTHENTICATION_LOGOUT}`,
     {
-      method: HttpMethod.POST,
+      method: HttpMethod.DELETE,
       payload: {},
     },
   );
