@@ -9,6 +9,16 @@ import { authenticationApi } from '$web/apis/authentication';
 import { LocalStorageKey, RoutePath } from '$web/utils/application';
 import type { LoginFormData } from '$web/views/login/login.view';
 
+export type SessionUser = {
+  id: string;
+  email: string;
+  name: string;
+  organization: {
+    id: string;
+    name: string;
+  };
+};
+
 const createApplicationStore = () => {
   const [isInitializing, setIsInitializing] = createSignal<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = createSignal<boolean>(false);
@@ -18,7 +28,7 @@ const createApplicationStore = () => {
 
   const initialize = async () => {
     try {
-      const sessionUser = localStorageCacheUtils.get(LocalStorageKey.SESSION_USER);
+      const sessionUser = localStorageCacheUtils.get<SessionUser>(LocalStorageKey.SESSION_USER);
 
       if (!sessionUser) {
         setIsInitializing(false);
@@ -75,16 +85,26 @@ const createApplicationStore = () => {
       setIsProcessingAuthentication(true);
 
       const authenticateResponse = await authenticationApi.authenticateRaw(requestInput);
-      const member = authenticateResponse.data?.member;
-      const organization = authenticateResponse.data?.organization;
 
-      localStorageCacheUtils.set(LocalStorageKey.SESSION_USER, {
-        id: member?.member_id,
-        email: member?.email_address,
-        name: member?.name,
+      if (!authenticateResponse.data) {
+        loggerUtils.error('error authenticating: failed to get user data');
+
+        localStorageCacheUtils.remove(LocalStorageKey.SESSION_USER);
+        setIsAuthenticated(false);
+
+        return;
+      }
+
+      const member = authenticateResponse.data.member;
+      const organization = authenticateResponse.data.organization;
+
+      localStorageCacheUtils.set<SessionUser>(LocalStorageKey.SESSION_USER, {
+        id: member.member_id,
+        email: member.email_address,
+        name: member.name,
         organization: {
-          id: organization?.organization_id,
-          name: organization?.organization_name,
+          id: organization.organization_id,
+          name: organization.organization_name,
         },
       });
       setIsAuthenticated(true);

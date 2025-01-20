@@ -4,19 +4,18 @@ export type LocalStorageCacheData = {
   expires: number | boolean;
 };
 
-const get = (key: string) => {
+const get = <T = unknown>(key: string): T | undefined => {
   const now = new Date().getTime();
   const rawData = localStorage.getItem(key);
 
   if (!rawData) {
-    return null;
+    return;
   }
 
   // @todo(feature) handle when data is not valid json
   const storedData = JSON.parse(rawData);
 
-  // biome-ignore lint/suspicious/noExplicitAny: any is being used as we do want to be able to store any kind of data here
-  let returnData: any;
+  let returnData: T | undefined;
 
   if (storedData?.expires && storedData.expires <= now) {
     //clean up expired data
@@ -28,8 +27,7 @@ const get = (key: string) => {
   return returnData;
 };
 
-// biome-ignore lint/suspicious/noExplicitAny: any is being used as we do want to be able to store any kind of data here
-const set = (key: string, value: any, expireIn = 0) => {
+const set = <T = unknown>(key: string, value: T, expireIn = 0) => {
   const expires = new Date().getTime();
 
   const data: LocalStorageCacheData = {
