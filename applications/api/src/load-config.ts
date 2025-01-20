@@ -35,6 +35,7 @@ const requiredEnvironmentVariables = [
   'SESSION_SECRET',
   'SESSION_MAX_AGE',
   'LOG_LEVEL',
+  'SESSION_DURATION',
 ];
 
 for (const variable of requiredEnvironmentVariables) {
@@ -75,6 +76,7 @@ export interface ApplicationConfiguration {
   sessionEncryptionIvLength: number;
   sessionSecret: string;
   sessionMaximumAge: number;
+  sessionDuration: number;
 
   // database
   databaseHost: string;
@@ -126,4 +128,5 @@ export const applicationConfiguration: ApplicationConfiguration = {
   sessionEncryptionIvLength: Number(process.env.SESSION_ENCRYPTION_IV_LENGTH),
   sessionSecret: process.env.SESSION_SECRET as string,
   sessionMaximumAge: Number(process.env.SESSION_MAX_AGE),
+  sessionDuration: Number(process.env.SESSION_DURATION),
 };

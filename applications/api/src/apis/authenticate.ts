@@ -125,6 +125,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
     const exchangeResponse = await stytchClient.discovery.intermediateSessions.exchange({
       intermediate_session_token: intermediateSessionToken,
       organization_id: organization.organization_id,
+      session_duration_minutes: applicationConfiguration.sessionDuration,
     });
     const memberResponse = await stytchClient.organizations.members.get({
       organization_id: organization.organization_id,
