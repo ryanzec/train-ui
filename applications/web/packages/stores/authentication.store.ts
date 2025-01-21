@@ -76,6 +76,40 @@ const createApplicationStore = () => {
     setCurrentLoginAction(LoginAction.NONE);
   };
 
+  const loginPassword = async (navigate: Navigator, formData: LoginFormData) => {
+    setCurrentLoginAction(LoginAction.LOGIN);
+
+    try {
+      const authenticateResponse = await authenticationApi.authenticatePasswordRaw({
+        email: formData.email,
+        password: formData.password,
+      });
+
+      if (!authenticateResponse.data) {
+        loggerUtils.error('error authenticating');
+
+        return;
+      }
+
+      const { member, organization } = authenticateResponse.data;
+
+      localStorageCacheUtils.set<SessionUser>(LocalStorageKey.SESSION_USER, {
+        id: member.member_id,
+        email: member.email_address,
+        name: member.name,
+        organization: {
+          id: organization.organization_id,
+          name: organization.organization_name,
+        },
+      });
+
+      setIsAuthenticated(true);
+      navigate(RoutePath.HOME);
+    } finally {
+      setCurrentLoginAction(LoginAction.NONE);
+    }
+  };
+
   const logout = async (navigate: Navigator) => {
     const logout = authenticationApi.logout({
       onSuccess: async (response) => {
@@ -176,6 +210,7 @@ const createApplicationStore = () => {
     currentLoginAction,
     isProcessingLoginAction,
     login,
+    loginPassword,
     logout,
     initialize,
     authenticate,

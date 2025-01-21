@@ -17,6 +17,15 @@ export type AuthenticationAuthenticateResponse = ResponseStructure<{
   member: Member;
 }>;
 
+export type AuthenticationAuthenticatePasswordRequest = {
+  email: string;
+  password: string;
+};
+export type AuthenticationAuthenticatePasswordResponse = ResponseStructure<{
+  organization: Organization;
+  member: Member;
+}>;
+
 export type AuthenticationCheckRequest = undefined;
 export type AuthenticationCheckResponse = ResponseStructure<{
   status: string;

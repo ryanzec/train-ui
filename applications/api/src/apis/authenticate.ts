@@ -1,6 +1,8 @@
 import { applicationConfiguration } from '$api/load-config';
 import { ApiRoute } from '$api/types/api';
 import type {
+  AuthenticationAuthenticatePasswordRequest,
+  AuthenticationAuthenticatePasswordResponse,
   AuthenticationAuthenticateRequest,
   AuthenticationAuthenticateResponse,
   AuthenticationCheckRequest,
@@ -114,7 +116,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
         password,
       });
 
-      const resetPasswordResponse = await stytchClient.passwords.email.reset({
+      const resetPasswordResponse = await stytchClient.passwords.discovery.email.reset({
         password_reset_token: token,
         password,
       });
@@ -152,6 +154,91 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
 
     const authenticationResponse = await stytchClient.magicLinks.discovery.authenticate({
       discovery_magic_links_token: token,
+    });
+
+    if (authenticationResponse.status_code !== 200) {
+      const errorMessage = 'unknown authentication error';
+
+      api.log.error(errorMessage);
+
+      return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
+    }
+
+    const intermediateSessionToken = authenticationResponse.intermediate_session_token;
+    // @todo(multi-org) handle multiple organizations instead of logging into the first one
+    const organization = authenticationResponse.discovered_organizations[0].organization;
+
+    if (!organization?.organization_id) {
+      // @todo figure out organization creation
+      // If not eligible to log into an existing org, create new one
+      // const createResp = await stytchClient.discovery.organizations.create({
+      //   intermediate_session_token: intermediateSessionToken,
+      // });
+      //
+      // if (createResp.status_code !== 200) {
+      //   api.log.error(`Error creating Organization: '${JSON.stringify(createResp, null, 2)}'`);
+
+      //   return response.status(500).send({});
+      // }
+      // // Store the returned session and return session member information
+      // // req.session.StytchSessionToken = createResp.session_token;
+      // request.session.stytchSessionToken = createResp.session_token;
+      //
+      // return response.status(200).send({
+      //   message: `Hello, ${createResp.member.email_address}! You're logged into the '${createResp.organization?.organization_name}' organization`,
+      //   stytchSessionToken: request.session.stytchSessionToken,
+      // });
+
+      const errorMessage = 'user not part of an organization';
+
+      api.log.error(errorMessage);
+
+      return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
+    }
+
+    const exchangeResponse = await stytchClient.discovery.intermediateSessions.exchange({
+      intermediate_session_token: intermediateSessionToken,
+      organization_id: organization.organization_id,
+      session_duration_minutes: applicationConfiguration.sessionDuration,
+    });
+    const memberResponse = await stytchClient.organizations.members.get({
+      organization_id: organization.organization_id,
+      email_address: authenticationResponse.email_address,
+    });
+
+    if (exchangeResponse.status_code !== 200 || memberResponse.status_code !== 200) {
+      const errorMessage =
+        exchangeResponse.status_code !== 200
+          ? `error exchanging intermediate token into organization: ${JSON.stringify(exchangeResponse, null, 2)}`
+          : `error getting member: ${JSON.stringify(memberResponse, null, 2)}`;
+
+      api.log.error(errorMessage);
+
+      return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
+    }
+
+    request.session.authenticationToken = exchangeResponse.session_token;
+
+    return response.status(200).send(
+      apiUtils.respondWithData({
+        organization: organization,
+        member: memberResponse.member,
+      }),
+    );
+  });
+
+  type PostAuthenticatePassword = {
+    Body: AuthenticationAuthenticatePasswordRequest;
+    Reply: AuthenticationAuthenticatePasswordResponse;
+  };
+
+  api.post<PostAuthenticatePassword>(ApiRoute.AUTHENTICATION_AUTHENTICATE_PASSWORD, async (request, response) => {
+    const email = request.body.email;
+    const password = request.body.password;
+
+    const authenticationResponse = await stytchClient.passwords.discovery.authenticate({
+      email_address: email,
+      password,
     });
 
     if (authenticationResponse.status_code !== 200) {

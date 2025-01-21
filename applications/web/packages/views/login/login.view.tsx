@@ -13,12 +13,14 @@ import * as zod from 'zod';
 
 export type LoginFormData = {
   email: string;
+  password: string;
   resetPassword?: string[];
 };
 
 export const loginFormSchema = zodUtils.schemaForType<LoginFormData>()(
   zod.object({
     email: zod.string().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
+    password: zod.string().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
     resetPassword: zod.string().array().optional(),
   }),
 );
@@ -29,7 +31,7 @@ const LoginView = () => {
   const formStore = formStoreUtils.createForm<LoginFormData, typeof loginFormSchema.shape>({
     schema: loginFormSchema,
     onSubmit: async (data: Partial<LoginFormData>) => {
-      if (!data.email) {
+      if (!data.email || !data.password) {
         return;
       }
 
@@ -41,7 +43,7 @@ const LoginView = () => {
       }
 
       // we need to cast since the form system can't know if the data is complete or partial dynamically
-      await authenticationStore.login(navigate, data as LoginFormData);
+      await authenticationStore.loginPassword(navigate, data as LoginFormData);
     },
   });
 
@@ -54,6 +56,10 @@ const LoginView = () => {
           <FormField errors={formStore.errors().email?.errors}>
             <Label>Email</Label>
             <Input type="text" formData={formStore.data} name="email" autofocus />
+          </FormField>
+          <FormField errors={formStore.errors().password?.errors}>
+            <Label>Password</Label>
+            <Input type="text" formData={formStore.data} name="password" />
           </FormField>
           <FormField>
             <Checkbox
