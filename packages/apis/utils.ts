@@ -21,3 +21,7 @@ export type ResponseStructure<TData> = {
   meta?: ResponseMeta;
   error?: ResponseError;
 };
+
+// @todo the idea is to be able to type this to disallow keys that are not part of the generic but not sure how
+// @todo to do that so keeping this here until I do as once I can, the change only has to happen here
+export type RequestStructure<TData> = TData;

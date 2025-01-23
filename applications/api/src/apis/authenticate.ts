@@ -1,14 +1,10 @@
 import { applicationConfiguration } from '$api/load-config';
 import { ApiRoute } from '$api/types/api';
 import type {
-  AuthenticationAuthenticatePasswordRequest,
-  AuthenticationAuthenticatePasswordResponse,
   AuthenticationAuthenticateRequest,
   AuthenticationAuthenticateResponse,
   AuthenticationCheckRequest,
   AuthenticationCheckResponse,
-  AuthenticationLoginRequest,
-  AuthenticationLoginResponse,
   AuthenticationLogoutRequest,
   AuthenticationLogoutResponse,
   AuthenticationResetPasswordRequest,
@@ -25,32 +21,92 @@ const stytchClient = new stytch.B2BClient({
   secret: applicationConfiguration.authenticationSecret,
 });
 
-export const registerAuthenticateApi = (api: FastifyInstance) => {
-  type PostLogin = {
-    Body: AuthenticationLoginRequest;
-    Reply: AuthenticationLoginResponse;
-  };
+type ProcessableAuthenticationResponse = {
+  status_code: number;
+  email_address: string;
+  intermediate_session_token: string;
+  discovered_organizations: stytch.DiscoveredOrganization[];
+};
 
-  api.post<PostLogin>(ApiRoute.AUTHENTICATION_LOGIN, async (request, response) => {
-    try {
-      const sendEmailResponse = await stytchClient.magicLinks.email.discovery.send({
-        email_address: request.body.email,
-      });
+type ProcessAuthenticationResponseReturns = {
+  member: stytch.Member;
+  organization: stytch.Organization;
+  sessionToken: string;
+};
 
-      if (sendEmailResponse.status_code !== 200) {
-        const errorMessage = 'error sending login email';
+const processAuthenticationResponse = async (
+  authenticationResponse: ProcessableAuthenticationResponse,
+  api: FastifyInstance,
+): Promise<ProcessAuthenticationResponseReturns> => {
+  if (authenticationResponse.status_code !== 200) {
+    const errorMessage = 'unknown authentication error';
 
-        api.log.error(errorMessage);
+    api.log.error(errorMessage);
 
-        return response.status(500).send(apiUtils.respondWithError(new Error(errorMessage)));
-      }
+    throw new Error(errorMessage);
+  }
 
-      return response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
-    } catch (error: unknown) {
-      return response.status(500).send(apiUtils.respondWithError(error));
-    }
+  const intermediateSessionToken = authenticationResponse.intermediate_session_token;
+  // @todo(multi-org) handle multiple organizations instead of logging into the first one
+  const organization = authenticationResponse.discovered_organizations[0].organization;
+
+  if (!organization?.organization_id) {
+    // @todo figure out organization creation
+    // If not eligible to log into an existing org, create new one
+    // const createResp = await stytchClient.discovery.organizations.create({
+    //   intermediate_session_token: intermediateSessionToken,
+    // });
+    //
+    // if (createResp.status_code !== 200) {
+    //   logger.error(`Error creating Organization: '${JSON.stringify(createResp, null, 2)}'`);
+
+    //   return response.status(500).send({});
+    // }
+    // // Store the returned session and return session member information
+    // // req.session.StytchSessionToken = createResp.session_token;
+    // request.session.stytchSessionToken = createResp.session_token;
+    //
+    // return response.status(200).send({
+    //   message: `Hello, ${createResp.member.email_address}! You're logged into the '${createResp.organization?.organization_name}' organization`,
+    //   stytchSessionToken: request.session.stytchSessionToken,
+    // });
+
+    const errorMessage = 'user not part of an organization';
+
+    api.log.error(errorMessage);
+
+    throw new Error(errorMessage);
+  }
+
+  const exchangeResponse = await stytchClient.discovery.intermediateSessions.exchange({
+    intermediate_session_token: intermediateSessionToken,
+    organization_id: organization.organization_id,
+    session_duration_minutes: applicationConfiguration.sessionDuration,
+  });
+  const memberResponse = await stytchClient.organizations.members.get({
+    organization_id: organization.organization_id,
+    email_address: authenticationResponse.email_address,
   });
 
+  if (exchangeResponse.status_code !== 200 || memberResponse.status_code !== 200) {
+    const errorMessage =
+      exchangeResponse.status_code !== 200
+        ? `error exchanging intermediate token into organization: ${JSON.stringify(exchangeResponse, null, 2)}`
+        : `error getting member: ${JSON.stringify(memberResponse, null, 2)}`;
+
+    api.log.error(errorMessage);
+
+    throw new Error(errorMessage);
+  }
+
+  return {
+    member: memberResponse.member,
+    organization: organization,
+    sessionToken: exchangeResponse.session_token,
+  };
+};
+
+export const registerAuthenticateApi = (api: FastifyInstance) => {
   type DeleteLogout = {
     Body: AuthenticationLogoutRequest;
     Reply: AuthenticationLogoutResponse;
@@ -111,25 +167,14 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
         return response.status(400).send(apiUtils.respondWithError(undefined, errorMessage));
       }
 
-      api.log.info({
-        password_reset_token: token,
-        password,
-      });
-
       const resetPasswordResponse = await stytchClient.passwords.discovery.email.reset({
         password_reset_token: token,
         password,
       });
 
-      if (resetPasswordResponse.status_code !== 200) {
-        const errorMessage = 'unknown error with resetting the password';
+      const responseData = await processAuthenticationResponse(resetPasswordResponse, api);
 
-        api.log.error(errorMessage);
-
-        return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
-      }
-
-      return response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
+      return response.status(200).send(apiUtils.respondWithData(responseData));
     } catch (error: unknown) {
       return response.status(500).send(apiUtils.respondWithError(error));
     }
@@ -141,175 +186,21 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
   };
 
   api.post<PostAuthenticate>(ApiRoute.AUTHENTICATION_AUTHENTICATE, async (request, response) => {
-    const token = request.body.token;
-    const tokenType = request.body.tokenType;
+    try {
+      const email = request.body.email;
+      const password = request.body.password;
 
-    if (tokenType !== 'discovery') {
-      const errorMessage = `unrecognized token type of '${tokenType}' give, only 'discovery' token is supported`;
+      const authenticationResponse = await stytchClient.passwords.discovery.authenticate({
+        email_address: email,
+        password,
+      });
 
-      api.log.error(errorMessage);
+      const responseData = await processAuthenticationResponse(authenticationResponse, api);
 
-      return response.status(400).send(apiUtils.respondWithError(undefined, errorMessage));
+      return response.status(200).send(apiUtils.respondWithData(responseData));
+    } catch (error: unknown) {
+      return response.status(500).send(apiUtils.respondWithError(error));
     }
-
-    const authenticationResponse = await stytchClient.magicLinks.discovery.authenticate({
-      discovery_magic_links_token: token,
-    });
-
-    if (authenticationResponse.status_code !== 200) {
-      const errorMessage = 'unknown authentication error';
-
-      api.log.error(errorMessage);
-
-      return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
-    }
-
-    const intermediateSessionToken = authenticationResponse.intermediate_session_token;
-    // @todo(multi-org) handle multiple organizations instead of logging into the first one
-    const organization = authenticationResponse.discovered_organizations[0].organization;
-
-    if (!organization?.organization_id) {
-      // @todo figure out organization creation
-      // If not eligible to log into an existing org, create new one
-      // const createResp = await stytchClient.discovery.organizations.create({
-      //   intermediate_session_token: intermediateSessionToken,
-      // });
-      //
-      // if (createResp.status_code !== 200) {
-      //   api.log.error(`Error creating Organization: '${JSON.stringify(createResp, null, 2)}'`);
-
-      //   return response.status(500).send({});
-      // }
-      // // Store the returned session and return session member information
-      // // req.session.StytchSessionToken = createResp.session_token;
-      // request.session.stytchSessionToken = createResp.session_token;
-      //
-      // return response.status(200).send({
-      //   message: `Hello, ${createResp.member.email_address}! You're logged into the '${createResp.organization?.organization_name}' organization`,
-      //   stytchSessionToken: request.session.stytchSessionToken,
-      // });
-
-      const errorMessage = 'user not part of an organization';
-
-      api.log.error(errorMessage);
-
-      return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
-    }
-
-    const exchangeResponse = await stytchClient.discovery.intermediateSessions.exchange({
-      intermediate_session_token: intermediateSessionToken,
-      organization_id: organization.organization_id,
-      session_duration_minutes: applicationConfiguration.sessionDuration,
-    });
-    const memberResponse = await stytchClient.organizations.members.get({
-      organization_id: organization.organization_id,
-      email_address: authenticationResponse.email_address,
-    });
-
-    if (exchangeResponse.status_code !== 200 || memberResponse.status_code !== 200) {
-      const errorMessage =
-        exchangeResponse.status_code !== 200
-          ? `error exchanging intermediate token into organization: ${JSON.stringify(exchangeResponse, null, 2)}`
-          : `error getting member: ${JSON.stringify(memberResponse, null, 2)}`;
-
-      api.log.error(errorMessage);
-
-      return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
-    }
-
-    request.session.authenticationToken = exchangeResponse.session_token;
-
-    return response.status(200).send(
-      apiUtils.respondWithData({
-        organization: organization,
-        member: memberResponse.member,
-      }),
-    );
-  });
-
-  type PostAuthenticatePassword = {
-    Body: AuthenticationAuthenticatePasswordRequest;
-    Reply: AuthenticationAuthenticatePasswordResponse;
-  };
-
-  api.post<PostAuthenticatePassword>(ApiRoute.AUTHENTICATION_AUTHENTICATE_PASSWORD, async (request, response) => {
-    const email = request.body.email;
-    const password = request.body.password;
-
-    const authenticationResponse = await stytchClient.passwords.discovery.authenticate({
-      email_address: email,
-      password,
-    });
-
-    if (authenticationResponse.status_code !== 200) {
-      const errorMessage = 'unknown authentication error';
-
-      api.log.error(errorMessage);
-
-      return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
-    }
-
-    const intermediateSessionToken = authenticationResponse.intermediate_session_token;
-    // @todo(multi-org) handle multiple organizations instead of logging into the first one
-    const organization = authenticationResponse.discovered_organizations[0].organization;
-
-    if (!organization?.organization_id) {
-      // @todo figure out organization creation
-      // If not eligible to log into an existing org, create new one
-      // const createResp = await stytchClient.discovery.organizations.create({
-      //   intermediate_session_token: intermediateSessionToken,
-      // });
-      //
-      // if (createResp.status_code !== 200) {
-      //   api.log.error(`Error creating Organization: '${JSON.stringify(createResp, null, 2)}'`);
-
-      //   return response.status(500).send({});
-      // }
-      // // Store the returned session and return session member information
-      // // req.session.StytchSessionToken = createResp.session_token;
-      // request.session.stytchSessionToken = createResp.session_token;
-      //
-      // return response.status(200).send({
-      //   message: `Hello, ${createResp.member.email_address}! You're logged into the '${createResp.organization?.organization_name}' organization`,
-      //   stytchSessionToken: request.session.stytchSessionToken,
-      // });
-
-      const errorMessage = 'user not part of an organization';
-
-      api.log.error(errorMessage);
-
-      return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
-    }
-
-    const exchangeResponse = await stytchClient.discovery.intermediateSessions.exchange({
-      intermediate_session_token: intermediateSessionToken,
-      organization_id: organization.organization_id,
-      session_duration_minutes: applicationConfiguration.sessionDuration,
-    });
-    const memberResponse = await stytchClient.organizations.members.get({
-      organization_id: organization.organization_id,
-      email_address: authenticationResponse.email_address,
-    });
-
-    if (exchangeResponse.status_code !== 200 || memberResponse.status_code !== 200) {
-      const errorMessage =
-        exchangeResponse.status_code !== 200
-          ? `error exchanging intermediate token into organization: ${JSON.stringify(exchangeResponse, null, 2)}`
-          : `error getting member: ${JSON.stringify(memberResponse, null, 2)}`;
-
-      api.log.error(errorMessage);
-
-      return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
-    }
-
-    request.session.authenticationToken = exchangeResponse.session_token;
-
-    return response.status(200).send(
-      apiUtils.respondWithData({
-        organization: organization,
-        member: memberResponse.member,
-      }),
-    );
   });
 
   type GetCheck = {

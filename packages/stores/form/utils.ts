@@ -28,6 +28,16 @@ export const FormInputValidationState = {
 
 export type FormInputValidationState = (typeof FormInputValidationState)[keyof typeof FormInputValidationState];
 
+export const FormTouchedMode = {
+  // only consider the field as touched if the user has triggered a blur event for the value
+  BLUR: 'blur',
+
+  // only consider the field as touched if the user has triggered a change event for the value
+  CHANGE: 'change',
+};
+
+export type FormTouchedMode = (typeof FormTouchedMode)[keyof typeof FormTouchedMode];
+
 export type FormDirective = (element: HTMLFormElement) => void;
 
 // this split allows for recursive typing since arrays and have array which can have arrays and so on
@@ -60,26 +70,43 @@ export type FormSetValues<TFormData> = (values?: Partial<TFormData>, options?: S
 
 export type FormData<TFormData> = Accessor<Partial<TFormData>>;
 
-type CreateFormOptions<TFormData extends object, TSchemaObject extends zod.ZodRawShape> = {
+type CreateFormOptions<TFormData extends object> = {
   // this is partial as without validation (which is not required), the data could be missing data
   onSubmit: (data: Partial<TFormData>) => void;
   onClear?: () => void;
   onReset?: () => void;
   initialValues?: Partial<TFormData>;
-  // seems like any is needed to support the zod schema type
-  schema?: zod.ZodObject<TSchemaObject>;
-  validateOnChange?: boolean;
-};
+  schema?: zod.ZodObject<{ [key in keyof TFormData]: zod.ZodTypeAny }>;
 
-const defaultCreateFormOptions = {
-  validateOnChange: true,
+  // setting this to true enable real time validation of the form as the user types, set to false only validates
+  // when attempting to set the form
+  // default: true
+  validateOnChange?: boolean;
+
+  // this controls when a form field is considered touched and mainly effects text inputs and input like
+  // selects / checkboxes / radios / etc. are always considered touch when changed as there is not intermediate state
+  // of updating those inputs.
+  // when set to CHANGED, the field is consider touch the moment the user types in the input field (the first
+  // character) but BLUR only considers it touched on the first time the input is blurred
+  // default: BLUR - using blur as the default avoids over eager validation such as erroring on the first character
+  // of a field validates as an email (this would always happen since and email requires multiple character to every be valid)
+  touchedMode?: FormTouchedMode;
+
+  // while passing the schema alone should work in most cases, if your validation requires access to the other
+  // form data (for doing something like password matching), passing a function that builds the schema can be used
+  // as it will provide the accessor to the rest of the form data
+  buildSchema?: (data: Accessor<Partial<TFormData>>) => zod.ZodObject<{ [key in keyof TFormData]: zod.ZodTypeAny }>;
+
+  validateWith?: {
+    [K in keyof Partial<TFormData>]: (keyof TFormData)[];
+  };
 };
 
 type SetValueOption = {
   markAsTouched?: boolean;
 };
 
-export type CreateFormReturn<TFormData extends object, TSchemaObject extends zod.ZodRawShape> = {
+export type CreateFormReturn<TFormData extends object> = {
   formDirective: FormDirective;
   data: Accessor<Partial<TFormData>>;
   // @todo(refactor) would prefer a type that matched the string to what is can be based on the TFormData but not
@@ -102,7 +129,7 @@ export type CreateFormReturn<TFormData extends object, TSchemaObject extends zod
   watch: (watcher: FormWatcher<TFormData>) => WatchReturns;
 
   // since this is a generic system, we need to allow any
-  setSchema: Setter<zod.ZodObject<TSchemaObject> | undefined>;
+  setSchema: Setter<zod.ZodObject<{ [key in keyof TFormData]: zod.ZodTypeAny }> | undefined>;
 
   // make it easier to submit the form when the button can't be in the <form> element
   submitForm: () => void;
@@ -114,20 +141,29 @@ export type WatchReturns = {
   unsubscribe: () => void;
 };
 
-const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawShape = DefaultFormData>(
-  passedOptions: CreateFormOptions<TFormData, TSchemaObject>,
-): CreateFormReturn<TFormData, TSchemaObject> => {
+const createForm = <TFormData extends object>(
+  passedOptions: CreateFormOptions<TFormData>,
+): CreateFormReturn<TFormData> => {
+  const defaultCreateFormOptions: Partial<CreateFormOptions<TFormData>> = {
+    validateOnChange: true,
+    touchedMode: FormTouchedMode.BLUR,
+  };
+
   // @todo(investigate) unfortunately the onSubmit causes a weird issue with structuredClone so not using that here
-  const options = Object.assign({}, defaultCreateFormOptions, passedOptions);
+  const formOptions = Object.assign({}, defaultCreateFormOptions, passedOptions);
   const [errors, setErrors] = createSignal<FormErrorsData<TFormData>>({});
-  const [data, setData] = createSignal<Partial<TFormData>>(options.initialValues ?? {});
+  const [data, setData] = createSignal<Partial<TFormData>>(formOptions.initialValues ?? {});
   const [touchedFields, setTouchedFields] = createSignal<Array<keyof TFormData>>([]);
   const [dirtyFields, setDirtyFields] = createSignal<Array<keyof TFormData>>([]);
   const [formElement, setFormElement] = createSignal<HTMLFormElement>();
   const [formWatchers, setFormWatchers] = createSignal<FormWatcher<TFormData>[]>([]);
 
+  const defaultSchema = formOptions.buildSchema ? formOptions.buildSchema(data) : formOptions.schema;
+
   // seems like any is needed to support the zod schema type
-  const [schema, setSchema] = createSignal<zod.ZodObject<TSchemaObject> | undefined>(options.schema);
+  const [schema, setSchema] = createSignal<zod.ZodObject<{ [key in keyof TFormData]: zod.ZodTypeAny }> | undefined>(
+    defaultSchema,
+  );
 
   const isTouched = (name: keyof TFormData) => {
     return touchedFields().includes(name);
@@ -171,10 +207,10 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
       }
     }
 
-    // these values eqaute to undefined as it related to checking for dirty state (so that is some types something
+    // these values equate to undefined as it related to checking for dirty state (so that is some types something
     // and then clear it, it is not longer dirty since it is not)
     const dirtyValueCheck = value === '' || value === null || value === undefined ? undefined : value;
-    const isDirty = lodash.isEqual(dirtyValueCheck, options.initialValues?.[name as keyof TFormData]) === false;
+    const isDirty = lodash.isEqual(dirtyValueCheck, formOptions.initialValues?.[name as keyof TFormData]) === false;
     let currentValueIsTouched = touchedFields().includes(name as keyof TFormData);
 
     if (selfOptions.isTouched !== undefined) {
@@ -194,12 +230,22 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
       removeAsDirty(name as keyof TFormData);
     }
 
-    if (schema() && options.validateOnChange && currentValueIsTouched) {
+    if (schema() && formOptions.validateOnChange && currentValueIsTouched) {
       updateValidationErrors(name);
     }
   };
 
-  const generateErrors = (checkIsTouched = true, fieldName?: string) => {
+  type GenerateErrorsOptions = {
+    checkIsTouched?: boolean;
+    checkForValidateWith?: boolean;
+    fieldName?: string;
+    currentErrors?: FormErrorsData<TFormData>;
+  };
+
+  const generateErrors = (options: GenerateErrorsOptions = {}) => {
+    const fieldName = options.fieldName;
+    const checkIsTouched = options.checkIsTouched ?? true;
+    const checkForValidateWith = options.checkForValidateWith ?? true;
     const activeSchema = schema();
 
     if (!activeSchema) {
@@ -209,9 +255,13 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     // if we are validating a specific field, we only need to validate that, this will make sure performance is good
     // by not wasting time validating data that did not change
     if (fieldName) {
+      if (checkIsTouched && !isTouched(fieldName as keyof TFormData)) {
+        return errors();
+      }
+
       const value = lodash.get(data(), fieldName);
       const fieldValidationResults = zodUtils.getNestedSchema(fieldName, activeSchema.shape).safeParse(value);
-      let currentErrors = errors();
+      let currentErrors = options.currentErrors ?? errors();
 
       if (fieldValidationResults.success === false) {
         currentErrors = produce(currentErrors, (draft) => {
@@ -223,6 +273,19 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
         currentErrors = produce(currentErrors, (draft) => {
           lodash.unset(draft, fieldName);
         });
+      }
+
+      const validateWith: (keyof TFormData)[] | undefined = formOptions.validateWith?.[fieldName as keyof TFormData];
+
+      if (checkForValidateWith && validateWith && validateWith.length > 0) {
+        for (const field of validateWith) {
+          currentErrors = generateErrors({
+            ...options,
+            fieldName: field as string,
+            currentErrors,
+            checkForValidateWith: false,
+          });
+        }
       }
 
       return currentErrors;
@@ -288,7 +351,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
   // be the default state however we did not want the form the start off with the validation message since the user
   // would not have had a chance to enter anything in at that point
   const isValid = () => {
-    const currentErrors = generateErrors(false);
+    const currentErrors = generateErrors({ checkIsTouched: false });
 
     return Object.keys(currentErrors).length === 0;
   };
@@ -316,7 +379,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     setTouchedFields((previousTouchedFields) => [...new Set([...previousTouchedFields, ...newTouchedFields])]);
 
     setErrors(() => {
-      return generateErrors(true, fieldName);
+      return generateErrors({ fieldName });
     });
 
     return true;
@@ -343,7 +406,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     // @todo(performance) might want to make this configurable if doing this on every change becomes a problem in
     // @todo(performance) certain cases
     triggerValueChanged(name, lodash.get(data(), name), previousValue, {
-      isTouched: true,
+      isTouched: formOptions.touchedMode === FormTouchedMode.CHANGE ? true : undefined,
     });
   };
 
@@ -371,7 +434,9 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
 
     // since this only happen when the input loses focus, this is where we want to make sure the input is marked
     // as touched
-    triggerValueChanged(name, currentValue, currentValue, { isTouched: true });
+    triggerValueChanged(name, currentValue, currentValue, {
+      isTouched: formOptions.touchedMode === FormTouchedMode.CHANGE ? true : undefined,
+    });
   };
 
   const handleCheckboxChange = (event: Event) => {
@@ -476,7 +541,7 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
       return;
     }
 
-    options.onSubmit(values);
+    formOptions.onSubmit(values);
   };
 
   const assignFormInputEventHandlers = (element: Element) => {
@@ -714,12 +779,12 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
 
   const reset = () => {
     // reset the internal data
-    setData(options.initialValues ?? {});
+    setData(formOptions.initialValues ?? {});
     setErrors({});
     setTouchedFields([]);
 
-    if (options.onReset) {
-      options.onReset();
+    if (formOptions.onReset) {
+      formOptions.onReset();
     }
 
     resetHtmlElements();
@@ -731,8 +796,8 @@ const createForm = <TFormData extends object, TSchemaObject extends zod.ZodRawSh
     setErrors({});
     setTouchedFields([]);
 
-    if (options.onClear) {
-      options.onClear();
+    if (formOptions.onClear) {
+      formOptions.onClear();
     }
 
     resetHtmlElements();

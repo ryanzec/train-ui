@@ -414,7 +414,7 @@ const formDataSchema = zodUtils.schemaForType<FormData>()(
 );
 
 export const SingleInForm = () => {
-  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
+  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],
@@ -442,7 +442,7 @@ export const SingleInForm = () => {
 };
 
 export const MultiInForm = () => {
-  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
+  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],
@@ -470,7 +470,7 @@ export const MultiInForm = () => {
 };
 
 export const SingleInFormAutoShowOptions = () => {
-  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
+  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],
@@ -498,7 +498,7 @@ export const SingleInFormAutoShowOptions = () => {
 };
 
 export const MultiInFormAutoShowOptions = () => {
-  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData, typeof formDataSchema.shape>({
+  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],

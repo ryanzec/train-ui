@@ -20,7 +20,7 @@ export const WithValue = () => {
     }),
   );
 
-  const formStore = formStoreUtils.createForm<FormData, typeof formSchema.shape>({
+  const formStore = formStoreUtils.createForm<FormData>({
     schema: formSchema,
     initialValues: {
       radio: ['1'],

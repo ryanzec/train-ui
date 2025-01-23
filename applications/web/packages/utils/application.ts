@@ -19,8 +19,9 @@ export type GlobalVariable = (typeof GlobalVariable)[keyof typeof GlobalVariable
 
 export const RoutePath = {
   LOGIN: '/login',
-  LOGIN_COMPLETE: '/login-complete',
   HOME: '/home',
+  FORGOT_PASSWORD: '/forgot-password',
+  RESET_PASSWORD: '/reset-password',
 } as const;
 
 export type RoutePath = (typeof RoutePath)[keyof typeof RoutePath];

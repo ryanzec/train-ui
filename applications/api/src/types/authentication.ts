@@ -1,27 +1,11 @@
-import type { ResponseStructure } from '$/apis/utils';
+import type { RequestStructure, ResponseStructure } from '$/apis/utils';
 import type { Member, Organization } from 'stytch';
 
-export type AuthenticationLoginRequest = {
-  email: string;
-};
-export type AuthenticationLoginResponse = ResponseStructure<{
-  status: string;
-}>;
-
-export type AuthenticationAuthenticateRequest = {
-  token: string;
-  tokenType: string;
-};
-export type AuthenticationAuthenticateResponse = ResponseStructure<{
-  organization: Organization;
-  member: Member;
-}>;
-
-export type AuthenticationAuthenticatePasswordRequest = {
+export type AuthenticationAuthenticateRequest = RequestStructure<{
   email: string;
   password: string;
-};
-export type AuthenticationAuthenticatePasswordResponse = ResponseStructure<{
+}>;
+export type AuthenticationAuthenticateResponse = ResponseStructure<{
   organization: Organization;
   member: Member;
 }>;
@@ -36,19 +20,19 @@ export type AuthenticationLogoutResponse = ResponseStructure<{
   status: string;
 }>;
 
-export type AuthenticationSendResetPasswordRequest = {
+export type AuthenticationSendResetPasswordRequest = RequestStructure<{
   email: string;
-};
+}>;
 export type AuthenticationSendResetPasswordResponse = ResponseStructure<{
   status: string;
 }>;
 
-export type AuthenticationResetPasswordRequest = {
-  email: string;
+export type AuthenticationResetPasswordRequest = RequestStructure<{
   password: string;
   token: string;
   tokenType: string;
-};
+}>;
 export type AuthenticationResetPasswordResponse = ResponseStructure<{
-  status: string;
+  organization: Organization;
+  member: Member;
 }>;

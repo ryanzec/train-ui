@@ -40,7 +40,7 @@ export const CheckedByDefault = () => {
     }),
   );
 
-  const formStore = formStoreUtils.createForm<FormData, typeof formSchema.shape>({
+  const formStore = formStoreUtils.createForm<FormData>({
     schema: formSchema,
     initialValues: {
       checkbox: ['1'],
@@ -71,7 +71,7 @@ export const Toggle = () => {
     }),
   );
 
-  const formStore = formStoreUtils.createForm<FormData, typeof formSchema.shape>({
+  const formStore = formStoreUtils.createForm<FormData>({
     schema: formSchema,
     initialValues: {
       checkbox: ['1'],
