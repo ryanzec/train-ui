@@ -1,7 +1,6 @@
 import path from 'node:path';
 import * as process from 'node:process';
 import url from 'node:url';
-import { loggerUtils } from '$api/utils/logger';
 import dotenv from 'dotenv';
 
 const __filename = url.fileURLToPath(import.meta.url);
@@ -88,6 +87,9 @@ export interface ApplicationConfiguration {
   databaseIdleTimeout: number;
   databaseConnectionTimeout: number;
   databaseSsl: boolean;
+
+  // development
+  globalResponseDelay: number;
 }
 
 export const applicationConfiguration: ApplicationConfiguration = {
@@ -129,4 +131,7 @@ export const applicationConfiguration: ApplicationConfiguration = {
   sessionSecret: process.env.SESSION_SECRET as string,
   sessionMaximumAge: Number(process.env.SESSION_MAX_AGE),
   sessionDuration: Number(process.env.SESSION_DURATION),
+
+  // development
+  globalResponseDelay: Number(process.env.GLOBAL_RESPONSE_DELAY || 0),
 };

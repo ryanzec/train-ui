@@ -1,12 +1,12 @@
 import classnames from 'classnames';
 import getScrollParent from 'scrollparent';
-import { type JSX, createEffect, createSignal, mergeProps, splitProps } from 'solid-js';
+import { For, type JSX, createEffect, createSignal, mergeProps, splitProps } from 'solid-js';
 
 import Callout, { CalloutColor, type CalloutProps, CalloutVariant } from '$/components/callout';
 import styles from '$/components/form-error/form-error.module.css';
 
 export type FormErrorProps = CalloutProps & {
-  errorMessage?: string;
+  errorMessage?: string | string[];
   offset?: number;
   behavior?: ScrollBehavior;
 };
@@ -21,6 +21,10 @@ const FormError = (passedProps: FormErrorProps) => {
   ]);
 
   const [hasShownFormError, setHasShownFormError] = createSignal(false);
+
+  const getErrorMessages = () => {
+    return Array.isArray(props.errorMessage) ? props.errorMessage : [props.errorMessage];
+  };
 
   // handles scrolling to the form error component when it is first displayed
   createEffect(() => {
@@ -57,7 +61,7 @@ const FormError = (passedProps: FormErrorProps) => {
       })}
       color={CalloutColor.DANGER}
     >
-      {props.errorMessage}
+      <For each={getErrorMessages()}>{(errorMessage) => <div>{errorMessage}</div>}</For>
     </Callout>
   );
 };

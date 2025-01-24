@@ -9,9 +9,15 @@ const HomeView = () => {
     authenticationStore.logout(navigate);
   };
 
+  const handleWebsocket = () => {
+    authenticationStore.logout(navigate);
+  };
+
   return (
     <div>
       <Button onClick={handleLogout}>Logout</Button>
+      {/* @todo remove */}
+      <Button onClick={handleWebsocket}>Send To Websocket</Button>
     </div>
   );
 };

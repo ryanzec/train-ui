@@ -1,4 +1,4 @@
-import { applicationConfiguration } from '$api/load-config';
+import { applicationConfiguration } from '$api/load-configuration';
 import { ApiRoute } from '$api/types/api';
 import type {
   AuthenticationAuthenticateRequest,

@@ -10,6 +10,7 @@ export type CalloutProps = JSX.HTMLAttributes<HTMLDivElement> & {
   isCentered?: boolean;
   preItem?: JSX.Element;
   postItem?: JSX.Element;
+  contentCss?: string;
 };
 
 const Callout = (passedProps: CalloutProps) => {
@@ -22,7 +23,7 @@ const Callout = (passedProps: CalloutProps) => {
       },
       passedProps,
     ),
-    ['color', 'variant', 'class', 'children', 'isCentered', 'preItem', 'postItem'],
+    ['color', 'variant', 'class', 'children', 'isCentered', 'preItem', 'postItem', 'contentCss'],
   );
   const isStrong = props.variant === CalloutVariant.STRONG;
 
@@ -49,7 +50,7 @@ const Callout = (passedProps: CalloutProps) => {
         <div class={styles.preItem}>{props.preItem}</div>
       </Show>
       <span
-        class={classnames({
+        class={classnames(props.contentCss, {
           [styles.centered]: props.isCentered,
         })}
       >

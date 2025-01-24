@@ -37,3 +37,9 @@ export class HttpError extends Error {
     this.context = options.context ?? {};
   }
 }
+
+export const ErrorMessage = {
+  UNAUTENTICATED: 'unable to authenticate',
+};
+
+export type ErrorMessage = (typeof ErrorMessage)[keyof typeof ErrorMessage];

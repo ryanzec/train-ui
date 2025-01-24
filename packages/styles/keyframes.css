@@ -25,4 +25,19 @@
       opacity: 0.01;
     }
   }
+
+  @keyframes pulse {
+    0% {
+      opacity: 0.6;
+      background-position: -200% 0;
+    }
+    50% {
+      opacity: 1;
+      background-position: 200% 0;
+    }
+    100% {
+      opacity: 0.6;
+      background-position: -200% 0;
+    }
+  }
 }

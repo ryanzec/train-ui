@@ -1,0 +1,37 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs);
+}
+
+.bar {
+  width: 100%;
+  height: var(--space-base);
+  background: linear-gradient(90deg, var(--color-brand-subtle2), var(--color-brand-subtle3), var(--color-brand-subtle2));
+  background-size: 200% 100%;
+  border-radius: var(--border-radius-sm);
+
+  :global {
+    animation: pulse 5s ease-in-out infinite;
+  }
+}
+
+.variable-length1 {
+  width: 29%;
+}
+
+.variable-length2 {
+  width: 75%;
+}
+
+.variable-length3 {
+  width: 51%;
+}
+
+.variable-length4 {
+  width: 18%;
+}
+
+.variable-length5 {
+  width: 91%;
+}

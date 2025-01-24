@@ -19,5 +19,3 @@ const start = async () => {
 };
 
 start();
-
-/* @refresh reload */

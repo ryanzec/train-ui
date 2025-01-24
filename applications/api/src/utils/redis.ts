@@ -1,4 +1,4 @@
-import { applicationConfiguration } from '$api/load-config';
+import { applicationConfiguration } from '$api/load-configuration';
 import * as genericPool from 'generic-pool';
 import {
   type RedisClientType,

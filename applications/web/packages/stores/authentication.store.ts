@@ -2,6 +2,8 @@ import type { Navigator } from '@solidjs/router';
 
 import { createRoot, createSignal } from 'solid-js';
 
+import { websocketManagerStore } from '$/stores/websocket-manager.store';
+import { ErrorMessage } from '$/utils/error';
 import { localStorageCacheUtils } from '$/utils/local-storage-cache';
 import { loggerUtils } from '$/utils/logger';
 import type {
@@ -53,9 +55,11 @@ const createApplicationStore = () => {
     }
 
     setIsAuthenticated(true);
+    websocketManagerStore.connect();
   };
 
   const handleNotAuthenticated = () => {
+    websocketManagerStore.disconnect();
     localStorageCacheUtils.remove(LocalStorageKey.SESSION_USER);
     setIsInitializing(false);
   };
@@ -91,7 +95,7 @@ const createApplicationStore = () => {
       });
 
       if (!authenticateResponse.data) {
-        loggerUtils.error('error authenticating');
+        loggerUtils.error(ErrorMessage.UNAUTENTICATED);
         handleNotAuthenticated();
 
         return;
@@ -149,7 +153,7 @@ const createApplicationStore = () => {
       const sendResetPassword = authenticationApi.resetPassword({
         onSuccess: async (mutateResponse) => {
           if (!mutateResponse.data) {
-            loggerUtils.error('error authenticating');
+            loggerUtils.error(ErrorMessage.UNAUTENTICATED);
             handleNotAuthenticated();
 
             navigate(RoutePath.LOGIN);

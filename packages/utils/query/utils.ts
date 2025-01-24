@@ -301,6 +301,8 @@ export type CreateTrackedQueryReturns<TResource> = [
   (callback: TriggerMutateMutator<TResource>) => void,
   // returns whether the data has been initially fetched
   () => boolean,
+  // return if the previous resource fetch errored
+  () => boolean,
 ];
 
 export const addTrackedShouldFetch = (
@@ -412,6 +414,10 @@ export const createTrackedQuery = <TResource>(
 
     // shouldFetch determines whether the initial request for the data has happened
     () => shouldFetch(),
+
+    // since the state of the resource changes when you refetch a resource, we use the error too to determine if the
+    // previous fetch errored since that seems to only clear after a successful fetch
+    () => resource.state === ResourceState.ERRORED || !!resource.error,
   ];
 };
 

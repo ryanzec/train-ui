@@ -6,6 +6,7 @@ import { loggerUtils } from '$api/utils/logger';
 import fastifyCookie from '@fastify/cookie';
 import cors from '@fastify/cors';
 import fastifySession from '@fastify/session';
+import fastifyWebsocket from '@fastify/websocket';
 import { RedisStore } from 'connect-redis';
 import fastify from 'fastify';
 import { createClient } from 'redis';
@@ -15,10 +16,11 @@ import { registerHealthApi } from '$api/apis/health';
 import { registerQueryApi } from '$api/apis/query';
 import { registerRedisApi } from '$api/apis/redis';
 import { registerUsersApi } from '$api/apis/users';
-import { applicationConfiguration } from '$api/load-config';
+import { applicationConfiguration } from '$api/load-configuration';
 import { delayerHook } from '$api/middleware/delayer';
 import { mockerrorHook } from '$api/middleware/mockerror';
 import { type EncryptionOptions, encryptionUtils } from '$api/utils/encryption';
+import { registerWsWebsocket } from '$api/websockets/ws';
 
 const __filename = url.fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -30,6 +32,8 @@ const api = fastify({
     cert: fs.readFileSync(path.join(__dirname, '..', '..', '..', 'ssl-cert.pem')),
   },
 });
+
+loggerUtils.setLogger(api.log);
 
 const getRedisSessionClient = async () => {
   const client = createClient({
@@ -55,9 +59,12 @@ await api.register(cors, {
 });
 
 api.register(fastifyCookie);
+api.register(fastifyWebsocket);
 
 api.addHook('preHandler', delayerHook);
 api.addHook('preHandler', mockerrorHook);
+
+registerWsWebsocket(api);
 
 // register routes
 registerHealthApi(api);

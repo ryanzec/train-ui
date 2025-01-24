@@ -13,6 +13,7 @@ export type LocalStorageKey = (typeof LocalStorageKey)[keyof typeof LocalStorage
 
 export const GlobalVariable = {
   BASE_API_URL: 'VITE_BASE_API_URL',
+  BASE_WEBSOCKET_URL: 'VITE_BASE_WEBSOCKET_URL',
 } as const;
 
 export type GlobalVariable = (typeof GlobalVariable)[keyof typeof GlobalVariable];

@@ -1,3 +1,4 @@
+import type { FastifyBaseLogger } from 'fastify';
 import pino, { type Logger, type LoggerOptions } from 'pino';
 
 const loggerConfiguration: LoggerOptions = {
@@ -14,11 +15,11 @@ const loggerConfiguration: LoggerOptions = {
   },
 };
 
-let globalLogger: Logger | undefined = undefined;
+let globalLogger: FastifyBaseLogger | undefined = undefined;
 
 export const loggerUtils = {
   loggerConfiguration,
-  setLogger: (logger: Logger) => {
+  setLogger: (logger: FastifyBaseLogger) => {
     globalLogger = logger;
   },
   getLogger: () => {
