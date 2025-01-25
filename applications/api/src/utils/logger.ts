@@ -1,17 +1,38 @@
 import type { FastifyBaseLogger } from 'fastify';
-import pino, { type LoggerOptions } from 'pino';
+import type { LoggerOptions } from 'pino';
 
 const loggerConfiguration: LoggerOptions = {
   level: process.env.LOG_LEVEL || 'info',
-  timestamp: pino.stdTimeFunctions.isoTime,
-  formatters: {
-    level: (label) => {
-      return { level: label };
+  redact: [
+    'req.headers.authorization',
+    'req.headers.cookie',
+    'req.body.password',
+    'req.body.token',
+    'req.body.secret',
+    'req.body.creditCard',
+    'req.params.password',
+    'res.headers["set-cookie"]',
+  ],
+  serializers: {
+    req(request) {
+      return {
+        method: request.method,
+        url: request.url,
+        hostname: request.hostname,
+        remoteAddress: request.ip,
+      };
+    },
+    res(reply) {
+      return {
+        statusCode: reply.statusCode,
+      };
     },
   },
-  redact: {
-    paths: ['req.headers.authorization', 'req.headers["x-api-key"]', 'req.body.password'],
-    censor: '**REDACTED**',
+  customLevels: {
+    audit: 35,
+  },
+  transport: {
+    target: 'pino-pretty',
   },
 };
 
