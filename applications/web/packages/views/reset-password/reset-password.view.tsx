@@ -7,7 +7,7 @@ import { formStoreUtils } from '$/stores/form.store';
 import { ValidationMessageType, validationUtils } from '$/utils/validation';
 import { zodUtils } from '$/utils/zod';
 import { authenticationStore } from '$web/stores/authentication.store';
-import { useLocation, useNavigate } from '@solidjs/router';
+import { useLocation } from '@solidjs/router';
 import type { Accessor } from 'solid-js';
 import * as zod from 'zod';
 
@@ -58,7 +58,6 @@ const buildResetPasswordFormSchema = (formData: Accessor<Partial<ResetPasswordFo
 };
 
 const ResetPasswordView = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const formStore = formStoreUtils.createStore<ResetPasswordFormData>({
     buildSchema: buildResetPasswordFormSchema,

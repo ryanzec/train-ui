@@ -10,6 +10,7 @@ import type {
 import { authenticationApi } from '$web/apis/authentication';
 import { globalsStore } from '$web/stores/globals.store';
 import { LocalStorageKey, RoutePath } from '$web/utils/application';
+import type { Navigator } from '@solidjs/router';
 import { createRoot, createSignal } from 'solid-js';
 import type { Member as StytchMember, Organization as StytchOrganization } from 'stytch';
 
@@ -60,6 +61,7 @@ const createApplicationStore = () => {
   const handleNotAuthenticated = () => {
     websocketManagerStore.disconnect();
     localStorageCacheUtils.remove(LocalStorageKey.SESSION_USER);
+    setIsAuthenticated(false);
     setIsInitializing(false);
   };
 

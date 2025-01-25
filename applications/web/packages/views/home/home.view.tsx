@@ -1,16 +1,14 @@
 import Button from '$/components/button';
+import { websocketManagerStore } from '$/stores/websocket-manager.store';
 import { authenticationStore } from '$web/stores/authentication.store';
-import { useNavigate } from '@solidjs/router';
 
 const HomeView = () => {
-  const navigate = useNavigate();
-
   const handleLogout = () => {
     authenticationStore.logout();
   };
 
   const handleWebsocket = () => {
-    authenticationStore.logout();
+    websocketManagerStore.send('test');
   };
 
   return (

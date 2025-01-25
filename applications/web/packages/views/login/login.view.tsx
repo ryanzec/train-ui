@@ -10,6 +10,7 @@ import { zodUtils } from '$/utils/zod';
 import { authenticationStore } from '$web/stores/authentication.store';
 import { RoutePath } from '$web/utils/application';
 import { useNavigate } from '@solidjs/router';
+import { createEffect, untrack } from 'solid-js';
 import * as zod from 'zod';
 
 export type LoginFormData = {
@@ -47,6 +48,20 @@ const LoginView = () => {
   const handleForgotPassword = () => {
     navigate(RoutePath.FORGOT_PASSWORD);
   };
+
+  // reset the form on an error
+  createEffect(() => {
+    if (authenticationStore.loginError().length === 0) {
+      return;
+    }
+
+    untrack(() => {
+      formStore.setValues({
+        email: '',
+        password: '',
+      });
+    });
+  });
 
   const formDirective = formStore.formDirective;
 

@@ -7,7 +7,6 @@ import { formStoreUtils } from '$/stores/form.store';
 import { ValidationMessageType, validationUtils } from '$/utils/validation';
 import { zodUtils } from '$/utils/zod';
 import { authenticationStore } from '$web/stores/authentication.store';
-import { useNavigate } from '@solidjs/router';
 import * as zod from 'zod';
 
 export type ForgotPasswordFormData = {
@@ -21,8 +20,6 @@ export const forgotPasswordFormSchema = zodUtils.schemaForType()(
 );
 
 const ForgotPasswordView = () => {
-  const navigate = useNavigate();
-
   const formStore = formStoreUtils.createStore<ForgotPasswordFormData>({
     schema: forgotPasswordFormSchema,
     onSubmit: async (data: Partial<ForgotPasswordFormData>) => {
