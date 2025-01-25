@@ -1,7 +1,5 @@
 import { For, Match, Switch } from 'solid-js';
 
-import styles from '$sandbox/components/application-frame/application-frame.module.css';
-
 import type { DynamicRouteNavigation } from '$sandbox/stores/dynamic-routes';
 
 import NoWrapper from '$/components/no-wrapper';

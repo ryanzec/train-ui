@@ -1,6 +1,4 @@
-import { describe, expect, it } from 'vitest';
-
-import { localStorageCacheUtils } from '$/utils/local-storage-cache';
+import { describe, it } from 'vitest';
 
 describe('local storage cache utils', () => {
   it.skip('TODO');

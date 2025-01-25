@@ -1,5 +1,3 @@
-import type { ResponseStructure } from '$/apis/utils';
-
 export type User = {
   id: string;
   firstName: string;

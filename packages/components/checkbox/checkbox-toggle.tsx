@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { type JSX, createSignal, splitProps } from 'solid-js';
+import { type JSX, splitProps } from 'solid-js';
 
 import styles from '$/components/checkbox/checkbox.module.css';
 

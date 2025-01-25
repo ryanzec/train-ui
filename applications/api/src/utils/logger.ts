@@ -1,5 +1,5 @@
 import type { FastifyBaseLogger } from 'fastify';
-import pino, { type Logger, type LoggerOptions } from 'pino';
+import pino, { type LoggerOptions } from 'pino';
 
 const loggerConfiguration: LoggerOptions = {
   level: process.env.LOG_LEVEL || 'info',

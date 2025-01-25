@@ -1,4 +1,4 @@
-import { Page, expect, test } from '@playwright/test';
+import { expect, test } from '@playwright/test';
 
 import { playwrightUtils } from '$/utils/playwright';
 import { playwrightMockerUtils } from '$/utils/playwright-mocker';

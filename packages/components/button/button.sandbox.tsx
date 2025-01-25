@@ -1,6 +1,6 @@
 import Button, { ButtonColor, ButtonShape, ButtonSize, ButtonVariant } from '$/components/button';
 import { ButtonState } from '$/components/button/utils';
-import Icon, { IconSize } from '$/components/icon';
+import Icon from '$/components/icon';
 import { tooltipComponentUtils } from '$/components/tooltip';
 import SandboxExamplesContainer from '$sandbox/components/sandbox-examples-container/sandbox-examples-container';
 

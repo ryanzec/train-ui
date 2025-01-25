@@ -1,7 +1,6 @@
 import Button from '$/components/button';
 import FormField from '$/components/form-field';
 import FormFields from '$/components/form-fields/form-fields';
-import Input from '$/components/input';
 import Label from '$/components/label';
 import Peek, { peekComponentUtils } from '$/components/peek';
 import SupportingText, { SupportingTextColor } from '$/components/supporting-text';

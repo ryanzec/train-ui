@@ -8,8 +8,6 @@ import type { DynamicRouteNavigation } from '$sandbox/stores/dynamic-routes';
 import Button, { ButtonShape } from '$/components/button';
 import { ThemeName } from '$/utils/styles';
 import { applicationStore } from '$sandbox/stores/application-store';
-
-import ScrollArea from '$/components/scroll-area';
 import ApplicationFrameSubNavigation from './application-frame-sub-navigation';
 
 type ApplicationFrameNavigationProps = JSX.HTMLAttributes<HTMLDivElement> &

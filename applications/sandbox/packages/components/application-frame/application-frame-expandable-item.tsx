@@ -1,10 +1,9 @@
 import classnames from 'classnames';
-import { type JSX, Show, createEffect, createSignal, splitProps } from 'solid-js';
+import { Show, createEffect, createSignal, splitProps } from 'solid-js';
 
 import styles from '$sandbox/components/application-frame/application-frame.module.css';
 
 import SideNavigation from '$/components/side-navgiation';
-import type { CommonDataAttributes } from '$/types/generic';
 import type { DynamicRouteNavigation } from '$sandbox/stores/dynamic-routes';
 
 import { toggleStoreUtils } from '$/stores/toggle.store';

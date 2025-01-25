@@ -1,6 +1,4 @@
-import { describe, expect, it } from 'vitest';
-
-import { defaultValuesUtils } from '$/utils/default-values';
+import { describe, it } from 'vitest';
 
 describe('default values utils', () => {
   it.skip('TODO');

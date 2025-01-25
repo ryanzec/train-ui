@@ -3,7 +3,6 @@ import { type JSX, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/button/button.module.css';
 import { ButtonItemPosition } from '$/components/button/utils';
-import Icon from '$/components/icon';
 
 export type ButtonIconProps = JSX.HTMLAttributes<HTMLDivElement> & {
   position?: ButtonItemPosition;

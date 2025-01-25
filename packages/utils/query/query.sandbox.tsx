@@ -1,5 +1,5 @@
 import { produce } from 'immer';
-import { For, type JSX, Show, createSignal, onCleanup, onMount } from 'solid-js';
+import { For, type JSX, Show, createSignal } from 'solid-js';
 
 import Button from '$/components/button/button';
 import Callout, { CalloutColor, CalloutVariant } from '$/components/callout';

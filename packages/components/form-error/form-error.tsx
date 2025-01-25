@@ -1,8 +1,8 @@
 import classnames from 'classnames';
 import getScrollParent from 'scrollparent';
-import { For, type JSX, Show, createEffect, createSignal, mergeProps, splitProps } from 'solid-js';
+import { For, Show, createEffect, createSignal, mergeProps, splitProps } from 'solid-js';
 
-import Callout, { CalloutColor, type CalloutProps, CalloutVariant } from '$/components/callout';
+import Callout, { CalloutColor, type CalloutProps } from '$/components/callout';
 import styles from '$/components/form-error/form-error.module.css';
 
 export type FormErrorProps = CalloutProps & {

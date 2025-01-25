@@ -1,9 +1,7 @@
 import type { Placement } from '@floating-ui/dom';
-import { type JSX, Show, mergeProps, splitProps } from 'solid-js';
+import { type JSX, mergeProps, splitProps } from 'solid-js';
 
 import Button, { type ButtonProps } from '$/components/button/button';
-import ButtonDropDownContent from '$/components/button/button-drop-down-content';
-import styles from '$/components/button/button.module.css';
 import Tooltip, { TooltipTriggerEvent, type TooltipStore } from '$/components/tooltip';
 import type { CommonDataAttributes } from '$/types/generic';
 

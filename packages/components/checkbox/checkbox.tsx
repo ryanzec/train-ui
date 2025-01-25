@@ -4,7 +4,7 @@ import { type Accessor, type JSX, Show, createSignal, splitProps } from 'solid-j
 import styles from '$/components/checkbox/checkbox.module.css';
 import Icon from '$/components/icon';
 import type { IconName } from '$/components/icon/utils';
-import type { DefaultFormData, FormInputValidationState } from '$/stores/form.store';
+import type { DefaultFormData } from '$/stores/form.store';
 
 export type CheckboxProps<TFormData = DefaultFormData> = Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'name'> & {
   labelElement?: JSX.Element;

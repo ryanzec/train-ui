@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { type JSX, Show, mergeProps, splitProps } from 'solid-js';
+import { type JSX, mergeProps, splitProps } from 'solid-js';
 
 import styles from '$/components/skeleton/skeleton.module.css';
 

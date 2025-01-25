@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { For, Show, createSignal, mergeProps } from 'solid-js';
+import { For, Show, createSignal } from 'solid-js';
 import * as zod from 'zod';
 
 import Button from '$/components/button';
@@ -14,8 +14,7 @@ import styles from '$/components/combobox/combobox.module.css';
 import FormField from '$/components/form-field';
 import Label from '$/components/label';
 import List from '$/components/list';
-import SupportingText, { SupportingTextColor } from '$/components/supporting-text';
-import { FormInputValidationState, formStoreUtils } from '$/stores/form.store';
+import { formStoreUtils } from '$/stores/form.store';
 import { ValidationMessageType, validationUtils } from '$/utils/validation';
 import { zodUtils } from '$/utils/zod';
 
