@@ -1,7 +1,3 @@
-import type { Navigator } from '@solidjs/router';
-
-import { createRoot, createSignal } from 'solid-js';
-
 import { websocketManagerStore } from '$/stores/websocket-manager.store';
 import { ErrorMessage } from '$/utils/error';
 import { localStorageCacheUtils } from '$/utils/local-storage-cache';
@@ -12,7 +8,9 @@ import type {
   AuthenticationSendResetPasswordRequest,
 } from '$api/types/authentication';
 import { authenticationApi } from '$web/apis/authentication';
+import { globalsStore } from '$web/stores/globals.store';
 import { LocalStorageKey, RoutePath } from '$web/utils/application';
+import { createRoot, createSignal } from 'solid-js';
 import type { Member as StytchMember, Organization as StytchOrganization } from 'stytch';
 
 export type SessionUser = {
@@ -85,7 +83,7 @@ const createApplicationStore = () => {
     }
   };
 
-  const login = async (navigate: Navigator, formData: AuthenticationAuthenticateRequest) => {
+  const login = async (formData: AuthenticationAuthenticateRequest) => {
     try {
       setCurrentLoginAction(LoginAction.LOGIN);
 
@@ -106,13 +104,13 @@ const createApplicationStore = () => {
       handleAuthenticated(member, organization);
 
       // @todo redirect to previously accessed page
-      navigate(RoutePath.HOME);
+      globalsStore.getNavigate()(RoutePath.HOME);
     } finally {
       setCurrentLoginAction(LoginAction.NONE);
     }
   };
 
-  const logout = async (navigate: Navigator) => {
+  const logout = async () => {
     try {
       setCurrentLoginAction(LoginAction.LOGOUT);
 
@@ -120,7 +118,7 @@ const createApplicationStore = () => {
         onSuccess: async () => {
           handleNotAuthenticated();
 
-          navigate(RoutePath.LOGIN);
+          globalsStore.getNavigate()(RoutePath.LOGIN);
         },
       });
 
@@ -131,14 +129,14 @@ const createApplicationStore = () => {
     }
   };
 
-  const sendResetPassword = async (navigate: Navigator, formData: AuthenticationSendResetPasswordRequest) => {
+  const sendResetPassword = async (formData: AuthenticationSendResetPasswordRequest) => {
     try {
       setCurrentLoginAction(LoginAction.RESET_PASSWORD);
 
       const sendResetPassword = authenticationApi.sendResetPassword({
         onSuccess: async () => {
           // @todo indicator that email should be sent if match email found
-          navigate(RoutePath.LOGIN);
+          globalsStore.getNavigate()(RoutePath.LOGIN);
         },
       });
 
@@ -148,7 +146,7 @@ const createApplicationStore = () => {
     }
   };
 
-  const resetPassword = async (navigate: Navigator, formData: AuthenticationResetPasswordRequest) => {
+  const resetPassword = async (formData: AuthenticationResetPasswordRequest) => {
     try {
       const sendResetPassword = authenticationApi.resetPassword({
         onSuccess: async (mutateResponse) => {
@@ -156,7 +154,7 @@ const createApplicationStore = () => {
             loggerUtils.error(ErrorMessage.UNAUTENTICATED);
             handleNotAuthenticated();
 
-            navigate(RoutePath.LOGIN);
+            globalsStore.getNavigate()(RoutePath.LOGIN);
 
             return;
           }
@@ -165,7 +163,7 @@ const createApplicationStore = () => {
 
           handleAuthenticated(member, organization);
 
-          navigate(RoutePath.HOME);
+          globalsStore.getNavigate()(RoutePath.HOME);
         },
       });
 

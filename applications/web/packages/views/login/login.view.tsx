@@ -39,7 +39,7 @@ const LoginView = () => {
       }
 
       // we need to cast since the form system can't know if the data is complete or partial dynamically
-      await authenticationStore.login(navigate, data as LoginFormData);
+      await authenticationStore.login(data as LoginFormData);
     },
   });
 

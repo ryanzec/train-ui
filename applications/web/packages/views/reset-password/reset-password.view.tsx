@@ -75,7 +75,7 @@ const ResetPasswordView = () => {
         return;
       }
 
-      await authenticationStore.resetPassword(navigate, data as ResetPasswordFormData);
+      await authenticationStore.resetPassword(data as ResetPasswordFormData);
     },
   });
 

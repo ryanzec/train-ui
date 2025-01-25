@@ -31,7 +31,7 @@ const ForgotPasswordView = () => {
       }
 
       // we need to cast since the form system can't know if the data is complete or partial dynamically
-      await authenticationStore.sendResetPassword(navigate, data as ForgotPasswordFormData);
+      await authenticationStore.sendResetPassword(data as ForgotPasswordFormData);
 
       return;
     },

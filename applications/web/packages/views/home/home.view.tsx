@@ -6,11 +6,11 @@ const HomeView = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    authenticationStore.logout(navigate);
+    authenticationStore.logout();
   };
 
   const handleWebsocket = () => {
-    authenticationStore.logout(navigate);
+    authenticationStore.logout();
   };
 
   return (
