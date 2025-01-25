@@ -3,7 +3,7 @@ import FormField from '$/components/form-field';
 import FormFields from '$/components/form-fields';
 import Input from '$/components/input';
 import Label from '$/components/label';
-import { formStoreUtils } from '$/stores/form';
+import { formStoreUtils } from '$/stores/form.store';
 import { ValidationMessageType, validationUtils } from '$/utils/validation';
 import { zodUtils } from '$/utils/zod';
 import { authenticationStore } from '$web/stores/authentication.store';

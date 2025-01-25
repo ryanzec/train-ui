@@ -10,7 +10,7 @@ import {
   type GlobalNotification,
   REMOVE_ANIMATION_DURATION,
   globalNotificationsStore,
-} from '$/stores/global-notifications';
+} from '$/stores/global-notifications.store';
 
 export type GlobalNotificationsListItemProps = JSX.HTMLAttributes<HTMLDivElement> & {
   notification: GlobalNotification;

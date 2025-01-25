@@ -7,7 +7,7 @@ import styles from '$/components/date-picker/date-picker.module.css';
 import { datePickerComponentUtils } from '$/components/date-picker/utils';
 import Input, { type InputProps } from '$/components/input';
 import { clickOutsideDirective } from '$/directives/click-outside-directive';
-import type { DefaultFormData } from '$/stores/form/utils';
+import type { DefaultFormData } from '$/stores/form.store';
 import type { CommonDataAttributes } from '$/types/generic';
 
 // this is needed to avoid this code being stripped in compilation because of the way directive work in SolidJS

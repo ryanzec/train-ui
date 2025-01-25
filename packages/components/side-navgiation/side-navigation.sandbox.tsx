@@ -1,5 +1,5 @@
 import SideNavigation from '$/components/side-navgiation';
-import { toggleStoreUtils } from '$/stores/toggle';
+import { toggleStoreUtils } from '$/stores/toggle.store';
 import { createSignal } from 'solid-js';
 
 export default {

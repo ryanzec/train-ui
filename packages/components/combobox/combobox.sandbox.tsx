@@ -15,7 +15,7 @@ import FormField from '$/components/form-field';
 import Label from '$/components/label';
 import List from '$/components/list';
 import SupportingText, { SupportingTextColor } from '$/components/supporting-text';
-import { FormInputValidationState, formStoreUtils } from '$/stores/form';
+import { FormInputValidationState, formStoreUtils } from '$/stores/form.store';
 import { ValidationMessageType, validationUtils } from '$/utils/validation';
 import { zodUtils } from '$/utils/zod';
 
@@ -414,7 +414,7 @@ const formDataSchema = zodUtils.schemaForType<FormData>()(
 );
 
 export const SingleInForm = () => {
-  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData>({
+  const formStore = formStoreUtils.createForm<FormData>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],
@@ -428,12 +428,14 @@ export const SingleInForm = () => {
     // cast needed since auto complete values can be a number of types
     const value = options.map((option) => option.value) as number[];
 
-    setValue('combobox', value);
+    formStore.setValue('combobox', value);
   };
+
+  const formDirective = formStore.formDirective;
 
   return (
     <form use:formDirective>
-      <FormField errors={errors().combobox?.errors}>
+      <FormField errors={formStore.errors().combobox?.errors}>
         <BasicExample onSelected={onSelected} />
       </FormField>
       <button type="submit">Submit</button>
@@ -442,7 +444,7 @@ export const SingleInForm = () => {
 };
 
 export const MultiInForm = () => {
-  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData>({
+  const formStore = formStoreUtils.createForm<FormData>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],
@@ -456,12 +458,14 @@ export const MultiInForm = () => {
     // cast needed since auto complete values can be a number of types
     const value = options.map((option) => option.value) as number[];
 
-    setValue('combobox', value);
+    formStore.setValue('combobox', value);
   };
+
+  const formDirective = formStore.formDirective;
 
   return (
     <form use:formDirective>
-      <FormField errors={errors().combobox?.errors}>
+      <FormField errors={formStore.errors().combobox?.errors}>
         <MultiSelectExample onSelected={onSelected} />
       </FormField>
       <button type="submit">Submit</button>
@@ -470,7 +474,7 @@ export const MultiInForm = () => {
 };
 
 export const SingleInFormAutoShowOptions = () => {
-  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData>({
+  const formStore = formStoreUtils.createForm<FormData>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],
@@ -484,12 +488,14 @@ export const SingleInFormAutoShowOptions = () => {
     // cast needed since auto complete values can be a number of types
     const value = options.map((option) => option.value) as number[];
 
-    setValue('combobox', value);
+    formStore.setValue('combobox', value);
   };
+
+  const formDirective = formStore.formDirective;
 
   return (
     <form use:formDirective>
-      <FormField errors={errors().combobox?.errors}>
+      <FormField errors={formStore.errors().combobox?.errors}>
         <BasicExample onSelected={onSelected} autoShowOptions />
       </FormField>
       <button type="submit">Submit</button>
@@ -498,7 +504,7 @@ export const SingleInFormAutoShowOptions = () => {
 };
 
 export const MultiInFormAutoShowOptions = () => {
-  const { formDirective, setValue, errors } = formStoreUtils.createForm<FormData>({
+  const formStore = formStoreUtils.createForm<FormData>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],
@@ -512,12 +518,14 @@ export const MultiInFormAutoShowOptions = () => {
     // cast needed since auto complete values can be a number of types
     const value = options.map((option) => option.value) as number[];
 
-    setValue('combobox', value);
+    formStore.setValue('combobox', value);
   };
+
+  const formDirective = formStore.formDirective;
 
   return (
     <form use:formDirective>
-      <FormField errors={errors().combobox?.errors}>
+      <FormField errors={formStore.errors().combobox?.errors}>
         <MultiSelectExample onSelected={onSelected} autoShowOptions />
       </FormField>
       <button type="submit">Submit</button>
@@ -561,7 +569,7 @@ export const SingleChangeLocalOptions = () => {
 
 // not exported as this is only for testing and would be caught in a `pnpm build:check`
 const NameTypingTest = () => {
-  const { data } = formStoreUtils.createForm<{ combobox: number[] }>({
+  const formStore = formStoreUtils.createForm<{ combobox: number[] }>({
     onSubmit: async (values) => {
       console.log(values);
     },
@@ -578,7 +586,7 @@ const NameTypingTest = () => {
         selected={comboboxStore.selected()}
         // @ts-expect-error should error since it is not part of the form data, intended to test this functionality
         name="combobo"
-        formData={data}
+        formData={formStore.data}
       />
     </FormField>
   );

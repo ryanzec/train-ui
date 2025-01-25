@@ -19,7 +19,7 @@ import * as _ from 'lodash';
 import Options from '$/components/combobox/options';
 import SelectableOption from '$/components/combobox/selectable-option';
 import ScrollArea from '$/components/scroll-area';
-import type { DefaultFormData } from '$/stores/form/utils';
+import type { DefaultFormData } from '$/stores/form.store';
 import { createStore, produce, reconcile } from 'solid-js/store';
 import styles from './combobox.module.css';
 
@@ -210,7 +210,7 @@ const Combobox = <TData extends ComboboxExtraData, TFormData = DefaultFormData>(
 
   return (
     <div data-id="combobox" {...restOfProps} class={classnames(styles.combobox, props.class)} {...dynamicProps}>
-      <button type="button" onClick={handleFocusInput}>
+      <button type="button" onClick={handleFocusInput} tabindex="-1">
         <Input
           {...comboboxStore.getInputProps()}
           readonly={!props.filterOptions}

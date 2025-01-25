@@ -4,7 +4,7 @@ import { For, type JSX, Show, mergeProps, splitProps } from 'solid-js';
 import GlobalNotificationsItem from '$/components/global-notifications/global-notifications-item';
 import styles from '$/components/global-notifications/global-notifications.module.css';
 import { GlobalNotificationPosition } from '$/components/global-notifications/utils';
-import type { GlobalNotification } from '$/stores/global-notifications';
+import type { GlobalNotification } from '$/stores/global-notifications.store';
 
 export type GlobalNotificationsListProps = JSX.HTMLAttributes<HTMLDivElement> & {
   notifications?: GlobalNotification[];

@@ -7,7 +7,14 @@ export const DialogFooterAlignment = {
 
 export type DialogFooterAlignment = (typeof DialogFooterAlignment)[keyof typeof DialogFooterAlignment];
 
-const createStore = () => {
+export type DialogStore = {
+  isOpen: () => boolean;
+  openDialog: () => void;
+  closeDialog: () => void;
+  toggleDialog: () => void;
+};
+
+const createStore = (): DialogStore => {
   const [isOpen, setIsOpen] = createSignal<boolean>(false);
 
   const openDialog = () => {

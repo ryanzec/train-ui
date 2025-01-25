@@ -5,18 +5,15 @@ import type {
   AuthenticationSendResetPasswordRequest,
   AuthenticationSendResetPasswordResponse,
 } from '$api/types/authentication';
-import { GlobalVariable, applicationUtils } from '$web/utils/application';
+import { applicationConfiguration } from '$web/utils/application';
 
 const mutate = async (
   request: AuthenticationSendResetPasswordRequest,
 ): Promise<AuthenticationSendResetPasswordResponse> => {
-  return await httpUtils.http(
-    `${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}${ApiRoute.AUTHENTICATION_SEND_RESET_PASSWORD}`,
-    {
-      method: HttpMethod.POST,
-      payload: request,
-    },
-  );
+  return await httpUtils.http(`${applicationConfiguration.baseApiUrl}${ApiRoute.AUTHENTICATION_SEND_RESET_PASSWORD}`, {
+    method: HttpMethod.POST,
+    payload: request,
+  });
 };
 
 export const sendResetPassword = (

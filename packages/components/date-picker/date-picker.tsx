@@ -8,7 +8,7 @@ import styles from '$/components/date-picker/date-picker.module.css';
 import FormField from '$/components/form-field';
 import Icon from '$/components/icon';
 import TimeInput from '$/components/time-input';
-import { FormInputValidationState } from '$/stores/form';
+import { FormInputValidationState } from '$/stores/form.store';
 import { dateTimeFormat } from '$/utils/date';
 import { loggerUtils } from '$/utils/logger';
 

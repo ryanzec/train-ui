@@ -19,7 +19,7 @@ import Label from '$/components/label';
 import Radio from '$/components/radio';
 import Textarea from '$/components/textarea';
 import TimeInput, { timeInputComponentUtils } from '$/components/time-input';
-import { formStoreUtils } from '$/stores/form';
+import { formStoreUtils } from '$/stores/form.store';
 import type { CommonDataType } from '$/types/generic';
 import { ValidationMessageType, validationUtils } from '$/utils/validation';
 import { zodUtils } from '$/utils/zod';
@@ -66,9 +66,11 @@ const simpleFormDataSchema = zodUtils.schemaForType<SimpleFormData>()(
 );
 
 export const SetValue = () => {
-  const { formDirective, setValue } = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createForm<SimpleFormData>({
     onSubmit: () => {},
   });
+
+  const formDirective = formStore.formDirective;
 
   return (
     <div data-id="container">
@@ -81,7 +83,7 @@ export const SetValue = () => {
           <Button data-id="submit-button" type="submit">
             Submit
           </Button>
-          <Button data-id="set-value-button" onClick={() => setValue('title', 'test')}>
+          <Button data-id="set-value-button" onClick={() => formStore.setValue('title', 'test')}>
             Set Value
           </Button>
         </div>
@@ -91,9 +93,11 @@ export const SetValue = () => {
 };
 
 export const SetValues = () => {
-  const { formDirective, setValues } = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createForm<SimpleFormData>({
     onSubmit: () => {},
   });
+
+  const formDirective = formStore.formDirective;
 
   return (
     <div data-id="container">
@@ -110,7 +114,7 @@ export const SetValues = () => {
           <Button data-id="submit-button" type="submit">
             Submit
           </Button>
-          <Button data-id="set-value-button" onClick={() => setValues({ title: 'test', title2: 'test2' })}>
+          <Button data-id="set-value-button" onClick={() => formStore.setValues({ title: 'test', title2: 'test2' })}>
             Set Value
           </Button>
         </div>
@@ -124,7 +128,6 @@ export const UsingEffects = () => {
     onSubmit: () => {},
   });
   const [randomValue, setRandomValue] = createSignal('starting random value');
-  const formDirective = formStore.formDirective;
 
   createEffect(() => {
     const newValue = randomValue();
@@ -137,6 +140,8 @@ export const UsingEffects = () => {
       formStore.setValue('title', newValue);
     });
   });
+
+  const formDirective = formStore.formDirective;
 
   return (
     <div data-id="container">
@@ -159,13 +164,15 @@ export const UsingEffects = () => {
 };
 
 export const InitializeWithValues = () => {
-  const { formDirective, clear } = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createForm<SimpleFormData>({
     onSubmit: () => {},
     initialValues: {
       title: 'test',
       title2: 'test2',
     },
   });
+
+  const formDirective = formStore.formDirective;
 
   return (
     <div data-id="container">
@@ -184,7 +191,7 @@ export const InitializeWithValues = () => {
           <Button data-id="submit-button" type="submit">
             Submit
           </Button>
-          <Button data-id="clear-button" onClick={() => clear()}>
+          <Button data-id="clear-button" onClick={() => formStore.clear()}>
             Clear
           </Button>
         </div>
@@ -194,13 +201,15 @@ export const InitializeWithValues = () => {
 };
 
 export const Clear = () => {
-  const { formDirective, clear } = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createForm<SimpleFormData>({
     onSubmit: () => {},
     initialValues: {
       title: 'test',
       title2: 'test2',
     },
   });
+
+  const formDirective = formStore.formDirective;
 
   return (
     <div data-id="container">
@@ -219,7 +228,7 @@ export const Clear = () => {
           <Button data-id="submit-button" type="submit">
             Submit
           </Button>
-          <Button data-id="clear-button" onClick={() => clear()}>
+          <Button data-id="clear-button" onClick={() => formStore.clear()}>
             Clear
           </Button>
         </div>
@@ -229,9 +238,11 @@ export const Clear = () => {
 };
 
 export const ResetWithoutInitial = () => {
-  const { formDirective, reset, touchedFields, dirtyFields } = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createForm<SimpleFormData>({
     onSubmit: () => {},
   });
+
+  const formDirective = formStore.formDirective;
 
   return (
     <div data-id="container">
@@ -254,19 +265,19 @@ export const ResetWithoutInitial = () => {
           <Button data-id="submit-button" type="submit">
             Submit
           </Button>
-          <Button data-id="reset-button" onClick={() => reset()}>
+          <Button data-id="reset-button" onClick={() => formStore.reset()}>
             Reset
           </Button>
         </div>
       </form>
-      <ExpandableCode label="Touched Fields">{JSON.stringify(touchedFields(), null, 2)}</ExpandableCode>
-      <ExpandableCode label="Dirty Fields">{JSON.stringify(dirtyFields(), null, 2)}</ExpandableCode>
+      <ExpandableCode label="Touched Fields">{JSON.stringify(formStore.touchedFields(), null, 2)}</ExpandableCode>
+      <ExpandableCode label="Dirty Fields">{JSON.stringify(formStore.dirtyFields(), null, 2)}</ExpandableCode>
     </div>
   );
 };
 
 export const ResetWithInitial = () => {
-  const { formDirective, reset, clear, touchedFields, dirtyFields } = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createForm<SimpleFormData>({
     onSubmit: () => {},
     initialValues: {
       title: 'test',
@@ -275,6 +286,8 @@ export const ResetWithInitial = () => {
     },
   });
 
+  const formDirective = formStore.formDirective;
+
   return (
     <div data-id="container">
       <form use:formDirective>
@@ -296,27 +309,29 @@ export const ResetWithInitial = () => {
           <Button data-id="submit-button" type="submit">
             Submit
           </Button>
-          <Button data-id="reset-button" onClick={() => reset()}>
+          <Button data-id="reset-button" onClick={() => formStore.reset()}>
             Reset
           </Button>
-          <Button data-id="clear-button" onClick={() => clear()}>
+          <Button data-id="clear-button" onClick={() => formStore.clear()}>
             Clear
           </Button>
         </div>
       </form>
-      <ExpandableCode label="Touched Fields">{JSON.stringify(touchedFields(), null, 2)}</ExpandableCode>
-      <ExpandableCode label="Dirty Fields">{JSON.stringify(dirtyFields(), null, 2)}</ExpandableCode>
+      <ExpandableCode label="Touched Fields">{JSON.stringify(formStore.touchedFields(), null, 2)}</ExpandableCode>
+      <ExpandableCode label="Dirty Fields">{JSON.stringify(formStore.dirtyFields(), null, 2)}</ExpandableCode>
     </div>
   );
 };
 
 export const IsTouched = () => {
-  const { formDirective, reset, clear, isTouched } = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createForm<SimpleFormData>({
     onSubmit: () => {},
     initialValues: {
       title: 'test',
     },
   });
+
+  const formDirective = formStore.formDirective;
 
   return (
     <div data-id="container">
@@ -329,15 +344,15 @@ export const IsTouched = () => {
           <Button data-id="submit-button" type="submit">
             Submit
           </Button>
-          <Button data-id="clear-button" onClick={() => clear()}>
+          <Button data-id="clear-button" onClick={() => formStore.clear()}>
             Clear
           </Button>
-          <Button data-id="reset-button" onClick={() => reset()}>
+          <Button data-id="reset-button" onClick={() => formStore.reset()}>
             Reset
           </Button>
         </div>
       </form>
-      <Show when={isTouched('title')}>
+      <Show when={formStore.isTouched('title')}>
         <div data-id="is-touched-indicator">title was touched</div>
       </Show>
     </div>
@@ -349,7 +364,7 @@ export const Events = () => {
   const [clearEventTriggered, setClearEventTriggered] = createSignal(false);
   const [resetEventTriggered, setResetEventTriggered] = createSignal(false);
   const [valueChangedEventTriggered, setValueChangedEventTriggered] = createSignal(false);
-  const { formDirective, reset, clear, errors, watch } = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createForm<SimpleFormData>({
     schema: simpleFormDataSchema,
     onSubmit: () => {
       setSubmitTriggered(true);
@@ -366,7 +381,7 @@ export const Events = () => {
   });
 
   createEffect(() => {
-    const watcher = watch((name, data) => {
+    const watcher = formStore.watch((name, data) => {
       if (name !== 'title') {
         return;
       }
@@ -379,10 +394,12 @@ export const Events = () => {
     };
   });
 
+  const formDirective = formStore.formDirective;
+
   return (
     <div data-id="container">
       <form use:formDirective>
-        <FormField errors={errors().title?.errors}>
+        <FormField errors={formStore.errors().title?.errors}>
           <Label>Title</Label>
           <Input type="text" name="title" />
         </FormField>
@@ -390,10 +407,10 @@ export const Events = () => {
           <Button data-id="submit-button" type="submit">
             Submit
           </Button>
-          <Button data-id="reset-button" onClick={() => reset()}>
+          <Button data-id="reset-button" onClick={() => formStore.reset()}>
             Reset
           </Button>
-          <Button data-id="clear-button" onClick={() => clear()}>
+          <Button data-id="clear-button" onClick={() => formStore.clear()}>
             Clear
           </Button>
         </div>
@@ -415,19 +432,21 @@ export const Events = () => {
 };
 
 export const ValidateOnChange = () => {
-  const { formDirective, reset, clear, errors } = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createForm<SimpleFormData>({
     schema: simpleFormDataSchema,
     onSubmit: () => {},
   });
 
   createEffect(() => {
-    console.log(errors());
+    console.log(formStore.errors());
   });
+
+  const formDirective = formStore.formDirective;
 
   return (
     <div data-id="container">
       <form use:formDirective>
-        <FormField errors={errors().title?.errors}>
+        <FormField errors={formStore.errors().title?.errors}>
           <Label>Title</Label>
           <Input type="text" name="title" />
         </FormField>
@@ -435,10 +454,10 @@ export const ValidateOnChange = () => {
           <Button data-id="submit-button" type="submit">
             Submit
           </Button>
-          <Button data-id="reset-button" onClick={() => reset()}>
+          <Button data-id="reset-button" onClick={() => formStore.reset()}>
             Reset
           </Button>
-          <Button data-id="clear-button" onClick={() => clear()}>
+          <Button data-id="clear-button" onClick={() => formStore.clear()}>
             Clear
           </Button>
         </div>
@@ -448,28 +467,30 @@ export const ValidateOnChange = () => {
 };
 
 export const ManualSubmit = () => {
-  const { formDirective, reset, clear, errors, submitForm } = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createForm<SimpleFormData>({
     schema: simpleFormDataSchema,
     onSubmit: () => {},
   });
 
+  const formDirective = formStore.formDirective;
+
   return (
     <div data-id="container">
       <form use:formDirective>
-        <FormField errors={errors().title?.errors}>
+        <FormField errors={formStore.errors().title?.errors}>
           <Label>Title</Label>
           <Input type="text" name="title" />
         </FormField>
       </form>
       <div>
         <div>There buttons are outside of the form element</div>
-        <Button data-id="submit-button" onClick={() => submitForm()}>
+        <Button data-id="submit-button" onClick={() => formStore.submitForm()}>
           Submit
         </Button>
-        <Button data-id="reset-button" onClick={() => reset()}>
+        <Button data-id="reset-button" onClick={() => formStore.reset()}>
           Reset
         </Button>
-        <Button data-id="clear-button" onClick={() => clear()}>
+        <Button data-id="clear-button" onClick={() => formStore.clear()}>
           Clear
         </Button>
       </div>
@@ -478,16 +499,18 @@ export const ManualSubmit = () => {
 };
 
 export const NoValidateOnChange = () => {
-  const { formDirective, reset, clear, errors } = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createForm<SimpleFormData>({
     schema: simpleFormDataSchema,
     validateOnChange: false,
     onSubmit: () => {},
   });
 
+  const formDirective = formStore.formDirective;
+
   return (
     <div data-id="container">
       <form use:formDirective>
-        <FormField errors={errors().title?.errors}>
+        <FormField errors={formStore.errors().title?.errors}>
           <Label>Title</Label>
           <Input type="text" name="title" />
         </FormField>
@@ -495,10 +518,10 @@ export const NoValidateOnChange = () => {
           <Button data-id="submit-button" type="submit">
             Submit
           </Button>
-          <Button data-id="reset-button" onClick={() => reset()}>
+          <Button data-id="reset-button" onClick={() => formStore.reset()}>
             Reset
           </Button>
-          <Button data-id="clear-button" onClick={() => clear()}>
+          <Button data-id="clear-button" onClick={() => formStore.clear()}>
             Clear
           </Button>
         </div>
@@ -524,27 +547,28 @@ const simpleArrayFormDataSchema = zodUtils.schemaForType<SimpleArrayFormData>()(
 );
 
 export const ArrayFields = () => {
-  const { formDirective, data, errors, addArrayField, removeArrayField, touchedFields } =
-    formStoreUtils.createForm<SimpleArrayFormData>({
-      onSubmit: () => {},
-      schema: simpleArrayFormDataSchema,
-    });
+  const formStore = formStoreUtils.createForm<SimpleArrayFormData>({
+    onSubmit: () => {},
+    schema: simpleArrayFormDataSchema,
+  });
 
   createEffect(() => {
-    console.log(errors());
+    console.log(formStore.errors());
   });
+
+  const formDirective = formStore.formDirective;
 
   return (
     <div data-id="container">
-      <Button data-id="add-array-field-button" type="button" onclick={() => addArrayField('array', {})}>
+      <Button data-id="add-array-field-button" type="button" onclick={() => formStore.addArrayField('array', {})}>
         + Add Array Field
       </Button>
       <form use:formDirective>
-        <FormField errors={errors().array?.errors}>
+        <FormField errors={formStore.errors().array?.errors}>
           <FormFields>
-            <Index each={data().array}>
+            <Index each={formStore.data().array}>
               {(arrayField, index) => {
-                const getArrayFieldError = () => errors().array?.[index] ?? {};
+                const getArrayFieldError = () => formStore.errors().array?.[index] ?? {};
 
                 return (
                   <div data-id="array-field-element">
@@ -559,7 +583,7 @@ export const ArrayFields = () => {
                     <Button
                       // @todo(!!!) make danger when implemented
                       data-id="remove-array-field-button"
-                      onclick={() => removeArrayField('array', index)}
+                      onclick={() => formStore.removeArrayField('array', index)}
                     >
                       REMOVE
                     </Button>
@@ -577,8 +601,8 @@ export const ArrayFields = () => {
       </form>
       <hr />
       <h1>Debug Tools</h1>
-      <ExpandableCode label="Errors">{JSON.stringify(errors(), null, 2)}</ExpandableCode>
-      <ExpandableCode label="Touched Fields">{JSON.stringify(touchedFields(), null, 2)}</ExpandableCode>
+      <ExpandableCode label="Errors">{JSON.stringify(formStore.errors(), null, 2)}</ExpandableCode>
+      <ExpandableCode label="Touched Fields">{JSON.stringify(formStore.touchedFields(), null, 2)}</ExpandableCode>
     </div>
   );
 };
@@ -613,27 +637,28 @@ const nestedArrayFormDataSchema = zodUtils.schemaForType<NestedArrayFormData>()(
 );
 
 export const NestedArrayFields = () => {
-  const { formDirective, data, errors, addArrayField, removeArrayField, touchedFields } =
-    formStoreUtils.createForm<NestedArrayFormData>({
-      onSubmit: () => {},
-      initialValues: {
-        array: [{ partA: 'test', nested: [{ partA: 'test2' }] }],
-      },
-      schema: nestedArrayFormDataSchema,
-    });
+  const formStore = formStoreUtils.createForm<NestedArrayFormData>({
+    onSubmit: () => {},
+    initialValues: {
+      array: [{ partA: 'test', nested: [{ partA: 'test2' }] }],
+    },
+    schema: nestedArrayFormDataSchema,
+  });
+
+  const formDirective = formStore.formDirective;
 
   return (
     <div data-id="container">
-      <Button data-id="add-array-field-button" type="button" onclick={() => addArrayField('array', {})}>
+      <Button data-id="add-array-field-button" type="button" onclick={() => formStore.addArrayField('array', {})}>
         + Add Array Field
       </Button>
       <form use:formDirective>
-        <FormField errors={errors().array?.errors}>
+        <FormField errors={formStore.errors().array?.errors}>
           <FormFields>
-            <Index each={data().array}>
+            <Index each={formStore.data().array}>
               {(arrayField, index) => {
                 console.log('should only happen once');
-                const getArrayFieldError = () => errors().array?.[index] ?? {};
+                const getArrayFieldError = () => formStore.errors().array?.[index] ?? {};
 
                 return (
                   <div data-id="array-field-element">
@@ -652,7 +677,7 @@ export const NestedArrayFields = () => {
                         type="button"
                         onclick={() => {
                           for (let i = 0; i < 50; i++) {
-                            addArrayField(`array.${index}.nested`, {});
+                            formStore.addArrayField(`array.${index}.nested`, {});
                           }
                         }}
                       >
@@ -660,7 +685,7 @@ export const NestedArrayFields = () => {
                       </Button>
                       <Index each={arrayField().nested}>
                         {(arrayField2, index2) => {
-                          const getArrayFieldError2 = () => errors().array?.[index]?.nested?.[index2] ?? {};
+                          const getArrayFieldError2 = () => formStore.errors().array?.[index]?.nested?.[index2] ?? {};
 
                           return (
                             <div data-id="array-field-element">
@@ -707,7 +732,7 @@ export const NestedArrayFields = () => {
                               <Button
                                 // @todo(!!!) make danger when implemented
                                 data-id="remove-array-field-button"
-                                onclick={() => removeArrayField(`array.${index}.nested`, index2)}
+                                onclick={() => formStore.removeArrayField(`array.${index}.nested`, index2)}
                               >
                                 REMOVE
                               </Button>
@@ -719,7 +744,7 @@ export const NestedArrayFields = () => {
                     <Button
                       // @todo(!!!) make danger when implemented
                       data-id="remove-array-field-button"
-                      onclick={() => removeArrayField('array', index)}
+                      onclick={() => formStore.removeArrayField('array', index)}
                     >
                       REMOVE
                     </Button>
@@ -737,9 +762,9 @@ export const NestedArrayFields = () => {
       </form>
       <hr />
       <h1>Debug Tools</h1>
-      <ExpandableCode label="Data">{JSON.stringify(data(), null, 2)}</ExpandableCode>
-      <ExpandableCode label="Errors">{JSON.stringify(errors(), null, 2)}</ExpandableCode>
-      <ExpandableCode label="Touched Fields">{JSON.stringify(touchedFields(), null, 2)}</ExpandableCode>
+      <ExpandableCode label="Data">{JSON.stringify(formStore.data(), null, 2)}</ExpandableCode>
+      <ExpandableCode label="Errors">{JSON.stringify(formStore.errors(), null, 2)}</ExpandableCode>
+      <ExpandableCode label="Touched Fields">{JSON.stringify(formStore.touchedFields(), null, 2)}</ExpandableCode>
     </div>
   );
 };

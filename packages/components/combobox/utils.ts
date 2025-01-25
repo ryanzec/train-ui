@@ -2,7 +2,7 @@ import { debounce } from '@solid-primitives/scheduled';
 import { type Accessor, type JSX, createEffect, createSignal, onCleanup } from 'solid-js';
 import { createStore, produce } from 'solid-js/store';
 
-import type { DefaultFormData } from '$/stores/form/utils';
+import type { DefaultFormData } from '$/stores/form.store';
 import { Key } from '$/types/generic';
 import { domUtils } from '$/utils/dom';
 

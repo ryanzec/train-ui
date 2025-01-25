@@ -1,7 +1,9 @@
-import Dialog, { type DialogProps } from '$/components/dialog/dialog';
+import Dialog, { type DialogProps, defaultDialogProps } from '$/components/dialog/dialog';
+import DeleteConfirmation, { type DialogDeleteConfirmationProps } from '$/components/dialog/dialog-delete-confirmation';
 
-export { DialogFooterAlignment, dialogComponentUtils } from '$/components/dialog/utils';
+export { DialogFooterAlignment, dialogComponentUtils, type DialogStore } from '$/components/dialog/utils';
 
-export type { DialogProps };
+export type { DialogProps, DialogDeleteConfirmationProps };
+export { defaultDialogProps };
 
-export default Dialog;
+export default Object.assign(Dialog, { DeleteConfirmation });

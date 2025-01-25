@@ -4,7 +4,7 @@ import { type JSX, children, createEffect, createSignal, mergeProps, splitProps 
 import Icon, { IconColor, IconSize } from '$/components/icon';
 import type { IconName } from '$/components/icon/utils';
 import styles from '$/components/side-navgiation/side-navigation.module.css';
-import { type ToggleStoreInstance, toggleStoreUtils } from '$/stores/toggle';
+import { type ToggleStoreInstance, toggleStoreUtils } from '$/stores/toggle.store';
 import { loggerUtils } from '$/utils/logger';
 import { Dynamic } from 'solid-js/web';
 

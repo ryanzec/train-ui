@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import { type JSX, splitProps } from 'solid-js';
 
 import styles from '$/components/radio/radio.module.css';
-import type { FormInputValidationState } from '$/stores/form/utils';
+import type { FormInputValidationState } from '$/stores/form.store';
 
 export type RadioGroupProps = JSX.HTMLAttributes<HTMLDivElement>;
 

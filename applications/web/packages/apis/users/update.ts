@@ -3,14 +3,14 @@ import { produce } from 'immer';
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { type CreateMutationOptions, queryUtils } from '$/utils/query';
 import type { GetUsersResponse, PatchUserRequest, PatchUserResponse } from '$api/types/users';
-import { GlobalVariable, QueryKey, applicationUtils } from '$web/utils/application';
+import { QueryKey, applicationConfiguration } from '$web/utils/application';
 
 const mutate = async ({ id, ...payload }: PatchUserRequest): Promise<PatchUserResponse> => {
   if (!id) {
     throw new Error('id is required for updating a user');
   }
 
-  return await httpUtils.http(`${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/users/${id}`, {
+  return await httpUtils.http(`${applicationConfiguration.baseApiUrl}/users/${id}`, {
     method: HttpMethod.PUT,
     payload,
   });

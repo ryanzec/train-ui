@@ -11,6 +11,7 @@ import { RedisStore } from 'connect-redis';
 import fastify from 'fastify';
 import { createClient } from 'redis';
 
+import * as process from 'node:process';
 import { registerAuthenticateApi } from '$api/apis/authenticate';
 import { registerHealthApi } from '$api/apis/health';
 import { registerQueryApi } from '$api/apis/query';
@@ -61,7 +62,10 @@ await api.register(cors, {
 api.register(fastifyCookie);
 api.register(fastifyWebsocket);
 
-api.addHook('preHandler', delayerHook);
+if (process.env.NODE_ENV === 'development') {
+  api.addHook('preHandler', delayerHook);
+}
+
 api.addHook('preHandler', mockerrorHook);
 
 registerWsWebsocket(api);

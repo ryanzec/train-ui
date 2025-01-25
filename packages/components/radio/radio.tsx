@@ -3,7 +3,7 @@ import { type Accessor, type JSX, createSignal, splitProps } from 'solid-js';
 
 import Icon from '$/components/icon';
 import styles from '$/components/radio/radio.module.css';
-import type { DefaultFormData } from '$/stores/form/utils';
+import type { DefaultFormData } from '$/stores/form.store';
 
 export type RadioProps<TFormData = DefaultFormData> = Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'name'> & {
   labelElement: JSX.Element;

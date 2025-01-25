@@ -12,7 +12,7 @@ import {
   queryUtils,
 } from '$/utils/query/utils';
 import ExpandableCode from '$sandbox/components/expandable-code';
-import { GlobalVariable, applicationUtils } from '$web/utils/application';
+import { applicationConfiguration } from '$web/utils/application';
 
 export default {
   title: 'Utils/Query',
@@ -43,7 +43,7 @@ export const getList = (getParams?: () => GetListParams, queryOptions?: Partial<
       },
     ],
     async () => {
-      let url = `${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/sandbox/query`;
+      let url = `${applicationConfiguration.baseApiUrl}/sandbox/query`;
       const params = (getParams?.() ?? { filter: '' }) as GetListParams;
 
       if (params.filter) {
@@ -80,13 +80,10 @@ type CreateReturns = {
 export const createMutation = (options?: CreateMutationOptions<CreateInput, CreateReturns>) =>
   queryUtils.createMutation(
     async (input: CreateInput) => {
-      return await httpUtils.http<CreateReturns>(
-        `${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/sandbox/query`,
-        {
-          method: HttpMethod.POST,
-          payload: input,
-        },
-      );
+      return await httpUtils.http<CreateReturns>(`${applicationConfiguration.baseApiUrl}/sandbox/query`, {
+        method: HttpMethod.POST,
+        payload: input,
+      });
     },
     {
       ...(options ?? {}),
@@ -111,13 +108,10 @@ export const createMutation = (options?: CreateMutationOptions<CreateInput, Crea
 export const createMutationOptimistic = (options?: CreateMutationOptions<CreateInput, CreateReturns>) =>
   queryUtils.createMutation(
     async (input: CreateInput) => {
-      return await httpUtils.http<CreateReturns>(
-        `${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/sandbox/query`,
-        {
-          method: HttpMethod.POST,
-          payload: input,
-        },
-      );
+      return await httpUtils.http<CreateReturns>(`${applicationConfiguration.baseApiUrl}/sandbox/query`, {
+        method: HttpMethod.POST,
+        payload: input,
+      });
     },
     {
       ...(options ?? {}),

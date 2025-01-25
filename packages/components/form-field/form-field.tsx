@@ -12,7 +12,7 @@ import {
 
 import styles from '$/components/form-field/form-field.module.css';
 import SupportingText, { SupportingTextColor } from '$/components/supporting-text';
-import { FormInputValidationState } from '$/stores/form';
+import { FormInputValidationState } from '$/stores/form.store';
 import type { CommonDataAttributes } from '$/types/generic';
 
 export type FormFieldProps = JSX.HTMLAttributes<HTMLDivElement> &

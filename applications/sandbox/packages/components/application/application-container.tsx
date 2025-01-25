@@ -3,7 +3,7 @@ import { type JSX, Suspense } from 'solid-js';
 import GlobalNotifications from '$/components/global-notifications';
 import Loading from '$/components/loading';
 import ScrollArea from '$/components/scroll-area';
-import { globalNotificationsStore } from '$/stores/global-notifications';
+import { globalNotificationsStore } from '$/stores/global-notifications.store';
 import ApplicationFrame from '$sandbox/components/application-frame';
 import { dynamicRoutesStore } from '$sandbox/stores/dynamic-routes';
 

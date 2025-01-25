@@ -3,7 +3,7 @@ import { type Accessor, type JSX, Show, createSignal, mergeProps, onMount, split
 
 import { FormFieldContext } from '$/components/form-field';
 import styles from '$/components/input/input.module.css';
-import { type DefaultFormData, FormInputValidationState } from '$/stores/form/utils';
+import { type DefaultFormData, FormInputValidationState } from '$/stores/form.store';
 import { loggerUtils } from '$/utils/logger';
 
 export type InputProps<TFormData = DefaultFormData> = Omit<JSX.InputHTMLAttributes<HTMLInputElement>, 'name'> & {

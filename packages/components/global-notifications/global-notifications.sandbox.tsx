@@ -4,7 +4,7 @@ import Button from '$/components/button';
 import { CalloutColor } from '$/components/callout';
 import FormField from '$/components/form-field';
 import Input from '$/components/input';
-import { globalNotificationsStore } from '$/stores/global-notifications';
+import { globalNotificationsStore } from '$/stores/global-notifications.store';
 
 export default {
   title: 'Components/GlobalNotifications',

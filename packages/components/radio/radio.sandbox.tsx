@@ -2,7 +2,7 @@ import * as zod from 'zod';
 
 import FormField from '$/components/form-field';
 import Radio from '$/components/radio';
-import { formStoreUtils } from '$/stores/form';
+import { formStoreUtils } from '$/stores/form.store';
 import { ValidationMessageType, validationUtils } from '$/utils/validation';
 import { zodUtils } from '$/utils/zod';
 
@@ -43,7 +43,7 @@ export const WithValue = () => {
 
 // not exported as this is only for testing and would be caught in a `pnpm build:check`
 const NameTypingTest = () => {
-  const { data } = formStoreUtils.createForm<{ radio: string[] }>({
+  const formStore = formStoreUtils.createForm<{ radio: string[] }>({
     onSubmit: async (values) => {
       console.log(values);
     },
@@ -52,7 +52,7 @@ const NameTypingTest = () => {
   return (
     <FormField>
       {/* @ts-expect-error should error since it is not part of the form data, intended to test this functionality */}
-      <Radio labelElement="radio" name="radi" value="1" formData={data} />
+      <Radio labelElement="radio" name="radi" value="1" formData={formStore.data} />
     </FormField>
   );
 };

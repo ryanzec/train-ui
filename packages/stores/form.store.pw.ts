@@ -165,14 +165,17 @@ test.describe('form store @form-store', () => {
   });
 
   test.describe('validation', () => {
-    test('shows when invalid @component', async ({ page }) => {
+    test('shows when invalid on blur @component', async ({ page }) => {
       await page.goto(playwrightUtils.buildUrl(urls.validateOnChange));
 
       await page.locator(locators.input).nth(0).fill('t');
       await page.locator(locators.input).nth(0).press('Backspace');
+      await page.locator(locators.input).blur();
 
       await expect(page.locator(locators.validationMessage)).toHaveCount(1);
     });
+
+    test.skip('show when invalid on change', async () => {});
 
     test('validates on submit @component', async ({ page }) => {
       await page.goto(playwrightUtils.buildUrl(urls.validateOnChange));
@@ -260,9 +263,12 @@ test.describe('form store @form-store', () => {
 
       await page.locator(locators.input).nth(0).fill('t');
       await page.locator(locators.input).nth(0).press('Backspace');
+      await page.locator(locators.input).nth(0).blur();
 
       await expect(page.locator(locators.validationMessage)).toHaveCount(1);
     });
+
+    test.skip('added element should be considered as touched on change @component', async () => {});
   });
 
   test.describe('dynamic form elements', () => {

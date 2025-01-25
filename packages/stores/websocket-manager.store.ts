@@ -1,6 +1,6 @@
 import { type WebsocketSendData, WebsocketState } from '$/types/websocket';
 import { loggerUtils } from '$/utils/logger';
-import { GlobalVariable, applicationUtils } from '$web/utils/application';
+import { applicationConfiguration } from '$web/utils/application';
 import { createRoot, createSignal, untrack } from 'solid-js';
 
 export type WebsocketManagerStore = {
@@ -52,9 +52,7 @@ const createWebsocketManagerStore = (): WebsocketManagerStore => {
 
       loggerUtils.log('creating websocket connection');
 
-      const newConnection = new WebSocket(
-        `${applicationUtils.getGlobalVariable(GlobalVariable.BASE_WEBSOCKET_URL)}/ws`,
-      );
+      const newConnection = new WebSocket(`${applicationConfiguration.baseWebsocketUrl}/ws`);
 
       setConnection(newConnection);
 

@@ -2,7 +2,7 @@ import classnames from 'classnames';
 import { type Accessor, type JSX, createSignal, onMount, splitProps } from 'solid-js';
 
 import styles from '$/components/textarea/textarea.module.css';
-import type { DefaultFormData } from '$/stores/form/utils';
+import type { DefaultFormData } from '$/stores/form.store';
 
 export type TextareaProps<TFormData = DefaultFormData> = Omit<
   JSX.TextareaHTMLAttributes<HTMLTextAreaElement>,

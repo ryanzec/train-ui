@@ -7,7 +7,7 @@ import SideNavigation from '$/components/side-navgiation';
 import type { CommonDataAttributes } from '$/types/generic';
 import type { DynamicRouteNavigation } from '$sandbox/stores/dynamic-routes';
 
-import { toggleStoreUtils } from '$/stores/toggle';
+import { toggleStoreUtils } from '$/stores/toggle.store';
 import { stringUtils } from '$/utils/string';
 import ApplicationFrameSubNavigation from '$sandbox/components/application-frame/application-frame-sub-navigation';
 import { useLocation } from '@solidjs/router';

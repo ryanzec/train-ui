@@ -20,30 +20,26 @@ export type DialogProps = JSX.HTMLAttributes<HTMLDivElement> & {
   closeEnabled?: boolean;
 };
 
+export const defaultDialogProps: Partial<DialogProps> = {
+  footerAlignment: DialogFooterAlignment.RIGHT,
+  closeOnClickOverlay: false,
+  closeOnEscape: true,
+  closeEnabled: true,
+};
+
 const Dialog = (passedProps: DialogProps) => {
-  const [props, restOfProps] = splitProps(
-    mergeProps(
-      {
-        footerAlignment: DialogFooterAlignment.RIGHT,
-        closeOnClickOverlay: false,
-        closeOnEscape: true,
-        closeEnabled: true,
-      },
-      passedProps,
-    ),
-    [
-      'children',
-      'class',
-      'isOpen',
-      'closeDialog',
-      'headerElement',
-      'footerElement',
-      'footerAlignment',
-      'closeOnClickOverlay',
-      'closeOnEscape',
-      'closeEnabled',
-    ],
-  );
+  const [props, restOfProps] = splitProps(mergeProps(defaultDialogProps, passedProps), [
+    'children',
+    'class',
+    'isOpen',
+    'closeDialog',
+    'headerElement',
+    'footerElement',
+    'footerAlignment',
+    'closeOnClickOverlay',
+    'closeOnEscape',
+    'closeEnabled',
+  ]);
   const dialogRef = () => {
     const keyDownListener = (event: KeyboardEvent) => {
       if (props.closeEnabled === false || props.closeOnEscape === false || event.key === Key.ESCAPE) {

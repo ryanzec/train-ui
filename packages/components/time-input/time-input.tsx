@@ -2,7 +2,7 @@ import { type JSX, createReaction, createSignal, mergeProps, splitProps } from '
 
 import Input, { type InputProps } from '$/components/input';
 import { DEFAULT_VALUE, EditItem, editItemsOrder, timeInputComponentUtils } from '$/components/time-input/utils';
-import type { DefaultFormData } from '$/stores/form/utils';
+import type { DefaultFormData } from '$/stores/form.store';
 import { Key } from '$/types/generic';
 
 export type TimeInputProps<TFormData = DefaultFormData> = InputProps<TFormData> & {

@@ -1,10 +1,10 @@
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { type CreateTrackedQueryOptions, queryUtils } from '$/utils/query';
 import type { GetUsersResponse } from '$api/types/users';
-import { GlobalVariable, QueryKey, applicationUtils } from '$web/utils/application';
+import { QueryKey, applicationConfiguration } from '$web/utils/application';
 
 const getUsersRaw = async (): Promise<GetUsersResponse> => {
-  return await httpUtils.http(`${applicationUtils.getGlobalVariable(GlobalVariable.BASE_API_URL)}/users`, {
+  return await httpUtils.http(`${applicationConfiguration.baseApiUrl}/users`, {
     method: HttpMethod.GET,
   });
 };

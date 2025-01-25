@@ -6,7 +6,7 @@ import Input from '$/components/input';
 import Label from '$/components/label';
 import Peek, { peekComponentUtils } from '$/components/peek';
 import SupportingText, { SupportingTextColor } from '$/components/supporting-text';
-import { formStoreUtils } from '$/stores/form';
+import { formStoreUtils } from '$/stores/form.store';
 
 export default {
   title: 'Components/Input',
@@ -128,7 +128,7 @@ export const AutoFocus = () => {
 
 // not exported as this is only for testing and would be caught in a `pnpm build:check`
 const NameTypingTest = () => {
-  const { data } = formStoreUtils.createForm<{ input: string }>({
+  const formStore = formStoreUtils.createForm<{ input: string }>({
     onSubmit: async (values) => {
       console.log(values);
     },
@@ -137,7 +137,7 @@ const NameTypingTest = () => {
   return (
     <FormField>
       {/* @ts-expect-error should error since it is not part of the form data, intended to test this functionality */}
-      <Input name="inpu" value="1" formData={data} />
+      <Input name="inpu" value="1" formData={formStore.data} />
     </FormField>
   );
 };
