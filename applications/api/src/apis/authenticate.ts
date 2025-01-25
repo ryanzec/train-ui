@@ -13,7 +13,7 @@ import type {
 } from '$api/types/authentication';
 import { apiUtils } from '$api/utils/api';
 import { applicationConfiguration } from '$api/utils/application-configuration';
-import type { FastifyInstance } from 'fastify';
+import type { FastifyInstance, FastifyRequest } from 'fastify';
 import * as stytch from 'stytch';
 
 const stytchClient = new stytch.B2BClient({
@@ -31,10 +31,10 @@ type ProcessableAuthenticationResponse = {
 type ProcessAuthenticationResponseReturns = {
   member: stytch.Member;
   organization: stytch.Organization;
-  sessionToken: string;
 };
 
 const processAuthenticationResponse = async (
+  originalRequest: FastifyRequest,
   authenticationResponse: ProcessableAuthenticationResponse,
   api: FastifyInstance,
 ): Promise<ProcessAuthenticationResponseReturns> => {
@@ -99,10 +99,11 @@ const processAuthenticationResponse = async (
     throw new Error(errorMessage);
   }
 
+  originalRequest.session.authenticationToken = exchangeResponse.session_token;
+
   return {
     member: memberResponse.member,
     organization: organization,
-    sessionToken: exchangeResponse.session_token,
   };
 };
 
@@ -172,7 +173,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
         password,
       });
 
-      const responseData = await processAuthenticationResponse(resetPasswordResponse, api);
+      const responseData = await processAuthenticationResponse(request, resetPasswordResponse, api);
 
       return response.status(200).send(apiUtils.respondWithData(responseData));
     } catch (error: unknown) {
@@ -195,7 +196,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
         password,
       });
 
-      const responseData = await processAuthenticationResponse(authenticationResponse, api);
+      const responseData = await processAuthenticationResponse(request, authenticationResponse, api);
 
       return response.status(200).send(apiUtils.respondWithData(responseData));
     } catch (error: unknown) {
