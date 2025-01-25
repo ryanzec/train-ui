@@ -1,4 +1,5 @@
 import Button from '$/components/button';
+import FormError from '$/components/form-error';
 import FormField from '$/components/form-field';
 import FormFields from '$/components/form-fields';
 import Input from '$/components/input';
@@ -51,6 +52,7 @@ const LoginView = () => {
 
   return (
     <div>
+      <FormError errorMessage={authenticationStore.loginError()} />
       <form use:formDirective>
         <FormFields>
           <FormField errors={formStore.errors().email?.errors}>

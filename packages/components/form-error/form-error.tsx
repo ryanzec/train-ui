@@ -1,6 +1,6 @@
 import classnames from 'classnames';
 import getScrollParent from 'scrollparent';
-import { For, type JSX, createEffect, createSignal, mergeProps, splitProps } from 'solid-js';
+import { For, type JSX, Show, createEffect, createSignal, mergeProps, splitProps } from 'solid-js';
 
 import Callout, { CalloutColor, type CalloutProps, CalloutVariant } from '$/components/callout';
 import styles from '$/components/form-error/form-error.module.css';
@@ -50,19 +50,21 @@ const FormError = (passedProps: FormErrorProps) => {
   });
 
   return (
-    <Callout
-      ref={formErrorRef}
-      data-id="form-error"
-      {...restOfProps}
-      // we use css to hide the element instead of <Show /> because we need the element to be present in the dom
-      // for the ref to work properly
-      class={classnames(styles.formError, {
-        [styles.formErrorHidden]: !props.errorMessage,
-      })}
-      color={CalloutColor.DANGER}
-    >
-      <For each={getErrorMessages()}>{(errorMessage) => <div>{errorMessage}</div>}</For>
-    </Callout>
+    <Show when={getErrorMessages().length > 0}>
+      <Callout
+        ref={formErrorRef}
+        data-id="form-error"
+        {...restOfProps}
+        // we use css to hide the element instead of <Show /> because we need the element to be present in the dom
+        // for the ref to work properly
+        class={classnames(styles.formError, {
+          [styles.formErrorHidden]: !props.errorMessage,
+        })}
+        color={CalloutColor.DANGER}
+      >
+        <For each={getErrorMessages()}>{(errorMessage) => <div>{errorMessage}</div>}</For>
+      </Callout>
+    </Show>
   );
 };
 

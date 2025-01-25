@@ -38,6 +38,7 @@ const createApplicationStore = () => {
   const [isInitializing, setIsInitializing] = createSignal<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = createSignal<boolean>(false);
   const [currentLoginAction, setCurrentLoginAction] = createSignal<LoginAction>(LoginAction.NONE);
+  const [loginError, setLoginError] = createSignal<string[]>([]);
 
   const handleAuthenticated = (member?: StytchMember, organization?: StytchOrganization) => {
     if (member && organization) {
@@ -85,6 +86,7 @@ const createApplicationStore = () => {
 
   const login = async (formData: AuthenticationAuthenticateRequest) => {
     try {
+      setLoginError([]);
       setCurrentLoginAction(LoginAction.LOGIN);
 
       const authenticateResponse = await authenticationApi.authenticateRaw({
@@ -105,6 +107,16 @@ const createApplicationStore = () => {
 
       // @todo redirect to previously accessed page
       globalsStore.getNavigate()(RoutePath.HOME);
+    } catch (error: unknown) {
+      handleNotAuthenticated();
+
+      if (error instanceof Error) {
+        setLoginError([error.message]);
+
+        return;
+      }
+
+      setLoginError([ErrorMessage.UNAUTENTICATED]);
     } finally {
       setCurrentLoginAction(LoginAction.NONE);
     }
@@ -189,6 +201,7 @@ const createApplicationStore = () => {
     initialize,
     resetPassword,
     sendResetPassword,
+    loginError,
   };
 };
 
