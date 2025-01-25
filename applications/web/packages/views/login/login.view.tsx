@@ -72,11 +72,11 @@ const LoginView = () => {
         <FormFields>
           <FormField errors={formStore.errors().email?.errors}>
             <Label>Email</Label>
-            <Input type="text" formData={formStore.data} name="email" autofocus />
+            <Input type="text" formData={formStore.data} name="email" autofocus selectAllOnFocus />
           </FormField>
           <FormField errors={formStore.errors().password?.errors}>
             <Label>Password</Label>
-            <Input type="text" formData={formStore.data} name="password" />
+            <Input type="text" formData={formStore.data} name="password" selectAllOnFocus />
           </FormField>
           <Button.Group>
             <Button type="submit">Login</Button>

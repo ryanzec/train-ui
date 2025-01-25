@@ -71,6 +71,16 @@ export const AutoFocus = () => {
   );
 };
 
+export const SelectAll = () => {
+  return (
+    <>
+      <FormField>
+        <Textarea value="test" selectAllOnFocus />
+      </FormField>
+    </>
+  );
+};
+
 // not exported as this is only for testing and would be caught in a `pnpm build:check`
 const NameTypingTest = () => {
   const formStore = formStoreUtils.createStore<{ textarea: string[] }>({

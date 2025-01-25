@@ -1,5 +1,15 @@
 import classnames from 'classnames';
-import { type Accessor, type JSX, Show, createSignal, mergeProps, onMount, splitProps, useContext } from 'solid-js';
+import {
+  type Accessor,
+  type JSX,
+  Show,
+  createEffect,
+  createSignal,
+  mergeProps,
+  onMount,
+  splitProps,
+  useContext,
+} from 'solid-js';
 
 import { FormFieldContext } from '$/components/form-field';
 import styles from '$/components/input/input.module.css';
@@ -15,6 +25,7 @@ export type InputProps<TFormData = DefaultFormData> = Omit<JSX.InputHTMLAttribut
   inputContainerClass?: string;
   includeReadonlyStyles?: boolean;
   name?: keyof TFormData;
+  selectAllOnFocus?: boolean;
 
   // while not directly used, used to infer the type for name to give properly type checking on that property
   formData?: Accessor<Partial<TFormData>>;
@@ -22,7 +33,10 @@ export type InputProps<TFormData = DefaultFormData> = Omit<JSX.InputHTMLAttribut
 
 const Input = <TFormData = DefaultFormData>(passedProps: InputProps<TFormData>) => {
   const [props, restOfProps] = splitProps(
-    mergeProps({ preItemIsInline: false, includeReadonlyStyles: true, type: 'text' }, passedProps),
+    mergeProps(
+      { preItemIsInline: false, includeReadonlyStyles: true, type: 'text', selectAllOnFocus: false },
+      passedProps,
+    ),
     [
       'class',
       'onFocus',
@@ -38,6 +52,7 @@ const Input = <TFormData = DefaultFormData>(passedProps: InputProps<TFormData>) 
       'includeReadonlyStyles',
       'formData',
       'name',
+      'selectAllOnFocus',
 
       // autofocus does not seem to work by default is some contexts (like is dialogs) so manually dealing with it
       'autofocus',
@@ -61,6 +76,10 @@ const Input = <TFormData = DefaultFormData>(passedProps: InputProps<TFormData>) 
 
   const handleFocus: JSX.EventHandlerUnion<HTMLInputElement, FocusEvent> = (event) => {
     setIsInputFocused(true);
+
+    if (props.selectAllOnFocus) {
+      inputElement()?.select();
+    }
 
     if (props.onFocus) {
       const eventHandler = props.onFocus as JSX.EventHandler<HTMLInputElement, FocusEvent>;
