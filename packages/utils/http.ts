@@ -40,27 +40,32 @@ export const HttpMethod = {
 
 export type HttpMethod = (typeof HttpMethod)[keyof typeof HttpMethod];
 
-// biome-ignore lint/suspicious/noExplicitAny: this handles generic requests so it needs to allow for any
-const httpRequestInterceptors: Array<(requestOptions: HttpRequest<any>) => HttpRequest<any>> = [];
-// biome-ignore lint/suspicious/noExplicitAny: this handles generic requests so it needs to allow for any
-const httpResponseInterceptors: Array<(requestOptions: HttpRequest<any>, response: any, rawResponse: Response) => any> =
-  [];
+const httpRequestInterceptors: Array<
+  // biome-ignore lint/suspicious/noExplicitAny: this handles generic requests so it needs to allow for any
+  (requestOptions: HttpRequest<any>) => HttpRequest<any> | Promise<HttpRequest<any>>
+> = [];
+const httpResponseInterceptors: Array<
+  // biome-ignore lint/suspicious/noExplicitAny: this handles generic requests so it needs to allow for any
+  (requestOptions: HttpRequest<any>, response: any, rawResponse: Response) => any | Promise<any>
+> = [];
 
 const addHttpRequestInterceptor = <TResponse>(
   // biome-ignore lint/suspicious/noExplicitAny: this handles generic requests so it needs to allow for any
-  interceptor: (requestOptions: HttpRequest<any>) => HttpRequest<TResponse>,
+  interceptor: (requestOptions: HttpRequest<any>) => HttpRequest<TResponse> | Promise<HttpRequest<TResponse>>,
 ) => {
   httpRequestInterceptors.push(interceptor);
 };
 
 const removeHttpRequestInterceptor = <TResponse>(
   // biome-ignore lint/suspicious/noExplicitAny: this handles generic requests so it needs to allow for any
-  interceptor: (requestOptions: HttpRequest<any>) => HttpRequest<TResponse>,
+  interceptor: (requestOptions: HttpRequest<any>) => HttpRequest<TResponse> | Promise<HttpRequest<TResponse>>,
 ) => {
   httpRequestInterceptors.push(interceptor);
 };
 
-const processRequestInterceptors = <TResponse>(requestOptions: HttpRequest<TResponse>): HttpRequest<TResponse> => {
+const processRequestInterceptors = async <TResponse>(
+  requestOptions: HttpRequest<TResponse>,
+): Promise<HttpRequest<TResponse>> => {
   if (httpRequestInterceptors.length === 0) {
     return requestOptions;
   }
@@ -68,31 +73,41 @@ const processRequestInterceptors = <TResponse>(requestOptions: HttpRequest<TResp
   let modifiedRequestOptions = requestOptions;
 
   for (let i = 0; i < httpRequestInterceptors.length; i++) {
-    modifiedRequestOptions = httpRequestInterceptors[i](modifiedRequestOptions);
+    modifiedRequestOptions = await httpRequestInterceptors[i](modifiedRequestOptions);
   }
 
   return modifiedRequestOptions;
 };
 
 const addHttpResponseInterceptor = <TResponse>(
-  // biome-ignore lint/suspicious/noExplicitAny: his handles generic requests so it needs to allow for any
-  interceptor: (requestOptions: HttpRequest<any>, response: any, rawResponse: Response) => TResponse,
+  interceptor: (
+    // biome-ignore lint/suspicious/noExplicitAny: his handles generic requests so it needs to allow for any
+    requestOptions: HttpRequest<any>,
+    // biome-ignore lint/suspicious/noExplicitAny: his handles generic requests so it needs to allow for any
+    response: any,
+    rawResponse: Response,
+  ) => TResponse | Promise<TResponse>,
 ) => {
   httpResponseInterceptors.push(interceptor);
 };
 
 const removeHttpResponseInterceptor = <TResponse>(
-  // biome-ignore lint/suspicious/noExplicitAny: this handles generic requests so it needs to allow for any
-  interceptor: (requestOptions: HttpRequest<any>, response: any, rawResponse: Response) => TResponse,
+  interceptor: (
+    // biome-ignore lint/suspicious/noExplicitAny: his handles generic requests so it needs to allow for any
+    requestOptions: HttpRequest<any>,
+    // biome-ignore lint/suspicious/noExplicitAny: this handles generic requests so it needs to allow for any
+    response: any,
+    rawResponse: Response,
+  ) => TResponse | Promise<TResponse>,
 ) => {
   httpResponseInterceptors.push(interceptor);
 };
 
-const processResponseInterceptors = <TResponse>(
+const processResponseInterceptors = async <TResponse>(
   requestOptions: HttpRequest<TResponse>,
   response: TResponse,
   rawResponse: Response,
-): TResponse => {
+): Promise<TResponse> => {
   if (httpResponseInterceptors.length === 0) {
     return response;
   }
@@ -100,14 +115,14 @@ const processResponseInterceptors = <TResponse>(
   let modifiedResponse = response;
 
   for (let i = 0; i < httpResponseInterceptors.length; i++) {
-    modifiedResponse = httpResponseInterceptors[i](requestOptions, modifiedResponse, rawResponse);
+    modifiedResponse = await httpResponseInterceptors[i](requestOptions, modifiedResponse, rawResponse);
   }
 
   return modifiedResponse;
 };
 
 const http = async <TResponse>(url: string, requestOptions: HttpRequest<TResponse> = {}): Promise<TResponse> => {
-  const finalRequestOptions = processRequestInterceptors(requestOptions);
+  const finalRequestOptions = await processRequestInterceptors(requestOptions);
   const { withCredentials, payload, headers, onError, ...defaultOptions } = finalRequestOptions;
 
   const fetchOptions: RequestInit = {
@@ -128,7 +143,7 @@ const http = async <TResponse>(url: string, requestOptions: HttpRequest<TRespons
   const finalUrl = requestOptions.urlSearchParams ? `${url}?${requestOptions.urlSearchParams.toString()}` : url;
   const rawResponse = await fetch(finalUrl, fetchOptions);
   const jsonResponse = await rawResponse.json();
-  const finalJsonResponse = processResponseInterceptors(finalRequestOptions, jsonResponse, rawResponse);
+  const finalJsonResponse = await processResponseInterceptors(finalRequestOptions, jsonResponse, rawResponse);
 
   if (!rawResponse.ok) {
     let throwError = true;
