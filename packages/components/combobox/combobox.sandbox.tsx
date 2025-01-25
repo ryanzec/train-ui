@@ -414,7 +414,7 @@ const formDataSchema = zodUtils.schemaForType<FormData>()(
 );
 
 export const SingleInForm = () => {
-  const formStore = formStoreUtils.createForm<FormData>({
+  const formStore = formStoreUtils.createStore<FormData>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],
@@ -444,7 +444,7 @@ export const SingleInForm = () => {
 };
 
 export const MultiInForm = () => {
-  const formStore = formStoreUtils.createForm<FormData>({
+  const formStore = formStoreUtils.createStore<FormData>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],
@@ -474,7 +474,7 @@ export const MultiInForm = () => {
 };
 
 export const SingleInFormAutoShowOptions = () => {
-  const formStore = formStoreUtils.createForm<FormData>({
+  const formStore = formStoreUtils.createStore<FormData>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],
@@ -504,7 +504,7 @@ export const SingleInFormAutoShowOptions = () => {
 };
 
 export const MultiInFormAutoShowOptions = () => {
-  const formStore = formStoreUtils.createForm<FormData>({
+  const formStore = formStoreUtils.createStore<FormData>({
     schema: formDataSchema,
     initialValues: {
       combobox: [],
@@ -569,7 +569,7 @@ export const SingleChangeLocalOptions = () => {
 
 // not exported as this is only for testing and would be caught in a `pnpm build:check`
 const NameTypingTest = () => {
-  const formStore = formStoreUtils.createForm<{ combobox: number[] }>({
+  const formStore = formStoreUtils.createStore<{ combobox: number[] }>({
     onSubmit: async (values) => {
       console.log(values);
     },

@@ -23,7 +23,7 @@ export const forgotPasswordFormSchema = zodUtils.schemaForType()(
 const ForgotPasswordView = () => {
   const navigate = useNavigate();
 
-  const formStore = formStoreUtils.createForm<ForgotPasswordFormData>({
+  const formStore = formStoreUtils.createStore<ForgotPasswordFormData>({
     schema: forgotPasswordFormSchema,
     onSubmit: async (data: Partial<ForgotPasswordFormData>) => {
       if (!data.email) {

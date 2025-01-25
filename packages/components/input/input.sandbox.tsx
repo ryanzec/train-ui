@@ -128,7 +128,7 @@ export const AutoFocus = () => {
 
 // not exported as this is only for testing and would be caught in a `pnpm build:check`
 const NameTypingTest = () => {
-  const formStore = formStoreUtils.createForm<{ input: string }>({
+  const formStore = formStoreUtils.createStore<{ input: string }>({
     onSubmit: async (values) => {
       console.log(values);
     },

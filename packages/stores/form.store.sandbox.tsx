@@ -66,7 +66,7 @@ const simpleFormDataSchema = zodUtils.schemaForType<SimpleFormData>()(
 );
 
 export const SetValue = () => {
-  const formStore = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createStore<SimpleFormData>({
     onSubmit: () => {},
   });
 
@@ -93,7 +93,7 @@ export const SetValue = () => {
 };
 
 export const SetValues = () => {
-  const formStore = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createStore<SimpleFormData>({
     onSubmit: () => {},
   });
 
@@ -124,7 +124,7 @@ export const SetValues = () => {
 };
 
 export const UsingEffects = () => {
-  const formStore = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createStore<SimpleFormData>({
     onSubmit: () => {},
   });
   const [randomValue, setRandomValue] = createSignal('starting random value');
@@ -164,7 +164,7 @@ export const UsingEffects = () => {
 };
 
 export const InitializeWithValues = () => {
-  const formStore = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createStore<SimpleFormData>({
     onSubmit: () => {},
     initialValues: {
       title: 'test',
@@ -201,7 +201,7 @@ export const InitializeWithValues = () => {
 };
 
 export const Clear = () => {
-  const formStore = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createStore<SimpleFormData>({
     onSubmit: () => {},
     initialValues: {
       title: 'test',
@@ -238,7 +238,7 @@ export const Clear = () => {
 };
 
 export const ResetWithoutInitial = () => {
-  const formStore = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createStore<SimpleFormData>({
     onSubmit: () => {},
   });
 
@@ -277,7 +277,7 @@ export const ResetWithoutInitial = () => {
 };
 
 export const ResetWithInitial = () => {
-  const formStore = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createStore<SimpleFormData>({
     onSubmit: () => {},
     initialValues: {
       title: 'test',
@@ -324,7 +324,7 @@ export const ResetWithInitial = () => {
 };
 
 export const IsTouched = () => {
-  const formStore = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createStore<SimpleFormData>({
     onSubmit: () => {},
     initialValues: {
       title: 'test',
@@ -364,7 +364,7 @@ export const Events = () => {
   const [clearEventTriggered, setClearEventTriggered] = createSignal(false);
   const [resetEventTriggered, setResetEventTriggered] = createSignal(false);
   const [valueChangedEventTriggered, setValueChangedEventTriggered] = createSignal(false);
-  const formStore = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createStore<SimpleFormData>({
     schema: simpleFormDataSchema,
     onSubmit: () => {
       setSubmitTriggered(true);
@@ -432,7 +432,7 @@ export const Events = () => {
 };
 
 export const ValidateOnChange = () => {
-  const formStore = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createStore<SimpleFormData>({
     schema: simpleFormDataSchema,
     onSubmit: () => {},
   });
@@ -467,7 +467,7 @@ export const ValidateOnChange = () => {
 };
 
 export const ManualSubmit = () => {
-  const formStore = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createStore<SimpleFormData>({
     schema: simpleFormDataSchema,
     onSubmit: () => {},
   });
@@ -499,7 +499,7 @@ export const ManualSubmit = () => {
 };
 
 export const NoValidateOnChange = () => {
-  const formStore = formStoreUtils.createForm<SimpleFormData>({
+  const formStore = formStoreUtils.createStore<SimpleFormData>({
     schema: simpleFormDataSchema,
     validateOnChange: false,
     onSubmit: () => {},
@@ -547,7 +547,7 @@ const simpleArrayFormDataSchema = zodUtils.schemaForType<SimpleArrayFormData>()(
 );
 
 export const ArrayFields = () => {
-  const formStore = formStoreUtils.createForm<SimpleArrayFormData>({
+  const formStore = formStoreUtils.createStore<SimpleArrayFormData>({
     onSubmit: () => {},
     schema: simpleArrayFormDataSchema,
   });
@@ -637,7 +637,7 @@ const nestedArrayFormDataSchema = zodUtils.schemaForType<NestedArrayFormData>()(
 );
 
 export const NestedArrayFields = () => {
-  const formStore = formStoreUtils.createForm<NestedArrayFormData>({
+  const formStore = formStoreUtils.createStore<NestedArrayFormData>({
     onSubmit: () => {},
     initialValues: {
       array: [{ partA: 'test', nested: [{ partA: 'test2' }] }],
@@ -897,7 +897,7 @@ const radioValueNo = 'no';
 const radioValueMaybe = 'maybe';
 
 export const DynamicFormElements = () => {
-  const formStore = formStoreUtils.createForm<DynamicFormData>({
+  const formStore = formStoreUtils.createStore<DynamicFormData>({
     schema: dynamicFormDataSchema,
     initialValues: {
       addDefaultValue: ['yes'],

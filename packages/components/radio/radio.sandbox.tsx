@@ -20,7 +20,7 @@ export const WithValue = () => {
     }),
   );
 
-  const formStore = formStoreUtils.createForm<FormData>({
+  const formStore = formStoreUtils.createStore<FormData>({
     schema: formSchema,
     initialValues: {
       radio: ['1'],
@@ -43,7 +43,7 @@ export const WithValue = () => {
 
 // not exported as this is only for testing and would be caught in a `pnpm build:check`
 const NameTypingTest = () => {
-  const formStore = formStoreUtils.createForm<{ radio: string[] }>({
+  const formStore = formStoreUtils.createStore<{ radio: string[] }>({
     onSubmit: async (values) => {
       console.log(values);
     },

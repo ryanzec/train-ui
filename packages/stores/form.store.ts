@@ -41,17 +41,17 @@ export type FormTouchedMode = (typeof FormTouchedMode)[keyof typeof FormTouchedM
 export type FormDirective = (element: HTMLFormElement) => void;
 
 // this split allows for recursive typing since arrays and have array which can have arrays and so on
-type ArrayFieldErrors = {
+type FormArrayFieldErrors = {
   [key: string]: {
     errors: string[];
-    [key: number]: ArrayFieldErrors;
+    [key: number]: FormArrayFieldErrors;
   };
 };
 
 export type FormErrorsData<TFormData> = {
   [K in keyof TFormData]?: {
     errors: string[];
-    [key: number]: ArrayFieldErrors;
+    [key: number]: FormArrayFieldErrors;
   };
 };
 
@@ -70,7 +70,7 @@ export type FormSetValues<TFormData> = (values?: Partial<TFormData>, options?: S
 
 export type FormData<TFormData> = Accessor<Partial<TFormData>>;
 
-type CreateFormOptions<TFormData extends object> = {
+type CreateFormStoreOptions<TFormData extends object> = {
   // this is partial as without validation (which is not required), the data could be missing data
   onSubmit: (data: Partial<TFormData>) => void;
   onClear?: () => void;
@@ -106,7 +106,7 @@ type SetValueOption = {
   markAsTouched?: boolean;
 };
 
-export type CreateFormReturn<TFormData extends object> = {
+export type CreateFormStoreReturn<TFormData extends object> = {
   formDirective: FormDirective;
   data: Accessor<Partial<TFormData>>;
   // @todo(refactor) would prefer a type that matched the string to what is can be based on the TFormData but not
@@ -126,7 +126,7 @@ export type CreateFormReturn<TFormData extends object> = {
   dirtyFields: Accessor<Array<keyof TFormData>>;
   updateValidationErrors: (fieldName?: string) => boolean;
   isValid: () => boolean;
-  watch: (watcher: FormWatcher<TFormData>) => WatchReturns;
+  watch: (watcher: FormWatcher<TFormData>) => FormWatchReturns;
 
   // since this is a generic system, we need to allow any
   setSchema: Setter<zod.ZodObject<{ [key in keyof TFormData]: zod.ZodTypeAny }> | undefined>;
@@ -137,14 +137,14 @@ export type CreateFormReturn<TFormData extends object> = {
 
 export type FormWatcher<TFormData extends object> = (name: keyof TFormData, data: Partial<TFormData>) => void;
 
-export type WatchReturns = {
+export type FormWatchReturns = {
   unsubscribe: () => void;
 };
 
-const createForm = <TFormData extends object>(
-  passedOptions: CreateFormOptions<TFormData>,
-): CreateFormReturn<TFormData> => {
-  const defaultCreateFormOptions: Partial<CreateFormOptions<TFormData>> = {
+const createStore = <TFormData extends object>(
+  passedOptions: CreateFormStoreOptions<TFormData>,
+): CreateFormStoreReturn<TFormData> => {
+  const defaultCreateFormOptions: Partial<CreateFormStoreOptions<TFormData>> = {
     validateOnChange: true,
     touchedMode: FormTouchedMode.BLUR,
   };
@@ -803,7 +803,7 @@ const createForm = <TFormData extends object>(
     resetHtmlElements();
   };
 
-  const watch = (newFormWatcher: FormWatcher<TFormData>): WatchReturns => {
+  const watch = (newFormWatcher: FormWatcher<TFormData>): FormWatchReturns => {
     // @note(performance) using ... can cause performance / memory issues
     setFormWatchers((oldFormWatchers) => [...oldFormWatchers, newFormWatcher]);
 
@@ -848,5 +848,5 @@ const createForm = <TFormData extends object>(
 };
 
 export const formStoreUtils = {
-  createForm,
+  createStore,
 };

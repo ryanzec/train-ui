@@ -60,7 +60,7 @@ const buildResetPasswordFormSchema = (formData: Accessor<Partial<ResetPasswordFo
 const ResetPasswordView = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const formStore = formStoreUtils.createForm<ResetPasswordFormData>({
+  const formStore = formStoreUtils.createStore<ResetPasswordFormData>({
     buildSchema: buildResetPasswordFormSchema,
     validateWith: {
       password: ['confirmPassword'],

@@ -26,7 +26,7 @@ export const loginFormSchema = zodUtils.schemaForType()(
 const LoginView = () => {
   const navigate = useNavigate();
 
-  const formStore = formStoreUtils.createForm<LoginFormData>({
+  const formStore = formStoreUtils.createStore<LoginFormData>({
     // since this form is simple (and always will be) and there is a use case for clicking a button (forgot)
     // without entering anything in, no going to validate this form on change to avoid when attempting to click
     // the forgot button, the validation message causing the button location to change which would cause the
