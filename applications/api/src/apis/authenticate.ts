@@ -13,13 +13,9 @@ import type {
 } from '$api/types/authentication';
 import { apiUtils } from '$api/utils/api';
 import { applicationConfiguration } from '$api/utils/application-configuration';
+import { stytchClient } from '$api/utils/stytch';
 import type { FastifyInstance, FastifyRequest } from 'fastify';
-import * as stytch from 'stytch';
-
-const stytchClient = new stytch.B2BClient({
-  project_id: applicationConfiguration.authenticationProjectId,
-  secret: applicationConfiguration.authenticationSecret,
-});
+import type * as stytch from 'stytch';
 
 type ProcessableAuthenticationResponse = {
   status_code: number;
@@ -100,6 +96,8 @@ const processAuthenticationResponse = async (
   }
 
   originalRequest.session.authenticationToken = exchangeResponse.session_token;
+  originalRequest.session.organizationId = organization.organization_id;
+  originalRequest.session.userId = memberResponse.member.member_id;
 
   return {
     member: memberResponse.member,

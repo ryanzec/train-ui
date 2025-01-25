@@ -2,7 +2,7 @@ import { produce } from 'immer';
 
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { type CreateMutationOptions, queryUtils } from '$/utils/query';
-import type { GetUsersResponse, PatchUserRequest, PatchUserResponse } from '$api/types/users';
+import type { GetUsersResponse, PatchUserRequest, PatchUserResponse } from '$api/types/user';
 import { QueryKey, applicationConfiguration } from '$web/utils/application';
 
 const mutate = async ({ id, ...payload }: PatchUserRequest): Promise<PatchUserResponse> => {
@@ -11,7 +11,7 @@ const mutate = async ({ id, ...payload }: PatchUserRequest): Promise<PatchUserRe
   }
 
   return await httpUtils.http(`${applicationConfiguration.baseApiUrl}/users/${id}`, {
-    method: HttpMethod.PUT,
+    method: HttpMethod.PATCH,
     payload,
   });
 };
@@ -28,7 +28,7 @@ const onSuccess = (mutationResponse: PatchUserResponse) => {
 
         const existingIndex = draft.data?.findIndex((user) => user.id === mutationResponse.data?.id);
 
-        if (!existingIndex || existingIndex === -1) {
+        if (existingIndex === undefined || existingIndex === -1) {
           return draft;
         }
 
@@ -38,7 +38,7 @@ const onSuccess = (mutationResponse: PatchUserResponse) => {
   );
 };
 
-export const update = (mutationOptions: CreateMutationOptions<PatchUserRequest, PatchUserResponse>) =>
+export const update = (mutationOptions: CreateMutationOptions<PatchUserRequest, PatchUserResponse> = {}) =>
   queryUtils.createMutation(mutate, {
     ...mutationOptions,
     onSuccess: (mutationResponse) => {

@@ -645,6 +645,29 @@ const Component = (passedProps: ComponentProps) => {
 
 When updating large data sets, update say a large array of data that is used to render can sometimes cause performance issues as even if only 1 things changed, all eleement will be rerendered. Using a store and `reconcile()` will allow SolidJS to know what items in that array have actually update an limit the rendering to element that have actually changed.
 
+## createEffect() pattern
+
+When creating an effect we should follow this pattern:
+```tsx
+createEffect(function syncWithEditingUser() {
+    if (!props.editingUser) {
+        untrack(() => {
+            formStore.clear();
+        });
+    }
+
+    untrack(() => {
+        formStore.setValues({
+            name: props.editingUser?.name || '',
+            email: props.editingUser?.email || '',
+            roles: userUtils.rolesToStringArray(props.editingUser?.roles || []),
+        });
+    });
+});
+```
+
+While generally fat arrow functions are used, this pattern allows for the code to be self documenting
+
 # Styling / CSS coding guide
 
 ## Use css modules

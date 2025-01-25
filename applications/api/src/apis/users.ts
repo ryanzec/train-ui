@@ -1,5 +1,6 @@
-import type { User } from '$/data-models/user';
+import { userUtils } from '$api/data-models/user';
 import { ApiRoute } from '$api/types/api';
+import type { User } from '$api/types/user';
 import type {
   DeleteUserResponse,
   GetUserRequest,
@@ -9,36 +10,39 @@ import type {
   PatchUserResponse,
   PostUserRequest,
   PostUserResponse,
-} from '$api/types/users';
+} from '$api/types/user';
 import { apiUtils } from '$api/utils/api';
-import { postgresUtils } from '$api/utils/postgres';
+import { ErrorMessage } from '$api/utils/error';
+import { stytchClient } from '$api/utils/stytch';
 import type { FastifyInstance } from 'fastify';
 
 export const registerUsersApi = (api: FastifyInstance) => {
   type GetUsers = { Reply: GetUsersResponse };
 
-  api.get<GetUsers>(ApiRoute.USERS, async (_request_, response) => {
-    const results = await postgresUtils.executeQuery<User>('SELECT * FROM users ORDER BY created_at DESC LIMIT 10');
+  api.get<GetUsers>(ApiRoute.USERS, async (request, response) => {
+    try {
+      const organizationId = request.session.organizationId;
+      const token = request.session.authenticationToken;
+      const organizationUsersResponse = await stytchClient.organizations.members.search(
+        {
+          organization_ids: [organizationId],
+        },
+        {
+          authorization: {
+            session_token: token,
+          },
+        },
+      );
+      const users = userUtils.fromStytchMembers(organizationUsersResponse.members);
 
-    return response.code(200).send(apiUtils.respondWithData(results.rows));
-  });
+      return response.code(200).send(apiUtils.respondWithData(users));
+    } catch (error: unknown) {
+      const finalError = error instanceof Error ? error : new Error(ErrorMessage.UNKNOWN);
 
-  type PostUser = {
-    Body: PostUserRequest;
-    Reply: PostUserResponse;
-  };
+      api.log.error(finalError);
 
-  api.post<PostUser>(ApiRoute.USERS, async (request, response) => {
-    if (!request.body.firstName || !request.body.lastName || !request.body.email || !request.body.password) {
-      return response.code(400).send();
+      return response.code(500).send(apiUtils.respondWithError(finalError));
     }
-
-    const results = await postgresUtils.executeQuery<User>(
-      'INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *',
-      [request.body.firstName, request.body.lastName, request.body.email, request.body.password],
-    );
-
-    return response.code(200).send(apiUtils.respondWithData(results.rows[0]));
   });
 
   type GetUser = {
@@ -47,19 +51,49 @@ export const registerUsersApi = (api: FastifyInstance) => {
   };
 
   api.get<GetUser>(`${ApiRoute.USERS}/:id`, async (request, response) => {
-    const results = await postgresUtils.executeQuery<User>('SELECT * FROM users WHERE id = $1 LIMIT 1', [
-      request.params.id,
-    ]);
+    const getMemberResponse = await stytchClient.organizations.members.get({
+      organization_id: request.session.organizationId,
+      member_id: request.params.id,
+    });
+    const user = userUtils.fromStytchMember(getMemberResponse.member);
 
-    if (!results.rows.length) {
-      response.code(404).send({
-        error: {
-          message: 'user not found',
+    return response.code(200).send(apiUtils.respondWithData(user));
+  });
+
+  type PostUser = {
+    Body: PostUserRequest;
+    Reply: PostUserResponse;
+  };
+
+  api.post<PostUser>(ApiRoute.USERS, async (request, response) => {
+    try {
+      if (!request.body.name || !request.body.email || !request.body.roles) {
+        return response.code(400).send();
+      }
+
+      const createMemberResponse = await stytchClient.organizations.members.create(
+        {
+          organization_id: request.session.organizationId,
+          email_address: request.body.email,
+          name: request.body.name,
+          roles: request.body.roles,
         },
-      });
-    }
+        {
+          authorization: {
+            session_token: request.session.authenticationToken,
+          },
+        },
+      );
+      const user = userUtils.fromStytchMember(createMemberResponse.member);
 
-    return response.code(200).send(apiUtils.respondWithData(results.rows[0]));
+      return response.code(200).send(apiUtils.respondWithData(user));
+    } catch (error: unknown) {
+      const finalError = error instanceof Error ? error : new Error(ErrorMessage.UNKNOWN);
+
+      api.log.error(finalError);
+
+      return response.code(500).send(apiUtils.respondWithError(finalError));
+    }
   });
 
   type PatchUser = {
@@ -68,28 +102,37 @@ export const registerUsersApi = (api: FastifyInstance) => {
     Reply: PatchUserResponse;
   };
 
-  const patchUpdatePropertyPostgresMap = {
-    firstName: 'first_name',
-    lastName: 'last_name',
-    email: 'email',
-    password: 'password',
-  };
+  const stripOutRoles = ['stytch_member'];
 
   api.patch<PatchUser>(`${ApiRoute.USERS}/:id`, async (request, response) => {
-    const { query, queryValues } = await postgresUtils.buildSetQuery(
-      patchUpdatePropertyPostgresMap,
-      request.body,
-      'users',
-      request.params.id,
-    );
+    try {
+      let { roles, ...updateData } = request.body;
 
-    const results = await postgresUtils.executeQuery<User>(query, queryValues);
+      // including this role causes stytch to error out as it can't be removed so just making sure it is not there
+      roles = (roles || []).filter((role) => !stripOutRoles.includes(role));
 
-    if (results.rowCount === 0) {
-      return response.code(404).send(apiUtils.respondWithError(new Error('user not found to update')));
+      const updateMemberResponse = await stytchClient.organizations.members.update(
+        {
+          organization_id: request.session.organizationId,
+          member_id: request.params.id,
+          roles,
+          ...updateData,
+        },
+        {
+          authorization: {
+            session_token: request.session.authenticationToken,
+          },
+        },
+      );
+
+      return response.code(200).send(apiUtils.respondWithData(userUtils.fromStytchMember(updateMemberResponse.member)));
+    } catch (error: unknown) {
+      const finalError = error instanceof Error ? error : new Error(ErrorMessage.UNKNOWN);
+
+      api.log.error(finalError);
+
+      return response.code(500).send(apiUtils.respondWithError(finalError));
     }
-
-    return response.code(200).send(apiUtils.respondWithData(results.rows[0]));
   });
 
   type DeleteUser = {
@@ -98,14 +141,32 @@ export const registerUsersApi = (api: FastifyInstance) => {
   };
 
   api.delete<DeleteUser>(`${ApiRoute.USERS}/:id`, async (request, response) => {
-    const results = await postgresUtils.executeQuery<User>('DELETE FROM users WHERE id = $1 RETURNING *', [
-      request.params.id,
-    ]);
+    try {
+      const getMemberResponse = await stytchClient.organizations.members.get({
+        organization_id: request.session.organizationId,
+        member_id: request.params.id,
+      });
+      const user = userUtils.fromStytchMember(getMemberResponse.member);
 
-    if (results.rowCount === 0) {
-      return response.code(404).send(apiUtils.respondWithError(new Error('user not found to delete')));
+      await stytchClient.organizations.members.delete(
+        {
+          organization_id: request.session.organizationId,
+          member_id: request.params.id,
+        },
+        {
+          authorization: {
+            session_token: request.session.authenticationToken,
+          },
+        },
+      );
+
+      return response.code(200).send(apiUtils.respondWithData(user));
+    } catch (error: unknown) {
+      const finalError = error instanceof Error ? error : new Error(ErrorMessage.UNKNOWN);
+
+      api.log.error(finalError);
+
+      return response.code(500).send(apiUtils.respondWithError(finalError));
     }
-
-    return response.code(200).send(apiUtils.respondWithData(results.rows[0]));
   });
 };

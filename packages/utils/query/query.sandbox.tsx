@@ -33,7 +33,7 @@ type GetListParams = {
 };
 
 export const getList = (getParams?: () => GetListParams, queryOptions?: Partial<CreateTrackedQueryOptions>) => {
-  const [resource, refetch, mutate, dataInitiallyFetched] = queryUtils.createTrackedQuery(
+  const [resource, refetch, mutate, dataInitiallyFetched, resourceFailedLastFetch] = queryUtils.createTrackedQuery(
     () => [
       SANDBOX_QUERY_GET_LIST,
       () => {

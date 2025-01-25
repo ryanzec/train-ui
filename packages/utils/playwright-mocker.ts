@@ -1,6 +1,6 @@
 import type { ResponseStructure } from '$/apis/utils';
-import type { User } from '$/data-models/user';
 import { asyncUtils } from '$/utils/async';
+import { type User, UserRoleName, UserRoleSource } from '$api/types/user';
 import type { Page } from '@playwright/test';
 
 export type PlaywrightMockEndpointOptions = {
@@ -21,10 +21,14 @@ const mockGetUsersEndpoint = async (page: Page, options: PlaywrightMockEndpointO
       for (let i = 1; i <= (options.objectCount || 3); i++) {
         json.data.push({
           id: `${i}`,
-          firstName: 'Test',
-          lastName: i === 1 ? 'Admin1' : `User${i}`,
+          name: `Test ${i === 1 ? 'Admin1' : `User${i}`}`,
           email: `user${i}@example.com`,
-          password: 'password',
+          roles: [
+            {
+              id: UserRoleName.STYTCH_MEMBER,
+              sources: [UserRoleSource.DIRECT_ASSIGNMENT],
+            },
+          ],
           createdAt: '2021-01-01T00:00:00.000Z',
           updatedAt: '2021-01-01T00:00:00.000Z',
         });

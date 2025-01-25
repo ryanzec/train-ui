@@ -2,17 +2,16 @@ import { produce } from 'immer';
 
 import { HttpMethod, httpUtils } from '$/utils/http';
 import { type CreateMutationOptions, queryUtils } from '$/utils/query';
-import type { GetUsersResponse, PostUserRequest, PostUserResponse } from '$api/types/users';
+import type { GetUsersResponse, PostUserRequest, PostUserResponse } from '$api/types/user';
 import { QueryKey, applicationConfiguration } from '$web/utils/application';
 
 const mutate = async (request: PostUserRequest): Promise<PostUserResponse> => {
   return await httpUtils.http(`${applicationConfiguration.baseApiUrl}/users`, {
     method: HttpMethod.POST,
     payload: {
-      firstName: request.firstName,
-      lastName: request.lastName,
+      name: request.name,
       email: request.email,
-      password: request.password,
+      roles: request.roles,
     },
   });
 };
@@ -26,13 +25,13 @@ const onSuccess = (mutationResponse: PostUserResponse) => {
           return draft;
         }
 
-        draft.data?.push(mutationResponse.data);
+        draft.data?.unshift(mutationResponse.data);
       });
     },
   );
 };
 
-export const create = (mutationOptions: CreateMutationOptions<PostUserRequest, PostUserResponse>) =>
+export const create = (mutationOptions: CreateMutationOptions<PostUserRequest, PostUserResponse> = {}) =>
   queryUtils.createMutation(mutate, {
     ...mutationOptions,
     onSuccess: (mutationResponse) => {

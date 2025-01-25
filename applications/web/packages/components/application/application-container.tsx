@@ -7,6 +7,7 @@ import styles from '$web/components/application/application.module.css';
 import { authenticationStore } from '$web/stores/authentication.store';
 import { globalsStore } from '$web/stores/globals.store';
 import { themeManagerStore } from '$web/stores/theme-manager.store';
+import { RoutePath } from '$web/utils/application';
 
 const ApplicationContainer = (props: JSX.HTMLAttributes<HTMLDivElement>) => {
   const navigate = useNavigate();
@@ -42,8 +43,8 @@ const ApplicationContainer = (props: JSX.HTMLAttributes<HTMLDivElement>) => {
     <div data-theme={themeManagerStore.theme()} class={styles.applicationContainer}>
       <Show when={authenticationStore.isInitializing() === false} fallback={<Loading />}>
         <Show when={authenticationStore.isAuthenticated()}>
-          <A href="/home">Home</A>
-          <A href="/authentication-data">Authentication Data</A>
+          <A href={RoutePath.HOME}>Home</A>
+          <A href={RoutePath.USERS}>Users</A>
         </Show>
         <Suspense fallback={<Loading />}>{props.children}</Suspense>
       </Show>
