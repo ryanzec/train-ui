@@ -1,6 +1,6 @@
 import { stringUtils } from '$/utils/string';
-import { applicationConfiguration } from '$api/load-configuration';
 import type { PostgresColumnValue } from '$api/types/postgres';
+import { applicationConfiguration } from '$api/utils/application-configuration';
 import { loggerUtils } from '$api/utils/logger';
 import type { PoolConfig, QueryResult, QueryResultRow } from 'pg';
 import pg from 'pg';

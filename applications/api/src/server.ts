@@ -17,9 +17,9 @@ import { registerHealthApi } from '$api/apis/health';
 import { registerQueryApi } from '$api/apis/query';
 import { registerRedisApi } from '$api/apis/redis';
 import { registerUsersApi } from '$api/apis/users';
-import { applicationConfiguration } from '$api/load-configuration';
 import { delayerHook } from '$api/middleware/delayer';
 import { mockerrorHook } from '$api/middleware/mockerror';
+import { applicationConfiguration } from '$api/utils/application-configuration';
 import { type EncryptionOptions, encryptionUtils } from '$api/utils/encryption';
 import { registerWsWebsocket } from '$api/websockets/ws';
 

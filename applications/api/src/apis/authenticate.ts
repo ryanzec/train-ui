@@ -1,4 +1,3 @@
-import { applicationConfiguration } from '$api/load-configuration';
 import { ApiRoute } from '$api/types/api';
 import type {
   AuthenticationAuthenticateRequest,
@@ -13,6 +12,7 @@ import type {
   AuthenticationSendResetPasswordResponse,
 } from '$api/types/authentication';
 import { apiUtils } from '$api/utils/api';
+import { applicationConfiguration } from '$api/utils/application-configuration';
 import type { FastifyInstance } from 'fastify';
 import * as stytch from 'stytch';
 
