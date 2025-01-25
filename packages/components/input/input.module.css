@@ -1,5 +1,7 @@
-/* biome-ignore lint/suspicious/noEmptyBlock: just a placeholder */
 .container {
+  display: block;
+  width: 100%;
+  cursor: text;
 }
 
 .input-container {
@@ -32,7 +34,7 @@
   font-size: var(--font-size-base);
   line-height: var(--line-height-base);
   letter-spacing: var(--letter-spacing-base);
-  outline-color: transparent;
+  outline: 0;
   background: 0;
   border: 0;
   flex: 1;

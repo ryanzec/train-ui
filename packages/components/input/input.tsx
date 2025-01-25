@@ -98,6 +98,10 @@ const Input = <TFormData = DefaultFormData>(passedProps: InputProps<TFormData>) 
     }
   };
 
+  const handleClickContainer = () => {
+    inputElement()?.focus();
+  };
+
   const isFocused = () => isInputFocused() && !props.disabled;
 
   onMount(() => {
@@ -109,7 +113,8 @@ const Input = <TFormData = DefaultFormData>(passedProps: InputProps<TFormData>) 
   });
 
   return (
-    <div
+    <button
+      type="button"
       class={classnames(styles.container, {
         [styles.containerDisabled]: props.disabled,
         [styles.containerReadonly]: props.readonly && props.includeReadonlyStyles,
@@ -119,6 +124,8 @@ const Input = <TFormData = DefaultFormData>(passedProps: InputProps<TFormData>) 
         [styles.containerWithInlinePreItem]: props.preItemIsInline,
         [styles.containerWithPostItem]: !!props.postItem,
       })}
+      onClick={handleClickContainer}
+      tabindex="-1"
     >
       <div class={classnames(styles.inputContainer, props.inputContainerClass)}>
         <Show when={props.preItem}>
@@ -157,7 +164,7 @@ const Input = <TFormData = DefaultFormData>(passedProps: InputProps<TFormData>) 
           </div>
         </Show>
       </div>
-    </div>
+    </button>
   );
 };
 

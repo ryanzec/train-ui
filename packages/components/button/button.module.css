@@ -3,7 +3,7 @@
   justify-content: center;
   align-items: center;
   border: 0;
-  outline-color: transparent;
+  outline: 0;
   padding: var(--space-2xs) var(--space-sm);
   border-radius: var(--border-radius-lg);
   cursor: pointer;
