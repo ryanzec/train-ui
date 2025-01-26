@@ -111,7 +111,7 @@ export const AllIcons = () => {
   const [filter, setFilter] = createSignal<string>('');
   const [shownIconNames, setShownIconNames] = createSignal<IconName[]>(allIconNames);
 
-  createEffect(() => {
+  createEffect(function updateShownIconNames() {
     setShownIconNames(allIconNames.filter((iconName) => iconName.toLowerCase().includes(filter().toLowerCase())));
   });
 

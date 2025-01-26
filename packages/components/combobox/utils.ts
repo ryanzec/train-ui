@@ -713,8 +713,7 @@ const createCombobox = <TData extends ComboboxExtraData, TFormData = DefaultForm
     };
   };
 
-  // handle making sure if the selected value is in the options list when opening, we scroll to it
-  createEffect(() => {
+  createEffect(function scrollToSelectedValue() {
     if (!comboboxStore.isOpen || !comboboxStore.optionsContainerRef || props.isMulti) {
       return;
     }
@@ -732,8 +731,7 @@ const createCombobox = <TData extends ComboboxExtraData, TFormData = DefaultForm
     domUtils.scrollToElement(elementToScrollTo);
   });
 
-  // handle the request of async options
-  createEffect(() => {
+  createEffect(function requestAsyncOptions() {
     if (!props.getOptionsAsync) {
       return;
     }
@@ -760,10 +758,8 @@ const createCombobox = <TData extends ComboboxExtraData, TFormData = DefaultForm
     });
   });
 
-  // this makes sure that if the selected value is updated from outside this component, the input value reflects
-  // those changes
   // @todo(refactor) is it possible to refactor so all management of the input value is just handled here?
-  createEffect(() => {
+  createEffect(function updateInputValueWithSelectedValue() {
     setComboboxStore(
       produce((store) => {
         store.inputValue = !props.isMulti && props.selected.length > 0 ? props.selected[0].label : '';
@@ -771,8 +767,7 @@ const createCombobox = <TData extends ComboboxExtraData, TFormData = DefaultForm
     );
   });
 
-  // manage the highlighted options dom state
-  createEffect(() => {
+  createEffect(function updateHighlightedDataAttributes() {
     const elements = comboboxStore.optionsContainerRef?.querySelectorAll(
       `[${COMBOBOX_HIGHLIGHTED_OPTION_DATA_ATTRIBUTE}="true"]`,
     ) as NodeListOf<HTMLElement>;

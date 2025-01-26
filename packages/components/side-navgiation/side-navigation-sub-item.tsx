@@ -19,7 +19,7 @@ const SideNavigationSubItem = (props: SideNavigationSubItemProps) => {
     JSX.HTMLAttributes<HTMLAnchorElement> | JSX.HTMLAttributes<HTMLButtonElement>
   >({});
 
-  createEffect(() => {
+  createEffect(function setComponentData() {
     const cssClasses = classnames(styles.subItem, props.class, {
       [styles.subItemActive]: props.isActive,
     });

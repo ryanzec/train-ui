@@ -49,8 +49,7 @@ const LoginView = () => {
     navigate(RoutePath.FORGOT_PASSWORD);
   };
 
-  // reset the form on an error
-  createEffect(() => {
+  createEffect(function resetFormOnError() {
     if (authenticationStore.loginError().length === 0) {
       return;
     }

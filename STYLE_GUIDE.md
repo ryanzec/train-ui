@@ -647,7 +647,7 @@ When updating large data sets, update say a large array of data that is used to 
 
 ## createEffect() pattern
 
-When creating an effect we should follow this pattern:
+When creating an effect or something similar that takes a function but does not return anything, we should follow this pattern:
 ```tsx
 createEffect(function syncWithEditingUser() {
     if (!props.editingUser) {
@@ -666,7 +666,7 @@ createEffect(function syncWithEditingUser() {
 });
 ```
 
-While generally fat arrow functions are used, this pattern allows for the code to be self documenting
+While generally fat arrow functions are used, this pattern allows for the code to be self documenting.
 
 # Styling / CSS coding guide
 

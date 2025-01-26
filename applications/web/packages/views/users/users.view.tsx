@@ -2,7 +2,7 @@ import Button from '$/components/button';
 import { usersApi } from '$web/apis/users';
 import UserForm from '$web/components/user-form';
 import UsersList, { type UsersListProps } from '$web/components/users-list';
-import { createEffect, createSignal } from 'solid-js';
+import { createSignal } from 'solid-js';
 
 type UsersListUser = UsersListProps['users'][0];
 
@@ -17,10 +17,6 @@ const UsersView = () => {
   const handleSelectUser = (user: UsersListUser) => {
     setActiveUser(user);
   };
-
-  createEffect(() => {
-    console.log(userQuery.users());
-  });
 
   return (
     <div>

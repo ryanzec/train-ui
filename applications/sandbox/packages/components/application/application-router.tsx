@@ -9,7 +9,7 @@ import HomeView from '$sandbox/views/home-view';
 const ApplicationRouter = () => {
   dynamicRoutesStore.load();
 
-  createEffect(() => {
+  createEffect(function updateDataThemeAttribute() {
     // we want to attach the theme data attribute to the body element because certain components use the Portal
     // functionality (global notifications, dialogs, etc.) to attach itself to the DOM and since theme css
     // variable are created based on this data attribute, we want to make sure those components have access to

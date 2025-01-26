@@ -48,8 +48,7 @@ const Tooltip = (passedProps: TooltipProps) => {
     props.store.toggle();
   };
 
-  // make sure that event handler are properly attached based of the trigger event
-  createEffect(() => {
+  createEffect(function hookupTooltipEvents() {
     const currentContainerElement = containerElement();
 
     if (!currentContainerElement) {

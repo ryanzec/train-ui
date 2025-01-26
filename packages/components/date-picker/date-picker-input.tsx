@@ -137,8 +137,7 @@ const DatePickerInput = <TFormData = DefaultFormData>(passedProps: DatePickerInp
     handleSelectDate(date, WhichDate.SECOND);
   };
 
-  // handle updating the input
-  createEffect(() => {
+  createEffect(function updateInputValue() {
     const currentInputElement = inputElement();
 
     if (!currentInputElement) {
@@ -168,8 +167,7 @@ const DatePickerInput = <TFormData = DefaultFormData>(passedProps: DatePickerInp
     currentInputElement.dispatchEvent(new Event('input', { bubbles: true, cancelable: true }));
   });
 
-  // handle the positioning of the date pickers
-  createEffect(() => {
+  createEffect(function updateDatePickerPosition() {
     const currentContainerElement = containerElement();
 
     if (!currentContainerElement) {

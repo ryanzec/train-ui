@@ -26,8 +26,7 @@ const FormError = (passedProps: FormErrorProps) => {
     return Array.isArray(props.errorMessage) ? props.errorMessage : [props.errorMessage];
   };
 
-  // handles scrolling to the form error component when it is first displayed
-  createEffect(() => {
+  createEffect(function autoScrollToErrorElement() {
     if (hasShownFormError() || !props.errorMessage || !formErrorRef) {
       // this will reset if we have shown the error once it is remove making sure if it is displayed again, we will
       // scroll to it again

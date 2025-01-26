@@ -67,7 +67,7 @@ const UserForm = (props: UserFormProps) => {
     },
   });
 
-  createEffect(function syncWithEditingUser() {
+  createEffect(function updateWithEditingUser() {
     if (!props.editingUser) {
       untrack(() => {
         formStore.setValues(

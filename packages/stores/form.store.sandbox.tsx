@@ -129,7 +129,7 @@ export const UsingEffects = () => {
   });
   const [randomValue, setRandomValue] = createSignal('starting random value');
 
-  createEffect(() => {
+  createEffect(function updateFormOnRandomValueChange() {
     const newValue = randomValue();
     // if you want to use form functionality that modifies internal form data, you probably want to wrap that in
     // untrack() as internal form data changes can cause the effect to go into an infinite loop
@@ -380,7 +380,7 @@ export const Events = () => {
     },
   });
 
-  createEffect(() => {
+  createEffect(function setupFormWatcher() {
     const watcher = formStore.watch((name, data) => {
       if (name !== 'title') {
         return;
@@ -435,10 +435,6 @@ export const ValidateOnChange = () => {
   const formStore = formStoreUtils.createStore<SimpleFormData>({
     schema: simpleFormDataSchema,
     onSubmit: () => {},
-  });
-
-  createEffect(() => {
-    console.log(formStore.errors());
   });
 
   const formDirective = formStore.formDirective;
@@ -550,10 +546,6 @@ export const ArrayFields = () => {
   const formStore = formStoreUtils.createStore<SimpleArrayFormData>({
     onSubmit: () => {},
     schema: simpleArrayFormDataSchema,
-  });
-
-  createEffect(() => {
-    console.log(formStore.errors());
   });
 
   const formDirective = formStore.formDirective;
@@ -949,7 +941,7 @@ export const DynamicFormElements = () => {
     }
   };
 
-  createEffect(() => {
+  createEffect(function updateFormSchema() {
     const customZodElements: Record<string, ZodType> = {};
 
     for (const input of randomInputs()) {

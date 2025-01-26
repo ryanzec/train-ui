@@ -58,7 +58,7 @@ const SideNavigationItem = (passedProps: SideNavigationItemProps) => {
     props.toggleStore?.toggle();
   };
 
-  createEffect(() => {
+  createEffect(function updateComponentData() {
     if (props.href) {
       setComponent('a');
       setComponentProps({

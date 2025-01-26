@@ -39,7 +39,7 @@ const ApplicationFrameExpandableItem = (passedProps: ApplicationFrameExpandableI
 
   const toggleStore = toggleStoreUtils.createStore();
 
-  createEffect(() => {
+  createEffect(function toggleItemBasedOnCurrentPath() {
     if (isCurrentSideNavigation(location.pathname) === false) {
       return;
     }

@@ -41,8 +41,7 @@ const FormField = (passedProps: FormFieldProps) => {
     FormInputValidationState.NEUTRAL,
   );
 
-  // keep context in sync
-  createEffect(() => {
+  createEffect(function updateContext() {
     setContextErrors(props.errors);
     setValidationState(
       props.errors && props.errors.length > 0 ? FormInputValidationState.INVALID : FormInputValidationState.VALID,

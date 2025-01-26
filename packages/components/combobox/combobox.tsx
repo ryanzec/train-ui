@@ -143,8 +143,7 @@ const Combobox = <TData extends ComboboxExtraData, TFormData = DefaultFormData>(
     [COMBOBOX_GROUPED_DATA_ATTRIBUTE]: comboboxStore.isGrouped() ? 'true' : 'false',
   };
 
-  // maintained the list of displayed options in the grouped format
-  createEffect(() => {
+  createEffect(function updateDisplayOptionsInGroupFormat() {
     if (comboboxStore.store.isOpen === false) {
       batch(() => {
         clearFinalGroupedOptionsStore();
