@@ -4,16 +4,18 @@
 
 .centered {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   height: 100%;
 }
 
-.page-header {
+.header {
   display: flex;
   align-items: center;
   gap: var(--space-sm);
   font-size: var(--font-size-2xl);
   line-height: var(--line-height-2xl);
   letter-spacing: var(--letter-spacing-2xl);
+  margin-bottom: var(--space-base);
 }

@@ -7,6 +7,8 @@ import Label from '$/components/label';
 import { formStoreUtils } from '$/stores/form.store';
 import { ValidationMessageType, validationUtils } from '$/utils/validation';
 import { zodUtils } from '$/utils/zod';
+import Page from '$web/components/page';
+import { PageLayout } from '$web/components/page/page';
 import { authenticationStore } from '$web/stores/authentication.store';
 import { RoutePath } from '$web/utils/application';
 import { useNavigate } from '@solidjs/router';
@@ -65,7 +67,7 @@ const LoginView = () => {
   const formDirective = formStore.formDirective;
 
   return (
-    <div>
+    <Page layout={PageLayout.CENTERED}>
       <FormError errorMessage={authenticationStore.loginError()} />
       <form use:formDirective>
         <FormFields>
@@ -85,7 +87,7 @@ const LoginView = () => {
           </Button.Group>
         </FormFields>
       </form>
-    </div>
+    </Page>
   );
 };
 

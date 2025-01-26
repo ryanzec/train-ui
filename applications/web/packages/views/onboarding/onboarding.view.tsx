@@ -1,3 +1,4 @@
+import Page from '$web/components/page';
 import SetPasswordForm from '$web/components/set-password-form/set-password-form';
 import { authenticationStore } from '$web/stores/authentication.store';
 import { RoutePath } from '$web/utils/application';
@@ -15,7 +16,12 @@ const OnboardingView = () => {
     navigate(RoutePath.HOME);
   });
 
-  return <SetPasswordForm />;
+  return (
+    <Page>
+      <Page.Header>Onboarding</Page.Header>
+      <SetPasswordForm />
+    </Page>
+  );
 };
 
 export default OnboardingView;

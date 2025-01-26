@@ -1,4 +1,6 @@
 import type { CommonDataAttributes } from '$/types/generic';
+import styles from '$web/components/page/page.module.css';
+import classnames from 'classnames';
 import { type JSX, mergeProps, splitProps } from 'solid-js';
 
 export const PageLayout = {
@@ -19,7 +21,15 @@ const Page = (passedProps: PageProps) => {
     'layout',
   ]);
 
-  return <div data-id="page" {...resetOfProps} />;
+  return (
+    <div
+      data-id="page"
+      class={classnames(styles.page, props.class, {
+        [styles.centered]: props.layout === PageLayout.CENTERED,
+      })}
+      {...resetOfProps}
+    />
+  );
 };
 
 export default Page;

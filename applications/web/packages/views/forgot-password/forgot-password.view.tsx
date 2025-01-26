@@ -6,6 +6,7 @@ import Label from '$/components/label';
 import { formStoreUtils } from '$/stores/form.store';
 import { ValidationMessageType, validationUtils } from '$/utils/validation';
 import { zodUtils } from '$/utils/zod';
+import Page from '$web/components/page';
 import { authenticationStore } from '$web/stores/authentication.store';
 import * as zod from 'zod';
 
@@ -37,7 +38,7 @@ const ForgotPasswordView = () => {
   const formDirective = formStore.formDirective;
 
   return (
-    <div>
+    <Page>
       <form use:formDirective>
         <FormFields>
           <FormField errors={formStore.errors().email?.errors}>
@@ -47,7 +48,7 @@ const ForgotPasswordView = () => {
           <Button type="submit">Send Reset Password Email</Button>
         </FormFields>
       </form>
-    </div>
+    </Page>
   );
 };
 

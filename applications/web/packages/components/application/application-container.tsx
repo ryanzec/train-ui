@@ -1,5 +1,5 @@
 import { A, type BeforeLeaveEventArgs, useBeforeLeave, useNavigate } from '@solidjs/router';
-import { type JSX, Show, Suspense, onCleanup, onMount } from 'solid-js';
+import { type JSX, Show, onCleanup, onMount } from 'solid-js';
 
 import Loading from '$/components/loading';
 import { type HttpRequest, httpUtils } from '$/utils/http';
@@ -56,15 +56,17 @@ const ApplicationContainer = (props: JSX.HTMLAttributes<HTMLDivElement>) => {
   });
 
   return (
-    <div data-theme={themeManagerStore.theme()} class={styles.applicationContainer}>
+    <div data-theme={themeManagerStore.theme()} class={styles.container}>
       <Show when={authenticationStore.isInitializing() === false} fallback={<Loading />}>
         <Show when={authenticationStore.isAuthenticated()}>
-          <A href={RoutePath.HOME}>Home</A>
-          <Show when={hasRole(UserRoleName.STYTCH_ADMIN)}>
-            <A href={RoutePath.USERS}>Users</A>
-          </Show>
+          <nav class={styles.navigation}>
+            <A href={RoutePath.HOME}>Home</A>
+            <Show when={hasRole(UserRoleName.STYTCH_ADMIN)}>
+              <A href={RoutePath.USERS}>Users</A>
+            </Show>
+          </nav>
         </Show>
-        <Suspense fallback={<Loading />}>{props.children}</Suspense>
+        <div class={styles.mainContent}>{props.children}</div>
       </Show>
     </div>
   );

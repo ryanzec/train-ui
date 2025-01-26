@@ -43,12 +43,9 @@ const UserForm = (props: UserFormProps) => {
   const createUserMutation = usersApi.create();
   const updateUserMutation = usersApi.update();
 
-  console.log(userUtils.rolesToStringArray(props.editingUser?.roles || defaultRoles));
-
   const formStore = formStoreUtils.createStore<UsersFormData>({
     schema: userFormSchema,
     onSubmit: async (data: Partial<UsersFormData>) => {
-      console.log(data);
       if (!data.email || !data.name || !data.roles) {
         return;
       }

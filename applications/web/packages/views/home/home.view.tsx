@@ -1,5 +1,6 @@
 import Button from '$/components/button';
 import { websocketManagerStore } from '$/stores/websocket-manager.store';
+import Page from '$web/components/page';
 import { authenticationStore } from '$web/stores/authentication.store';
 
 const HomeView = () => {
@@ -12,11 +13,12 @@ const HomeView = () => {
   };
 
   return (
-    <div>
+    <Page>
+      <Page.Header>Home</Page.Header>
       <Button onClick={handleLogout}>Logout</Button>
       {/* @todo remove */}
       <Button onClick={handleWebsocket}>Send To Websocket</Button>
-    </div>
+    </Page>
   );
 };
 

@@ -6,6 +6,8 @@ import Label from '$/components/label';
 import { formStoreUtils } from '$/stores/form.store';
 import { ValidationMessageType, validationUtils } from '$/utils/validation';
 import { zodUtils } from '$/utils/zod';
+import Page from '$web/components/page';
+import { PageLayout } from '$web/components/page/page';
 import { authenticationStore } from '$web/stores/authentication.store';
 import { useLocation } from '@solidjs/router';
 import type { Accessor } from 'solid-js';
@@ -81,7 +83,7 @@ const ResetPasswordView = () => {
   const formDirective = formStore.formDirective;
 
   return (
-    <div>
+    <Page layout={PageLayout.CENTERED}>
       <form use:formDirective>
         <FormFields>
           <FormField>
@@ -101,7 +103,7 @@ const ResetPasswordView = () => {
           <Button type="submit">Reset Password</Button>
         </FormFields>
       </form>
-    </div>
+    </Page>
   );
 };
 
