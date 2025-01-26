@@ -15,7 +15,6 @@ import type {
 } from '$api/types/authentication';
 import { apiUtils } from '$api/utils/api';
 import { applicationConfiguration } from '$api/utils/application-configuration';
-import { ErrorMessage } from '$api/utils/error';
 import { stytchClient } from '$api/utils/stytch';
 import type { FastifyInstance, FastifyRequest } from 'fastify';
 import type * as stytch from 'stytch';
@@ -126,13 +125,9 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
       // @todo killing the session is fine for now but we should probably revoke the token in stytch too
       await request.session.destroy();
 
-      return response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
+      return response.status(200).send(apiUtils.buildDataResponse({ status: 'ok' }));
     } catch (error: unknown) {
-      const finalError = error instanceof Error ? error : new Error(ErrorMessage.UNKNOWN);
-
-      api.log.error(finalError);
-
-      return response.code(500).send(apiUtils.respondWithError(finalError));
+      return apiUtils.respondWithError(response, { error });
     }
   });
 
@@ -148,20 +143,12 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
       });
 
       if (sendEmailResponse.status_code !== 200) {
-        const errorMessage = 'error sending reset password email';
-
-        api.log.error(errorMessage);
-
-        return response.status(500).send(apiUtils.respondWithError(new Error(errorMessage)));
+        return apiUtils.respondWithError(response, { errorMessage: 'error sending reset password email' });
       }
 
-      return response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
+      return response.status(200).send(apiUtils.buildDataResponse({ status: 'ok' }));
     } catch (error: unknown) {
-      const finalError = error instanceof Error ? error : new Error(ErrorMessage.UNKNOWN);
-
-      api.log.error(finalError);
-
-      return response.code(500).send(apiUtils.respondWithError(finalError));
+      return apiUtils.respondWithError(response, { error });
     }
   });
 
@@ -185,15 +172,13 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
         const organization = resetPasswordResponse.organization;
         const member = resetPasswordResponse.member;
 
-        return response.status(200).send(apiUtils.respondWithData({ organization, member }));
+        return response.status(200).send(apiUtils.buildDataResponse({ organization, member }));
       }
 
       if (tokenType !== 'discovery') {
-        const errorMessage = `unrecognized token type of '${tokenType}' give, only 'discovery' token is supported`;
-
-        api.log.error(errorMessage);
-
-        return response.status(400).send(apiUtils.respondWithError(undefined, errorMessage));
+        return apiUtils.respondWithError(response, {
+          errorMessage: `unrecognized token type of '${tokenType}' give, only 'discovery' token is supported`,
+        });
       }
 
       const resetPasswordResponse = await stytchClient.passwords.discovery.email.reset({
@@ -204,22 +189,16 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
       const organization = resetPasswordResponse.discovered_organizations[0].organization;
 
       if (!organization) {
-        const errorMessage = 'unable to get organization to reset password for';
-
-        api.log.error(errorMessage);
-
-        return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
+        return apiUtils.respondWithError(response, {
+          errorMessage: 'unable to get organization to reset password for',
+        });
       }
 
       const responseData = await processAuthenticationResponse(request, resetPasswordResponse, organization);
 
-      return response.status(200).send(apiUtils.respondWithData(responseData));
+      return response.status(200).send(apiUtils.buildDataResponse(responseData));
     } catch (error: unknown) {
-      const finalError = error instanceof Error ? error : new Error(ErrorMessage.UNKNOWN);
-
-      api.log.error(finalError);
-
-      return response.code(500).send(apiUtils.respondWithError(finalError));
+      return apiUtils.respondWithError(response, { error });
     }
   });
 
@@ -254,11 +233,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
         organization = organizationsResponse.organizations[0];
 
         if (!organization) {
-          const errorMessage = 'unable to get organization to login to';
-
-          api.log.error(errorMessage);
-
-          return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
+          return apiUtils.respondWithError(response, { errorMessage: 'unable to get organization to login to' });
         }
 
         authenticationResponse = await stytchClient.otps.email.authenticate({
@@ -273,7 +248,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
 
         return response
           .status(200)
-          .send(apiUtils.respondWithData({ organization, member: authenticationResponse.member }));
+          .send(apiUtils.buildDataResponse({ organization, member: authenticationResponse.member }));
       }
 
       authenticationResponse = await stytchClient.passwords.discovery.authenticate({
@@ -283,22 +258,14 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
       organization = authenticationResponse.discovered_organizations[0].organization;
 
       if (!organization) {
-        const errorMessage = 'unable to get organization to login to';
-
-        api.log.error(errorMessage);
-
-        return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
+        return apiUtils.respondWithError(response, { errorMessage: 'unable to get organization to login to' });
       }
 
       const responseData = await processAuthenticationResponse(request, authenticationResponse, organization);
 
-      return response.status(200).send(apiUtils.respondWithData(responseData));
+      return response.status(200).send(apiUtils.buildDataResponse(responseData));
     } catch (error: unknown) {
-      const finalError = error instanceof Error ? error : new Error(ErrorMessage.UNKNOWN);
-
-      api.log.error(finalError);
-
-      return response.code(500).send(apiUtils.respondWithError(finalError));
+      return apiUtils.respondWithError(response, { error });
     }
   });
 
@@ -315,24 +282,18 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
       const { organization, member } = inviteAuthenticationResponse;
 
       if (!organization || !member) {
-        const errorMessage = 'unable to get organization or member after authenticating';
-
-        api.log.error(errorMessage);
-
-        return response.status(500).send(apiUtils.respondWithError(undefined, errorMessage));
+        return apiUtils.respondWithError(response, {
+          errorMessage: 'unable to get organization or member after authenticating',
+        });
       }
 
       request.session.authenticationToken = inviteAuthenticationResponse.session_token;
       request.session.organizationId = organization.organization_id;
       request.session.userId = member.member_id;
 
-      return response.status(200).send(apiUtils.respondWithData({ organization, member }));
+      return response.status(200).send(apiUtils.buildDataResponse({ organization, member }));
     } catch (error: unknown) {
-      const finalError = error instanceof Error ? error : new Error(ErrorMessage.UNKNOWN);
-
-      api.log.error(finalError);
-
-      return response.code(500).send(apiUtils.respondWithError(finalError));
+      return apiUtils.respondWithError(response, { error });
     }
   });
 
@@ -348,20 +309,12 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
       });
 
       if (authenticateResponse.status_code !== 200) {
-        const errorMessage = 'error validation current authentication token';
-
-        api.log.error(errorMessage);
-
-        return response.status(500).send(apiUtils.respondWithError(new Error('error sending login email')));
+        return apiUtils.respondWithError(response, { errorMessage: 'error validation current authentication token' });
       }
 
-      return response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
+      return response.status(200).send(apiUtils.buildDataResponse({ status: 'ok' }));
     } catch (error: unknown) {
-      const finalError = error instanceof Error ? error : new Error(ErrorMessage.UNKNOWN);
-
-      api.log.error(finalError);
-
-      return response.code(500).send(apiUtils.respondWithError(finalError));
+      return apiUtils.respondWithError(response, { error });
     }
   });
 };

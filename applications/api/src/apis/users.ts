@@ -12,7 +12,6 @@ import type {
   PostUserResponse,
 } from '$api/types/user';
 import { apiUtils } from '$api/utils/api';
-import { ErrorMessage } from '$api/utils/error';
 import { stytchClient } from '$api/utils/stytch';
 import type { FastifyInstance } from 'fastify';
 
@@ -38,13 +37,9 @@ export const registerUsersApi = (api: FastifyInstance) => {
       );
       const users = userUtils.fromStytchMembers(organizationUsersResponse.members);
 
-      return response.code(200).send(apiUtils.respondWithData(users));
+      return response.code(200).send(apiUtils.buildDataResponse(users));
     } catch (error: unknown) {
-      const finalError = error instanceof Error ? error : new Error(ErrorMessage.UNKNOWN);
-
-      api.log.error(finalError);
-
-      return response.code(500).send(apiUtils.respondWithError(finalError));
+      return apiUtils.respondWithError(response, { error });
     }
   });
 
@@ -54,13 +49,17 @@ export const registerUsersApi = (api: FastifyInstance) => {
   };
 
   api.get<GetUser>(`${ApiRoute.USERS}/:id`, async (request, response) => {
-    const getMemberResponse = await stytchClient.organizations.members.get({
-      organization_id: request.session.organizationId,
-      member_id: request.params.id,
-    });
-    const user = userUtils.fromStytchMember(getMemberResponse.member);
+    try {
+      const getMemberResponse = await stytchClient.organizations.members.get({
+        organization_id: request.session.organizationId,
+        member_id: request.params.id,
+      });
+      const user = userUtils.fromStytchMember(getMemberResponse.member);
 
-    return response.code(200).send(apiUtils.respondWithData(user));
+      return response.code(200).send(apiUtils.buildDataResponse(user));
+    } catch (error: unknown) {
+      return apiUtils.respondWithError(response, { error });
+    }
   });
 
   type PostUser = {
@@ -95,13 +94,9 @@ export const registerUsersApi = (api: FastifyInstance) => {
         email_address: request.body.email,
       });
 
-      return response.code(200).send(apiUtils.respondWithData(user));
+      return response.code(200).send(apiUtils.buildDataResponse(user));
     } catch (error: unknown) {
-      const finalError = error instanceof Error ? error : new Error(ErrorMessage.UNKNOWN);
-
-      api.log.error(finalError);
-
-      return response.code(500).send(apiUtils.respondWithError(finalError));
+      return apiUtils.respondWithError(response, { error });
     }
   });
 
@@ -131,13 +126,11 @@ export const registerUsersApi = (api: FastifyInstance) => {
         },
       );
 
-      return response.code(200).send(apiUtils.respondWithData(userUtils.fromStytchMember(updateMemberResponse.member)));
+      return response
+        .code(200)
+        .send(apiUtils.buildDataResponse(userUtils.fromStytchMember(updateMemberResponse.member)));
     } catch (error: unknown) {
-      const finalError = error instanceof Error ? error : new Error(ErrorMessage.UNKNOWN);
-
-      api.log.error(finalError);
-
-      return response.code(500).send(apiUtils.respondWithError(finalError));
+      return apiUtils.respondWithError(response, { error });
     }
   });
 
@@ -168,13 +161,9 @@ export const registerUsersApi = (api: FastifyInstance) => {
         options,
       );
 
-      return response.code(200).send(apiUtils.respondWithData(user));
+      return response.code(200).send(apiUtils.buildDataResponse(user));
     } catch (error: unknown) {
-      const finalError = error instanceof Error ? error : new Error(ErrorMessage.UNKNOWN);
-
-      api.log.error(finalError);
-
-      return response.code(500).send(apiUtils.respondWithError(finalError));
+      return apiUtils.respondWithError(response, { error });
     }
   });
 };

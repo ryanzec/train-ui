@@ -10,6 +10,10 @@ export const registerHealthApi = (api: FastifyInstance) => {
   };
 
   api.get<GetHealth>(ApiRoute.HEALTH, async (_request_, response) => {
-    return response.status(200).send(apiUtils.respondWithData({ status: 'ok' }));
+    try {
+      return response.status(200).send(apiUtils.buildDataResponse({ status: 'ok' }));
+    } catch (error: unknown) {
+      return apiUtils.respondWithError(response, { error });
+    }
   });
 };
