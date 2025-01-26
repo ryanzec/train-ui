@@ -1,4 +1,5 @@
 import { authenticateRaw } from '$web/apis/authentication/authenticate';
+import { authenticateInviteRaw } from '$web/apis/authentication/authenticate-invite';
 import { checkRaw } from '$web/apis/authentication/check';
 import { logout } from '$web/apis/authentication/logout';
 import { resetPassword } from '$web/apis/authentication/reset-password';
@@ -10,4 +11,5 @@ export const authenticationApi = {
   sendResetPassword,
   resetPassword,
   authenticateRaw,
+  authenticateInviteRaw,
 };

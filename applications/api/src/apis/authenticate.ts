@@ -1,5 +1,7 @@
 import { ApiRoute } from '$api/types/api';
 import type {
+  AuthenticationAuthenticateInviteRequest,
+  AuthenticationAuthenticateInviteResponse,
   AuthenticationAuthenticateRequest,
   AuthenticationAuthenticateResponse,
   AuthenticationCheckRequest,
@@ -19,9 +21,9 @@ import type * as stytch from 'stytch';
 
 type ProcessableAuthenticationResponse = {
   status_code: number;
-  email_address: string;
+  email_address?: string;
+  member_id?: string;
   intermediate_session_token: string;
-  discovered_organizations: stytch.DiscoveredOrganization[];
 };
 
 type ProcessAuthenticationResponseReturns = {
@@ -30,9 +32,10 @@ type ProcessAuthenticationResponseReturns = {
 };
 
 const processAuthenticationResponse = async (
+  api: FastifyInstance,
   originalRequest: FastifyRequest,
   authenticationResponse: ProcessableAuthenticationResponse,
-  api: FastifyInstance,
+  organization: stytch.Organization,
 ): Promise<ProcessAuthenticationResponseReturns> => {
   if (authenticationResponse.status_code !== 200) {
     const errorMessage = 'unknown authentication error';
@@ -42,11 +45,17 @@ const processAuthenticationResponse = async (
     throw new Error(errorMessage);
   }
 
-  const intermediateSessionToken = authenticationResponse.intermediate_session_token;
-  // @todo(multi-org) handle multiple organizations instead of logging into the first one
-  const organization = authenticationResponse.discovered_organizations[0].organization;
+  if (!authenticationResponse.email_address && !authenticationResponse.member_id) {
+    const errorMessage = 'the response for processing authentication must include either email address or member id';
 
-  if (!organization?.organization_id) {
+    api.log.error(errorMessage);
+
+    throw new Error(errorMessage);
+  }
+
+  const intermediateSessionToken = authenticationResponse.intermediate_session_token;
+
+  if (!organization.organization_id) {
     // @todo figure out organization creation
     // If not eligible to log into an existing org, create new one
     // const createResp = await stytchClient.discovery.organizations.create({
@@ -79,10 +88,19 @@ const processAuthenticationResponse = async (
     organization_id: organization.organization_id,
     session_duration_minutes: applicationConfiguration.sessionDuration,
   });
-  const memberResponse = await stytchClient.organizations.members.get({
+  const getMemberOption: Partial<stytch.B2BOrganizationsMembersGetRequest> = {
     organization_id: organization.organization_id,
-    email_address: authenticationResponse.email_address,
-  });
+  };
+
+  if (authenticationResponse.email_address) {
+    getMemberOption.email_address = authenticationResponse.email_address;
+  } else if (authenticationResponse.member_id) {
+    getMemberOption.member_id = authenticationResponse.member_id;
+  }
+
+  const memberResponse = await stytchClient.organizations.members.get(
+    getMemberOption as stytch.B2BOrganizationsMembersGetRequest,
+  );
 
   if (exchangeResponse.status_code !== 200 || memberResponse.status_code !== 200) {
     const errorMessage =
@@ -101,7 +119,7 @@ const processAuthenticationResponse = async (
 
   return {
     member: memberResponse.member,
-    organization: organization,
+    organization: exchangeResponse.organization,
   };
 };
 
@@ -171,7 +189,17 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
         password,
       });
 
-      const responseData = await processAuthenticationResponse(request, resetPasswordResponse, api);
+      const organization = resetPasswordResponse.discovered_organizations[0].organization;
+
+      if (!organization) {
+        const errorMessage = 'unable to get organization to login to';
+
+        api.log.error(errorMessage);
+
+        return response.status(400).send(apiUtils.respondWithError(undefined, errorMessage));
+      }
+
+      const responseData = await processAuthenticationResponse(api, request, resetPasswordResponse, organization);
 
       return response.status(200).send(apiUtils.respondWithData(responseData));
     } catch (error: unknown) {
@@ -194,7 +222,50 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
         password,
       });
 
-      const responseData = await processAuthenticationResponse(request, authenticationResponse, api);
+      const organization = authenticationResponse.discovered_organizations[0].organization;
+
+      if (!organization) {
+        const errorMessage = 'unable to get organization to login to';
+
+        api.log.error(errorMessage);
+
+        return response.status(400).send(apiUtils.respondWithError(undefined, errorMessage));
+      }
+
+      const responseData = await processAuthenticationResponse(api, request, authenticationResponse, organization);
+
+      return response.status(200).send(apiUtils.respondWithData(responseData));
+    } catch (error: unknown) {
+      return response.status(500).send(apiUtils.respondWithError(error));
+    }
+  });
+
+  type PostAuthenticateInvite = {
+    Body: AuthenticationAuthenticateInviteRequest;
+    Reply: AuthenticationAuthenticateInviteResponse;
+  };
+
+  api.post<PostAuthenticateInvite>(ApiRoute.AUTHENTICATION_AUTHENTICATE_INVITE, async (request, response) => {
+    try {
+      const inviteAuthenticationResponse = await stytchClient.magicLinks.authenticate({
+        magic_links_token: request.body.token,
+      });
+      const organization = inviteAuthenticationResponse.organization;
+
+      if (!organization) {
+        const errorMessage = 'unable to get organization to login to';
+
+        api.log.error(errorMessage);
+
+        return response.status(400).send(apiUtils.respondWithError(undefined, errorMessage));
+      }
+
+      const responseData = await processAuthenticationResponse(
+        api,
+        request,
+        inviteAuthenticationResponse,
+        organization,
+      );
 
       return response.status(200).send(apiUtils.respondWithData(responseData));
     } catch (error: unknown) {

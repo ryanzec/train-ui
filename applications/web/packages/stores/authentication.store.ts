@@ -34,7 +34,21 @@ export const LoginAction = {
 
 export type LoginAction = (typeof LoginAction)[keyof typeof LoginAction];
 
-const createApplicationStore = () => {
+export type ApplicationStore = {
+  isInitializing: () => boolean;
+  isAuthenticated: () => boolean;
+  currentLoginAction: () => LoginAction;
+  loginError: () => string[];
+  login: (request: AuthenticationAuthenticateRequest) => Promise<void>;
+  logout: () => Promise<void>;
+  resetPassword: (request: AuthenticationResetPasswordRequest) => Promise<void>;
+  isProcessingLoginAction: () => boolean;
+  sendResetPassword: (request: AuthenticationSendResetPasswordRequest) => Promise<void>;
+  initialize: () => Promise<void>;
+  authenticateInvite: (token: string) => Promise<void>;
+};
+
+const createApplicationStore = (): ApplicationStore => {
   const [isInitializing, setIsInitializing] = createSignal<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = createSignal<boolean>(false);
   const [currentLoginAction, setCurrentLoginAction] = createSignal<LoginAction>(LoginAction.NONE);
@@ -188,6 +202,32 @@ const createApplicationStore = () => {
     }
   };
 
+  const authenticateInvite = async (token: string) => {
+    try {
+      setCurrentLoginAction(LoginAction.AUTHENTICATE);
+
+      const authenticateResponse = await authenticationApi.authenticateInviteRaw({
+        token,
+      });
+
+      if (!authenticateResponse.data) {
+        handleNotAuthenticated();
+
+        globalsStore.getNavigate()(RoutePath.LOGIN);
+
+        return;
+      }
+
+      const { member, organization } = authenticateResponse.data;
+
+      handleAuthenticated(member, organization);
+
+      globalsStore.getNavigate()(RoutePath.HOME);
+    } finally {
+      setCurrentLoginAction(LoginAction.NONE);
+    }
+  };
+
   const isProcessingLoginAction = () => {
     return currentLoginAction() !== LoginAction.NONE;
   };
@@ -203,6 +243,7 @@ const createApplicationStore = () => {
     resetPassword,
     sendResetPassword,
     loginError,
+    authenticateInvite,
   };
 };
 

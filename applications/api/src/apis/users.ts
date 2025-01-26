@@ -16,6 +16,9 @@ import { ErrorMessage } from '$api/utils/error';
 import { stytchClient } from '$api/utils/stytch';
 import type { FastifyInstance } from 'fastify';
 
+// including these roles causes stytch to error out as it can't be removed so just making sure it is not there
+const stripOutRoles = ['stytch_member'];
+
 export const registerUsersApi = (api: FastifyInstance) => {
   type GetUsers = { Reply: GetUsersResponse };
 
@@ -71,12 +74,12 @@ export const registerUsersApi = (api: FastifyInstance) => {
         return response.code(400).send();
       }
 
-      const createMemberResponse = await stytchClient.organizations.members.create(
+      const createMemberResponse = await stytchClient.magicLinks.email.invite(
         {
           organization_id: request.session.organizationId,
           email_address: request.body.email,
           name: request.body.name,
-          roles: request.body.roles,
+          roles: request.body.roles.filter((role) => !stripOutRoles.includes(role)),
         },
         {
           authorization: {
@@ -85,6 +88,12 @@ export const registerUsersApi = (api: FastifyInstance) => {
         },
       );
       const user = userUtils.fromStytchMember(createMemberResponse.member);
+
+      // email the user
+      await stytchClient.otps.email.loginOrSignup({
+        organization_id: request.session.organizationId,
+        email_address: request.body.email,
+      });
 
       return response.code(200).send(apiUtils.respondWithData(user));
     } catch (error: unknown) {
@@ -102,20 +111,17 @@ export const registerUsersApi = (api: FastifyInstance) => {
     Reply: PatchUserResponse;
   };
 
-  const stripOutRoles = ['stytch_member'];
-
   api.patch<PatchUser>(`${ApiRoute.USERS}/:id`, async (request, response) => {
     try {
       let { roles, ...updateData } = request.body;
 
-      // including this role causes stytch to error out as it can't be removed so just making sure it is not there
       roles = (roles || []).filter((role) => !stripOutRoles.includes(role));
 
       const updateMemberResponse = await stytchClient.organizations.members.update(
         {
           organization_id: request.session.organizationId,
           member_id: request.params.id,
-          roles,
+          roles: roles.filter((role) => !stripOutRoles.includes(role)),
           ...updateData,
         },
         {

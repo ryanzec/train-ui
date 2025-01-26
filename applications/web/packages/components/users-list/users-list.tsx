@@ -22,7 +22,7 @@ const UsersList = (props: UsersListProps) => {
         <Table.Row>
           <Table.Header class={styles.nameCell}>Name</Table.Header>
           <Table.Header class={styles.emailCell}>Email</Table.Header>
-          <Table.Header>Role</Table.Header>
+          <Table.Header>Roles</Table.Header>
           <Table.Header />
         </Table.Row>
       }

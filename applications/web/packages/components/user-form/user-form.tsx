@@ -8,7 +8,7 @@ import { formStoreUtils } from '$/stores/form.store';
 import { ValidationMessageType, validationUtils } from '$/utils/validation';
 import { zodUtils } from '$/utils/zod';
 import { userUtils } from '$api/data-models/user';
-import type { User } from '$api/types/user';
+import { type User, UserRoleName, UserRoleSource } from '$api/types/user';
 import { usersApi } from '$web/apis/users';
 import { authenticationStore } from '$web/stores/authentication.store';
 import { createEffect, untrack } from 'solid-js';
@@ -24,7 +24,7 @@ export const userFormSchema = zodUtils.schemaForType<UsersFormData>()(
   zod.object({
     name: zod.string().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
     email: zod.string().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
-    roles: zod.string().array().min(0, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
+    roles: zod.string().array().min(1, validationUtils.getMessage(ValidationMessageType.REQUIRED)),
   }),
 );
 
@@ -32,18 +32,23 @@ export type UserFormProps = {
   editingUser?: Pick<User, 'id' | 'name' | 'email' | 'roles'>;
 };
 
+const defaultRoles = [
+  {
+    id: UserRoleName.STYTCH_MEMBER,
+    sources: [UserRoleSource.DIRECT_ASSIGNMENT],
+  },
+];
+
 const UserForm = (props: UserFormProps) => {
   const createUserMutation = usersApi.create();
   const updateUserMutation = usersApi.update();
 
+  console.log(userUtils.rolesToStringArray(props.editingUser?.roles || defaultRoles));
+
   const formStore = formStoreUtils.createStore<UsersFormData>({
     schema: userFormSchema,
-    initialValues: {
-      name: props.editingUser?.name || '',
-      email: props.editingUser?.email || '',
-      roles: userUtils.rolesToStringArray(props.editingUser?.roles || []),
-    },
     onSubmit: async (data: Partial<UsersFormData>) => {
+      console.log(data);
       if (!data.email || !data.name || !data.roles) {
         return;
       }
@@ -65,7 +70,16 @@ const UserForm = (props: UserFormProps) => {
   createEffect(function syncWithEditingUser() {
     if (!props.editingUser) {
       untrack(() => {
-        formStore.clear();
+        formStore.setValues(
+          {
+            name: props.editingUser?.name || '',
+            email: props.editingUser?.email || '',
+            roles: userUtils.rolesToStringArray(props.editingUser?.roles || defaultRoles),
+          },
+          {
+            markAsTouched: false,
+          },
+        );
       });
 
       return;
@@ -75,9 +89,14 @@ const UserForm = (props: UserFormProps) => {
       formStore.setValues({
         name: props.editingUser?.name || '',
         email: props.editingUser?.email || '',
-        roles: userUtils.rolesToStringArray(props.editingUser?.roles || []),
+        roles: userUtils.rolesToStringArray(props.editingUser?.roles || defaultRoles),
       });
     });
+  });
+
+  createEffect(() => {
+    console.log(formStore.data());
+    console.log(formStore.errors());
   });
 
   const formDirective = formStore.formDirective;
@@ -96,7 +115,7 @@ const UserForm = (props: UserFormProps) => {
             <Input type="text" formData={formStore.data} name="email" />
           </FormField>
           <Button.Group>
-            <Button type="submit">Create</Button>
+            <Button type="submit">{props.editingUser ? 'Update' : 'Invite'}</Button>
           </Button.Group>
         </FormFields>
       </form>

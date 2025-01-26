@@ -10,6 +10,14 @@ export type AuthenticationAuthenticateResponse = ResponseStructure<{
   member: Member;
 }>;
 
+export type AuthenticationAuthenticateInviteRequest = RequestStructure<{
+  token: string;
+}>;
+export type AuthenticationAuthenticateInviteResponse = ResponseStructure<{
+  organization: Organization;
+  member: Member;
+}>;
+
 export type AuthenticationCheckRequest = undefined;
 export type AuthenticationCheckResponse = ResponseStructure<{
   status: string;

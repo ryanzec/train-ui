@@ -9,6 +9,7 @@ const LoginView = lazy(() => import('$web/views/login'));
 const ForgotPasswordView = lazy(() => import('$web/views/forgot-password'));
 const ResetPasswordView = lazy(() => import('$web/views/reset-password'));
 const AuthenticatedDataView = lazy(() => import('$web/views/authenticated-data'));
+const InviteAuthenticateView = lazy(() => import('$web/views/authenticate-invite/authenticate-invite'));
 const UsersView = lazy(() => import('$web/views/users'));
 
 const Routes = () => {
@@ -19,6 +20,14 @@ const Routes = () => {
         component={() => (
           <UnauthenticatedRoute>
             <LoginView />
+          </UnauthenticatedRoute>
+        )}
+      />
+      <Route
+        path="/invite-authenticate"
+        component={() => (
+          <UnauthenticatedRoute>
+            <InviteAuthenticateView />
           </UnauthenticatedRoute>
         )}
       />
