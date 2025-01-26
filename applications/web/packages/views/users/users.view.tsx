@@ -7,7 +7,7 @@ import { createEffect, createSignal } from 'solid-js';
 type UsersListUser = UsersListProps['users'][0];
 
 const UsersView = () => {
-  const { users, usersResource } = usersApi.getUsers();
+  const userQuery = usersApi.getUsers();
   const [activeUser, setActiveUser] = createSignal<UsersListUser>();
 
   const handleAddUser = () => {
@@ -19,7 +19,7 @@ const UsersView = () => {
   };
 
   createEffect(() => {
-    console.log(users());
+    console.log(userQuery.users());
   });
 
   return (
@@ -27,7 +27,7 @@ const UsersView = () => {
       <h1>
         Users <Button onClick={handleAddUser}>Add User</Button>
       </h1>
-      <UsersList users={users()} onSelect={handleSelectUser} />
+      <UsersList users={userQuery.users()} onSelect={handleSelectUser} />
       <h1>User Form</h1>
       <UserForm editingUser={activeUser()} />
     </div>

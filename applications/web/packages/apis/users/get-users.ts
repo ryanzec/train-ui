@@ -10,16 +10,11 @@ const getUsersRaw = async (): Promise<GetUsersResponse> => {
 };
 
 export const getUsers = (queryOptions: Partial<CreateTrackedQueryOptions> = {}) => {
-  const [usersResource, refetchUsers, mutateUsers, usersInitiallyFetched, usersFailedLastFetch] =
-    queryUtils.createTrackedQuery(() => [QueryKey.GET_USERS_LIST], getUsersRaw, queryOptions);
-  const users = () => usersResource.latest?.data || [];
+  const userQuery = queryUtils.createTrackedQuery(() => [QueryKey.GET_USERS_LIST], getUsersRaw, queryOptions);
+  const users = () => userQuery.resource.latest?.data || [];
 
   return {
     users,
-    usersResource,
-    refetchUsers,
-    mutateUsers,
-    usersInitiallyFetched,
-    usersFailedLastFetch,
+    ...userQuery,
   };
 };

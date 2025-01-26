@@ -293,17 +293,13 @@ export const getTrackedResource = (queryData: QueryData, key: string) => {
   return queryData.trackedResources[key];
 };
 
-export type CreateTrackedQueryReturns<TResource> = [
-  Resource<TResource>,
-  // refetch data method
-  ResourceRefetcher<TResource>,
-  // mutator method
-  (callback: TriggerMutateMutator<TResource>) => void,
-  // returns whether the data has been initially fetched
-  () => boolean,
-  // return if the previous resource fetch errored
-  () => boolean,
-];
+export type CreateTrackedQueryReturns<TResource> = {
+  resource: Resource<TResource>;
+  refetch: ResourceRefetcher<TResource>;
+  mutate: (callback: TriggerMutateMutator<TResource>) => void;
+  hasFetched: () => boolean;
+  lastFetchFailed: () => boolean;
+};
 
 export const addTrackedShouldFetch = (
   queryData: QueryData,
@@ -398,9 +394,9 @@ export const createTrackedQuery = <TResource>(
     });
   });
 
-  return [
+  return {
     resource,
-    async (info?: unknown) => {
+    refetch: async (info?: unknown) => {
       // not sure how to better handle this without the cast as the refetcher data is a common pool and can't be typed
       // to a specific resource data type
       return (await triggerRefetcher(queryData, primaryKey, {
@@ -408,17 +404,17 @@ export const createTrackedQuery = <TResource>(
         secondaryKey,
       })) as Promise<TResource | undefined>;
     },
-    (callback: TriggerMutateMutator<TResource | undefined>) => {
+    mutate: (callback: TriggerMutateMutator<TResource | undefined>) => {
       triggerMutator(queryData, queryKey, callback);
     },
 
     // shouldFetch determines whether the initial request for the data has happened
-    () => shouldFetch(),
+    hasFetched: () => shouldFetch(),
 
     // since the state of the resource changes when you refetch a resource, we use the error too to determine if the
     // previous fetch errored since that seems to only clear after a successful fetch
-    () => resource.state === ResourceState.ERRORED || !!resource.error,
-  ];
+    lastFetchFailed: () => resource.state === ResourceState.ERRORED || !!resource.error,
+  };
 };
 
 export const queryUtils = {

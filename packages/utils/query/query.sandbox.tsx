@@ -33,7 +33,7 @@ type GetListParams = {
 };
 
 export const getList = (getParams?: () => GetListParams, queryOptions?: Partial<CreateTrackedQueryOptions>) => {
-  const [resource, refetch, mutate, dataInitiallyFetched, resourceFailedLastFetch] = queryUtils.createTrackedQuery(
+  const listQuery = queryUtils.createTrackedQuery(
     () => [
       SANDBOX_QUERY_GET_LIST,
       () => {
@@ -56,14 +56,11 @@ export const getList = (getParams?: () => GetListParams, queryOptions?: Partial<
     },
     queryOptions,
   );
-  const data = () => resource.latest?.query ?? [];
+  const data = () => listQuery.resource.latest?.query ?? [];
 
   return {
     data,
-    resource,
-    refetch,
-    mutate,
-    dataInitiallyFetched,
+    ...listQuery,
   };
 };
 
@@ -159,83 +156,83 @@ export const GetDataWithDelay = () => {
   //   });
   // });
 
-  const { data, resource, dataInitiallyFetched } = getList();
+  const listQuery = getList();
 
   return (
     <div>
-      <Show when={!resource.loading} fallback={<div data-id="loading-indicator">Loading...</div>}>
-        <For each={data()}>
+      <Show when={!listQuery.resource.loading} fallback={<div data-id="loading-indicator">Loading...</div>}>
+        <For each={listQuery.data()}>
           {(item) => {
             return <div data-id="item">ID: {item.id}</div>;
           }}
         </For>
       </Show>
-      <div data-id="initially-fetched-indicator">Data initially fetch: {JSON.stringify(dataInitiallyFetched())}</div>
+      <div data-id="initially-fetched-indicator">Data initially fetch: {JSON.stringify(listQuery.hasFetched())}</div>
     </div>
   );
 };
 
 export const NoInitialFetch = () => {
-  const { data, resource, refetch, dataInitiallyFetched } = getList(() => ({}), { doInitialFetch: false });
+  const listQuery = getList(() => ({}), { doInitialFetch: false });
 
   const refetchData = () => {
-    refetch();
+    listQuery.refetch();
   };
 
   return (
     <div>
-      <Show when={!resource.loading} fallback={<div data-id="loading-indicator">Loading...</div>}>
+      <Show when={!listQuery.resource.loading} fallback={<div data-id="loading-indicator">Loading...</div>}>
         <Button data-id="refetch-data-trigger" onClick={refetchData}>
           Refetch Data
         </Button>
-        <Show when={data().length > 0} fallback="No Data">
-          <For each={data()}>
+        <Show when={listQuery.data().length > 0} fallback="No Data">
+          <For each={listQuery.data()}>
             {(item) => {
               return <div data-id="item">ID: {item.id}</div>;
             }}
           </For>
         </Show>
       </Show>
-      <div data-id="initially-fetched-indicator">Data initially fetch: {JSON.stringify(dataInitiallyFetched())}</div>
+      <div data-id="initially-fetched-indicator">Data initially fetch: {JSON.stringify(listQuery.hasFetched())}</div>
     </div>
   );
 };
 
 export const CachingData = () => {
   const cacheTime = 2000;
-  const { data, resource, refetch, dataInitiallyFetched } = getList(() => ({}), { cacheTime: 2000 });
+  const listQuery = getList(() => ({}), { cacheTime: 2000 });
 
   const refetchData = () => {
-    refetch();
+    listQuery.refetch();
   };
 
   return (
     <div>
-      <Show when={!resource.loading} fallback={<div data-id="loading-indicator">Loading...</div>}>
+      <Show when={!listQuery.resource.loading} fallback={<div data-id="loading-indicator">Loading...</div>}>
         <div>
           Data is cached for {cacheTime / 1000} seconds and loading indicator should not show is loading from cache
         </div>
         <Button data-id="refetch-data-trigger" onClick={refetchData}>
           Refetch Data
         </Button>
-        <Show when={data().length > 0} fallback="No Data">
-          <For each={data()}>
+        <Show when={listQuery.data().length > 0} fallback="No Data">
+          <For each={listQuery.data()}>
             {(item) => {
               return <div data-id="item">ID: {item.id}</div>;
             }}
           </For>
         </Show>
       </Show>
-      <div data-id="initially-fetched-indicator">Data initially fetch: {JSON.stringify(dataInitiallyFetched())}</div>
+      <div data-id="initially-fetched-indicator">Data initially fetch: {JSON.stringify(listQuery.hasFetched())}</div>
     </div>
   );
 };
 
 export const MutationManual = () => {
-  const { data, resource, refetch, mutate } = getList();
+  const listQuery = getList();
 
   const onAddData = () => {
-    mutate((oldValue) => {
+    listQuery.mutate((oldValue) => {
       if (!oldValue) {
         return oldValue;
       }
@@ -248,18 +245,18 @@ export const MutationManual = () => {
   };
 
   const onRefresh = () => {
-    refetch();
+    listQuery.refetch();
   };
 
   return (
     <div>
-      <Show when={!resource.loading} fallback={<div data-id="loading-indicator">Loading...</div>}>
+      <Show when={!listQuery.resource.loading} fallback={<div data-id="loading-indicator">Loading...</div>}>
         <Button data-id="add-item-trigger" onClick={onAddData}>
           Add Item
         </Button>
         <div>This will refresh from the api giving the original data</div>
         <Button onClick={onRefresh}>Pull From API</Button>
-        <For each={data()}>
+        <For each={listQuery.data()}>
           {(item) => {
             return <div data-id="item">ID: {item.id}</div>;
           }}
@@ -273,19 +270,19 @@ export const DynamicQueryParameters = () => {
   const [queryParams, setQueryParams] = createSignal<GetListParams>({
     filter: '',
   });
-  const { data, resource, refetch } = getList(queryParams);
+  const listQuery = getList(queryParams);
 
   const onInput: JSX.EventHandlerUnion<HTMLInputElement, Event> = (event) => {
     setQueryParams(() => ({ filter: event.currentTarget.value }));
   };
 
   const onRefetch = () => {
-    refetch();
+    listQuery.refetch();
   };
 
   return (
     <div>
-      <Show when={!resource.loading} fallback={<div data-id="loading-indicator">Loading...</div>}>
+      <Show when={!listQuery.resource.loading} fallback={<div data-id="loading-indicator">Loading...</div>}>
         <div>Update the filter alone should not refresh the data to prevent un-needed requested</div>
         <Input
           data-id="filter-input"
@@ -297,7 +294,7 @@ export const DynamicQueryParameters = () => {
         <Button data-id="refetch-data-trigger" onClick={onRefetch}>
           Pull From API
         </Button>
-        <For each={data()}>
+        <For each={listQuery.data()}>
           {(item) => {
             return <div data-id="item">ID: {item.id}</div>;
           }}
@@ -309,7 +306,7 @@ export const DynamicQueryParameters = () => {
 
 export const MutationQuery = () => {
   const [createData, setCreateData] = createSignal<CreateInput>({ id: '' });
-  const { data, resource, refetch } = getList();
+  const listQuery = getList();
   const create = createMutation({
     onSuccess: () => {
       setCreateData(() => ({ id: '' }));
@@ -325,7 +322,7 @@ export const MutationQuery = () => {
   };
 
   const onRefetch = () => {
-    refetch();
+    listQuery.refetch();
   };
 
   const isProcessingCreate = () => create.state() === MutationState.PROCESSING;
@@ -334,7 +331,7 @@ export const MutationQuery = () => {
 
   return (
     <div>
-      <Show when={!resource.loading} fallback={<div data-id="loading-indicator">Loading...</div>}>
+      <Show when={!listQuery.resource.loading} fallback={<div data-id="loading-indicator">Loading...</div>}>
         <Show when={!isProcessingCreate()} fallback={<div data-id="creating-indicator">Creating...</div>}>
           <Input
             data-id="create-input"
@@ -360,7 +357,7 @@ export const MutationQuery = () => {
             Last create request failed
           </Callout>{' '}
         </Show>
-        <For each={data()}>
+        <For each={listQuery.data()}>
           {(item) => {
             return <div data-id="item">ID: {item.id}</div>;
           }}
@@ -377,7 +374,7 @@ export const MutationQuery = () => {
 
 export const MutationQueryOptimistic = () => {
   const [createData, setCreateData] = createSignal<CreateInput>({ id: '' });
-  const { data, resource, refetch } = getList();
+  const listQuery = getList();
   const create = createMutationOptimistic({
     onSuccess: () => {
       setCreateData(() => ({ id: '' }));
@@ -393,7 +390,7 @@ export const MutationQueryOptimistic = () => {
   };
 
   const onRefetch = () => {
-    refetch();
+    listQuery.refetch();
   };
 
   const isProcessingCreate = () => create.state() === MutationState.PROCESSING;
@@ -402,7 +399,7 @@ export const MutationQueryOptimistic = () => {
 
   return (
     <div>
-      <Show when={!resource.loading} fallback={<div data-id="loading-indicator">Loading...</div>}>
+      <Show when={!listQuery.resource.loading} fallback={<div data-id="loading-indicator">Loading...</div>}>
         <Input
           data-id="create-input"
           type="text"
@@ -426,7 +423,7 @@ export const MutationQueryOptimistic = () => {
             Last create request failed
           </Callout>{' '}
         </Show>
-        <For each={data()}>
+        <For each={listQuery.data()}>
           {(item) => {
             return (
               <div data-id="item">
