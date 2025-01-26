@@ -9,7 +9,7 @@ import { applicationConfiguration } from '$web/utils/application';
 export const authenticateInviteRaw = async (
   request: AuthenticationAuthenticateInviteRequest,
 ): Promise<AuthenticationAuthenticateInviteResponse> => {
-  return await httpUtils.http(`${applicationConfiguration.baseApiUrl}${ApiRoute.AUTHENTICATION_AUTHENTICATE}`, {
+  return await httpUtils.http(`${applicationConfiguration.baseApiUrl}${ApiRoute.AUTHENTICATION_AUTHENTICATE_INVITE}`, {
     method: HttpMethod.POST,
     payload: request,
   });

@@ -17,6 +17,7 @@ export const RoutePath = {
   FORGOT_PASSWORD: '/forgot-password',
   RESET_PASSWORD: '/reset-password',
   USERS: '/users',
+  ONBOARDING: '/onboarding',
 } as const;
 
 export type RoutePath = (typeof RoutePath)[keyof typeof RoutePath];

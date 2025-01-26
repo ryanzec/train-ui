@@ -24,6 +24,7 @@ const fromStytchMember = (member: stytch.Member): User => {
     name: member.name,
     email: member.email_address,
     roles: userRolesFromStytchMemberRoles(member.roles),
+    hasPassword: !!member.member_password_id,
     createdAt: member.created_at,
     updatedAt: member.updated_at,
   };

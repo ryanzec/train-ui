@@ -3,6 +3,7 @@ import Table, { TableShape } from '$/components/table';
 import type { User } from '$api/types/user';
 import { usersApi } from '$web/apis/users';
 import styles from '$web/components/users-list/users-list.module.css';
+import { authenticationStore } from '$web/stores/authentication.store';
 import { For, Show } from 'solid-js';
 
 type InternalUser = Pick<User, 'id' | 'email' | 'name' | 'roles'>;
@@ -40,6 +41,12 @@ const UsersList = (props: UsersListProps) => {
                 </Show>
                 <Button onClick={() => removeUserMutation.mutate({ id: row.id })} color={ButtonColor.DANGER}>
                   D
+                </Button>
+                <Button
+                  onClick={() => authenticationStore.sendResetPassword({ email: row.email }, { redirect: false })}
+                  color={ButtonColor.WARNING}
+                >
+                  R
                 </Button>
               </Table.Data>
             </Table.Row>

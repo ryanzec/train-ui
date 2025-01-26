@@ -1,19 +1,20 @@
 import Button from '$/components/button';
-import type { User } from '$api/types/user';
 import { usersApi } from '$web/apis/users';
 import UserForm from '$web/components/user-form';
-import UsersList from '$web/components/users-list';
+import UsersList, { type UsersListProps } from '$web/components/users-list';
 import { createEffect, createSignal } from 'solid-js';
+
+type UsersListUser = UsersListProps['users'][0];
 
 const UsersView = () => {
   const { users, usersResource } = usersApi.getUsers();
-  const [activeUser, setActiveUser] = createSignal<User>();
+  const [activeUser, setActiveUser] = createSignal<UsersListUser>();
 
   const handleAddUser = () => {
     setActiveUser(undefined);
   };
 
-  const handleSelectUser = (user: User) => {
+  const handleSelectUser = (user: UsersListUser) => {
     setActiveUser(user);
   };
 

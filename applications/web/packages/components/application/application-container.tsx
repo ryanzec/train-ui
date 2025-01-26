@@ -1,4 +1,4 @@
-import { A, useNavigate } from '@solidjs/router';
+import { A, type BeforeLeaveEventArgs, useBeforeLeave, useNavigate } from '@solidjs/router';
 import { type JSX, Show, Suspense, onCleanup, onMount } from 'solid-js';
 
 import Loading from '$/components/loading';
@@ -12,6 +12,17 @@ import { RoutePath } from '$web/utils/application';
 const ApplicationContainer = (props: JSX.HTMLAttributes<HTMLDivElement>) => {
   const navigate = useNavigate();
 
+  useBeforeLeave((event: BeforeLeaveEventArgs) => {
+    const sessionUser = authenticationStore.sessionUser();
+
+    if (event.to === RoutePath.ONBOARDING || !sessionUser || sessionUser.hasPassword) {
+      return;
+    }
+
+    event.preventDefault();
+    navigate(RoutePath.ONBOARDING);
+  });
+
   onMount(() => {
     globalsStore.initialize({
       navigate,
@@ -23,11 +34,8 @@ const ApplicationContainer = (props: JSX.HTMLAttributes<HTMLDivElement>) => {
       _requestOptions: HttpRequest<any>,
       // biome-ignore lint/suspicious/noExplicitAny: this handles generic requests so it needs to allow for any
       response: any,
-      rawResponse: Response,
+      _rawResponse: Response,
     ) => {
-      console.log(response);
-      console.log(rawResponse);
-
       // @todo(!!!) logout with 401 error response
       return response;
     };

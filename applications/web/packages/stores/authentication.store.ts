@@ -2,21 +2,20 @@ import { websocketManagerStore } from '$/stores/websocket-manager.store';
 import { ErrorMessage } from '$/utils/error';
 import { localStorageCacheUtils } from '$/utils/local-storage-cache';
 import { loggerUtils } from '$/utils/logger';
+import { userUtils } from '$api/data-models/user';
 import type {
   AuthenticationAuthenticateRequest,
   AuthenticationResetPasswordRequest,
   AuthenticationSendResetPasswordRequest,
 } from '$api/types/authentication';
+import type { User } from '$api/types/user';
 import { authenticationApi } from '$web/apis/authentication';
 import { globalsStore } from '$web/stores/globals.store';
 import { LocalStorageKey, RoutePath } from '$web/utils/application';
-import { createRoot, createSignal } from 'solid-js';
+import { type Accessor, createRoot, createSignal } from 'solid-js';
 import type { Member as StytchMember, Organization as StytchOrganization } from 'stytch';
 
-export type SessionUser = {
-  id: string;
-  email: string;
-  name: string;
+export type SessionUser = Pick<User, 'id' | 'email' | 'name' | 'hasPassword'> & {
   organization: {
     id: string;
     name: string;
@@ -34,21 +33,34 @@ export const LoginAction = {
 
 export type LoginAction = (typeof LoginAction)[keyof typeof LoginAction];
 
+type SendResetPasswordOption = {
+  redirect?: boolean;
+};
+
+const defaultSendPasswordOption: SendResetPasswordOption = {
+  redirect: true,
+};
+
 export type ApplicationStore = {
-  isInitializing: () => boolean;
-  isAuthenticated: () => boolean;
-  currentLoginAction: () => LoginAction;
-  loginError: () => string[];
+  sessionUser: Accessor<SessionUser | undefined>;
+  isInitializing: Accessor<boolean>;
+  isAuthenticated: Accessor<boolean>;
+  currentLoginAction: Accessor<LoginAction>;
+  loginError: Accessor<string[]>;
   login: (request: AuthenticationAuthenticateRequest) => Promise<void>;
   logout: () => Promise<void>;
   resetPassword: (request: AuthenticationResetPasswordRequest) => Promise<void>;
   isProcessingLoginAction: () => boolean;
-  sendResetPassword: (request: AuthenticationSendResetPasswordRequest) => Promise<void>;
+  sendResetPassword: (
+    request: AuthenticationSendResetPasswordRequest,
+    overrideOptions?: SendResetPasswordOption,
+  ) => Promise<void>;
   initialize: () => Promise<void>;
   authenticateInvite: (token: string) => Promise<void>;
 };
 
 const createApplicationStore = (): ApplicationStore => {
+  const [sessionUser, setSessionUser] = createSignal<SessionUser>();
   const [isInitializing, setIsInitializing] = createSignal<boolean>(true);
   const [isAuthenticated, setIsAuthenticated] = createSignal<boolean>(false);
   const [currentLoginAction, setCurrentLoginAction] = createSignal<LoginAction>(LoginAction.NONE);
@@ -56,15 +68,20 @@ const createApplicationStore = (): ApplicationStore => {
 
   const handleAuthenticated = (member?: StytchMember, organization?: StytchOrganization) => {
     if (member && organization) {
-      localStorageCacheUtils.set<SessionUser>(LocalStorageKey.SESSION_USER, {
-        id: member.member_id,
-        email: member.email_address,
-        name: member.name,
+      const user = userUtils.fromStytchMember(member);
+      const sessionUser: SessionUser = {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        hasPassword: user.hasPassword,
         organization: {
           id: organization.organization_id,
           name: organization.organization_name,
         },
-      });
+      };
+
+      setSessionUser(sessionUser);
+      localStorageCacheUtils.set<SessionUser>(LocalStorageKey.SESSION_USER, sessionUser);
     }
 
     setIsAuthenticated(true);
@@ -73,6 +90,7 @@ const createApplicationStore = (): ApplicationStore => {
 
   const handleNotAuthenticated = () => {
     websocketManagerStore.disconnect();
+    setSessionUser(undefined);
     localStorageCacheUtils.remove(LocalStorageKey.SESSION_USER);
     setIsAuthenticated(false);
     setIsInitializing(false);
@@ -156,12 +174,21 @@ const createApplicationStore = (): ApplicationStore => {
     }
   };
 
-  const sendResetPassword = async (formData: AuthenticationSendResetPasswordRequest) => {
+  const sendResetPassword = async (
+    formData: AuthenticationSendResetPasswordRequest,
+    overrideOptions: SendResetPasswordOption = {},
+  ) => {
     try {
+      const options = structuredClone(Object.assign({}, defaultSendPasswordOption, overrideOptions));
+
       setCurrentLoginAction(LoginAction.RESET_PASSWORD);
 
       const sendResetPassword = authenticationApi.sendResetPassword({
         onSuccess: async () => {
+          if (options.redirect !== true) {
+            return;
+          }
+
           // @todo indicator that email should be sent if match email found
           globalsStore.getNavigate()(RoutePath.LOGIN);
         },
@@ -233,6 +260,7 @@ const createApplicationStore = (): ApplicationStore => {
   };
 
   return {
+    sessionUser,
     isInitializing,
     isAuthenticated,
     currentLoginAction,

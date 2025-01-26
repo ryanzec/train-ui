@@ -32,6 +32,7 @@ export type User = {
   name: string;
   email: string;
   roles: UserRole[];
+  hasPassword: boolean;
   createdAt?: string;
   updatedAt?: string;
 };
