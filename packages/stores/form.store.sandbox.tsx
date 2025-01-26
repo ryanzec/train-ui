@@ -1,4 +1,4 @@
-import { For, Index, Match, Show, Switch, createEffect, createSignal, untrack } from 'solid-js';
+import { For, Index, Match, Show, Switch, createEffect, createSignal } from 'solid-js';
 import * as uuid from 'uuid';
 import type { ZodType } from 'zod';
 import * as zod from 'zod';
@@ -129,16 +129,13 @@ export const UsingEffects = () => {
   });
   const [randomValue, setRandomValue] = createSignal('starting random value');
 
+  // this validates that setting form values does not cause an infinite loop
   createEffect(function updateFormOnRandomValueChange() {
     const newValue = randomValue();
-    // if you want to use form functionality that modifies internal form data, you probably want to wrap that in
-    // untrack() as internal form data changes can cause the effect to go into an infinite loop
+
     console.log('should only happen when random value changes');
 
-    // remove the untrack() to see what happens without it
-    untrack(() => {
-      formStore.setValue('title', newValue);
-    });
+    formStore.setValue('title', newValue);
   });
 
   const formDirective = formStore.formDirective;

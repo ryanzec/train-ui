@@ -11,7 +11,7 @@ import { userUtils } from '$api/data-models/user';
 import { type User, UserRoleName, UserRoleSource } from '$api/types/user';
 import { usersApi } from '$web/apis/users';
 import { authenticationStore } from '$web/stores/authentication.store';
-import { createEffect, untrack } from 'solid-js';
+import { createEffect } from 'solid-js';
 import * as zod from 'zod';
 
 export type UsersFormData = {
@@ -66,28 +66,24 @@ const UserForm = (props: UserFormProps) => {
 
   createEffect(function updateWithEditingUser() {
     if (!props.editingUser) {
-      untrack(() => {
-        formStore.setValues(
-          {
-            name: props.editingUser?.name || '',
-            email: props.editingUser?.email || '',
-            roles: userUtils.rolesToStringArray(props.editingUser?.roles || defaultRoles),
-          },
-          {
-            markAsTouched: false,
-          },
-        );
-      });
+      formStore.setValues(
+        {
+          name: '',
+          email: '',
+          roles: userUtils.rolesToStringArray(defaultRoles),
+        },
+        {
+          markAsTouched: false,
+        },
+      );
 
       return;
     }
 
-    untrack(() => {
-      formStore.setValues({
-        name: props.editingUser?.name || '',
-        email: props.editingUser?.email || '',
-        roles: userUtils.rolesToStringArray(props.editingUser?.roles || defaultRoles),
-      });
+    formStore.setValues({
+      name: props.editingUser?.name || '',
+      email: props.editingUser?.email || '',
+      roles: userUtils.rolesToStringArray(props.editingUser?.roles || defaultRoles),
     });
   });
 

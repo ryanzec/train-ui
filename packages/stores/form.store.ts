@@ -9,7 +9,7 @@
 //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 import { produce } from 'immer';
 import * as lodash from 'lodash';
-import { type Accessor, type Setter, createSignal, onCleanup } from 'solid-js';
+import { type Accessor, type Setter, createSignal, onCleanup, untrack } from 'solid-js';
 import type * as zod from 'zod';
 
 import { InputType, domUtils } from '$/utils/dom';
@@ -717,29 +717,34 @@ const createStore = <TFormData extends object>(
   };
 
   const setValue: FormSetValue<TFormData> = (name: keyof TFormData, value: unknown, options: SetValueOption = {}) => {
-    const previousValue = lodash.get(data(), name as string);
+    // that values that might be set are also used during this process for things like validation which without
+    // untrack() would cause an infinite loop of setting that value so wrapping this entire function in an untrack()
+    // wrapper
+    untrack(() => {
+      const previousValue = lodash.get(data(), name as string);
 
-    setData((oldValue) =>
-      produce(oldValue, (draft) => {
-        lodash.set(draft, name, value);
-      }),
-    );
+      setData((oldValue) =>
+        produce(oldValue, (draft) => {
+          lodash.set(draft, name, value);
+        }),
+      );
 
-    triggerValueChanged(name as string, value, previousValue, {
-      isTouched: options.markAsTouched ?? true,
+      triggerValueChanged(name as string, value, previousValue, {
+        isTouched: options.markAsTouched ?? true,
+      });
+
+      // see comment at top of file as to why explicit casting is happening
+      // we do all version to properly support checkboxes and radios that can have the same name
+      const inputElements = formElement()?.querySelectorAll(`[name="${name as string}"]`);
+
+      if (!inputElements) {
+        return;
+      }
+
+      for (const inputElement of inputElements) {
+        applyValueFromStore(inputElement);
+      }
     });
-
-    // see comment at top of file as to why explicit casting is happening
-    // we do all version to properly support checkboxes and radios that can have the same name
-    const inputElements = formElement()?.querySelectorAll(`[name="${name as string}"]`);
-
-    if (!inputElements) {
-      return;
-    }
-
-    for (const inputElement of inputElements) {
-      applyValueFromStore(inputElement);
-    }
   };
 
   const setValues: FormSetValues<TFormData> = (values?: Partial<TFormData>, options?: SetValueOption) => {

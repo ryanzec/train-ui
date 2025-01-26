@@ -41,6 +41,8 @@ const createWebsocketManagerStore = (): WebsocketManagerStore => {
   };
 
   const connect = () => {
+    // since we get the connection (to see if it needs to be closed) and set the connection we need to untrack()
+    // this code
     untrack(() => {
       const currentConnection = connection();
 

@@ -668,6 +668,10 @@ createEffect(function syncWithEditingUser() {
 
 While generally fat arrow functions are used, this pattern allows for the code to be self documenting.
 
+## Document untrack()
+
+When using untrack, it would be helpful to add a comment above it explaining why untrack() is even though there are time where is is needed, it shoudl generally be avoided when possible so know why it is being used will be useful for PRs / future reference.
+
 # Styling / CSS coding guide
 
 ## Use css modules

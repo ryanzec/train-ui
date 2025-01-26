@@ -12,7 +12,7 @@ import { PageLayout } from '$web/components/page/page';
 import { authenticationStore } from '$web/stores/authentication.store';
 import { RoutePath } from '$web/utils/application';
 import { useNavigate } from '@solidjs/router';
-import { createEffect, untrack } from 'solid-js';
+import { createEffect } from 'solid-js';
 import * as zod from 'zod';
 
 export type LoginFormData = {
@@ -56,11 +56,9 @@ const LoginView = () => {
       return;
     }
 
-    untrack(() => {
-      formStore.setValues({
-        email: '',
-        password: '',
-      });
+    formStore.setValues({
+      email: '',
+      password: '',
     });
   });
 
