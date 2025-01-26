@@ -94,11 +94,6 @@ const UserForm = (props: UserFormProps) => {
     });
   });
 
-  createEffect(() => {
-    console.log(formStore.data());
-    console.log(formStore.errors());
-  });
-
   const formDirective = formStore.formDirective;
 
   return (

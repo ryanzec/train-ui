@@ -148,22 +148,24 @@ export const registerUsersApi = (api: FastifyInstance) => {
 
   api.delete<DeleteUser>(`${ApiRoute.USERS}/:id`, async (request, response) => {
     try {
+      // @todo(!!!) don't allow deletion of self
       const getMemberResponse = await stytchClient.organizations.members.get({
         organization_id: request.session.organizationId,
         member_id: request.params.id,
       });
       const user = userUtils.fromStytchMember(getMemberResponse.member);
+      const options = {
+        authorization: {
+          session_token: request.session.authenticationToken,
+        },
+      };
 
       await stytchClient.organizations.members.delete(
         {
           organization_id: request.session.organizationId,
           member_id: request.params.id,
         },
-        {
-          authorization: {
-            session_token: request.session.authenticationToken,
-          },
-        },
+        options,
       );
 
       return response.code(200).send(apiUtils.respondWithData(user));

@@ -37,8 +37,10 @@ export type AuthenticationSendResetPasswordResponse = ResponseStructure<{
 
 export type AuthenticationResetPasswordRequest = RequestStructure<{
   password: string;
-  token: string;
-  tokenType: string;
+
+  // these are only used for when resetting a password from an email, otherwise the session can be used
+  token?: string;
+  tokenType?: string;
 }>;
 export type AuthenticationResetPasswordResponse = ResponseStructure<{
   organization: Organization;

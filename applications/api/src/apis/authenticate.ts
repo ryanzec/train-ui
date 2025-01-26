@@ -176,6 +176,18 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
       const tokenType = request.body.tokenType;
       const password = request.body.password;
 
+      if (!token || !tokenType) {
+        const resetPasswordResponse = await stytchClient.passwords.sessions.reset({
+          organization_id: request.session.organizationId,
+          password,
+          session_token: request.session.authenticationToken,
+        });
+        const organization = resetPasswordResponse.organization;
+        const member = resetPasswordResponse.member;
+
+        return response.status(200).send(apiUtils.respondWithData({ organization, member }));
+      }
+
       if (tokenType !== 'discovery') {
         const errorMessage = `unrecognized token type of '${tokenType}' give, only 'discovery' token is supported`;
 
@@ -192,7 +204,7 @@ export const registerAuthenticateApi = (api: FastifyInstance) => {
       const organization = resetPasswordResponse.discovered_organizations[0].organization;
 
       if (!organization) {
-        const errorMessage = 'unable to get organization to login to';
+        const errorMessage = 'unable to get organization to reset password for';
 
         api.log.error(errorMessage);
 

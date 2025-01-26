@@ -3,6 +3,8 @@ import { type JSX, Show, Suspense, onCleanup, onMount } from 'solid-js';
 
 import Loading from '$/components/loading';
 import { type HttpRequest, httpUtils } from '$/utils/http';
+import { userUtils } from '$api/data-models/user';
+import { UserRoleName } from '$api/types/user';
 import styles from '$web/components/application/application.module.css';
 import { authenticationStore } from '$web/stores/authentication.store';
 import { globalsStore } from '$web/stores/globals.store';
@@ -12,10 +14,16 @@ import { RoutePath } from '$web/utils/application';
 const ApplicationContainer = (props: JSX.HTMLAttributes<HTMLDivElement>) => {
   const navigate = useNavigate();
 
+  const hasRole = (roleName: UserRoleName) => {
+    const sessionUser = authenticationStore.sessionUser();
+
+    return sessionUser?.user && userUtils.hasRole(sessionUser.user, roleName);
+  };
+
   useBeforeLeave((event: BeforeLeaveEventArgs) => {
     const sessionUser = authenticationStore.sessionUser();
 
-    if (event.to === RoutePath.ONBOARDING || !sessionUser || sessionUser.hasPassword) {
+    if (event.to === RoutePath.ONBOARDING || !sessionUser || sessionUser.user.hasPassword) {
       return;
     }
 
@@ -52,7 +60,9 @@ const ApplicationContainer = (props: JSX.HTMLAttributes<HTMLDivElement>) => {
       <Show when={authenticationStore.isInitializing() === false} fallback={<Loading />}>
         <Show when={authenticationStore.isAuthenticated()}>
           <A href={RoutePath.HOME}>Home</A>
-          <A href={RoutePath.USERS}>Users</A>
+          <Show when={hasRole(UserRoleName.STYTCH_ADMIN)}>
+            <A href={RoutePath.USERS}>Users</A>
+          </Show>
         </Show>
         <Suspense fallback={<Loading />}>{props.children}</Suspense>
       </Show>

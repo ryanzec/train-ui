@@ -15,7 +15,8 @@ import { LocalStorageKey, RoutePath } from '$web/utils/application';
 import { type Accessor, createRoot, createSignal } from 'solid-js';
 import type { Member as StytchMember, Organization as StytchOrganization } from 'stytch';
 
-export type SessionUser = Pick<User, 'id' | 'email' | 'name' | 'hasPassword'> & {
+export type SessionUser = {
+  user: User;
   organization: {
     id: string;
     name: string;
@@ -67,23 +68,22 @@ const createApplicationStore = (): ApplicationStore => {
   const [loginError, setLoginError] = createSignal<string[]>([]);
 
   const handleAuthenticated = (member?: StytchMember, organization?: StytchOrganization) => {
+    let sessionUser: SessionUser | undefined = localStorageCacheUtils.get<SessionUser>(LocalStorageKey.SESSION_USER);
+
     if (member && organization) {
       const user = userUtils.fromStytchMember(member);
-      const sessionUser: SessionUser = {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        hasPassword: user.hasPassword,
+      sessionUser = {
+        user,
         organization: {
           id: organization.organization_id,
           name: organization.organization_name,
         },
       };
 
-      setSessionUser(sessionUser);
       localStorageCacheUtils.set<SessionUser>(LocalStorageKey.SESSION_USER, sessionUser);
     }
 
+    setSessionUser(sessionUser);
     setIsAuthenticated(true);
     websocketManagerStore.connect();
   };
@@ -200,7 +200,7 @@ const createApplicationStore = (): ApplicationStore => {
     }
   };
 
-  const resetPassword = async (formData: AuthenticationResetPasswordRequest) => {
+  const resetPassword = async (formData: AuthenticationResetPasswordRequest, redirectOverride?: RoutePath) => {
     try {
       const sendResetPassword = authenticationApi.resetPassword({
         onSuccess: async (mutateResponse) => {
@@ -215,9 +215,11 @@ const createApplicationStore = (): ApplicationStore => {
 
           const { member, organization } = mutateResponse.data;
 
+          // while resetting the password might be done while the user is already authenticated, we want to process
+          // the authentication response to make sure the user is properly updated
           handleAuthenticated(member, organization);
 
-          globalsStore.getNavigate()(RoutePath.HOME);
+          globalsStore.getNavigate()(redirectOverride ?? RoutePath.HOME);
         },
       });
 

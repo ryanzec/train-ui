@@ -1,4 +1,4 @@
-import type { User, UserRole, UserRoleSource } from '$api/types/user';
+import type { User, UserRole, UserRoleName, UserRoleSource } from '$api/types/user';
 import type * as stytch from 'stytch';
 
 const userRolesFromStytchMemberRoles = (roles: stytch.MemberRole[]): UserRole[] => {
@@ -47,9 +47,22 @@ const toStytchMemberUpdateData = (user: User): ToStytchMemberUpdateDataReturn =>
   };
 };
 
+const hasRole = (user: Pick<User, 'roles'>, checkRoleName: UserRoleName): boolean => {
+  for (const role of user.roles) {
+    if (role.id !== checkRoleName) {
+      continue;
+    }
+
+    return true;
+  }
+
+  return false;
+};
+
 export const userUtils = {
   fromStytchMember,
   fromStytchMembers,
   toStytchMemberUpdateData,
   rolesToStringArray,
+  hasRole,
 };

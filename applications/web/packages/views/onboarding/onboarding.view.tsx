@@ -1,3 +1,4 @@
+import SetPasswordForm from '$web/components/set-password-form/set-password-form';
 import { authenticationStore } from '$web/stores/authentication.store';
 import { RoutePath } from '$web/utils/application';
 import { useNavigate } from '@solidjs/router';
@@ -7,14 +8,14 @@ const OnboardingView = () => {
   const navigate = useNavigate();
 
   onMount(() => {
-    if (authenticationStore.sessionUser()?.hasPassword === false) {
+    if (authenticationStore.sessionUser()?.user.hasPassword === false) {
       return;
     }
 
     navigate(RoutePath.HOME);
   });
 
-  return <div>Onboarding</div>;
+  return <SetPasswordForm />;
 };
 
 export default OnboardingView;
