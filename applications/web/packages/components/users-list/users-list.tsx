@@ -1,5 +1,7 @@
 import Button, { ButtonColor } from '$/components/button';
+import { CalloutColor } from '$/components/callout';
 import Table, { TableShape } from '$/components/table';
+import { globalNotificationsStore } from '$/stores/global-notifications.store';
 import type { User } from '$api/types/user';
 import { usersApi } from '$web/apis/users';
 import styles from '$web/components/users-list/users-list.module.css';
@@ -14,7 +16,14 @@ export type UsersListProps = {
 };
 
 const UsersList = (props: UsersListProps) => {
-  const removeUserMutation = usersApi.remove();
+  const removeUserMutation = usersApi.remove({
+    onSuccess: () => {
+      globalNotificationsStore.addNotification({
+        message: () => 'User deleted',
+        color: CalloutColor.SUCCESS,
+      });
+    },
+  });
 
   return (
     <Table
@@ -30,6 +39,23 @@ const UsersList = (props: UsersListProps) => {
     >
       <For each={props.users}>
         {(row) => {
+          const handleSelectUser = () => {
+            props.onSelect?.(row);
+          };
+
+          const handleRemoveUser = () => {
+            removeUserMutation.mutate({ id: row.id });
+          };
+
+          const handleSendResetPasswordEmail = () => {
+            authenticationStore.sendResetPassword({ email: row.email }, { redirect: false });
+
+            globalNotificationsStore.addNotification({
+              message: () => 'Reset password email sent to user',
+              color: CalloutColor.SUCCESS,
+            });
+          };
+
           return (
             <Table.Row>
               <Table.Data class={styles.nameCell}>{row.name}</Table.Data>
@@ -37,15 +63,12 @@ const UsersList = (props: UsersListProps) => {
               <Table.Data>{row.roles.map((role) => role.id).join(', ')}</Table.Data>
               <Table.Data>
                 <Show when={!!props.onSelect}>
-                  <Button onClick={() => props.onSelect?.(row)}>S</Button>
+                  <Button onClick={handleSelectUser}>S</Button>
                 </Show>
-                <Button onClick={() => removeUserMutation.mutate({ id: row.id })} color={ButtonColor.DANGER}>
+                <Button onClick={handleRemoveUser} color={ButtonColor.DANGER}>
                   D
                 </Button>
-                <Button
-                  onClick={() => authenticationStore.sendResetPassword({ email: row.email }, { redirect: false })}
-                  color={ButtonColor.WARNING}
-                >
+                <Button onClick={handleSendResetPasswordEmail} color={ButtonColor.WARNING}>
                   R
                 </Button>
               </Table.Data>

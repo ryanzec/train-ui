@@ -1,13 +1,19 @@
 import type { RequestStructure, ResponseStructure } from '$/apis/utils';
 
-export type UnremoveableUserRole = 'stytch_member';
-
 export const UserRoleName = {
   STYTCH_ADMIN: 'stytch_admin',
   STYTCH_MEMBER: 'stytch_member',
 };
 
 export type UserRoleName = (typeof UserRoleName)[keyof typeof UserRoleName];
+
+export const userRoleNameToDisplayMap: Record<UserRoleName, string> = {
+  [UserRoleName.STYTCH_ADMIN]: 'Admin',
+  [UserRoleName.STYTCH_MEMBER]: 'Member',
+};
+
+// these roles are force by stytch or use and cannot be removed
+export const forcedUserRoles = [UserRoleName.STYTCH_MEMBER];
 
 export const UserRoleSource = {
   DIRECT_ASSIGNMENT: 'direct_assignment',

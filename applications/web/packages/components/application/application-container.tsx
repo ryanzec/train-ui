@@ -1,7 +1,9 @@
 import { A, type BeforeLeaveEventArgs, useBeforeLeave, useNavigate } from '@solidjs/router';
 import { type JSX, Show, onCleanup, onMount } from 'solid-js';
 
+import GlobalNotifications from '$/components/global-notifications';
 import Loading from '$/components/loading';
+import { globalNotificationsStore } from '$/stores/global-notifications.store';
 import { type HttpRequest, httpUtils } from '$/utils/http';
 import { userUtils } from '$api/data-models/user';
 import { UserRoleName } from '$api/types/user';
@@ -68,6 +70,7 @@ const ApplicationContainer = (props: JSX.HTMLAttributes<HTMLDivElement>) => {
         </Show>
         <div class={styles.mainContent}>{props.children}</div>
       </Show>
+      <GlobalNotifications notifications={globalNotificationsStore.notifications()} />
     </div>
   );
 };
